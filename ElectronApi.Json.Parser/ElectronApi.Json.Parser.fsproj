@@ -14,8 +14,4 @@
       <PackageReference Include="Thoth.Json.Net" Version="12.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include=".github\workflows\build-docs.yml" />
-    </ItemGroup>
-
 </Project>
