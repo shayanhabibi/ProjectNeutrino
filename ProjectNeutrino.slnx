@@ -1,0 +1,3 @@
+﻿<Solution>
+  <Project Path="ElectronApi.Json.Parser\ElectronApi.Json.Parser.fsproj" Type="Classic F#" />
+</Solution>

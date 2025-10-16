@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE terms SYSTEM "https://resources.jetbrains.com/writerside/1.0/glossary.dtd">
+<terms>
+    <term name="foo">
+        Description of what "foo" is.
+    </term>
+    <term name="electron-api">
+        A JSON file used by Electron to produce their <c>.d.ts</c>. Generated with every release.
+    </term>
+    <term name="parser">
+        The <code>ElectronApi.Json.Parser</code> project which reads the <code>electron-api.json</code> file.
+    </term>
+</terms>
