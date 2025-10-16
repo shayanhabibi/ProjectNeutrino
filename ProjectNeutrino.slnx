@@ -1,4 +1,5 @@
 ﻿<Solution>
+  <Folder Name="/.github/workflows/" />
   <Folder Name="/Scripts/" />
   <Folder Name="/Scripts/ElectronApiParser/">
     <File Path="ApiDecoder.fsx" />
