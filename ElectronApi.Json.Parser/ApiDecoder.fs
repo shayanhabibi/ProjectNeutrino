@@ -5,13 +5,31 @@
 open Thoth.Json.Net
 #nowarn 40
 
+/// <summary>
+/// The documentation tag is used to provide supplementary remarks to the API, such
+/// as particular OS availability; stability/deprecation; and whether the field/property
+/// is readonly.<br/>
+/// See <c>additionalTags</c> field in the API types.
+/// </summary>
 type DocumentationTag =
     | OS_MACOS
     | OS_MAS
     | OS_WINDOWS
     | OS_LINUX
+    /// <summary>
+    /// Marks an API as Experimental; can co-exist with Deprecated.
+    /// </summary>
+    /// <remarks>Stable API is indicated by the lack of Experimental/Deprecated</remarks>
     | STABILITY_EXPERIMENTAL
+    /// <summary>
+    /// Marks an API as Deprecated; can co-exist with Experimental.
+    /// </summary>
+    /// <remarks>Stable API is indicated by the lack of Experimental/Deprecated</remarks>
     | STABILITY_DEPRECATED
+    /// <summary>
+    /// Marks an API as READONLY. Naturally this is mostly only used and relevant when considering
+    /// instance properties, class fields, and things along that nature.
+    /// </summary>
     | AVAILABILITY_READONLY
 
 module DocumentationTag =
@@ -28,6 +46,11 @@ module DocumentationTag =
             | invalid -> Decode.fail $"{invalid} is not a known DocumentationTag"
             )
 
+/// <summary>
+/// When a type uses the <c>String</c> TypeInformation, it may be identified as a
+/// StringEnum by the presence of one or more of these. The absence of them indicates
+/// the type is not a string enum.
+/// </summary>
 type PossibleStringValue = {
     Value: string
     Description: string
@@ -44,6 +67,9 @@ module PossibleStringValue =
 
 [<RequireQualifiedAccess>]
 module TypeInformationKind =
+    /// <summary>
+    /// The type field may house an array of <c>TypeInformation</c>.
+    /// </summary>
     type InfoArray = {
         Collection: bool
         Type: TypeInformation[]
@@ -57,6 +83,15 @@ module TypeInformationKind =
                         Decode.array TypeInformation.decode
                         |> get.Required.Field "type" 
                 })
+    /// <summary>
+    /// This field is used for primitive types, or referencing other types. The string value
+    /// is the name of the type.
+    /// <example>
+    /// <code lang="json">
+    /// "type": "boolean"
+    /// </code>
+    /// </example>
+    /// </summary>
     type InfoString = {
         Collection: bool
         Type: string
@@ -68,6 +103,26 @@ module TypeInformationKind =
                     Collection = get.Required.Field "collection" Decode.bool
                     Type = get.Required.Field "type" Decode.string
                 })
+    /// <summary>
+    /// Indicates the type is a string; in the case of a <c>StringEnum</c>-like construct,
+    /// the <c>PossibleValues</c> field is populated with the options.
+    /// <example>
+    /// <code lang="json">
+    ///  {
+    ///    "name": "themeSource",
+    ///    "type": "String",
+    ///    "possibleValues": [
+    ///      {"value": "system",
+    ///        "description": ""},
+    ///      {"value": "light",
+    ///        "description": ""},
+    ///      {"value": "dark",
+    ///        "description": ""}
+    ///    ]
+    ///  },
+    /// </code>
+    /// </example>
+    /// </summary>
     type String = {
         Collection: bool
         PossibleValues: PossibleStringValue[] option
@@ -88,6 +143,28 @@ module TypeInformationKind =
                         (Decode.string |> Decode.andThen Decode.fail)
                         |> get.Required.Field "type"
                 )
+    
+    /// <summary>
+    /// Indicates the type is a POJO, and identifies the fields in <c>Properties</c>
+    /// <example>
+    /// <code lang="json">
+    /// "type": "Object",
+    /// "properties": [
+    ///   {"name": "entries",
+    ///     "description": "...",
+    ///     "required": true,
+    ///     "additionalTags": [],
+    ///     "collection": true,
+    ///     "type": "NavigationEntry"},
+    ///   {"name": "index",
+    ///     "description": "...",
+    ///     "required": false,
+    ///     "additionalTags": [],
+    ///     "collection": false,
+    ///     "type": "Integer"}
+    /// </code>
+    /// </example>
+    /// </summary>
     type Object = {
         Collection: bool
         Properties: PropertyDocumentationBlock[]
@@ -110,6 +187,37 @@ module TypeInformationKind =
                             (Decode.string
                              |> Decode.andThen Decode.fail)
             )
+    /// <summary>
+    /// Identifies a type that is an event.
+    /// <example>
+    /// <code lang="json">
+    /// "name": "web-contents-created",
+    /// "description": "Emitted when a new webContents is created.",
+    /// "parameters": [
+    ///   { "name": "event",
+    ///     "description": "",
+    ///     "collection": false,
+    ///     "type": "Event",
+    ///     "additionalTags": [],
+    ///     "required": true },
+    ///   { "name": "webContents",
+    ///     "description": "",
+    ///     "collection": false,
+    ///     "type": "WebContents",
+    ///     "additionalTags": [],
+    ///     "required": true }
+    /// ],
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <remarks>
+    /// It's important to recognise the distinction made in the API typing between
+    /// a TypeInformation for Event, and a general Event typing using the InfoString TypeInformationKind.
+    /// <br/>
+    /// <br/>
+    /// We rarely see the eventProperties or eventPropertiesReference fields in the API, and we
+    /// will often see type "Event" used in the context of the InfoString kind.
+    /// </remarks>
     type Event = {
         Collection: bool
         EventProperties: PropertyDocumentationBlock[]
@@ -152,6 +260,26 @@ module TypeInformationKind =
                             (Decode.string
                              |> Decode.andThen Decode.fail)
                 )
+    /// <summary>
+    /// <example>
+    /// <code lang="json">
+    /// { "name": "highlight",
+    ///   "description": "Called when the user taps any item.",
+    ///   "required": false,
+    ///   "additionalTags": [],
+    ///   "collection": false,
+    ///   "type": "Function",
+    ///   "parameters": [
+    ///     { "name": "highlightedIndex",
+    ///       "description": "The index of the item the user touched.",
+    ///       "required": true,
+    ///       "collection": false,
+    ///       "type": "Integer" }
+    ///   ],
+    ///   "returns": null },
+    /// </code>
+    /// </example>
+    /// </summary>
     type Function = {
         Collection: bool
         Parameters: MethodParameterDocumentation[]
@@ -261,6 +389,10 @@ type DocumentationBlock = {
     Description: string
     AdditionalTags: DocumentationTag[]
     // optional field
+    /// <summary>
+    /// An optional field that, when combined with a <c>WebsiteUrl</c>, forms
+    /// a link to the electron API docs website.
+    /// </summary>
     UrlFragment: string option
 }
 
@@ -335,6 +467,10 @@ type BaseDocumentationContainer = {
     Description: string
     Version: string
     Slug: string
+    /// <summary>
+    /// This field is important to use in our XmlDocs. It forms the root for
+    /// all children documentation blocks that present a <c>urlFragment</c>.
+    /// </summary>
     WebsiteUrl: string
     RepoUrl: string
 }
@@ -408,6 +544,10 @@ module ModuleDocumentationContainer =
                     |> get.Required.Field "type"
         )
     
+/// <summary>
+/// As determined by the information presented, Structures are - in effect - <c>global</c> types.
+/// They represent <c>Pojos</c>. This should be accessible from the root.
+/// </summary>
 type StructureDocumentationContainer = {
     Properties: PropertyDocumentationBlock[]
     // Embedded

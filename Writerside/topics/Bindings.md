@@ -3,6 +3,7 @@
 <tldr>
 <p>Schema is derived from <code>@electron/docs-parser</code></p>
 <p>Parsing done with <code>Thoth.Json.Net</code></p>
+<p>A script is available that you can run to see the parsed AST result.</p>
 </tldr>
 
 Achieving parity with Type-Script in type-safety is certainly a goal.

@@ -1,6 +1,113 @@
 ﻿module ElectronApi.Json.Parser.FSharpApi
 
 // This will be our FSharp representation of the parsed API
+// Inspiration from FSharpAST.fs from https://github.com/glutinum-org/cli/blob/main/src/Glutinum.Converter/FsharpAST.fs
+
+type FSharpCommentParam = { Name: string; Content: string }
+type FSharpCommentTypeParam = { TypeName: string; Content: string }
+type FSharpCommentSeeAlso = { Link: string; Content: string }
+
+[<RequireQualifiedAccess>]
+type FSharpXmlDoc =
+    | Summary of string list
+    | Param of FSharpCommentParam
+    | Returns of string
+    | Remarks of string list
+    | DefaultValue of string
+    | Example of string list
+    | TypeParam of FSharpCommentTypeParam
+    | SeeAlso of FSharpCommentSeeAlso
+type FSharpXmlDocs = FSharpXmlDoc list
+
+[<RequireQualifiedAccess>]
+type FSharpLiteral =
+    | String of string
+    | Int of int
+    | Float of float
+    | Bool of bool
+    | Null
+    member this.ToText() =
+        match this with
+        | String value -> value
+        | Int value -> string value
+        | Float value -> string value
+        | Bool value -> string value
+        | Null -> "null"
+
+
+type FSharpEnumCase = {
+    Name: string
+    Value: FSharpLiteral
+    XmlDocs: FSharpXmlDocs option
+}
+
+type FSharpEnum = {
+    Name: string
+    Cases: FSharpEnumCase list
+}
+
+type RequiredPojoField = {
+    Name: string
+    XmlDocs: FSharpXmlDocs
+    Type: Type
+}
+type FSharpPojoField =
+    | Required of RequiredPojoField
+    | Optional of OptionalPojoField
+type FSharpPojo = {
+    Name: string
+    Fields: FSharpPojoField list
+    XmlDocs: FSharpXmlDocs
+}
+
+[<RequireQualifiedAccess>]
+type FSharpAttribute =
+    | Text of string
+    /// <summary>
+    /// Generates <c>[&lt;Emit("$0($1...)")&gt;]</c> attribute.
+    /// </summary>
+    | EmitSelfInvoke
+    /// <summary>
+    /// Generates <c>[&lt;Emit("$0")&gt;]</c> attribute.
+    /// </summary>
+    | EmitSelf
+    /// <summary>
+    /// Generates <c>[&lt;Import(selector, from)&gt;]</c> attribute.
+    /// </summary>
+    | Import of selector: string * from: string
+    /// <summary>
+    /// Generates <c>[&lt;ImportAll(moduleName)&gt;]</c> attribute.
+    /// </summary>
+    | ImportAll of moduleName: string
+    /// <summary>
+    /// Generates <c>[&lt;ImportDefault(moduleName)&gt;]</c> attribute.
+    /// </summary>
+    | ImportDefault of moduleName: string
+    | Erase
+    | AbstractClass
+    | AllowNullLiteral
+    | Obsolete of string option
+    | StringEnum of Fable.Core.CaseRules
+    | CompiledName of string
+    | RequireQualifiedAccess
+    | EmitConstructor
+    /// <summary>
+    /// Generates <c>[&lt;Emit("new $0.className($1...)")&gt;]"</c> attribute.
+    /// </summary>
+    | EmitMacroConstructor of className: string
+    /// <summary>
+    /// Generates <c>[&lt;Emit("$0($1...)")&gt;]</c> attribute.
+    /// </summary>
+    | EmitMacroInvoke of methodName: string
+    | EmitIndexer
+    | Global
+    | ParamObject
+    | ParamArray
+    | Interface
+    | Pojo
+    | Extension
+    | EditorHidden
+    | AutoOpen
 
 type OSCompatibility =
     | MacOS
