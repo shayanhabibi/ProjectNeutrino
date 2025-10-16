@@ -13,7 +13,6 @@ permissions:
 env:
   INSTANCE: 'Writerside/project-neutrino'
   DOCKER_VERSION: '2025.04.8412'
-  # IS_GROUP: 'true'  # Uncomment to build a group
 
 jobs:
   build:
