@@ -4,5 +4,6 @@
   <Folder Name="/Scripts/ElectronApiParser/">
     <File Path="ApiDecoder.fsx" />
   </Folder>
+  <Project Path="ElectronApi.Json.Parser.Tests\ElectronApi.Json.Parser.Tests.fsproj" Type="Classic F#" />
   <Project Path="ElectronApi.Json.Parser\ElectronApi.Json.Parser.fsproj" Type="Classic F#" />
 </Solution>

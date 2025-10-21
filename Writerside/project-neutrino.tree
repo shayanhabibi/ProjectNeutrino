@@ -9,6 +9,7 @@
     <toc-element topic="projectneutrino.md">
         <toc-element topic="Project-Brief.md"/>
         <toc-element toc-title="API Parser">
+            <toc-element topic="FSharp-Domain.md"/>
             <toc-element topic="Bindings.md"/>
         </toc-element>
         <toc-element toc-title="Source Generation">
