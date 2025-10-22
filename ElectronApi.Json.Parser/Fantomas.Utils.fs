@@ -270,3 +270,15 @@ module Utils =
     type Expr with
         static member makeString text =
             ExprQuoteNode.make text |> Expr.Quote
+    type TypeAppPrefixNode with
+        static member Create(identifier, postIdentifier, types) =
+            TypeAppPrefixNode(
+                identifier,
+                postIdentifier,
+                SingleTextNode.make "<",
+                types,
+                SingleTextNode.make ">",
+                Range.Zero
+            )
+        static member Create(identifier, types) = TypeAppPrefixNode.Create(identifier, None, types)
+            
