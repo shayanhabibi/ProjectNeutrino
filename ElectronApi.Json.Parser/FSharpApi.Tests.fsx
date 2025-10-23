@@ -3,10 +3,12 @@
 #load "./Utils.fs"
 #load "./ApiDecoder.fs"
 #load "./Fantomas.Utils.fs"
+#load "./Types.fs"
 #load "./FSharpApi.fs"
 #load "./SourceMapper.fs"
 
 open System.IO
+open ElectronApi.Json.Parser
 open ElectronApi.Json.Parser.FSharpApi
 open ElectronApi.Json.Parser.Decoder
 open ElectronApi.Json.Parser.FSharpApi.Type

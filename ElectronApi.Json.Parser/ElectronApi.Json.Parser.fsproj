@@ -8,6 +8,7 @@
     <ItemGroup>
         <Compile Include="Utils.fs" />
         <Compile Include="ApiDecoder.fs" />
+        <Compile Include="Types.fs" />
         <Compile Include="FSharpApi.fs" />
         <Compile Include="Fantomas.Utils.fs" />
         <Compile Include="SourceMapper.fs" />

@@ -81,453 +81,6 @@ module Compatibility =
                     |> Specified
                 | _ -> state
             ) state
-// We want to track names that we modify in case we require to reference the original name when
-// emitting
-type Name =
-    | Source of string
-    | Modified of source: string * modified: string
-    member this.ValueOrModified =
-        match this with
-        | Source value | Modified(_,value) -> value
-    member this.ValueOrSource =
-        match this with
-        | Source value | Modified(value, _) -> value
-module Name =
-    // We hold a cache of strings and their generated name
-    let private cache = System.Collections.Generic.Dictionary<string, Name>()
-    // All names must be checked for reserved identifiers
-    // If a name has changed, then we wrap it in the 'Modified' case.
-    let inline private map f input =
-        f input
-        |> appendApostropheToReservedKeywords
-        |> function
-            | output when String.Equals(input,output,StringComparison.Ordinal) -> Source output
-            | output -> Modified(input,output)
-    // Dumps name into cache
-    let cacheName (name: Name) =
-        let key = name.ValueOrSource
-        cache.ContainsKey key
-        |> function
-            | false -> cache.Add(key, name)
-            | true -> ()
-    // Retrieves name from cache
-    let retrieveName (key: string) =
-        cache.TryGetValue(key)
-        |> function
-            | true, name -> ValueSome name
-            | false,  _ -> ValueNone
-    // Changes casing to 'camelCase'
-    let createCamel (input: string) =
-        map toCamelCase input
-    // Changes casing to 'PascalCase'
-    let createPascal (input: string) =
-        map toPascalCase input
-    // Checks cache for name; if not present, then creates
-    // for the cache and returns that value.
-    let cacheOrCreatePascal nameInput =
-        retrieveName nameInput
-        |> ValueOption.defaultWith(fun () ->
-            createPascal nameInput
-            |> fun outputName ->
-                outputName
-                |> cacheName
-                outputName
-            )
-    // Checks cache for name; if not present, then creates
-    // for the cache and returns that value
-    let cacheOrCreateCamel nameInput =
-        retrieveName nameInput
-        |> ValueOption.defaultWith(fun () ->
-            createCamel nameInput
-            |> fun output ->
-                output |> cacheName
-                output
-            )
-        
-/// <summary>
-/// The Path module contains recursive types which are modeled after the 'path' of modules/namespaces that one
-/// would take to reach their location.<br/>
-/// </summary>
-module Path =
-    /// <summary>
-    /// Interface for path types that all provide the name accessibly.
-    /// </summary>
-    type IName =
-        abstract Name: Name
-    // each module has a name, and is occupied by types and bindings. We want them to track their path/origin
-    /// <summary>
-    /// A tracker for the named path to this type, along with its name.
-    /// </summary>
-    type Type = Type of path: Path * name: Name with
-        member inline this.Destructured = let (Type(p,n)) = this in (p,n)
-        member this.Path = this.Destructured |> fst
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    and InlineOptions = InlineOptions of parent: Choice<Parameter, Property, Method, InlineLambda, Event> * name: Name with
-        member inline this.Destructured = let (InlineOptions(p,n)) = this in (p,n)
-        member this.Parent = this.Destructured |> fst
-        member this.Path =
-            this.Parent
-            |> function
-                | Choice1Of5 p -> p.Path
-                | Choice2Of5 p -> p.Path
-                | Choice3Of5 m -> m.Path
-                | Choice4Of5 l -> l.Path
-                | Choice5Of5 e -> e.Path
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    and InlineLambda = InlineLambda of parent: Choice<Parameter, Property, Method, InlineLambda, Event> * name: Name with
-        member inline this.Destructured = let (InlineLambda(p,n)) = this in (p,n)
-        member this.Parent = this.Destructured |> fst
-        member this.Path =
-            this.Parent
-            |> function
-                | Choice1Of5 p -> p.Path
-                | Choice2Of5 p -> p.Path
-                | Choice3Of5 m -> m.Path
-                | Choice4Of5 l -> l.Path
-                | Choice5Of5 e -> e.Path
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    /// <summary>
-    /// A tracker for the named path to this binding, along with its name.
-    /// </summary>
-    and Binding = Binding of path: Path * name: Name with
-        member inline this.Destructured = let (Binding(p,n)) = this in (p,n)
-        member this.Path = this.Destructured |> fst
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    and Method = Method of from: Choice<Type, Path> * name: Name with
-        member inline this.Destructured = let (Method(p,n)) = this in (p,n)
-        member this.Parent = this.Destructured |> fst
-        member this.Path =
-            match this.Parent with
-            | Choice1Of2 ``type`` -> ``type``.Path
-            | Choice2Of2 path -> path
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    and Property = Property of from: Choice<Type, InlineOptions, Event, Module> * name: Name with
-        member inline this.Destructured = let (Property(p,n)) = this in (p,n)
-        member this.Parent = this.Destructured |> fst
-        member this.Path =
-            this.Parent |> function
-                | Choice1Of4 t -> t.Path
-                | Choice2Of4 o -> o.Path
-                | Choice3Of4 e -> e.Path
-                | Choice4Of4 m -> m.Path
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    // An event is either contained in a module or of a class (type)
-    and Event = Event of parent: Choice<Path, Type> * name: Name with
-        member inline this.Destructured = let (Event (p,n)) = this in (p,n)
-        member this.Name = this.Destructured |> snd
-        member this.Path =
-            this.Destructured
-            |> fst |> function
-                | Choice1Of2 p -> p
-                | Choice2Of2 c -> c.Path
-        interface IName with
-            member this.Name = this.Name
-    /// <summary>
-    /// A tracker for the named path to this module, along with its name.
-    /// </summary>
-    and Module = Module of path: Path * name: Name with
-        member inline this.Destructured = let (Module(p,n)) = this in (p,n)
-        member this.Path = this.Destructured |> fst
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    and Parameter = Parameter of from: Choice<Binding, Method, Type, Event, InlineLambda> * name: Name with
-        member inline this.Destructured = let (Parameter(p,n)) = this in (p,n)
-        member this.Path =
-            this.Destructured |> fst
-            |> function
-                | Choice1Of5 b -> b.Path
-                | Choice2Of5 m -> m.Path
-                | Choice3Of5 t -> t.Path
-                | Choice4Of5 e -> e.Path
-                | Choice5Of5 l -> l.Path
-        member this.Parent =
-            this.Destructured |> fst
-        member this.Name = this.Destructured |> snd
-        interface IName with
-            member this.Name = this.Name
-    and [<RequireQualifiedAccess>] Path =
-        | Root
-        | Module of Module
-        member this.Name =
-            match this with
-            | Root -> Source "Root"
-            | Module m -> m.Name
-        override this.ToString() =
-            match this with
-            | Root -> "Root"
-            | Module m -> m.Name.ToString()
-    and [<RequireQualifiedAccess>] PathKey =
-        | Binding of Binding
-        | Type of Type
-        | Property of Property
-        | Method of Method
-        | Event of Event
-        | Parameter of Parameter
-        | InlineOptions of InlineOptions
-        | InlineLambda of InlineLambda
-        | Module of Path
-        member this.Path =
-            match this with
-            | Binding b -> b.Path
-            | Type t -> t.Path
-            | Method m -> m.Path
-            | Property p -> p.Path
-            | Event e -> e.Path
-            | Parameter p -> p.Path
-            | InlineOptions o -> o.Path
-            | InlineLambda l -> l.Path
-            | Module p -> p
-        member this.Name =
-            match this with
-            | Binding b -> b.Name
-            | Type t -> t.Name
-            | Method m -> m.Name
-            | Property p -> p.Name
-            | Event e -> e.Name
-            | Parameter p -> p.Name
-            | InlineOptions o -> o.Name
-            | InlineLambda l -> l.Name
-            | Module p ->
-                match p with
-                | Path.Root -> Source "Root"
-                | Path.Module ``module`` -> ``module``.Name
-        member this.ParentName =
-            match this with
-            | Binding binding ->
-                binding.Path.Name
-            | Type typ ->
-                typ.Path.Name
-            | Property property ->
-                property.Parent
-                |> function
-                    | Choice1Of4 p -> p.Name
-                    | Choice2Of4 p -> p.Name
-                    | Choice3Of4 p -> p.Name
-                    | Choice4Of4 p -> p.Name
-                    
-            | Method method ->
-                method.Parent
-                |> function
-                    | Choice1Of2 p -> p.Name
-                    | Choice2Of2 p -> p.Name
-            | Event event ->
-                event.Path.Name
-            | Parameter parameter ->
-                parameter.Parent
-                |> function
-                    | Choice1Of5 p -> p.Name
-                    | Choice2Of5 p -> p.Name
-                    | Choice3Of5 p -> p.Name
-                    | Choice4Of5 p -> p.Name
-                    | Choice5Of5 p -> p.Name
-            | InlineOptions inlineOptions ->
-                inlineOptions.Parent
-                |> function
-                    | Choice1Of5 p -> p.Name
-                    | Choice2Of5 p -> p.Name
-                    | Choice3Of5 p -> p.Name
-                    | Choice4Of5 p -> p.Name
-                    | Choice5Of5 p -> p.Name
-            | InlineLambda inlineLambda ->
-                inlineLambda.Parent
-                |> function
-                    | Choice1Of5 p -> p.Name
-                    | Choice2Of5 p -> p.Name
-                    | Choice3Of5 p -> p.Name
-                    | Choice4Of5 p -> p.Name
-                    | Choice5Of5 p -> p.Name
-            | Module path ->
-                match path with
-                | Path.Root -> Source "Root"
-                | Path.Module m ->
-                    m.Path.Name
-        member this.CreateType(name: Name) =
-            Path.Type(this.Path, name)
-            |> PathKey.Type
-        member this.CreateBinding(name: Name) =
-            Path.Binding(this.Path, name)
-            |> PathKey.Binding
-        member this.CreateMethod(name: Name) =
-            match this with
-            | Binding binding -> failwith $"Tried to create a method name for the path of %A{binding}"
-            | Type ``type`` ->
-                Path.Method(Choice1Of2 ``type``, name)
-                |> PathKey.Method
-            | Property property -> failwith $"Tried to create a method name for the path of %A{property}"
-            | Method method -> failwith $"Tried to create a method pathkey for the path of %A{method}"
-            | Event event -> failwith $"Tried to create a method pathkey for the path of %A{event}"
-            | Parameter p -> failwith $"Tried to create a method pathkey for the path of {p}"
-            | InlineOptions o -> failwith $"Tried to create a method pathkey for the inline options {o}"
-            | InlineLambda l -> failwith $"Tried to create a method pathkey for the inline lambda {l}"
-            | Module m ->
-                Path.Method(Choice2Of2 m, name)
-                |> PathKey.Method
-        member this.CreateLambda() =
-            let name = Source "Delegate"
-            match this with
-            | Property property ->
-                Path.InlineLambda(Choice2Of5 property, name)
-                |> PathKey.InlineLambda
-            | Parameter parameter ->
-                Path.InlineLambda(Choice1Of5 parameter, name)
-                |> PathKey.InlineLambda
-            | Method m ->
-                // this is a parameter of the method
-                Path.InlineLambda(Choice3Of5 m, name)
-                |> PathKey.InlineLambda
-            | InlineLambda l ->
-                // This is a parameter of the lambda
-                Path.InlineLambda(Choice4Of5 l, name)
-                |> PathKey.InlineLambda
-            | Event e ->
-                // This is a parameter/prop in the event
-                Path.InlineLambda(Choice5Of5 e, name)
-                |> PathKey.InlineLambda
-            | e -> failwith $"Tried to create a lambda pathkey for {e}"
-        member this.CreateProperty(name: Name) =
-            match this with
-            | Binding binding -> failwith $"Tried to create a property for the binding of %A{binding}"
-            | Type ``type`` ->
-                Path.Property(Choice1Of4 ``type``, name)
-                |> PathKey.Property
-            | Property property -> failwith $"Tried to create a property for the property %A{property}"
-            | Method method -> failwith $"Tried to create a property for the method of %A{method}"
-            | Event event ->
-                Path.Property(Choice3Of4 event, name)
-                |> PathKey.Property
-            | Parameter p -> failwith $"Tried to create a property for the path {p}"
-            | InlineLambda l -> failwith $"Tried to create a property for the lambda {l}"
-            | InlineOptions o ->
-                Path.Property(Choice2Of4 o, name)
-                |> PathKey.Property
-            | Module(Path.Module m)->
-                Path.Property(Choice4Of4 m, name)
-                |> PathKey.Property
-            | p -> failwith $"Tried to create a property for the path {p}"
-        member this.CreateEvent(name: Name) =
-            match this with
-            | Type ``type`` ->
-                Path.Event(Choice2Of2 ``type``, name)
-                |> PathKey.Event
-            | _ ->
-                Path.Event(Choice1Of2 this.Path, name)
-                |> PathKey.Event
-        member this.CreateParameter(name: Name) =
-            match this with
-            | Binding binding ->
-                Path.Parameter(Choice1Of5 binding, name)
-                |> PathKey.Parameter
-            | Type ``type`` ->
-                Path.Parameter(Choice3Of5 ``type``,name)
-                |> PathKey.Parameter
-            | Property property -> failwith $"Tried to create a parameter pathkey for the path {property}"
-            | Method method ->
-                Path.Parameter(Choice2Of5 method, name)
-                |> PathKey.Parameter
-            | Event event ->
-                Path.Parameter(Choice4Of5 event, name)
-                |> PathKey.Parameter
-            | InlineLambda l ->
-                Path.Parameter(Choice5Of5 l, name)
-                |> PathKey.Parameter
-            | Parameter parameter -> failwith $"Tried to create a parameter pathkey for the path {parameter}"
-            | InlineOptions o -> failwith $"Tried to create a parameter pathkey for the inline options {o}"
-            | Module p -> failwith $"Tried to create a parameter pathkey for the module {p}"
-        member this.CreateInlineOptions(?name: Name) =
-            let name = defaultArg name (Name.Source "Options")
-            match this with
-            | Method m ->
-                // this is technically a parameter
-                Path.InlineOptions(Choice3Of5 m, name)
-                |> PathKey.InlineOptions
-            | InlineLambda l ->
-                Path.InlineOptions(Choice4Of5 l, name)
-                |> PathKey.InlineOptions
-            | Property property ->
-                Path.InlineOptions(Choice2Of5 property, name)
-                |> PathKey.InlineOptions
-            | Parameter parameter ->
-                Path.InlineOptions(Choice1Of5 parameter, name)
-                |> PathKey.InlineOptions
-            | Event e ->
-                // This is a param/prop of the event
-                Path.InlineOptions(Choice5Of5 e, name)
-                |> PathKey.InlineOptions
-            | e -> failwith $"Tried to create an inlineoptions pathkey for {e}"
-
-    let tracePathOfEntry (entry: PathKey) =
-        let rec tracePath = function
-            | Path.Root -> []
-            | Path.Module m ->
-                m.Name :: tracePath m.Path
-        and tracePathKey: PathKey -> Name list = function
-            | PathKey.Binding binding ->
-                binding.Name :: tracePath binding.Path
-            | PathKey.Type typ ->
-                typ.Name :: tracePath typ.Path
-            | PathKey.Property property ->
-                match property.Parent with
-                | Choice1Of4 ``type`` ->
-                    property.Name :: tracePathKey (PathKey.Type ``type``)
-                | Choice2Of4 inlineOptions ->
-                    property.Name :: tracePathKey (PathKey.InlineOptions inlineOptions)
-                | Choice3Of4 event ->
-                    property.Name :: tracePathKey (PathKey.Event event)
-                | Choice4Of4 m ->
-                    property.Name :: tracePath (Path.Path.Module m)
-            | PathKey.Method method ->
-                match method.Parent with
-                | Choice1Of2 ``type`` ->
-                    method.Name :: tracePathKey (PathKey.Type ``type``)
-                | Choice2Of2 path ->
-                    method.Name :: tracePath path
-            | PathKey.Event event ->
-                event.Name :: tracePath event.Path
-            | PathKey.Parameter parameter ->
-                match parameter.Parent with
-                | Choice1Of5 binding ->
-                    parameter.Name :: tracePathKey (PathKey.Binding binding)
-                | Choice2Of5 method ->
-                    parameter.Name :: tracePathKey (PathKey.Method method)
-                | Choice3Of5 ``type`` ->
-                    parameter.Name :: tracePathKey (PathKey.Type ``type``)
-                | Choice4Of5 event ->
-                    parameter.Name :: tracePathKey (PathKey.Event event)
-                | Choice5Of5 inlineLambda ->
-                    parameter.Name :: tracePathKey (PathKey.InlineLambda inlineLambda)
-            | PathKey.InlineOptions inlineOptions ->
-                match inlineOptions.Parent with
-                | Choice1Of5 parameter ->
-                    inlineOptions.Name :: tracePathKey (PathKey.Parameter parameter)
-                | Choice2Of5 property -> inlineOptions.Name :: tracePathKey (PathKey.Property property)
-                | Choice3Of5 method -> inlineOptions.Name :: tracePathKey (PathKey.Method method)
-                | Choice4Of5 inlineLambda -> inlineOptions.Name :: tracePathKey (PathKey.InlineLambda inlineLambda)
-                | Choice5Of5 event -> inlineOptions.Name :: tracePathKey (PathKey.Event event)
-            | PathKey.InlineLambda inlineLambda ->
-                match inlineLambda.Parent with
-                | Choice1Of5 parameter ->
-                    inlineLambda.Name :: tracePathKey (PathKey.Parameter parameter)
-                | Choice2Of5 property -> inlineLambda.Name :: tracePathKey (PathKey.Property property)
-                | Choice3Of5 method -> inlineLambda.Name :: tracePathKey (PathKey.Method method)
-                | Choice4Of5 inlineLambda -> inlineLambda.Name :: tracePathKey (PathKey.InlineLambda inlineLambda)
-                | Choice5Of5 event -> inlineLambda.Name :: tracePathKey (PathKey.Event event)
-            | PathKey.Module path -> tracePath path
-        tracePathKey entry
-        |> List.rev
-
 
 type StringEnumCase = { Value: Name; Description: string voption }
 type StringEnum = { PathKey: Path.PathKey; Cases: StringEnumCase list }
@@ -549,6 +102,22 @@ type FuncOrMethod = {
     Parameters: Parameter list
     Returns: Type
 }
+
+module FuncOrMethod =
+    // We want to store lambdas/funcs so we can raise them to delegates IF they have
+    // more than 1 parameter.
+    let private cache = System.Collections.Generic.Dictionary<Path.PathKey, FuncOrMethod>()
+    module Cache =
+        let add key value = cache.Add(key,value)
+        let tryAdd key value =
+            if cache.TryAdd(key,value)
+            then Ok value
+            else Error value
+        let get key = cache[key]
+        let tryGet key =
+            match cache.TryGetValue(key) with
+            | true, value -> ValueSome value
+            | false, _ -> ValueNone
 
 type EventInfo = {
     PathKey: Path.PathKey
@@ -732,8 +301,9 @@ module Type =
         | f when innerTypes.IsSome ->
             failwith $"Unhandled function type {f} with innerTypes {innerTypes}"
         | { Parameters = parameters; Returns = returns } ->
+            // TODO - should we be caching the name of these lambdas now that we are lifting them to Delegates if they have more than 1 parameter??
             let ctx = { ctx with PathKey = ctx.PathKey.CreateLambda() }
-            Type.Function {
+            {
                 // Lambda probably, we're only really interested in the signature then
                 Name = ctx.PathKey
                 Parameters =
@@ -746,6 +316,18 @@ module Type =
                     |> ValueOption.map (fromTypeInformation ctx)
                     |> ValueOption.defaultValue Type.Unit
             }
+            |> fun lambda ->
+                if lambda.Parameters.Length > 1 then
+                    FuncOrMethod.Cache.tryAdd
+                        lambda.Name
+                        lambda
+                    |> function
+                        | Ok lambda -> Type.Function lambda
+                        | Error lambda ->
+                            failwith $"Duplicate definitions of lambda {lambda}"
+                else Type.Function lambda
+                
+            
     let readEventKind (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.Event -> Type = function
         | e when innerTypes.IsSome ->
             failwith $"unhandled event type {e} with inner types {innerTypes}"
@@ -887,7 +469,7 @@ module Structure =
         let pathKey =
             match ctx with
             | None ->
-                Path.PathKey.Type(Path.Type(Path.Path.Root, name))
+                Path.PathKey.Type(Path.Type(Path.ModulePath.Root, name))
             | Some { PathKey = pathKey } ->
                 pathKey.CreateType(name)
         let ctx = { PathKey = pathKey; Type = ContextType.ObjectProperty }
@@ -976,7 +558,7 @@ module Class =
             | Some ctx ->
                 { ctx with PathKey = ctx.PathKey.CreateType(name) }
             | None ->
-                let root = Path.Path.Root
+                let root = Path.ModulePath.Root
                 let name = name
                 let pathKey = Path.PathKey.Type(Path.Type(root,name))
                 { PathKey = pathKey; Type = ContextType.NA }
@@ -1055,7 +637,7 @@ module Element =
             | Some ctx ->
                 { ctx with PathKey = ctx.PathKey.CreateType(name) }
             | None ->
-                let pathKey = Path.Type(Path.Path.Root, name) |> Path.PathKey.Type
+                let pathKey = Path.Type(Path.ModulePath.Root, name) |> Path.PathKey.Type
                 { PathKey = pathKey; Type = ContextType.NA }
         {
             PathKey = ctx.PathKey
@@ -1106,9 +688,9 @@ module Module =
         let ctx =
             match ctx with
             | Some ctx ->
-                { ctx with PathKey = ctx.PathKey.CreateType(name) }
+                { ctx with PathKey = ctx.PathKey.CreateModule(name) }
             | None ->
-                { PathKey = Path.PathKey.Module <| (Path.Path.Module <| Path.Module(Path.Path.Root, name)); Type = ContextType.NA }
+                { PathKey = Path.PathKey.CreateModule(name); Type = ContextType.NA }
                 
         {
             PathKey = ctx.PathKey
@@ -1165,10 +747,7 @@ let readResult = function
     | ParsedDocumentation.Structure value ->
         // we'll place root structs into a "Structure" or "Types" module
         let module' =
-            { PathKey =
-                Path.Module(Path.Path.Root, Source "Types")
-                |> Path.Path.Module
-                |> Path.PathKey.Module
+            { PathKey = Path.PathKey.CreateModule(Source "Types")
               Type = ContextType.NA }
             |> Some
         Structure.readFromDocContainer module' value

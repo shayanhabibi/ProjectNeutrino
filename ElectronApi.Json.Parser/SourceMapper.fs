@@ -11,9 +11,9 @@ open Fantomas.Utils
 // 2. FSharpApi - reads and maps; modifies names and ensures everything is accounted
 // 3. SourceMapper - maps the types to their respective end types, including attributes et al
 
-module Cache =
+module ModuleNameCache =
     open Path
-    type Cache = Dictionary<Path.Path, HashSet<Name>>
+    type Cache = Dictionary<Path.ModulePath, HashSet<Name>>
     let private cache = Cache()
     
     /// <summary>
@@ -32,9 +32,6 @@ module Cache =
         else Error entry
         // If this errors, then you will likely just need to nest the type within
         // another module
-module StringEnums =
-    let cache = ResizeArray<StringEnum>()
-    let add stringEnum = cache.Add stringEnum
 
 module XmlDocs =
     let makeClosedSeeAlso (link: string) = $"<seealso href=\"{link}\"/>"
@@ -78,9 +75,10 @@ module Type =
     type FantomasFactory =
         static member makeUnion(fcsTypes: ApiType list): FcsType =
             match fcsTypes with
-            | [ typ; ApiType.Unit ] ->
-                [ typ ] |> FantomasFactory.makeOption
-            | [ typ; ApiType.Unknown | ApiType.Undefined | ApiType.Any ] ->
+            | [ typ; ApiType.Unit | ApiType.Undefined ] ->
+                [ typ ]
+                |> FantomasFactory.makeOption
+            | [ typ; ApiType.Unknown | ApiType.Any ] ->
                 TypeAppPrefixNode.Create(
                     makeSimple "U2",
                     [ FantomasFactory.mapToFantomas typ; FcsType.obj ]
@@ -99,42 +97,45 @@ module Type =
             TypeArrayNode(fcsType, 1, Range.Zero)
             |> FcsType.Array
         static member makeLambda(funcOrMethod: FuncOrMethod): FcsType =
-            let parameters =
-                funcOrMethod.Parameters
-                |> List.map (function
-                    | Named(_,info) 
-                    | Positional info ->
-                        let wrap: FcsType -> _ =
-                            if info.Required
-                            then id
-                            else FantomasFactory.makeOption
-                        info.Type
-                        |> FantomasFactory.mapToFantomas
-                        |> wrap
-                    )
-            let names =
-                funcOrMethod.Parameters
-                |> List.mapi(fun i _ ->
-                    if i = funcOrMethod.Parameters.Length - 1 then
-                        SingleTextNode.make "->"
-                    else SingleTextNode.make "*"
-                    )
-                // |> List.mapi (fun i -> function
-                    // | Named(name, _) ->
-                        // SingleTextNode.make name.Name.ValueOrModified
-                    // | Positional _ ->
-                        // SingleTextNode.make $"arg{i}"
-                    // )
-            let parameterNamePairs =
-                names
-                |> List.zip parameters
-            
-            TypeFunsNode(
-                parameterNamePairs,
-                funcOrMethod.Returns
-                |> FantomasFactory.mapToFantomas,
-                range = Range.Zero
-            ) |> FcsType.Funs
+            let maybeIsDelegate = FuncOrMethod.Cache.tryGet funcOrMethod.Name
+            match funcOrMethod.Parameters.Length > 1, maybeIsDelegate with
+            | true, ValueSome delegatedFunc ->
+                delegatedFunc.Name
+                |> Path.tracePathOfEntry
+                |> List.map (_.ValueOrModified >> toPascalCase)
+                |> String.concat "."
+                |> makeSimple
+            | _, _ ->
+                let parameters =
+                    funcOrMethod.Parameters
+                    |> List.map (function
+                        | Named(_,info) 
+                        | Positional info ->
+                            let wrap: FcsType -> _ =
+                                if info.Required
+                                then id
+                                else FantomasFactory.makeOption
+                            info.Type
+                            |> FantomasFactory.mapToFantomas
+                            |> wrap
+                        )
+                let names =
+                    funcOrMethod.Parameters
+                    |> List.mapi(fun i _ ->
+                        if i = funcOrMethod.Parameters.Length - 1 then
+                            SingleTextNode.make "->"
+                        else SingleTextNode.make "*"
+                        )
+                let parameterNamePairs =
+                    names
+                    |> List.zip parameters
+                
+                TypeFunsNode(
+                    parameterNamePairs,
+                    funcOrMethod.Returns
+                    |> FantomasFactory.mapToFantomas,
+                    range = Range.Zero
+                ) |> FcsType.Funs
         static member makePromise (apiTypes: ApiType list): FcsType =
             TypeAppPrefixNode.Create(
                 FcsType.Promise,
@@ -175,6 +176,8 @@ module Type =
             | StringEnum { PathKey = pathKey } ->
                 makeSimple pathKey.Name.ValueOrModified
             | Object structOrObject ->
+                // An object depends on the context. In the context of a parameter,
+                // as the only, or last parameter, we can inline the options.
                 makeSimple "OBJECT_TODO"
             | Promise innerType ->
                 FantomasFactory.makePromise [innerType]
