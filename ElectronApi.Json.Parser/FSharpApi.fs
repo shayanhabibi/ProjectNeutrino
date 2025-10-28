@@ -59,7 +59,93 @@ type SpecifiedCompatibility = {
 type Compatibility =
     | Specified of SpecifiedCompatibility
     | Unspecific
+    member this.ToTargetCompatibility =
+        match this with
+        | Unspecific -> Target.Compatibility.all
+        | Specified spec ->
+            [
+                if spec.Linux then
+                    Target.Compatibility.Lin
+                if spec.Mac then
+                    Target.Compatibility.Mac
+                if spec.Mas then
+                    Target.Compatibility.Mas
+                if spec.Windows then
+                    Target.Compatibility.Win
+            ]
+            |> Target.Compatibility.fromList
+        
+            
 module Compatibility =
+    let inline wrapInCompatibilityDirectiveBefore
+        (compatability: Compatibility)
+        (node : ^T when ^T : (member AddBefore: TriviaNode -> unit) and ^T : (member AddAfter: TriviaNode -> unit)) =
+        match compatability with
+        | Unspecific -> node
+        | Specified compat ->
+            [
+                if compat.Linux then
+                    Spec.osLinDefine
+                if compat.Mas then
+                    Spec.osMasDefine
+                if compat.Mac then
+                    Spec.osMacDefine
+                if compat.Windows then
+                    Spec.osWinDefine
+            ]
+            |> String.concat " || "
+            |> sprintf "!(!%s || !%s || !%s || !%s) || %s" Spec.osLinDefine Spec.osWinDefine Spec.osMacDefine Spec.osMasDefine
+            |> fun directive ->
+                let triviaBefore = TriviaNode(
+                    TriviaContent.Directive $"#if {directive}"
+                    , Range.Zero
+                    )
+                node.AddBefore(triviaBefore)
+                node
+    let inline wrapInCompatibilityDirectiveAfter
+        (compatability: Compatibility)
+        (node : ^T when ^T : (member AddBefore: TriviaNode -> unit) and ^T : (member AddAfter: TriviaNode -> unit)) =
+        match compatability with
+        | Unspecific -> node
+        | Specified _ ->
+            let triviaAfter = TriviaNode(
+                TriviaContent.Directive "#endif",
+                Range.Zero
+                )
+            node.AddAfter(triviaAfter)
+            node
+ 
+    let inline wrapInCompatibilityDirective
+        (compatability: Compatibility)
+        (node : ^T when ^T : (member AddBefore: TriviaNode -> unit) and ^T : (member AddAfter: TriviaNode -> unit)) =
+        match compatability with
+        | Unspecific -> node
+        | Specified compat ->
+            [
+                if compat.Linux then
+                    Spec.osLinDefine
+                if compat.Mas then
+                    Spec.osMasDefine
+                if compat.Mac then
+                    Spec.osMacDefine
+                if compat.Windows then
+                    Spec.osWinDefine
+            ]
+            |> String.concat " || "
+            |> sprintf "!(!%s || !%s || !%s || !%s) || %s" Spec.osLinDefine Spec.osWinDefine Spec.osMacDefine Spec.osMasDefine
+            |> fun directive ->
+                let triviaBefore = TriviaNode(
+                    TriviaContent.Directive $"#if {directive}"
+                    , Range.Zero
+                    )
+                let triviaAfter = TriviaNode(
+                    TriviaContent.Directive "#endif",
+                    Range.Zero
+                    )
+                node.AddBefore(triviaBefore)
+                node.AddAfter(triviaAfter)
+                node
+            
     let fromTags (tags: DocumentationTag array) =
         let state = Unspecific
         tags |> Array.fold (
@@ -82,6 +168,25 @@ module Compatibility =
                 | _ -> state
             ) state
 
+type StabilityStatus = {
+    Experimental: bool
+    Deprecated: bool
+} with
+    static member inline IsExperimental(object: 'T when 'T : (member Stability: StabilityStatus)) = object.Stability.Experimental
+    static member inline IsDeprecated(object: 'T when 'T : (member Stability: StabilityStatus)) = object.Stability.Deprecated
+    static member Init = { Experimental = false; Deprecated = false }
+
+module StabilityStatus =
+    let fromTags (tags: DocumentationTag array) =
+        let state = StabilityStatus.Init
+        tags |> Array.fold (fun state -> function
+            | DocumentationTag.STABILITY_DEPRECATED -> { state with Deprecated = true }
+            | DocumentationTag.STABILITY_EXPERIMENTAL -> { state with Experimental = true }
+            | _ -> state
+            ) state
+
+module ReadOnly =
+    let fromTags (tags: DocumentationTag array) = tags |> Array.exists _.IsAVAILABILITY_READONLY
 type StringEnumCase = { Value: Name; Description: string voption }
 type StringEnum = { PathKey: Path.PathKey; Cases: StringEnumCase list }
 type StructOrObject = {
@@ -96,6 +201,28 @@ type ParameterInfo = {
 type Parameter =
     | Positional of ParameterInfo
     | Named of name: Path.PathKey * info: ParameterInfo
+    | InlinedObjectProp of prop: Property
+    member this.Required =
+        match this with
+        | Positional { Required = required } 
+        | Named(_, { Required = required })
+        | InlinedObjectProp { Required = required } -> required
+    member this.Description =
+        match this with
+        | Positional { Description = description } 
+        | Named(_, { Description = description })
+        | InlinedObjectProp { Description = description } -> description
+    member this.Type =
+        match this with
+        | Positional { Type = ``type`` } 
+        | Named(_, { Type = ``type`` })
+        | InlinedObjectProp { Type = ``type`` } -> ``type``
+    member this.PathKey =
+        match this with
+        | Named(path, _) 
+        | InlinedObjectProp { PathKey = path } -> path |> ValueSome
+        | Positional _ -> ValueNone
+        
 
 type FuncOrMethod = {
     Name: Path.PathKey
@@ -124,6 +251,12 @@ type EventInfo = {
     Properties: Property list
 }
 
+[<RequireQualifiedAccess>]
+type LiteralType =
+    | Float of float
+    | Int of int
+    | String of string
+    | Char of char
 type Type =
     // Primitives
     | String
@@ -134,10 +267,10 @@ type Type =
     | Any
     | Unknown
     | Date
+    | Constant of LiteralType
     //
     | Function of FuncOrMethod
     | StringEnum of StringEnum
-    | Structure of StructOrObject
     | StructureRef of string
     | Object of StructOrObject
     | Promise of innerType: Type
@@ -150,17 +283,19 @@ type Type =
     | Collection of Type
     | Array of Type
     | OneOf of Type list
+    | Tuple of Type list
+    | Join of structureRef: string * props: Property list
 
 
 module Type =
-    let readStringEnumCase (ctx: FactoryContext): PossibleStringValue -> StringEnumCase = fun { Value = value; Description = desc } ->
+    let readStringEnumCase (_: FactoryContext): PossibleStringValue -> StringEnumCase = fun { Value = value; Description = desc } ->
         {
             Value =
                 Name.createPascal value
             Description =
-                if String.IsNullOrWhiteSpace desc then
-                    ValueSome desc
-                else ValueNone
+                if String.IsNullOrWhiteSpace desc
+                then ValueNone
+                else ValueSome desc
         }
     let readStringEnum (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.String -> StringEnum =
         fun { PossibleValues = possibleValues } ->
@@ -169,18 +304,7 @@ module Type =
             // If we're not reading the string enum as a parameter or something else which gives us a name, then
             // we'll have to generate a name later.
             {
-                PathKey =
-                    // if its a parameter then we'll just make it the same name
-                    if ctx.Type.IsMethodParameter then
-                        ctx.PathKey.Name.ValueOrModified
-                        |> Name.createPascal
-                        |> ctx.PathKey.CreateType
-                    else
-                        let normalize: string -> string = _.Trim(''') >> toPascalCase
-                        ctx.PathKey.Name.ValueOrModified
-                        |> normalize
-                        |> Source
-                        |> ctx.PathKey.CreateType
+                PathKey = ctx.PathKey.CreateStringEnum()
                 Cases =
                     possibleValues
                     |> Option.map (
@@ -191,7 +315,6 @@ module Type =
                     |> Option.defaultValue []
             }
     // If we hit an unknown, we want to throw so we can see how that type should be managed.
-    // TODO - collect errors and report in bulk
     let readInfoString (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.InfoString -> Type = function
         | info when innerTypes.IsNone ->
             match info with
@@ -217,6 +340,72 @@ module Type =
                 #else
                 Type.Any
                 #endif
+            // If an identifier is not a combination of strings and '.', then it's probably not
+            // valid according to the electron-api docs parser spec. It is likely injected directly
+            // to TypeScript definitions. We inspect it, and match against them and handle them appropriately where they
+            // come up
+            | { Type = ident }
+                when ident |> String.forall (function
+                    | c when Char.IsAsciiLetterOrDigit c -> true
+                    | '.' -> true
+                    | _ -> false) |> not ->
+                match ident with
+                // I guess these are constants?
+                | "'file'" | "'rawData'" ->
+                    ident.Trim(''')
+                    |> LiteralType.String
+                    |> Type.Constant
+                | "(...args: any[]) => any" ->
+                    // TODO
+                    Type.StructureRef ident
+                | "RequestInit & { bypassCustomProtocolHandlers?: boolean }" ->
+                    // TODO - what is the request init type?. It's not a structure.
+                    // ANSWER - it's node.js or mdn browser type
+                    Type.Join("RequestInit", [
+                        {
+                            Property.Required = false
+                            PathKey = ctx.PathKey.CreateInlineOptions().CreateProperty(Name.createCamel "bypassCustomProtocolHandlers")
+                            Description = ValueNone
+                            UrlFragment = ValueNone
+                            Type = Type.Boolean
+                            Compatibility = Unspecific
+                            Stability = StabilityStatus.Init
+                            ReadOnly = false
+                        }
+                    ])
+                | "[number, number]" ->
+                    Type.Tuple [Type.Number; Type.Number]
+                | "(options: BrowserWindowConstructorOptions) => WebContents" ->
+                    let funcName = ctx.PathKey.CreateLambda()
+                    {
+                        FuncOrMethod.Name = funcName
+                        Parameters = [
+                            Named(
+                                funcName.CreateParameter(Source "options"),
+                                { Description = ValueNone
+                                  Required = true
+                                  Type = Type.StructureRef "BrowserWindowConstructorOptions" }
+                            )
+                        ]
+                        Returns = Type.StructureRef "WebContents"
+                    }
+                    |> Type.Function
+                // Not sure what this is supposed to be indicating?
+                | "typeof TouchBarSegmentedControl"
+                | "typeof TouchBarScrubber"
+                | "typeof TouchBarPopover"
+                | "typeof TouchBarLabel"
+                | "typeof TouchBarGroup"
+                | "typeof TouchBarColorPicker"
+                | "typeof TouchBarButton"
+                | "typeof TouchBarSlider"
+                | "typeof TouchBarSpacer"
+                | "typeof TouchBarOtherItemsProxy"
+                //
+                // This relates to providing typing for TS for 'types' like url etc. Not relevant for our code.
+                | "UserDefaultTypes[Type]" -> Type.StructureRef ident
+                //
+                | _ -> failwith $"Unhandled simple string type: %s{ident}"
             | { Type = struc } -> Type.StructureRef struc
         | { Type = Constants.promise } when innerTypes.IsSome && innerTypes.Value.Length = 1 ->
             innerTypes.Value
@@ -268,6 +457,7 @@ module Type =
             and ^T: (member Required: bool)
             and ^T: (member Description: string)
             and ^T: (member TypeInformation: TypeInformation)) =
+        // TODO - this might not be hit anymore.
         let name =
             if String.IsNullOrWhiteSpace block.Name
             // nameless/positional parameter
@@ -278,11 +468,20 @@ module Type =
             then ValueNone
             else block.Description |> ValueSome
         let required = block.Required
+        let ctx =
+            { ctx with
+                PathKey = 
+                    match name with
+                    | ValueSome name ->
+                        ctx.PathKey.CreateParameter name
+                    | ValueNone ->
+                        ctx.PathKey.CreateParameter (Source "arg")
+            }
         let typ = fromTypeInformation ctx block.TypeInformation
         match name with
-        | ValueSome name ->
+        | ValueSome _ ->
             Parameter.Named(
-                ctx.PathKey.CreateParameter name,
+                ctx.PathKey,
                 {
                     Description = desc
                     Required = required
@@ -326,20 +525,21 @@ module Type =
                         | Error lambda ->
                             failwith $"Duplicate definitions of lambda {lambda}"
                 else Type.Function lambda
-                
             
     let readEventKind (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.Event -> Type = function
         | e when innerTypes.IsSome ->
             failwith $"unhandled event type {e} with inner types {innerTypes}"
         | { EventProperties = props } ->
+            let ctx =
+                 { ctx with PathKey = (
+                         ctx.PathKey.Name.ValueOrModified
+                         |> Name.createPascal
+                         |> ctx.PathKey.CreateEvent ) }
             props
             |> Array.map (extractFromPropertyDocumentationBlock ctx)
             |> Array.toList
             |> fun props ->
-                { PathKey =
-                    ctx.PathKey.Name.ValueOrModified
-                    |> Name.createPascal
-                    |> ctx.PathKey.CreateEvent
+                { PathKey = ctx.PathKey
                   Properties = props }
                 |> Type.Event
     let readEventRefKind (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.EventRef -> Type = function
@@ -395,14 +595,16 @@ module Type =
 type Property = {
     Required: bool
     PathKey: Path.PathKey
-    Description: string
-    UrlFragment: string option
+    Description: string voption
+    UrlFragment: string voption
     Type: Type
     Compatibility: Compatibility
+    Stability: StabilityStatus
+    ReadOnly: bool
 }
 module Property =
     let inline isRequired (t: ^T when ^T : (member Required: bool)) = t.Required
-
+    let inline isReadOnly (t: ^T when ^T : (member ReadOnly: bool)) = t.ReadOnly
 let extractFromPropertyDocumentationBlock (ctx: FactoryContext) (propBlock: PropertyDocumentationBlock) =
     let name = Name.createCamel propBlock.DocumentationBlock.Name
     let pathKey = ctx.PathKey.CreateProperty name
@@ -412,12 +614,20 @@ let extractFromPropertyDocumentationBlock (ctx: FactoryContext) (propBlock: Prop
         PathKey = pathKey
         Description =
             propBlock.DocumentationBlock.Description
-        UrlFragment = propBlock.DocumentationBlock.UrlFragment
+            |> function
+                | text when String.IsNullOrWhiteSpace text ->
+                    ValueNone
+                | text -> ValueSome text
+        UrlFragment = propBlock.DocumentationBlock.UrlFragment |> Option.toValueOption
         Type =
             Type.fromTypeInformation ctx propBlock.TypeInformation
         Compatibility =
             propBlock.DocumentationBlock.AdditionalTags
             |> Compatibility.fromTags
+        Stability =
+            propBlock.DocumentationBlock.AdditionalTags
+            |> StabilityStatus.fromTags
+        ReadOnly = propBlock.DocumentationBlock.AdditionalTags |> ReadOnly.fromTags
     }
 
 type Event = {
@@ -426,11 +636,16 @@ type Event = {
     Compatibility: Compatibility
     UrlFragment: string voption
     Parameters: Parameter list
+    Stability: StabilityStatus
 }
 
 module Event =
     let fromDocBlock (ctx: FactoryContext) (block: EventDocumentationBlock): Event =
         let name = block.DocumentationBlock.Name |> Name.cacheOrCreatePascal
+        // We make assumptions that these event blocks are always the child of a module or a type.
+        // We then create the binding off this.
+        if not (ctx.PathKey.IsModule || ctx.PathKey.IsType) then
+            failwith $"Tried to read an event docblock from a non-module/non-type {ctx}"
         let ctx = { PathKey = ctx.PathKey.CreateEvent(name); Type = ctx.Type }
         {
             PathKey = ctx.PathKey
@@ -451,6 +666,9 @@ module Event =
                 block.Parameters
                 |> Array.map (Type.readEventParameter ctx)
                 |> Array.toList
+            Stability =
+                block.DocumentationBlock.AdditionalTags
+                |> StabilityStatus.fromTags
         }
 
 type Structure = {
@@ -497,6 +715,7 @@ module Structure =
 type Method = {
     PathKey: Path.PathKey
     Compatibility: Compatibility
+    Stability: StabilityStatus
     Description: string voption
     UrlFragment: string voption
     RawGenerics: string option
@@ -504,6 +723,54 @@ type Method = {
     ReturnType: Type
 }
 module Method =
+    let private objectParameterCache = ResizeArray<StructOrObject>()
+    let inlineObjectParameters ({ Parameters = parameters } as method) =
+        // This case does not occur in the current iteration of the api. Either way, we have to ensure
+        // the integrity of our model by pre-empting it.
+        let cacheNonLastObjects: Parameter list -> unit =
+            List.rev
+            >> List.tail
+            >> List.map (function
+                | Named(_, { Type = typ })
+                | Positional { Type = typ } -> typ
+                // This should not exist before this function
+                | InlinedObjectProp _ -> failwith "Tried to inline an already inlined parameter option"
+            )
+            >> List.filter _.IsObject
+            >> List.iter (function Type.Object o -> objectParameterCache.Add o | _ -> failwith "UNREACHABLE")
+        let inlineObject: StructOrObject -> Parameter list = _.Properties >> List.map Parameter.InlinedObjectProp
+        match parameters |> List.tryLast with
+        | Some (Named(_, { Type = Type.Object structOrObject }))
+        | Some (Positional { Type = Type.Object structOrObject })
+        // We can inline the last parameter if it is an object and none of the fields are required
+            when structOrObject.Properties |> List.forall (_.Required >> not) ->
+            cacheNonLastObjects method.Parameters
+            // Remove the tail from the parameters and replace it with the inlined properties of the object
+            method.Parameters
+            |> List.rev
+            |> function
+                | [] as tail
+                | _ :: tail ->
+                    (inlineObject structOrObject |> List.rev) @ tail
+            |> List.rev
+            |> fun parameters ->
+                { method with Parameters = parameters }
+        // We can also inline an object that has required props so long as it is the only parameter in the method.
+        | Some (Named(_, { Type = Type.Object structOrObject }))
+        | Some (Positional { Type = Type.Object structOrObject }) when parameters.Length = 1 ->
+            // yes we can inline
+            { method with Parameters = inlineObject structOrObject }
+        // Otherwise, we cannot inline the object
+        | Some (Named(_, { Type = Type.Object structOrObject }))
+        | Some (Positional { Type = Type.Object structOrObject }) ->
+            // no we cannot inline; cache the object
+            structOrObject |> objectParameterCache.Add
+            cacheNonLastObjects method.Parameters
+            method
+        // NA
+        | _ -> method
+            
+
     let fromDocBlock (ctx: FactoryContext) (block: MethodDocumentationBlock) =
         let name = block.DocumentationBlock.Name |> Name.createCamel
         let pathKey = name |> ctx.PathKey.CreateMethod
@@ -511,6 +778,7 @@ module Method =
         {
             PathKey = pathKey
             Compatibility = block.DocumentationBlock.AdditionalTags |> Compatibility.fromTags
+            Stability = block.DocumentationBlock.AdditionalTags |> StabilityStatus.fromTags
             Description =
                 block
                     .DocumentationBlock
@@ -532,6 +800,7 @@ module Method =
                 |> Option.map (Type.fromTypeInformation ctx)
                 |> Option.defaultValue Type.Unit
         }
+        |> inlineObjectParameters
 
 type Class = {
     PathKey: Path.PathKey
@@ -549,6 +818,56 @@ type Class = {
 }
 
 module Class =
+    let private objectParameterCache = ResizeArray<StructOrObject>()
+    let inlineObjectParameters ({ Constructor = parameters } as class'): Class =
+        match parameters with
+        | Some parameters ->
+            // This case does not occur in the current iteration of the api. Either way, we have to ensure
+            // the integrity of our model by pre-empting it.
+            let cacheNonLastObjects: Parameter list -> unit =
+                List.rev
+                >> List.tail
+                >> List.map (function
+                    | Named(_, { Type = typ })
+                    | Positional { Type = typ } -> typ
+                    // This should not exist before this function
+                    | InlinedObjectProp _ -> failwith "Tried to inline an already inlined parameter option"
+                )
+                >> List.filter _.IsObject
+                >> List.iter (function Type.Object o -> objectParameterCache.Add o | _ -> failwith "UNREACHABLE")
+            let inlineObject: StructOrObject -> Parameter list = _.Properties >> List.map Parameter.InlinedObjectProp
+            match parameters |> List.tryLast with
+            | Some (Named(_, { Type = Type.Object structOrObject }))
+            | Some (Positional { Type = Type.Object structOrObject })
+            // We can inline the last parameter if it is an object and none of the fields are required
+                when structOrObject.Properties |> List.forall (_.Required >> not) ->
+                cacheNonLastObjects parameters
+                // Remove the tail from the parameters and replace it with the inlined properties of the object
+                parameters
+                |> List.rev
+                |> function
+                    | [] as tail
+                    | _ :: tail ->
+                        (inlineObject structOrObject |> List.rev) @ tail
+                |> List.rev
+                |> fun parameters ->
+                    { class' with Constructor = Some parameters }
+            // We can also inline an object that has required props so long as it is the only parameter in the method.
+            | Some (Named(_, { Type = Type.Object structOrObject }))
+            | Some (Positional { Type = Type.Object structOrObject }) when parameters.Length = 1 ->
+                // yes we can inline
+                { class' with Constructor = Some(inlineObject structOrObject |> List.sortBy (_.Required >> not)) }
+            // Otherwise, we cannot inline the object
+            | Some (Named(_, { Type = Type.Object structOrObject }))
+            | Some (Positional { Type = Type.Object structOrObject }) ->
+                // no we cannot inline; cache the object
+                structOrObject |> objectParameterCache.Add
+                cacheNonLastObjects parameters
+                class'
+            // NA
+            | _ -> class'
+        | None ->
+            class'
     let fromDocContainer (ctx: FactoryContext option) (container: ClassDocumentationContainer): Class =
         let name =
             container.BaseDocumentationContainer.Name
@@ -568,7 +887,7 @@ module Class =
                 container.ConstructorMethod
                 |> Option.map (function
                     | { Parameters = parameters } ->
-                        let ctx = { ctx with PathKey = ctx.PathKey.CreateMethod(Source "$CONS$") }
+                        let ctx = { ctx with PathKey = ctx.PathKey }
                         parameters
                         |> Array.map (Type.readMethodParameter ctx)
                         |> Array.toList
@@ -615,6 +934,7 @@ module Class =
                 container.BaseDocumentationContainer
                     .WebsiteUrl
         }
+        |> inlineObjectParameters
 
 type Element = {
     PathKey: Path.PathKey
@@ -728,7 +1048,7 @@ module Module =
                 |> Array.map (Class.fromDocContainer (Some ctx))
                 |> Array.toList
         }
-
+        
 type ModifiedResult =
     | Module of Module
     | Class of Class
@@ -742,6 +1062,7 @@ let readResult = function
         Class.fromDocContainer None value
         |> ModifiedResult.Class
     | ParsedDocumentation.Element value ->
+        // TODO - place elements in a 'Tags' or 'Elements' module?
         Element.fromDocContainer None value
         |> ModifiedResult.Element
     | ParsedDocumentation.Structure value ->

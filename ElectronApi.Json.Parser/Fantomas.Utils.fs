@@ -38,7 +38,15 @@ module Utils =
             |> List.collect id
     type IdentListNode with
         static member make (text: string) = IdentListNode([ IdentifierOrDot.makeIdent text ], Range.Zero)
-        static member make (text: string list) = IdentListNode(text |> List.map IdentifierOrDot.makeIdent, Range.Zero)
+        static member make (text: string list) = IdentListNode(
+            text
+            |> List.collect( fun text ->
+                [ IdentifierOrDot.makeIdent text
+                  IdentifierOrDot.makeDot ]
+                )
+            |> List.cutOffLast,
+            Range.Zero
+            )
         member this.identList with get() =
             this.Content
             |> List.choose (function

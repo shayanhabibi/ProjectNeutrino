@@ -61,7 +61,7 @@ module PossibleStringValue =
         Decode.object (fun get ->
             {
                 Value = get.Required.Field "value" Decode.string
-                Description = get.Required.Field "description" Decode.string
+                Description = get.Required.Field "description" Decode.string |> normalizeDocs
             }
             )
 
@@ -362,7 +362,7 @@ module MethodParameterDocumentation =
         Decode.object (fun get ->
             {
                 Name = get.Required.Field "name" Decode.string
-                Description = get.Required.Field "description" Decode.string
+                Description = get.Required.Field "description" Decode.string |> normalizeDocs
                 Required = get.Required.Field "required" Decode.bool
                 TypeInformation = get.Required.Raw TypeInformation.decode
             })
@@ -380,7 +380,7 @@ module EventParameterDocumentation =
         Decode.object (fun get ->
             {
                 Name = get.Required.Field "name" Decode.string
-                Description = get.Required.Field "description" Decode.string
+                Description = get.Required.Field "description" Decode.string |> normalizeDocs
                 Required = get.Required.Field "required" Decode.bool
                 TypeInformation = get.Required.Raw TypeInformation.decode
             })
@@ -401,7 +401,7 @@ module DocumentationBlock =
         Decode.object (fun get ->
             {
                 Name = get.Required.Field "name" Decode.string
-                Description = get.Required.Field "description" Decode.string
+                Description = get.Required.Field "description" Decode.string |> normalizeDocs
                 AdditionalTags = get.Required.Field "additionalTags" (Decode.array DocumentationTag.decode)
                 UrlFragment = get.Optional.Field "urlFragment" Decode.string
             })
@@ -481,7 +481,7 @@ module BaseDocumentationContainer =
             {
                 Name = get.Required.Field "name" Decode.string
                 Extends = get.Optional.Field "extends" Decode.string
-                Description = get.Required.Field "description" Decode.string
+                Description = get.Required.Field "description" Decode.string |> normalizeDocs
                 Version = get.Required.Field "version" Decode.string
                 Slug = get.Required.Field "slug" Decode.string
                 WebsiteUrl = get.Required.Field "websiteUrl" Decode.string

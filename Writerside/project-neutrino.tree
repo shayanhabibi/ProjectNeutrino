@@ -14,6 +14,9 @@
             <toc-element topic="Bindings.md"/>
         </toc-element>
         <toc-element toc-title="Source Generation">
+            <toc-element topic="Final-Structure.md"/>
+            <toc-element topic="Exceptions.md"/>
+            <toc-element topic="Update.md"/>
             <toc-element topic="Notes.md"/>
         </toc-element>
     </toc-element>
