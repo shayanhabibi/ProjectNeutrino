@@ -2,6 +2,7 @@
 // This is a decoder for the electron-api.json
 // The schema for the types is derived from the
 // @electron/docs-parser ParsedDocumentation.d.ts
+open System.Collections.Generic
 open Thoth.Json.Net
 #nowarn 40
 

@@ -239,8 +239,8 @@ module Utils =
             ?suffix: string
             ) =
             TypeNameNode(
-                docs |> Option.map XmlDocNode.make,
-                attributes |> Option.map MultipleAttributeListNode.make,
+                docs|> Option.bind (function [] -> None | texts -> Some texts) |> Option.map XmlDocNode.make,
+                attributes |> Option.bind (function [] -> None | texts -> Some texts) |> Option.map MultipleAttributeListNode.make,
                 SingleTextNode.make "type",
                 None,
                 IdentListNode.make identifier,

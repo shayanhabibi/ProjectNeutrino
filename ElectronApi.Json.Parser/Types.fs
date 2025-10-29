@@ -215,6 +215,15 @@ module Path =
             | Choice4Of6 parameter -> parameter.Name
             | Choice5Of6 inlineLambda -> inlineLambda.ParentName
             | Choice6Of6 event -> event.Name
+        member this.AddRootModule(m: Module) =
+            match this.Parent with
+            | Choice1Of6 binding -> binding.AddRootModule(m) |> Choice1Of6
+            | Choice2Of6 method -> method.AddRootModule(m) |> Choice2Of6
+            | Choice3Of6 property -> property.AddRootModule m |> Choice3Of6
+            | Choice4Of6 parameter -> parameter.AddRootModule m |> Choice4Of6
+            | Choice5Of6 inlineLambda -> inlineLambda.AddRootModule m |> Choice5Of6
+            | Choice6Of6 event -> event.AddRootModule m |> Choice6Of6
+            |> StringEnum
 
     type Type with
         member inline this.Destructured = let (Type(p,n)) = this in (p,n)
@@ -453,6 +462,19 @@ module Path =
                 match m.Path with
                 | ModulePath.Root -> Source "Root"
                 | ModulePath.Module m -> m.Name
+        member this.AddRootModule(module': Module) =
+            match this with
+            | Binding result -> result.AddRootModule(module') |> Binding
+            | Type result -> result.AddRootModule(module') |> Type
+            | Property result -> result.AddRootModule(module') |> Property
+            | Method result -> result.AddRootModule(module') |> Method
+            | Event result -> result.AddRootModule(module') |> Event
+            | Parameter result -> result.AddRootModule(module') |> Parameter
+            | InlineOptions result -> result.AddRootModule(module') |> InlineOptions
+            | InlineLambda result -> result.AddRootModule(module') |> InlineLambda
+            | Module result -> result.AddRootModule(module') |> Module
+            | StringEnum result -> result.AddRootModule(module') |> StringEnum
+
         static member CreateModule(name: Name) =
             Module(Path.Module.Module(ModulePath.Root, name))
         member this.CreateModule(name: Name) =

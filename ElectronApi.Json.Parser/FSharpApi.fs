@@ -10,6 +10,195 @@ open Fantomas.Core.SyntaxOak
 open Fantomas.FCS.Text
 open Thoth.Json.Net
 
+#nowarn 40
+
+type ExtensionHelper =
+    static let cache = System.Collections.Generic.Dictionary<Name, ModifiedResult>()
+    static let toResolve = ResizeArray<ModifiedResult>()
+    static member add(input: Class) =
+        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Class input)
+        cache.Add(input.PathKey.Name, ModifiedResult.Class input)
+        input
+    static member add(input: Structure) =
+        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Structure input)
+        cache.Add(input.Name, ModifiedResult.Structure input)
+        input
+    static member add(input: Element) =
+        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Element input)
+        cache.Add(input.PathKey.Name, ModifiedResult.Element input)
+        input
+    static member add(input: Module) =
+        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Module input)
+        cache.Add(input.PathKey.Name, ModifiedResult.Module input)
+        input
+    static member private merge(structure: Structure, incoming: ModifiedResult) =
+        match incoming with
+        | Module ``module`` ->
+            failwith "structure vs module"
+            {
+                structure with
+                    Properties = structure.Properties @ ``module``.Properties
+            }
+        | Class ``class`` ->
+            failwith "structure vs class"
+            {
+                structure with
+                    Properties = structure.Properties @ ``class``.Properties
+            }
+        | Element element ->
+            failwith "structure vs element"
+            {
+                structure with
+                    Properties = structure.Properties @ element.Properties
+            }
+        | Structure incomingStructure ->
+            {
+                structure with
+                    Properties = structure.Properties @ incomingStructure.Properties
+            }
+        |> fun structure ->
+            {
+                structure with Extends = ValueNone
+            }
+    static member private merge(class': Class, incoming: ModifiedResult) =
+        match incoming with
+        | Module ``module`` ->
+            failwith "class vs module"
+            {
+                class' with
+                    Events = class'.Events @ ``module``.Events // TODO - this seems incorrect; module events are static
+                    StaticMethods = ``module``.Methods
+                    StaticProperties = ``module``.Properties
+            }
+        | Class ``class`` ->
+            {
+                class' with
+                    Properties = class'.Properties @ ``class``.Properties
+                    Methods = class'.Methods @ ``class``.Methods
+                    Events = class'.Events @ ``class``.Events
+                    StaticMethods = class'.StaticMethods @ ``class``.StaticMethods
+                    StaticProperties = class'.StaticProperties @ ``class``.StaticProperties
+            }
+        | Element element ->
+            failwith "class vs element"
+            {
+                class' with
+                    Properties = class'.Properties @ element.Properties
+                    Methods = class'.Methods @ element.Methods
+                    Events = class'.Events @ element.Events
+            }
+        | Structure structure ->
+            failwith "class vs structure"
+            {
+                class' with
+                    Properties = class'.Properties @ structure.Properties
+            }
+        |> fun class' ->
+            { class' with Extends = None }
+    static member private merge(module': Module, incoming: ModifiedResult) =
+        match incoming with
+        | Module incoming ->
+            {
+                module' with
+                    Properties = module'.Properties @ incoming.Properties
+                    Methods = module'.Methods @ incoming.Methods
+                    Events = module'.Events @ incoming.Events
+            }
+        | Class incoming ->
+            failwith "module vs class"
+            {
+                module' with
+                    Properties = module'.Properties @ incoming.StaticProperties
+                    Methods = module'.Methods @ incoming.StaticMethods
+                    Events = module'.Events @ incoming.Events // TODO - this seems incorrect
+            }
+        | Element incoming ->
+            failwith "module vs element"
+            {
+                module' with
+                    Properties = module'.Properties @ incoming.Properties
+                    Methods = module'.Methods @ incoming.Methods
+                    Events = module'.Events @ incoming.Events
+            }
+        | Structure incoming ->
+            failwith "module vs structure"
+            {
+                module' with
+                    Properties = module'.Properties @ incoming.Properties
+            }
+        |> fun module' ->
+            { module' with Extends = ValueNone }
+    static member private merge(element: Element, incoming: ModifiedResult) =
+        match incoming with
+        | Module incoming ->
+            failwith "element vs module"
+            {
+                element with
+                    Properties = element.Properties @ incoming.Properties
+                    Methods = element.Methods @ incoming.Methods
+                    Events = element.Events @ incoming.Events
+            }
+        | Class incoming ->
+            failwith "element vs class"
+            {
+                element with
+                    Properties = element.Properties @ incoming.Properties
+                    Methods = element.Methods @ incoming.Methods
+                    Events = element.Events @ incoming.Events
+            }
+        | Element incoming ->
+            {
+                element with
+                    Properties = element.Properties @ incoming.Properties
+                    Methods = element.Methods @ incoming.Methods
+                    Events = element.Events @ incoming.Events
+            }
+        | Structure incoming ->
+            failwith "element vs structure"
+            {
+                element with
+                    Properties = element.Properties @ incoming.Properties
+            }
+        |> fun element ->
+            { element with Extends = None }
+    static member resolveAndRetrieve() =
+        toResolve
+        |> Seq.toArray
+        |> Array.map (function
+            | ModifiedResult.Class item ->
+                match cache.TryGetValue(item.Extends.Value) with
+                | true, value ->
+                    ExtensionHelper.merge(item,value)
+                    |> ModifiedResult.Class
+                | false, _ ->
+                    ModifiedResult.Class item
+            | ModifiedResult.Module item ->
+                match cache.TryGetValue(item.Extends.Value) with
+                | true, value ->
+                    ExtensionHelper.merge(item,value)
+                    |> ModifiedResult.Module
+                | false, _ ->
+                    ModifiedResult.Module item
+            | ModifiedResult.Structure item ->
+                match cache.TryGetValue(item.Extends.Value) with
+                | true, value ->
+                    ExtensionHelper.merge(item,value)
+                    |> ModifiedResult.Structure 
+                | false, _ ->
+                    ModifiedResult.Structure item
+            | ModifiedResult.Element item ->
+                match cache.TryGetValue(item.Extends.Value) with
+                | true, value ->
+                    ExtensionHelper.merge(item,value)
+                    |> ModifiedResult.Element
+                | false, _ ->
+                    ModifiedResult.Element item
+            )
+        |> fun result ->
+            toResolve.Clear()
+            cache.Clear()
+            result
+
 type ContextType =
     | MethodParameter
     | ObjectProperty
@@ -212,6 +401,10 @@ type Parameter =
         | Positional { Description = description } 
         | Named(_, { Description = description })
         | InlinedObjectProp { Description = description } -> description
+    member this.Compatibility =
+        match this with
+        | InlinedObjectProp { Compatibility = value } -> value
+        | _ -> Unspecific
     member this.Type =
         match this with
         | Positional { Type = ``type`` } 
@@ -245,6 +438,7 @@ module FuncOrMethod =
             match cache.TryGetValue(key) with
             | true, value -> ValueSome value
             | false, _ -> ValueNone
+    let getCacheValues = cache.Values
 
 type EventInfo = {
     PathKey: Path.PathKey
@@ -500,7 +694,6 @@ module Type =
         | f when innerTypes.IsSome ->
             failwith $"Unhandled function type {f} with innerTypes {innerTypes}"
         | { Parameters = parameters; Returns = returns } ->
-            // TODO - should we be caching the name of these lambdas now that we are lifting them to Delegates if they have more than 1 parameter??
             let ctx = { ctx with PathKey = ctx.PathKey.CreateLambda() }
             {
                 // Lambda probably, we're only really interested in the signature then
@@ -673,7 +866,7 @@ module Event =
 
 type Structure = {
     Name: Name
-    Extends: Name option
+    Extends: Name voption
     Description: string voption
     WebsiteUrl: string voption
     Properties: Property list
@@ -696,6 +889,7 @@ module Structure =
             Extends =
                 container.BaseDocumentationContainer.Extends
                 |> Option.map Name.cacheOrCreatePascal
+                |> Option.toValueOption
             Description =
                 container.BaseDocumentationContainer.Description
                 |> function
@@ -711,6 +905,7 @@ module Structure =
                 |> Array.map (extractFromPropertyDocumentationBlock ctx)
                 |> Array.toList
         }
+        |> ExtensionHelper.add
 
 type Method = {
     PathKey: Path.PathKey
@@ -935,6 +1130,7 @@ module Class =
                     .WebsiteUrl
         }
         |> inlineObjectParameters
+        |> ExtensionHelper.add
 
 type Element = {
     PathKey: Path.PathKey
@@ -986,6 +1182,7 @@ module Element =
                 |> Array.map (extractFromPropertyDocumentationBlock { ctx with Type = ContextType.ObjectProperty })
                 |> Array.toList
         }
+        |> ExtensionHelper.add
 
 type Module = {
     PathKey: Path.PathKey
@@ -1048,6 +1245,7 @@ module Module =
                 |> Array.map (Class.fromDocContainer (Some ctx))
                 |> Array.toList
         }
+        |> ExtensionHelper.add
         
 type ModifiedResult =
     | Module of Module
@@ -1074,4 +1272,33 @@ let readResult = function
         Structure.readFromDocContainer module' value
         |> ModifiedResult.Structure
 
-let readResults = Array.map readResult >> Array.toList
+let readResults =
+    Array.map readResult >> (fun results ->
+        let resolved = ExtensionHelper.resolveAndRetrieve()
+        results
+        |> Array.map (fun item ->
+            let findItem name  = function
+            | Module ``module`` ->
+                ``module``.PathKey.Name = name
+            | Class ``class`` ->
+                ``class``.PathKey.Name = name
+            | Element element ->
+                element.PathKey.Name = name
+            | Structure structure ->
+                structure.Name = name
+            match item with
+            | Module ``module`` ->
+                resolved
+                |> Array.tryFind (findItem ``module``.PathKey.Name)
+            | Class ``class`` ->
+                resolved
+                |> Array.tryFind (findItem ``class``.PathKey.Name)
+            | Element element ->
+                resolved
+                |> Array.tryFind (findItem element.PathKey.Name)
+            | Structure structure -> 
+                resolved
+                |> Array.tryFind (findItem structure.Name)
+            |> Option.defaultValue item
+            )
+        ) >> Array.toList

@@ -8,18 +8,6 @@ open Fantomas.Core.SyntaxOak
 open Fantomas.FCS.Text
 open Fantomas.Utils
 
-module ModuleC =
-    [<RequireQualifiedAccess>]
-    type ModuleOrName =
-        | NestedModule of ModuleContainer
-        | TypeOrBinding of string
-    and ModuleContainer = Dictionary<string option, ModuleOrName list>
-    type NamespaceContainer = NamespaceContainer of name: string * container: Dictionary<string option, ModuleContainer>
-    module private NamespaceContainer =
-        let name (NamespaceContainer(name,_)) = name
-        let container (NamespaceContainer(_,container)) = container
-        let create name = NamespaceContainer(name, Dictionary<string option, ModuleContainer>())
-    let createNamespace = NamespaceContainer.create
 
 // 1. ApiDecoder - parses the json directly into F#
 // 2. FSharpApi - reads and maps; modifies names and ensures everything is accounted
@@ -190,7 +178,6 @@ module EventConstants =
             |> CodeFormatter.FormatOakAsync
             |> Async.RunSynchronously
             |> printfn "%s"
-
 //
 // module ModuleNameCache =
 //     open Path
@@ -564,6 +551,241 @@ module Type =
             |> Async.RunSynchronously
             |> printfn "%s"
 
+/// <summary>
+/// Module for functions types and caches relating to creating interfaces for Event parameters to provide
+/// a simplified DX when working with multi argument events in Fable.
+/// </summary>
+module EventInterfaces =
+    // We will provide two means for using event handlers. One is
+    // curried, the other is accessing the args via an interface for
+    // named and documented details
+    let private cache = HashSet<Event>()
+    let private rootModuleName = $"{Spec.rootNamespace}.EventInterfaces"
+    let private getInterfaceName: Event -> string = _.PathKey.Name.ValueOrModified >> sprintf "IOn%s"
+    let private getInterfaceModuleRoot: Event -> _ =
+        _.PathKey.ParentName >> _.ValueOrModified >> toPascalCase >> sprintf "%s.%s" rootModuleName
+    /// <summary>
+    /// Indicates why an event failed to get added to the interface cache
+    /// </summary>
+    type CacheRejectionReason =
+        | AlreadyExists of EventInterfaceDetails
+        | HasLessThanTwoParameters
+    /// <summary>
+    /// A simple DU returned when adding an event which provides the interface name and module path
+    /// to reference as the type parameter for the overloaded handler that uses the interface.
+    /// </summary>
+    and EventInterfaceDetails = EventInterfaceDetails of interfaceName: string * modulePath: string
+    module EventInterfaceDetails =
+        let create modulePath interfaceName = EventInterfaceDetails(interfaceName,modulePath)
+        let interfaceName (EventInterfaceDetails(value,_))= value
+        let modulePath (EventInterfaceDetails(_,value))= value
+        let fullPath (EventInterfaceDetails(interfaceName,modulePath)) = $"{modulePath}.{interfaceName}"
+    let eventInterfaceFullPath = EventInterfaceDetails.fullPath
+    /// <summary>
+    /// Try to add an Event to be lifted into an interface. If the Event is a candidate, then it will return
+    /// the intended path to access the interface when it is generated later.
+    /// </summary>
+    /// <remarks>
+    /// It will fail and indicate the reason as either being: because it had one or less parameters; because
+    /// it already existed in the cache (with the details attached to access that event).
+    /// </remarks>
+    let addEvent: Event -> Result<EventInterfaceDetails, CacheRejectionReason> = function
+        // We don't need to create an interface for events with one or less parameters
+        | { Parameters = [] | [ _ ] } ->
+            Error CacheRejectionReason.HasLessThanTwoParameters
+        | event ->
+            let modulePath = getInterfaceModuleRoot event
+            event
+            |> getInterfaceName
+            |> EventInterfaceDetails.create modulePath
+            |> match cache.Add event with
+                | true ->
+                    Ok
+                | false ->
+                    CacheRejectionReason.AlreadyExists
+                    >> Error
+    let makeInterfaces () =
+        cache
+        |> Seq.toList
+        |> List.choose(fun event ->
+            let name = getInterfaceName event
+            let typeAttributes =
+                MultipleAttributeListNode.make [
+                    if StabilityStatus.IsExperimental event then
+                        "Experimental(\"Indicated to be Experimental by Electron\")"
+                    if StabilityStatus.IsDeprecated event then
+                        "System.Obsolete()"
+                    "EditorBrowsable(EditorBrowsableState.Never)"
+                    "AllowNullLiteral"
+                    "Interface"
+                ]
+            let parameterMembers =
+                event.Parameters
+                |> List.mapi(fun idx -> function
+                    | Parameter.InlinedObjectProp prop ->
+                        // TODO - there are no cases of this, but this is not handled
+                        // correctly because the attributes should emit different
+                        let name = prop.PathKey.Name.ValueOrModified
+                        let xmlDocs =
+                            [
+                                match XmlDocs.Helpers.makeCompatibilityLine prop.Compatibility with
+                                | ValueSome docs -> docs |> XmlDocs.wrapInPara |> String.concat ""
+                                | ValueNone -> ()
+                                match prop.Description with
+                                | ValueSome docs -> docs
+                                | ValueNone -> ()
+                            ]
+                            |> function
+                                | [] -> None
+                                | docs ->
+                                    docs
+                                    |> XmlDocs.wrapInSummary
+                                    |> XmlDocs.Helpers.makeDocs
+                                    |> fun docs ->
+                                        XmlDocNode(docs, Range.Zero)
+                                    |> Some
+                        let attributes =
+                            MultipleAttributeListNode.make [
+                                $"Emit(\"$0[{idx}]\")"
+                                if StabilityStatus.IsExperimental event then
+                                    "Experimental(\"Indicated to be Experimental by Electron\")"
+                                if StabilityStatus.IsDeprecated event then
+                                    "System.Obsolete()"
+                            ]
+                        MemberDefnAbstractSlotNode(
+                            xmlDocs,
+                            Some attributes,
+                            MultipleTextsNode.make "abstract member",
+                            SingleTextNode.make name,
+                            None,
+                            prop.Type |> Type.FantomasFactory.mapToFantomas,
+                            Some (MultipleTextsNode.make "with get, set"),
+                            Range.Zero
+                        )
+                        |> MemberDefn.AbstractSlot
+                    | p ->
+                        match p with
+                        | Named (name,paramInfo) ->
+                            name.Name.ValueOrModified, paramInfo
+                        | Positional paramInfo ->
+                            $"arg{idx}", paramInfo
+                        | _ -> failwith "UNREACHABLE"
+                        |> fun (name,paramInfo) ->
+                            let name,attributes =
+                                match name with
+                                | "...args" ->
+                                    "args", MultipleAttributeListNode.make $"Emit(\"$0.slice({idx})\")"
+                                | _ ->
+                                    name, MultipleAttributeListNode.make $"Emit(\"$0[{idx}]\")"
+                            let xmlDocs =
+                                paramInfo.Description
+                                |> ValueOption.map(
+                                    List.singleton
+                                    >> XmlDocs.wrapInSummary
+                                    >> XmlDocs.Helpers.makeDocs
+                                    >> fun docs ->
+                                        XmlDocNode(docs, Range.Zero)
+                                    )
+                                |> ValueOption.toOption
+                            MemberDefnAbstractSlotNode(
+                                xmlDocs,
+                                Some attributes,
+                                MultipleTextsNode.make "abstract member",
+                                SingleTextNode.make name,
+                                None,
+                                paramInfo.Type |> Type.FantomasFactory.mapToFantomas,
+                                Some (MultipleTextsNode.make "with get, set"),
+                                Range.Zero
+                            )
+                            |> MemberDefn.AbstractSlot
+                    )
+            let typeName =
+                let docs =
+                    [
+                        match XmlDocs.Helpers.makeCompatibilityLine event.Compatibility with
+                        | ValueSome docs -> docs |> XmlDocs.wrapInPara |> String.concat ""
+                        | ValueNone -> ()
+                        match event.Description with
+                        | ValueSome docs -> docs
+                        | ValueNone -> ()
+                    ]
+                    |> function
+                        | [] -> None
+                        | docs ->
+                            docs
+                            |> XmlDocs.wrapInSummary
+                            |> XmlDocs.Helpers.makeDocs
+                            |> fun docs ->
+                                XmlDocNode(docs, Range.Zero)
+                            |> Some
+                TypeNameNode(
+                    docs,
+                    Some typeAttributes,
+                    SingleTextNode.make "type",
+                    None,
+                    IdentListNode.make name,
+                    None, [], None,
+                    Some (SingleTextNode.make "="),
+                    None, Range.Zero
+                    )
+            // This should not be possible anyway. We filter out no member parameters
+            // when adding the events.
+            match parameterMembers with
+            | [] ->
+                None
+            | parameterMembers ->
+                Some (
+                    event.PathKey,
+                    TypeDefnRegularNode(typeName, parameterMembers, Range.Zero)
+                    |> Compatibility.wrapInCompatibilityDirective event.Compatibility
+                    |> TypeDefn.Regular
+                )
+            )
+        |> List.groupBy (fst >> _.ParentName)
+        |> List.map(fun (modName, typeDefs) ->
+            NestedModuleNode(
+                 None,
+                 Some (MultipleAttributeListNode.make ["AutoOpen"; "EditorBrowsable(EditorBrowsableState.Never)"]),
+                 SingleTextNode.make "module",
+                 None, false, IdentListNode.make (modName.ValueOrModified |> toPascalCase),
+                 SingleTextNode.make "=",
+                 typeDefs
+                 |> List.map (snd >> ModuleDecl.TypeDefn)
+                 , Range.Zero
+                 )
+            |> ModuleDecl.NestedModule
+            )
+        |> fun mods ->
+            let header =
+                ModuleOrNamespaceHeaderNode(
+                    None,
+                    Some (MultipleAttributeListNode.make "AutoOpen"),
+                    MultipleTextsNode.make "module",
+                    None,
+                    false,
+                    Some(IdentListNode.make rootModuleName),
+                    Range.Zero
+                )
+            let openModules =
+                let inline openModule (text: string) = Open.ModuleOrNamespace(OpenModuleOrNamespaceNode(IdentListNode.make text, Range.Zero))
+                OpenListNode([
+                    openModule "System"
+                    openModule "System.ComponentModel"
+                    openModule "Fable.Core"
+                    openModule "Fable.Core.JsInterop"
+                    openModule "Fable.Electron"
+                ])
+                |> ModuleDecl.OpenList
+            ModuleOrNamespaceNode(Some header, openModules :: mods, Range.Zero)
+    let tryDebugEventInterfaces (events: Event list) =
+        events
+        |> List.iter (addEvent >> ignore)
+        makeInterfaces()
+        |> fun namemod ->
+            Oak([], [ namemod ], Range.Zero)
+            |> CodeFormatter.FormatOakAsync
+            |> Async.RunSynchronously
+            |> printfn "%s"
 type GeneratorContainer = {
     PathKey: Path.PathKey
     Constructor: Parameter list option
@@ -577,6 +799,7 @@ type GeneratorContainer = {
     Description: string voption
     Process: Decoder.ProcessBlock option
     Compatibility: Compatibility option
+    Extends: string voption
 }
 
 module GeneratorContainer =
@@ -593,6 +816,7 @@ module GeneratorContainer =
         Description = ValueNone
         Process = None
         Compatibility = None
+        Extends = ValueNone
     }
     let withConstructor (props: Parameter list) container =
         { container with GeneratorContainer.Constructor = Some props }
@@ -620,11 +844,19 @@ module GeneratorContainer =
         { container with GeneratorContainer.Description = object.Description }
     let inline mergeProcess (object: ^T when ^T : (member Process: Decoder.ProcessBlock)) container =
         { container with GeneratorContainer.Process = Some object.Process }
+    let inline mergeExtension (object: ^T when ^T : (member Extends: string voption)) container =
+        { container with GeneratorContainer.Extends = object.Extends }
     let private makeSimpleInterfaceNode name=
         MemberDefnInterfaceNode(
             SingleTextNode.make "interface",
             Type.makeSimple name,
             None, [], Range.Zero
+            )
+    let private makeSimpleInheritNode name =
+        MemberDefnInheritNode(
+            SingleTextNode.make "inherit",
+            Type.makeSimple name,
+            Range.Zero
             )
     let inline private makeEventEmitterInterface (object: ^T when ^T : (member Events: Event list) and ^T : (member Description: string voption)) =
         [
@@ -895,6 +1127,7 @@ module GeneratorContainer =
                 makeAttributesForStaticProperty prop
             else
                 makeAttributesForInstanceProperty prop
+            |> List.append [ "Erase" ]
             |> makeAttributesNode
         match isSourceName with
         | true ->
@@ -906,7 +1139,7 @@ module GeneratorContainer =
                     "member"; "val"
                 ],
                 None,
-                SingleTextNode.make prop.PathKey.Name.ValueOrSource,
+                SingleTextNode.make prop.PathKey.Name.ValueOrModified,
                 Some (prop.Type |> Type.FantomasFactory.mapToFantomas),
                 SingleTextNode.make "=",
                 Expr.Ident(SingleTextNode.make "Unchecked.defaultof<_>"),
@@ -1028,6 +1261,13 @@ module GeneratorContainer =
             makeSimpleInterfaceNode Injections.eventEmitterName
             |> MemberDefn.Interface
     ]
+    let makeInheritance (this: GeneratorContainer) = [
+        match this.Extends with
+        | ValueSome name ->
+            makeSimpleInheritNode name
+            |> MemberDefn.Inherit
+        | ValueNone -> ()
+    ]
     let makeAbstractPropertyNode xmlDocs attributes name typ isWritable =
         MemberDefnAbstractSlotNode(
             xmlDocs,
@@ -1083,50 +1323,33 @@ module GeneratorContainer =
 
     let makeConstructor (this: GeneratorContainer) =
         let attributes (parameters: Parameter list) =
+            if this.TypeAttributes |> List.exists ((=) "JS.Pojo")
+            then None else
             makeParamObjectParameterAttribute parameters
             |> function
                 | [] -> None
                 | attrs -> MultipleAttributeListNode.make attrs |> Some
+        let mutable idx = 0
         this.Constructor
         |> function
             | None -> None
             | Some parameters ->
                 parameters
+                |> List.sortByDescending _.Required
                 |> List.collect(function
                     | Parameter.InlinedObjectProp prop ->
-                        (
-                            prop.Type |> Type.FantomasFactory.mapToFantomas
-                            , prop
-                        ) |> Choice1Of2
+                        makePropParameterWithDirectives prop
                     | Parameter.Positional info ->
-                        (
-                            info.Type |> Type.FantomasFactory.mapToFantomas
-                            , Name.createCamel "arg",
-                            info
-                        ) |> Choice2Of2
+                        idx <- idx + 1
+                        makePositionalParameter idx info
                     | Parameter.Named(name, info) ->
-                        (
-                            info.Type |> Type.FantomasFactory.mapToFantomas
-                            , name.Name,
-                            info
-                        ) |> Choice2Of2
-                    >> function
-                        | Choice1Of2 (typ,prop) ->
-                            [
-                                makeNamedNode None prop.Required typ prop.PathKey.Name.ValueOrModified
-                                |> Pattern.Parameter
-                                |> Choice1Of2
-                                SingleTextNode.make ","
-                                |> Choice2Of2
-                            ]
-                        | Choice2Of2(typ,name,paramInfo) ->
-                            [
-                                makeNamedNode None paramInfo.Required typ name.ValueOrModified
-                                |> Pattern.Parameter
-                                |> Choice1Of2
-                                SingleTextNode.make ","
-                                |> Choice2Of2
-                            ]
+                        makeNamedParameter name info
+                    )
+                |> cutOffLastTextNodeWithDirectiveMaybe (
+                    parameters
+                    |> List.tryLast
+                    |> Option.map _.Compatibility
+                    |> Option.defaultValue Unspecific
                     )
                 |> wrapParametersIntoParenNode
                 |> fun pat ->
@@ -1166,7 +1389,7 @@ module GeneratorContainer =
     let inline makeParameterXmlDocs (object: ^T when ^T : (member Parameters: Parameter list)) =
         object.Parameters
         |> makeParametersXmlDocs
-    let makeMethodBindingNode isInline (isStatic: bool) (method: Method) =
+    let makeMethodBindingNode attributes isInline (isStatic: bool) (method: Method) =
         let xmlDocs =
             method |> makeParameterXmlDocs
             |> List.append (
@@ -1177,7 +1400,10 @@ module GeneratorContainer =
                 |> XmlDocs.wrapInSummary
             )
             |> makeDocNode id
-        let attributes = makeMethodAttributes method |> makeAttributesNode
+        let attributes =
+            makeMethodAttributes method
+            |> List.append attributes
+            |> makeAttributesNode
         (if isStatic then
             makeStaticBindingNodeWithDirectives
         else
@@ -1202,7 +1428,7 @@ module GeneratorContainer =
                         ]
                     )
                 |> List.collect id
-                |> cutOffLastTextNodeWithDirectiveMaybe method.Compatibility
+                |> cutOffLastTextNodeWithDirectiveMaybe Unspecific
                 |> wrapParametersIntoParenNode
                 |> List.singleton
                 // |> function
@@ -1234,7 +1460,8 @@ module GeneratorContainer =
                     |> makeDescriptionXmlDocs
             ]
             |> makeDocNode XmlDocs.wrapInSummary
-        prefixes |> List.map (fun functionPrefix ->
+        let cachedEventInterfaceResult = EventInterfaces.addEvent event
+        prefixes |> List.collect (fun functionPrefix ->
             let attributes =
                 makeEventAttributes isStatic functionPrefix event
                 |> makeAttributesNode
@@ -1245,17 +1472,47 @@ module GeneratorContainer =
                 |> List.singleton
                 |> wrapParametersIntoParenNode
                 |> List.singleton
-            (if isStatic then
-                makeStaticBindingNodeWithDirectives
-            else
-                makeInstanceBindingNodeWithDirectives)
-                    event.Compatibility
-                    isInline
-                    docs
-                    attributes
-                    $"{functionPrefix}{event.PathKey.Name.ValueOrModified}"
-                    parameter
-                    unitReturnInfo
+            [
+                (if isStatic then
+                    makeStaticBindingNodeWithDirectives
+                else
+                    makeInstanceBindingNodeWithDirectives)
+                        event.Compatibility
+                        isInline
+                        docs
+                        attributes
+                        $"{functionPrefix}{event.PathKey.Name.ValueOrModified}"
+                        parameter
+                        unitReturnInfo
+                match cachedEventInterfaceResult with
+                | Error (EventInterfaces.CacheRejectionReason.AlreadyExists resultValue)
+                | Ok resultValue ->
+                    makeFunsTypeNode
+                        (Type.makeSimple "unit")
+                        [ resultValue
+                          |> EventInterfaces.eventInterfaceFullPath
+                          |> Type.ApiType.StructureRef ]
+                    |> makeNamedNode None true
+                    |> fun f -> f "handler"
+                    |> Pattern.Parameter
+                    |> Choice1Of2
+                    |> List.singleton
+                    |> wrapParametersIntoParenNode
+                    |> List.singleton
+                    |> fun parameter ->
+                        (if isStatic then
+                            makeStaticBindingNodeWithDirectives
+                        else
+                            makeInstanceBindingNodeWithDirectives)
+                                event.Compatibility
+                                isInline
+                                docs
+                                attributes
+                                $"{functionPrefix}{event.PathKey.Name.ValueOrModified}"
+                                parameter
+                                unitReturnInfo
+                | _ -> ()
+            ]
             )
         
     let makeXmlDocs (this: GeneratorContainer) =
@@ -1303,23 +1560,80 @@ module GeneratorContainer =
                 MultipleAttributeListNode.make attrs
                 |> Some
         let name = IdentListNode.make (mapper this.PathKey)
+        let constructor = this |> makeConstructor
         TypeNameNode(
             docs, attributes,
             SingleTextNode.make "type",
             None, name,
             None, [],
-            (this |> makeConstructor),
+            constructor,
             Some (SingleTextNode.make "="),
             None, Range.Zero
             )
     let makeTypeNameNode = makeTypeNameNodeWithNameMap _.Name.ValueOrModified
     
+    let private makeSignatureParameterTypeNode isRequired (attributes: string list) (name: string) (type': Type.FcsType) =
+        let name, additives =
+            match name with
+            | "...args" ->
+                "args", ["System.ParamArray"]
+            | name ->
+                name, []
+        let attributes = additives @ attributes
+        TypeSignatureParameterNode(
+            makeAttributesNode attributes,
+            (if isRequired
+             then SingleTextNode.make
+             else SingleTextNode.makeOptional) name |> Some,
+            type',
+            Range.Zero
+            )
+    let private makeDelegateParameterTupleNode isRequired (attributes: string list) (name: string) (type': Type.FcsType) =
+        [
+            makeSignatureParameterTypeNode isRequired attributes name type'
+            |> Type.SignatureParameter
+            |> Choice1Of2
+            SingleTextNode.make "*"
+            |> Choice2Of2
+        ]
+    let private makeDelegateFunsTypeNodeFromParameters returnInfo (parameters: Parameter list) =
+        let parenthesiseLambdas = function
+            | Type.FcsType.Funs _ as typ ->
+                TypeParenNode(PatParenNode.makeOpening, typ, PatParenNode.makeClosing, Range.Zero)
+                |> Type.Paren
+            | typ -> typ
+        parameters
+        |> List.mapi (fun idx -> function
+            | Positional info ->
+                info.Type
+                |> Type.FantomasFactory.mapToFantomas
+                |> parenthesiseLambdas
+                |> makeDelegateParameterTupleNode info.Required [] $"arg{idx}"
+            | Named(name,info) ->
+                info.Type
+                |> Type.FantomasFactory.mapToFantomas
+                |> parenthesiseLambdas
+                |> makeDelegateParameterTupleNode info.Required [] name.Name.ValueOrModified
+            | InlinedObjectProp(prop) ->
+                prop.Type
+                |> Type.FantomasFactory.mapToFantomas
+                |> parenthesiseLambdas
+                |> makeDelegateParameterTupleNode prop.Required [] prop.PathKey.Name.ValueOrModified
+            )
+        |> List.collect id
+        |> List.cutOffLast
+        |> fun typs ->
+            TypeTupleNode(typs, Range.Zero)
+            |> Type.Tuple, SingleTextNode.make "->"
+        |> List.singleton
+        |> fun typs ->
+            TypeFunsNode(typs, returnInfo, Range.Zero)
     let makeStaticMethods (this: GeneratorContainer) =
         this.StaticMethods
-        |> List.map (makeMethodBindingNode true true >> MemberDefn.Member)
+        |> List.map (makeMethodBindingNode ["Erase"] true true >> MemberDefn.Member)
     let makeInstanceMethods (this: GeneratorContainer) =
         this.InstanceMethods
-        |> List.map (makeMethodBindingNode true false >> MemberDefn.Member)
+        |> List.map (makeMethodBindingNode ["Erase"] true false >> MemberDefn.Member)
     let makeStaticProperties (this: GeneratorContainer) =
         this.StaticProperties
         |> List.map makeStaticPropertyMemberDefnWithDirectives
@@ -1334,11 +1648,11 @@ module GeneratorContainer =
         this.StaticEvents
         |> List.collect (makeEventBindingNode true true)
         |> List.map MemberDefn.Member
-    
     let makeDefaultTypeDefn (this: GeneratorContainer) =
         TypeDefnRegularNode(
             makeTypeNameNode this,
             [
+                yield! makeInheritance this
                 yield! makeInterfaces this
                 yield! makeInstanceEvents this
                 yield! makeInstanceMethods this
@@ -1350,6 +1664,38 @@ module GeneratorContainer =
             Range.Zero
             )
     let makeDefaultTypeDecl = makeDefaultTypeDefn >> TypeDefn.Regular >> ModuleDecl.TypeDefn
+    let private makeDefaultDelegateDefn (funcOrMethod: FuncOrMethod) =
+        let returns =
+            funcOrMethod.Returns
+            |> Type.FantomasFactory.mapToFantomas
+        let attributes =
+            makeParamObjectParameterAttribute funcOrMethod.Parameters
+            |> makeAttributesNode
+        let typNode =
+            makeDelegateFunsTypeNodeFromParameters returns funcOrMethod.Parameters
+        let docs =
+            makeParametersXmlDocs funcOrMethod.Parameters
+            |> makeDocNode id
+        let typeNameNode =
+            TypeNameNode(
+                docs,
+                attributes,
+                SingleTextNode.make "type",
+                None, IdentListNode.make funcOrMethod.Name.Name.ValueOrModified,
+                None, [], None, SingleTextNode.make "=" |> Some, None, Range.Zero
+                )
+            // TypeNameNode.makeSimple(funcOrMethod.Name.Name.ValueOrModified, docs=docs, attributes = attributes)
+        TypeDefnDelegateNode(
+            typeNameNode,
+            SingleTextNode.make "delegate",
+            typNode,
+            Range.Zero
+            )
+    let makeDefaultDelegateTypeDecl = makeDefaultDelegateDefn >> TypeDefn.Delegate >> ModuleDecl.TypeDefn
+                
+    let map (func: GeneratorContainer -> 'a) = func
+    let mapPathKey (func: Path.PathKey -> Path.PathKey) group =
+        { group with GeneratorContainer.PathKey = group.PathKey |> func }
 
 
 [<Struct>]
@@ -1373,16 +1719,24 @@ type GeneratorGroupChild =
     | Nested of GeneratorGrouper
     | Child of GeneratorContainer
     | StringEnumType of StringEnum
+    | Delegate of FuncOrMethod
 and GeneratorGrouper = {
-    PathKey: Path.PathKey
+    PathKey: Path.PathKey voption
     Description: string list voption
     Opens: OpenModule list
     Children: GeneratorGroupChild list
     Attributes: string list
 }
 module GeneratorGrouper =
+    let createRoot () = {
+        PathKey = ValueNone
+        Description = ValueNone
+        Opens = []
+        Children = []
+        Attributes = []
+    }
     let create pathKey = {
-        PathKey = pathKey
+        PathKey = ValueSome pathKey
         Description = ValueNone
         Opens = []
         Children = []
@@ -1420,18 +1774,24 @@ module GeneratorGrouper =
         grouper with
             Children = child :: grouper.Children
     }
-    let addNestedGroup group = addChild (GeneratorGroupChild.Nested group)
+    let addNestedGroup group =
+        if group.PathKey.IsNone then failwith "A nested GeneratorGrouper must have a pathkey to represent a module"
+        addChild (GeneratorGroupChild.Nested group)
     let addTypeChild  typ = addChild (GeneratorGroupChild.Child typ)
+    let addDelegateChild deleg = addChild (GeneratorGroupChild.Delegate deleg)
     let addStringEnumChild stringEnum = addChild (GeneratorGroupChild.StringEnumType stringEnum)
-    let isNested = _.PathKey.Path.IsRoot >> not
-    let private makeNestedModule grouper =
+    let isNested = _.PathKey >> function
+        | ValueSome path -> path.Path.IsRoot |> not
+        | ValueNone -> false
+    let makeNestedModule grouper =
+        if grouper.PathKey.IsNone then failwith "A nested module must have a pathkey"
         fun decls ->
             NestedModuleNode(
                 makeXmlDocNode grouper,
                 makeMultipleAttributeListNode grouper,
                 SingleTextNode.make "module",
                 None, false,
-                IdentListNode.make grouper.PathKey.Name.ValueOrModified,
+                IdentListNode.make grouper.PathKey.Value.Name.ValueOrModified,
                 SingleTextNode.make "=",
                 decls,
                 Range.Zero
@@ -1445,9 +1805,9 @@ module GeneratorGrouper =
         let pathName =
             IdentListNode.make [
                 if addRootNamespace then Spec.rootNamespace
-                match grouper.PathKey.Name.ValueOrSource with
-                | "Root" -> ()
-                | _ -> grouper.PathKey.Name.ValueOrModified
+                match grouper.PathKey with
+                | ValueNone -> ()
+                | ValueSome path -> path.Name.ValueOrModified
             ]
         let header = ModuleOrNamespaceHeaderNode(
             makeXmlDocNode grouper,
@@ -1463,22 +1823,27 @@ module GeneratorGrouper =
                 decls,
                 Range.Zero
                 )
-    let private makeNamespace grouper =
+    let makeNamespace grouper =
         makeModuleOrNamespace true true grouper
-    let private makeModule grouper =
+    let makeModule grouper =
         makeModuleOrNamespace true false grouper
     let makeModuleOrNamespaceNode grouper =
         if isNested grouper then
             makeNestedModule grouper
             |> Choice1Of2
         else
-            match grouper.PathKey.Path with
-            | Path.ModulePath.Root ->
+            match grouper.PathKey with
+            | ValueNone ->
                 makeNamespace grouper
             | _ ->
                 makeModule grouper
             |> Choice2Of2
     let makeChildren func: GeneratorGrouper -> ModuleDecl list = _.Children >> List.map func
+    let makeDefaultDelegateType = function
+        | GeneratorGroupChild.Delegate funcOrMethod ->
+            GeneratorContainer.makeDefaultDelegateTypeDecl funcOrMethod
+            |> Some
+        | _ -> None
 
     let makeDefaultStringEnumType = function
         | GeneratorGroupChild.StringEnumType stringEnum ->
@@ -1524,790 +1889,25 @@ module GeneratorGrouper =
                     |> ModuleDecl.TypeDefn
                 |> Some
         | _ -> None
+    
+    let mapPathKey (func: Path.PathKey voption -> Path.PathKey voption) group =
+        { group with GeneratorGrouper.PathKey = group.PathKey |> func }
 
-/// <summary>
-/// Module for functions types and caches relating to creating interfaces for Event parameters to provide
-/// a simplified DX when working with multi argument events in Fable.
-/// </summary>
-module EventInterfaces =
-    // We will provide two means for using event handlers. One is
-    // curried, the other is accessing the args via an interface for
-    // named and documented details
-    let private cache = HashSet<Event>()
-    let private rootModuleName = $"{Spec.rootNamespace}.EventInterfaces"
-    let private getInterfaceName: Event -> string = _.PathKey.Name.ValueOrModified >> sprintf "IOn%s"
-    let private getInterfaceModuleRoot: Event -> _ =
-        _.PathKey.ParentName >> _.ValueOrModified >> toPascalCase >> sprintf "%s.%s" rootModuleName
-    /// <summary>
-    /// Indicates why an event failed to get added to the interface cache
-    /// </summary>
-    type CacheRejectionReason =
-        | AlreadyExists of EventInterfaceDetails
-        | HasLessThanTwoParameters
-    /// <summary>
-    /// A simple DU returned when adding an event which provides the interface name and module path
-    /// to reference as the type parameter for the overloaded handler that uses the interface.
-    /// </summary>
-    and EventInterfaceDetails = EventInterfaceDetails of interfaceName: string * modulePath: string
-    module EventInterfaceDetails =
-        let create modulePath interfaceName = EventInterfaceDetails(interfaceName,modulePath)
-        let interfaceName (EventInterfaceDetails(value,_))= value
-        let modulePath (EventInterfaceDetails(_,value))= value
-        let fullPath (EventInterfaceDetails(interfaceName,modulePath)) = $"{modulePath}.{interfaceName}"
-    let eventInterfaceFullPath = EventInterfaceDetails.fullPath
-    /// <summary>
-    /// Try to add an Event to be lifted into an interface. If the Event is a candidate, then it will return
-    /// the intended path to access the interface when it is generated later.
-    /// </summary>
-    /// <remarks>
-    /// It will fail and indicate the reason as either being: because it had one or less parameters; because
-    /// it already existed in the cache (with the details attached to access that event).
-    /// </remarks>
-    let addEvent: Event -> Result<EventInterfaceDetails, CacheRejectionReason> = function
-        // We don't need to create an interface for events with one or less parameters
-        | { Parameters = [] | [ _ ] } ->
-            Error CacheRejectionReason.HasLessThanTwoParameters
-        | event ->
-            let modulePath = getInterfaceModuleRoot event
-            event
-            |> getInterfaceName
-            |> EventInterfaceDetails.create modulePath
-            |> match cache.Add event with
-                | true ->
-                    Ok
-                | false ->
-                    CacheRejectionReason.AlreadyExists
-                    >> Error
-    let makeInterfaces () =
-        cache
-        |> Seq.toList
-        |> List.choose(fun event ->
-            let name = getInterfaceName event
-            let typeAttributes =
-                MultipleAttributeListNode.make [
-                    if StabilityStatus.IsExperimental event then
-                        "Experimental(\"Indicated to be Experimental by Electron\")"
-                    if StabilityStatus.IsDeprecated event then
-                        "System.Obsolete()"
-                    "EditorBrowsable(EditorBrowsableState.Never)"
-                    "AllowNullLiteral"
-                    "Interface"
-                ]
-            let parameterMembers =
-                event.Parameters
-                |> List.mapi(fun idx -> function
-                    | Parameter.InlinedObjectProp prop ->
-                        // TODO - there are no cases of this, but this is not handled
-                        // correctly because the attributes should emit different
-                        let name = prop.PathKey.Name.ValueOrModified
-                        let xmlDocs =
-                            [
-                                match XmlDocs.Helpers.makeCompatibilityLine prop.Compatibility with
-                                | ValueSome docs -> docs |> XmlDocs.wrapInPara |> String.concat ""
-                                | ValueNone -> ()
-                                match prop.Description with
-                                | ValueSome docs -> docs
-                                | ValueNone -> ()
-                            ]
-                            |> function
-                                | [] -> None
-                                | docs ->
-                                    docs
-                                    |> XmlDocs.wrapInSummary
-                                    |> XmlDocs.Helpers.makeDocs
-                                    |> fun docs ->
-                                        XmlDocNode(docs, Range.Zero)
-                                    |> Some
-                        let attributes =
-                            MultipleAttributeListNode.make [
-                                $"Emit(\"$0[{idx}]\")"
-                                if StabilityStatus.IsExperimental event then
-                                    "Experimental(\"Indicated to be Experimental by Electron\")"
-                                if StabilityStatus.IsDeprecated event then
-                                    "System.Obsolete()"
-                            ]
-                        MemberDefnAbstractSlotNode(
-                            xmlDocs,
-                            Some attributes,
-                            MultipleTextsNode.make "abstract member",
-                            SingleTextNode.make name,
-                            None,
-                            prop.Type |> Type.FantomasFactory.mapToFantomas,
-                            Some (MultipleTextsNode.make "with get, set"),
-                            Range.Zero
-                        )
-                        |> MemberDefn.AbstractSlot
-                    | p ->
-                        match p with
-                        | Named (name,paramInfo) ->
-                            name.Name.ValueOrModified, paramInfo
-                        | Positional paramInfo ->
-                            $"arg{idx}", paramInfo
-                        | _ -> failwith "UNREACHABLE"
-                        |> fun (name,paramInfo) ->
-                            let name,attributes =
-                                match name with
-                                | "...args" ->
-                                    "args", MultipleAttributeListNode.make $"Emit(\"$0.slice({idx})\")"
-                                | _ ->
-                                    name, MultipleAttributeListNode.make $"Emit(\"$0[{idx}]\")"
-                            let xmlDocs =
-                                paramInfo.Description
-                                |> ValueOption.map(
-                                    List.singleton
-                                    >> XmlDocs.wrapInSummary
-                                    >> XmlDocs.Helpers.makeDocs
-                                    >> fun docs ->
-                                        XmlDocNode(docs, Range.Zero)
-                                    )
-                                |> ValueOption.toOption
-                            MemberDefnAbstractSlotNode(
-                                xmlDocs,
-                                Some attributes,
-                                MultipleTextsNode.make "abstract member",
-                                SingleTextNode.make name,
-                                None,
-                                paramInfo.Type |> Type.FantomasFactory.mapToFantomas,
-                                Some (MultipleTextsNode.make "with get, set"),
-                                Range.Zero
-                            )
-                            |> MemberDefn.AbstractSlot
-                    )
-            let typeName =
-                let docs =
-                    [
-                        match XmlDocs.Helpers.makeCompatibilityLine event.Compatibility with
-                        | ValueSome docs -> docs |> XmlDocs.wrapInPara |> String.concat ""
-                        | ValueNone -> ()
-                        match event.Description with
-                        | ValueSome docs -> docs
-                        | ValueNone -> ()
-                    ]
-                    |> function
-                        | [] -> None
-                        | docs ->
-                            docs
-                            |> XmlDocs.wrapInSummary
-                            |> XmlDocs.Helpers.makeDocs
-                            |> fun docs ->
-                                XmlDocNode(docs, Range.Zero)
-                            |> Some
-                TypeNameNode(
-                    docs,
-                    Some typeAttributes,
-                    SingleTextNode.make "type",
-                    None,
-                    IdentListNode.make name,
-                    None, [], None,
-                    Some (SingleTextNode.make "="),
-                    None, Range.Zero
-                    )
-            // This should not be possible anyway. We filter out no member parameters
-            // when adding the events.
-            match parameterMembers with
-            | [] ->
-                None
-            | parameterMembers ->
-                Some (
-                    event.PathKey,
-                    TypeDefnRegularNode(typeName, parameterMembers, Range.Zero)
-                    |> Compatibility.wrapInCompatibilityDirective event.Compatibility
-                    |> TypeDefn.Regular
-                )
-            )
-        |> List.groupBy (fst >> _.ParentName)
-        |> List.map(fun (modName, typeDefs) ->
-            NestedModuleNode(
-                 None,
-                 Some (MultipleAttributeListNode.make ["AutoOpen"; "EditorBrowsable(EditorBrowsableState.Never)"]),
-                 SingleTextNode.make "module",
-                 None, false, IdentListNode.make (modName.ValueOrModified |> toPascalCase),
-                 SingleTextNode.make "=",
-                 typeDefs
-                 |> List.map (snd >> ModuleDecl.TypeDefn)
-                 , Range.Zero
-                 )
-            |> ModuleDecl.NestedModule
-            )
-        |> fun mods ->
-            let header =
-                ModuleOrNamespaceHeaderNode(
-                    None,
-                    Some (MultipleAttributeListNode.make "AutoOpen"),
-                    MultipleTextsNode.make "module",
-                    None,
-                    false,
-                    Some(IdentListNode.make rootModuleName),
-                    Range.Zero
-                )
-            let openModules =
-                let inline openModule (text: string) = Open.ModuleOrNamespace(OpenModuleOrNamespaceNode(IdentListNode.make text, Range.Zero))
-                OpenListNode([
-                    openModule "System"
-                    openModule "System.ComponentModel"
-                    openModule "Fable.Core"
-                    openModule "Fable.Core.JsInterop"
-                    openModule "Fable.Electron"
-                ])
-                |> ModuleDecl.OpenList
-            ModuleOrNamespaceNode(Some header, openModules :: mods, Range.Zero)
-    let tryDebugEventInterfaces (events: Event list) =
-        events
-        |> List.iter (addEvent >> ignore)
-        makeInterfaces()
-        |> fun namemod ->
-            Oak([], [ namemod ], Range.Zero)
-            |> CodeFormatter.FormatOakAsync
-            |> Async.RunSynchronously
-            |> printfn "%s"
                 
-module Property =
-    let makeConstructorParameter (optional: bool) (prop: Property, typ: Type.FcsType) =
-        PatParameterNode(
-            None,
-            Pattern.Named (PatNamedNode(
-                None,
-                (if optional
-                then SingleTextNode.makeOptional
-                else SingleTextNode.make) prop.PathKey.Name.ValueOrModified,
-                Range.Zero)
-            ),
-            Some typ,
-            Range.Zero
-            )
-        |> Pattern.Parameter
-    let makeRequiredConstructorParameter = makeConstructorParameter false
-    let makeOptionalConstructorParameter = makeConstructorParameter true
 type Structure with
-    member this.ToPojoNode =
-        let requiredProps,optionalProps =
-            this.Properties
-            |> List.partition _.Required
-        let requiredTypes =
-            requiredProps
-            |> List.map (_.Type >> Type.FantomasFactory.mapToFantomas)
-        let optionalTypes =
-            optionalProps
-            |> List.map (_.Type >> Type.FantomasFactory.mapToFantomas)
-        let xmlDocs =
-            [
-                if this.Description.IsSome then
-                    XmlDocs.Boundaries.openSummary
-                    this.Description.Value
-                    XmlDocs.Boundaries.closeSummary
-                if this.WebsiteUrl.IsSome then
-                    XmlDocs.makeClosedSeeAlso this.WebsiteUrl.Value
-            ]
-            |> XmlDocs.Helpers.makeDocs
-        let paramXmlDocs =
-            [
-                yield!
-                    requiredProps @ optionalProps
-                    |> List.choose(fun prop ->
-                        [
-                            match XmlDocs.Helpers.makeCompatibilityLine prop.Compatibility with
-                            | ValueSome s -> s |> String.concat ""
-                            | ValueNone -> ()
-                            match prop.Description with
-                            | ValueSome desc -> desc
-                            | _ -> ()
-                        ]
-                        |> function
-                            | [] -> None
-                            | strings ->
-                                (prop.PathKey.Name.ValueOrModified, strings |> String.concat " | ")
-                                |> Some
-                        )
-                    |> List.map ( fun (name, docs) ->
-                        XmlDocs.makeParam name docs )
-            ]
-            |> XmlDocs.Helpers.makeDocs
-        let xmlDocs =
-            match xmlDocs with
-            | [||] ->
-                None
-            | xmlDocs ->
-                XmlDocNode(
-                    xmlDocs,
-                    Range.Zero
-                ) |> Some
-        let constructorXmlDocs =
-            match paramXmlDocs with
-            | [||] -> None
-            | paramXmlDocs ->
-                XmlDocNode(
-                    paramXmlDocs,
-                    Range.Zero
-                    )
-                |> Some
-        let implicitConstructor = ImplicitConstructorNode(
-            xmlDoc = constructorXmlDocs,
-            attributes = None,
-            accessibility = None,
-            pat = Pattern.Paren (PatParenNode.make (
-                Pattern.Tuple (PatTupleNode(
-                [
-                    for required in List.zip requiredProps requiredTypes do
-                        Property.makeRequiredConstructorParameter required
-                        |> Choice1Of2
-                        SingleTextNode.make "," |> Choice2Of2
-                    for optional in List.zip optionalProps optionalTypes do
-                        Property.makeOptionalConstructorParameter optional
-                        |> Choice1Of2
-                        SingleTextNode.make "," |> Choice2Of2
-                ] |> List.cutOffLast,
-                Range.Zero
-                )))),
-            self = None,
-            range = Range.Zero
-            )
-        let typeNameNode = TypeNameNode(
-            xmlDoc = xmlDocs,
-            attributes = Some (MultipleAttributeListNode.make "JS.Pojo"),
-            leadingKeyword = SingleTextNode.make "type",
-            ao = None,
-            identifier = IdentListNode.make this.Name.ValueOrModified,
-            typeParams = None,
-            constraints = [],
-            implicitConstructor = Some implicitConstructor,
-            equalsToken = Some (SingleTextNode.make "="),
-            withKeyword = None,
-            range = Range.Zero
-            )
-        TypeDefnRegularNode(typeNameNode, [
-            for prop in requiredProps @ optionalProps do
-                let xmlDoc =
-                    [
-                        match prop.Compatibility |> XmlDocs.Helpers.makeCompatibilityLine with
-                        | ValueSome compat ->
-                            XmlDocs.Boundaries.openPara
-                            + (compat |> String.concat "") +
-                            XmlDocs.Boundaries.closePara
-                        | ValueNone -> ()
-                        match prop.Description with
-                        | ValueSome desc -> desc
-                        | ValueNone -> ()
-                    ]
-                    |> function
-                        | [] -> ValueNone
-                        | texts -> ValueSome texts
-                    |> ValueOption.bind (
-                        XmlDocs.wrapInSummary
-                        >> XmlDocs.Helpers.makeDocs
-                        >> function
-                            | [||] -> ValueNone
-                            | docs ->
-                                XmlDocNode(docs, Range.Zero) |> ValueSome
-                        )
-                    |> ValueOption.toOption
-                let attributes = MultipleAttributeListNode.make [
-                    "Erase"
-                    if StabilityStatus.IsExperimental prop then
-                        "Experimental(\"Indicated to be Experimental by Electron\")"
-                    if StabilityStatus.IsDeprecated prop then
-                        "System.Obsolete()"
-                ]    
-                MemberDefnAutoPropertyNode(
-                    xmlDoc = xmlDoc,
-                    attributes = Some attributes,
-                    leadingKeyword = MultipleTextsNode.make [ "member"; "val" ],
-                    accessibility = None,
-                    identifier = SingleTextNode.make prop.PathKey.Name.ValueOrModified,
-                    t = None,
-                    equals = SingleTextNode.make "=",
-                    expr = Expr.Ident(SingleTextNode.make prop.PathKey.Name.ValueOrModified),
-                    withGetSet = Some (MultipleTextsNode.make [ "with"; "get"; "set" ]),
-                    range = Range.Zero
-                )
-                |> Compatibility.wrapInCompatibilityDirective prop.Compatibility
-                |> MemberDefn.AutoProperty
-        ], Range.Zero)
-        |> TypeDefn.Regular
+    member this.ToGeneratorContainer() =
+        Path.PathKey.Type(Path.Type(Path.ModulePath.Root, this.Name))
+        |> GeneratorContainer.create
+        |> GeneratorContainer.mergeDescription this
+        |> GeneratorContainer.withAttribute "JS.Pojo"
+        |> GeneratorContainer.withInstanceProperties this.Properties
+        |> GeneratorContainer.withConstructor(this.Properties |> List.map Parameter.InlinedObjectProp)
             
-    static member tryDebugConstructor (structures: Structure list) =
-        structures
-        |> List.map (_.ToPojoNode >> ModuleDecl.TypeDefn)
-        |> fun decls ->
-            Oak([], [ ModuleOrNamespaceNode(None, decls, Range.Zero) ], Range.Zero)
-            |> CodeFormatter.FormatOakAsync
-            |> Async.RunSynchronously
-            |> printfn "%s"
-
 type StringEnum with
     static member tryDebugTypeGen (stringEnums: StringEnum list) =
         GeneratorGrouper.create <| Path.PathKey.CreateModule(Source "Enums")
         |> GeneratorGrouper.withChildren (stringEnums |> List.map GeneratorGroupChild.StringEnumType)
         |> _.Children |> List.choose GeneratorGrouper.makeDefaultStringEnumType
-        |> fun decls ->
-            Oak([], [ ModuleOrNamespaceNode(None, decls, Range.Zero) ], Range.Zero)
-            |> CodeFormatter.FormatOakAsync
-            |> Async.RunSynchronously
-            |> printfn "%s"
-module Method =
-    let makePropParameter (prop: Property, typ: Type.FcsType) =
-        PatParameterNode(
-            None,
-            Pattern.Named (PatNamedNode(
-                None,
-                (if prop.Required |> not
-                then SingleTextNode.makeOptional
-                else SingleTextNode.make) prop.PathKey.Name.ValueOrModified,
-                Range.Zero)
-            ),
-            Some typ,
-            Range.Zero
-            )
-        |> Pattern.Parameter
-    let makeParameter (optional: bool) (name: Name, param: ParameterInfo, typ: Type.FcsType) =
-        let attributes =
-            match name.ValueOrSource with
-            | "...args" ->
-                Some (MultipleAttributeListNode.make "System.ParamArray")
-            | _ -> None
-        let name =
-            if attributes.IsSome then "args"
-            else name.ValueOrModified
-        PatParameterNode(
-            attributes,
-            Pattern.Named (PatNamedNode(
-                None,
-                (if optional
-                then SingleTextNode.makeOptional
-                else SingleTextNode.make) name,
-                Range.Zero)
-            ),
-            Some typ,
-            Range.Zero
-            )
-        |> Pattern.Parameter
-type Method with
-    member this.ToMemberNode =
-        let xmlDoc =
-            this.Description
-            |> ValueOption.map (
-                List.singleton
-                >> XmlDocs.wrapInSummary
-                >> XmlDocs.Helpers.makeDocs
-                >> fun docs ->
-                    XmlDocNode(docs, Range.Zero)
-                )
-            |> ValueOption.toOption
-        let attributes =
-            [
-                // TODO - this depends on whether we need to emit an expression
-                this.PathKey
-                |> Path.tracePathOfEntry
-                |> List.map _.ValueOrSource
-                |> String.concat "."
-                |> fun path ->
-                    $"Import(\"{path}\", \"electron\")"
-                //
-                match
-                    this.Parameters
-                    |> List.tryFindIndex _.IsInlinedObjectProp
-                with
-                | Some idx -> $"ParamObject(%i{idx})"
-                | None -> ()
-            ]
-            |> function
-                | [] -> None
-                | attrs -> MultipleAttributeListNode.make attrs |> Some
-        let returnInfo =
-            BindingReturnInfoNode(SingleTextNode.make ":", Type.FantomasFactory.mapToFantomas this.ReturnType, Range.Zero)
-        let inlineObjectParameters,parameters =
-            this.Parameters
-            |> List.partition _.IsInlinedObjectProp
-            |> fun (inlined,pars) ->
-                inlined
-                |> List.map (
-                    function InlinedObjectProp prop -> prop | _ -> failwith "UNREACHABLE"
-                    >> fun prop ->
-                        prop, Type.FantomasFactory.mapToFantomas prop.Type
-                    ),
-                pars
-                |> List.mapi (fun i -> function
-                    | Positional paramInfo ->
-                        Source $"arg{i}", paramInfo, Type.FantomasFactory.mapToFantomas paramInfo.Type
-                    | Named(name,paramInfo) ->
-                        name.Name, paramInfo, Type.FantomasFactory.mapToFantomas paramInfo.Type
-                    | _ -> failwith "UNREACHABLE"
-                    )
-                
-        let requiredParameters,optionalParameters =
-            parameters |> List.partition (fun (_,p,_) -> p.Required)
-        let parameterList =
-            [
-                for name,required,typ in requiredParameters do
-                    Choice1Of2 <| Method.makeParameter false (name,required,typ)
-                    Choice2Of2 (SingleTextNode.make ",")
-                for name,optional,typ in optionalParameters do
-                    Choice1Of2 <| Method.makeParameter true (name,optional,typ)
-                    Choice2Of2 (SingleTextNode.make ",")
-                for prop,typ in inlineObjectParameters do
-                    Choice1Of2 <| Method.makePropParameter (prop,typ)
-                    Choice2Of2 (SingleTextNode.make ",")
-            ]
-            |> List.cutOffLast
-            |> fun pats -> PatTupleNode(pats,Range.Zero)
-            |> Pattern.Tuple
-            |> PatParenNode.make
-            |> Pattern.Paren
-        BindingNode(
-            xmlDoc,
-            attributes,
-            MultipleTextsNode.make ["static"; "member"],
-            false,
-            None,
-            None,
-            Choice1Of2 (IdentListNode.make this.PathKey.Name.ValueOrModified),
-            None,
-            [ parameterList ],
-            Some returnInfo,
-            SingleTextNode.make "=",
-            (
-                // TODO - this depends on whether we need to inline or emit
-                Expr.Ident(SingleTextNode.make "nativeOnly")
-            ),
-            Range.Zero
-        )
-        |> Compatibility.wrapInCompatibilityDirective this.Compatibility
-        |> MemberDefn.Member
-    static member tryDebugStaticMemberGen (methods: Method list) =
-        methods
-        |> List.map _.ToMemberNode
-        |> fun members ->
-            TypeNameNode.makeSimple "Test"
-            |> TypeDefnRegularNode.make members
-            |> TypeDefn.Regular
-            |> ModuleDecl.TypeDefn
-            |> List.singleton
-        |> fun decls ->
-            Oak([], [ ModuleOrNamespaceNode(None, decls, Range.Zero) ], Range.Zero)
-            |> CodeFormatter.FormatOakAsync
-            |> Async.RunSynchronously
-            |> printfn "%s"
-
-[<RequireQualifiedAccess>]
-type EventMemberType =
-    | Instance of Path.Type
-    | Module of Path.ModulePath
-type Event with
-    /// <summary>
-    /// Creates the event handler member(s) for the instance.
-    /// </summary>
-    /// <remarks>
-    /// If the event handler takes more than one argument, then multiple event handlers are created.
-    /// One event handler is the standard curried F# type. The second is a single argument handler, where
-    /// the first argument is an interface which abstracts away indexed access to the arguments via named field access
-    /// through the interface.
-    /// </remarks>
-    member this.MakeMemberNodes (functionPrefix: string) =
-        // There are three (four) scenarios we must account for:
-        // 1. Module/'static' events.
-        // 2. Instance/'member' events.
-        // 3. One of the above, but we also have to make an interface overload
-        //
-        // When the parent is a type, it is the latter; ie - the events are only
-        // accessible from an instance of the class/interface.
-        // When the parent is a module, it can be used without an instance of a class/interface.
-        let eventType =
-            match this.PathKey with
-            | Path.PathKey.Event e ->
-                match e.Parent with
-                | Choice1Of2 modulePath -> EventMemberType.Module modulePath
-                | Choice2Of2 ``type`` -> EventMemberType.Instance ``type``
-            | pathKey ->
-                failwith $"An event type unexpectedly did not have a matching PathKey: {pathKey}"
-        let xmlDocs =
-            [
-                match
-                    this.Compatibility
-                    |> XmlDocs.Helpers.makeCompatibilityLine
-                with
-                | ValueSome compats ->
-                    compats |> XmlDocs.wrapInPara
-                    |> String.concat ""
-                | ValueNone -> ()
-                match this.Description with
-                | ValueSome docs -> docs
-                | ValueNone -> ()
-            ]
-            |> function
-                | [] -> ValueNone
-                | texts -> ValueSome texts
-            |> ValueOption.map(
-                XmlDocs.wrapInSummary
-                >> XmlDocs.Helpers.makeDocs
-                >> fun docs ->
-                    XmlDocNode(docs, Range.Zero)
-                )
-            |> ValueOption.toOption
-        let functionName =
-            if eventType.IsInstance
-            then IdentListNode.make [ "_"; functionPrefix + this.PathKey.Name.ValueOrModified ]
-            else IdentListNode.make (functionPrefix + this.PathKey.Name.ValueOrModified)
-        let leadingKeyword =
-            if eventType.IsInstance
-            then MultipleTextsNode.make [ "member" ]
-            else MultipleTextsNode.make [ "static member" ]
-        let expr = Expr.Ident(SingleTextNode.make "nativeOnly")
-        let attributes = MultipleAttributeListNode.make [
-            match eventType with
-            | EventMemberType.Instance _ ->
-                yield $"Emit(\"$0.{functionPrefix}('{this.PathKey.Name.ValueOrSource}', $1)\")"
-            | EventMemberType.Module modulePath ->
-                let name = modulePath.Name.ValueOrSource
-                yield $"Import(\"{name}\",\"electron\")"
-                yield $"Emit(\"{name}.{functionPrefix}('{this.PathKey.Name.ValueOrSource}', $0\")"
-        ]
-        let returnType =
-            BindingReturnInfoNode(
-                SingleTextNode.make ":",
-                Type.FcsType.Anon(SingleTextNode.make "unit"),
-                Range.Zero
-            )
-        
-        let parameters =
-            this.Parameters
-            |> List.mapi (fun i -> function
-                | Positional parameterInfo ->
-                    Choice1Of2(
-                        Source $"arg{i}",
-                        parameterInfo,
-                        parameterInfo.Type
-                        |> Type.FantomasFactory.mapToFantomas
-                    )
-                | Named(name, info) ->
-                    Choice1Of2(
-                        name.Name,
-                        info,
-                        info.Type
-                        |> Type.FantomasFactory.mapToFantomas
-                    )
-                | InlinedObjectProp prop ->
-                    Choice2Of2(
-                        prop,
-                        prop.Type |> Type.FantomasFactory.mapToFantomas
-                    )
-            )
-        let parameters =
-            parameters
-            |> List.mapi (fun i -> function
-                | Choice1Of2(_,_,typ) 
-                | Choice2Of2(_, typ) ->
-                    typ,
-                    // if i = parameters.Length - 1 then
-                        // SingleTextNode.make "->"
-                    // else SingleTextNode.make "*"
-                    SingleTextNode.make "->"
-            )
-            |> function
-                | [] -> [ Type.Anon(SingleTextNode.make "unit"), SingleTextNode.make "->" ]
-                | list -> list
-            |> fun typeFunsPat ->
-                TypeFunsNode(
-                    typeFunsPat,
-                    Type.Anon(SingleTextNode.make "unit"),
-                    Range.Zero
-                    )
-                |> Type.Funs
-            |> fun typ ->
-                PatParameterNode(
-                    None,
-                    Pattern.Named (PatNamedNode(
-                        None,
-                        SingleTextNode.make "handler",
-                        Range.Zero)
-                    ),
-                    Some typ,
-                    Range.Zero
-                    )
-                |> Pattern.Parameter
-                |> PatParenNode.make
-                |> Pattern.Paren
-                |> List.singleton
-        [
-            BindingNode(
-                xmlDocs,
-                Some attributes,
-                leadingKeyword,
-                false,
-                Some (SingleTextNode.make "inline"),
-                None,
-                Choice1Of2 functionName,
-                None,
-                parameters,
-                Some returnType,
-                SingleTextNode.make "=",
-                expr,
-                Range.Zero
-                )
-            |> Compatibility.wrapInCompatibilityDirective this.Compatibility
-            |> MemberDefn.Member
-            match EventInterfaces.addEvent this with
-            | Error (EventInterfaces.CacheRejectionReason.AlreadyExists resultValue)
-            | Ok resultValue ->
-                let parameters =
-                    [
-                        Type.Anon(
-                            resultValue
-                            |> EventInterfaces.eventInterfaceFullPath
-                            |> SingleTextNode.make
-                        ),
-                        SingleTextNode.make "->"
-                    ]
-                    |> fun funsTyps ->
-                        TypeFunsNode(funsTyps, Type.Anon(SingleTextNode.make "unit"), Range.Zero)
-                    |> Type.Funs
-                    |> fun typ ->
-                        PatParameterNode(
-                            None,
-                            Pattern.Named (PatNamedNode(
-                                None,
-                                SingleTextNode.make "handler",
-                                Range.Zero)
-                            ),
-                            Some typ,
-                            Range.Zero
-                            )
-                        |> Pattern.Parameter
-                        |> PatParenNode.make
-                        |> Pattern.Paren
-                        |> List.singleton
-                BindingNode(
-                    xmlDocs,
-                    Some attributes,
-                    leadingKeyword,
-                    false,
-                    Some (SingleTextNode.make "inline"),
-                    None,
-                    Choice1Of2 functionName,
-                    None,
-                    parameters,
-                    Some returnType,
-                    SingleTextNode.make "=",
-                    expr,
-                    Range.Zero
-                    )
-                |> Compatibility.wrapInCompatibilityDirective this.Compatibility
-                |> MemberDefn.Member
-            | Error _ -> ()
-        ]
-    member this.ToMemberNode =
-        [
-            yield! this.MakeMemberNodes("on")
-            yield! this.MakeMemberNodes("once")
-            yield! this.MakeMemberNodes("off")
-        ]
-    static member tryDebugEventMemberGen (events: Event list) =
-        events
-        |> List.collect _.ToMemberNode
-        |> fun members ->
-            TypeNameNode.makeSimple "Test"
-            |> TypeDefnRegularNode.make members
-            |> TypeDefn.Regular
-            |> ModuleDecl.TypeDefn
-            |> List.singleton
         |> fun decls ->
             Oak([], [ ModuleOrNamespaceNode(None, decls, Range.Zero) ], Range.Zero)
             |> CodeFormatter.FormatOakAsync
@@ -2338,899 +1938,64 @@ type Class with
             |> Path.PathKey.Type
         | _, pathKey ->
             failwith $"Class pathkeys that are not of type PathKey.Type cannot be mapped to a process: {pathKey}"
-    member this.SpecialStaticPropertyHandler (props: Property list) =
-        match this.PathKey.Name.ValueOrModified with
-        | "TouchBar" ->
-            props
-            |> List.filter (
-                _.PathKey.Name.ValueOrSource
-                >> function
-                    | "TouchBarButton" | "TouchBarColorPicker"
-                    | "TouchBarGroup" | "TouchBarLabel"
-                    | "TouchBarPopover" | "TouchBarScrubber"
-                    | "TouchBarSegmentedControl" | "TouchBarSlider"
-                    | "TouchBarSpacer" | "TouchBarOtherItemsProxy" -> false
-                    | _ -> true
-                )
-        | _ -> props
-    member private this.MakeProperties(isStatic: bool) =
-        if isStatic then
-            this.StaticProperties
-            |> this.SpecialStaticPropertyHandler
-        else this.Properties
-        |> List.map (fun prop ->
-            let isSourceName =
-                prop.PathKey.Name.IsSource
-                || prop.PathKey.Name |> function
-                    | Modified(_, text) when text.StartsWith("``") && text.EndsWith("``") -> true
-                    | Source _ -> true
-                    | _ -> false
-            let attributes =
-                [
-                    if not isSourceName && isStatic then
-                        $"Emit(\"{this.PathKey.Name.ValueOrSource}.{prop.PathKey.Name.ValueOrSource}{{{{ = $0}}}}\")"
-                    elif not isSourceName then
-                        $"Emit(\"$0.{prop.PathKey.Name.ValueOrSource}{{{{ = $1 }}}}\")"
-                    if StabilityStatus.IsExperimental prop then
-                        "Experimental(\"Experimental according to Electron\")"
-                    if StabilityStatus.IsDeprecated prop then
-                        "System.Obsolete"
-                ]
-                |> function
-                    | [] -> None
-                    | attrs -> MultipleAttributeListNode.make attrs |> Some
-            let xmlDocs =
-                [
-                    match prop.Compatibility |> XmlDocs.Helpers.makeCompatibilityLine with
-                    | ValueSome docs -> XmlDocs.wrapInPara docs |> String.concat ""
-                    | ValueNone -> ()
-                    match prop.Description with
-                    | ValueSome docs -> docs
-                    | ValueNone -> ()
-                ]
-                |> function
-                    | [] -> None
-                    | docs ->
-                        XmlDocs.wrapInSummary docs
-                        |> XmlDocs.Helpers.makeDocs
-                        |> fun docs ->
-                            XmlDocNode(docs, Range.Zero)
-                            |> Some
-            match isSourceName with
-            | true ->
-                // make autoStaticProperty
-                MemberDefnAutoPropertyNode(
-                    xmlDocs,
-                    attributes,
-                    MultipleTextsNode.make [
-                        if isStatic then "static"
-                        "member"
-                        "val"
-                    ],
-                    None,
-                    SingleTextNode.make prop.PathKey.Name.ValueOrSource,
-                    Some (prop.Type |> Type.FantomasFactory.mapToFantomas),
-                    SingleTextNode.make "=",
-                    Expr.Ident(SingleTextNode.make "nativeOnly"),
-                    Some (MultipleTextsNode.make (if prop.ReadOnly then "with get" else "with get, set")),
-                    Range.Zero
+    member this.ToGeneratorContainer() =
+        GeneratorContainer.create this.PathKey
+        |> match this.PathKey.Name.ValueOrSource with
+            | "TouchBarSpacer" | "TouchBarButton" | "TouchBarColorPicker"
+            | "TouchBarGroup" | "TouchBarLabel" | "TouchBarPopover" | "TouchBarScrubber"
+            | "TouchBarSegmentedControl" | "TouchBarSlider" | "TouchBarSpacer" as name ->
+                GeneratorContainer.withAttribute $"Import(\"TouchBar.{name}\", \"electron\")"
+                >> GeneratorContainer.withStaticProperties this.StaticProperties
+            | "TouchBar" ->
+                GeneratorContainer.makeImported
+                >> GeneratorContainer.withStaticProperties (
+                    this.StaticProperties
+                    |> List.filter (_.PathKey.Name.ValueOrSource >> function
+                        | "TouchBarButton" | "TouchBarColorPicker"
+                        | "TouchBarGroup" | "TouchBarLabel"
+                        | "TouchBarPopover" | "TouchBarScrubber"
+                        | "TouchBarSegmentedControl" | "TouchBarSlider"
+                        | "TouchBarSpacer" | "TouchBarOtherItemsProxy" -> false
+                        | _ -> true )
                     )
-                |> Compatibility.wrapInCompatibilityDirective prop.Compatibility
-                |> MemberDefn.AutoProperty
-            | false ->
-                MemberDefnPropertyGetSetNode(
-                    xmlDocs,
-                    attributes,
-                    MultipleTextsNode.make [
-                        if isStatic then "static"
-                        "member"
-                    ],
-                    None, None,
-                    IdentListNode.make [
-                        if not isStatic then "_"
-                        prop.PathKey.Name.ValueOrModified
-                    ],
-                    SingleTextNode.make "with",
-                    PropertyGetSetBindingNode(
-                        None, None, None,
-                        SingleTextNode.make "get",
-                        [
-                            PatTupleNode([], Range.Zero)
-                            |> Pattern.Tuple
-                            |> PatParenNode.make
-                            |> Pattern.Paren
-                        ],
-                        Some(BindingReturnInfoNode(
-                            SingleTextNode.make ":",
-                            Type.FantomasFactory.mapToFantomas prop.Type,
-                            Range.Zero
-                            )),
-                        SingleTextNode.make "=",
-                        Expr.Ident(SingleTextNode.make "Unchecked.defaultof<_>"),
-                        Range.Zero
-                        ),
-                    (
-                        if prop.ReadOnly then None else
-                        SingleTextNode.make "and" |> Some
-                    ),
-                    (
-                        if prop.ReadOnly then
-                            None
-                        else
-                            Some (
-                                PropertyGetSetBindingNode(
-                                    None,None,None,
-                                    SingleTextNode.make "set",
-                                    [
-                                        PatParameterNode.make
-                                            (SingleTextNode.make "value")
-                                            (Type.FantomasFactory.mapToFantomas prop.Type |> Some)
-                                        |> Pattern.Parameter
-                                        |> PatParenNode.make
-                                        |> Pattern.Paren
-                                    ],
-                                    None, SingleTextNode.make "=",
-                                    Expr.Ident(SingleTextNode.make "()"), Range.Zero
-                                    )
-                                )
-                    ),
-                    Range.Zero
-                    )
-                |> Compatibility.wrapInCompatibilityDirective prop.Compatibility
-                |> MemberDefn.PropertyGetSet
-            )
-    member this.MakeStaticProperties() = this.MakeProperties(true)
-    member this.MakeInstanceProperties() = this.MakeProperties(false)
-    member this.MakeConstructor() =
-        this.Constructor
-        |> function
-            | None -> None
-            | Some parameters ->
-                let attributes =
-                    parameters
-                    |> List.tryFindIndex _.IsInlinedObjectProp
-                    |> Option.map (fun idx -> MultipleAttributeListNode.make $"ParamObject({idx})")
-                parameters
-                |> List.collect (function
-                    | Parameter.InlinedObjectProp prop ->
-                        (prop.Type |> Type.FantomasFactory.mapToFantomas
-                         , prop)
-                        |> Choice1Of2
-                    | Parameter.Positional info ->
-                        (info.Type
-                        |> Type.FantomasFactory.mapToFantomas,
-                        Name.createCamel "arg",
-                        info)
-                        |> Choice2Of2
-                    | Parameter.Named(name,info) ->
-                        (info.Type
-                        |> Type.FantomasFactory.mapToFantomas
-                        , name.Name,
-                        info)
-                        |> Choice2Of2
-                    >> function
-                        | Choice1Of2(typ,prop) ->
-                            [
-                                Method.makePropParameter(prop,typ)
-                                |> Choice1Of2
-                                SingleTextNode.make "," |> Choice2Of2
-                            ]
-                        | Choice2Of2(typ,name,info) ->
-                            [
-                                Method.makeParameter info.Required (name,info,typ)
-                                |> Choice1Of2
-                                SingleTextNode.make "," |> Choice2Of2
-                            ]
-                )
-                |> List.cutOffLast
-                |> fun patterns ->
-                    PatTupleNode(patterns, Range.Zero)
-                    |> Pattern.Tuple
-                    |> PatParenNode.make
-                    |> Pattern.Paren
-                |> fun parameters ->
-                    ImplicitConstructorNode(
-                        None, attributes, None,
-                        parameters,
-                        None, Range.Zero
-                        )
-                |> Some
-    member private this.MakeMethods(isStatic: bool) =
-        if isStatic then
-            this.StaticMethods
-        else this.Methods
-        |> List.map (fun method ->
-            let xmlDocs =
-                [
-                    yield! [
-                        match
-                            XmlDocs.Helpers.makeCompatibilityLine method.Compatibility
-                        with
-                        | ValueSome docs -> docs |> XmlDocs.wrapInPara |> String.concat ""
-                        | _ -> ()
-                        match method.Description with
-                        | ValueSome docs -> docs
-                        | _ -> ()
-                    ]
-                    |> function
-                        | [] -> []
-                        | docs ->
-                            docs |> XmlDocs.wrapInSummary
-                    yield!
-                        method.Parameters
-                        |> List.mapi (fun i -> function
-                            | InlinedObjectProp prop -> prop.PathKey.Name.ValueOrModified, prop.Description |> ValueOption.defaultValue ""
-                            | Positional para -> $"arg{i}", para.Description |> ValueOption.defaultValue ""
-                            | Named(name,para) -> name.Name.ValueOrModified, para.Description |> ValueOption.defaultValue ""
-                        )
-                        |> List.map(fun nameDesc -> nameDesc ||> XmlDocs.makeParam)
-                ]
-                |> XmlDocs.Helpers.makeDocs
-                |> fun docs ->
-                    XmlDocNode(docs, Range.Zero)
-                    |> Some
-            let attributes = [
-                match method.PathKey.Name with
-                | Modified(source,_) -> $"CompiledName(\"{source}\")"
-                | Source _ -> ()
-                match
-                    method.Parameters
-                    |> List.tryFindIndex _.IsInlinedObjectProp
-                with
-                | Some value ->
-                    $"ParamObject({value})"
-                | None -> ()
-                if StabilityStatus.IsExperimental method then
-                    "Experimental(\"Marked Experimental by Electron\")"
-                if StabilityStatus.IsDeprecated method then
-                    "System.Obsolete"
-            ]
-            BindingNode(
-                xmlDocs,
-                (
-                    match attributes with
-                    | [] -> None
-                    | attrs -> MultipleAttributeListNode.make attrs |> Some
-                ),
-                MultipleTextsNode.make [
-                    if isStatic then
-                        "static"
-                    "member"
-                ],
-                false,
-                None, None,
-                Choice1Of2(
-                    IdentListNode.make [
-                        if not isStatic then "_"
-                        method.PathKey.Name.ValueOrModified
-                    ]
-                    ),
-                None,
-                (
-                    let inlined,nonInlined =
-                        method.Parameters
-                        |> List.partition _.IsInlinedObjectProp
-                    let required,optional =
-                        nonInlined |> List.partition _.Required
-                    required @ optional @ inlined
-                    |> List.mapi (fun i -> function
-                        | InlinedObjectProp prop ->
-                            Choice1Of2 (prop, prop.Type |> Type.FantomasFactory.mapToFantomas)
-                        | Positional para ->
-                            Choice2Of2(Source $"arg{i}", para.Type |> Type.FantomasFactory.mapToFantomas, para)
-                        | Named(name,para) ->
-                            Choice2Of2(name.Name, para.Type |> Type.FantomasFactory.mapToFantomas, para)
-                        )
-                    |> List.collect (function
-                        | Choice1Of2(prop,typ) ->
-                            [
-                                Choice1Of2 <| Method.makePropParameter(prop,typ)
-                                Choice2Of2 (SingleTextNode.make ",")
-                            ]
-                        | Choice2Of2(name,typ,para) ->
-                            [
-                                Choice1Of2 <| Method.makeParameter (not para.Required) (name,para,typ)
-                                Choice2Of2(SingleTextNode.make ",")
-                            ]
-                        )
-                    |> function
-                        | [] -> []
-                        | nodes ->
-                            nodes
-                            |> List.cutOffLast
-                    |> fun items -> PatTupleNode(items, Range.Zero)
-                    |> Pattern.Tuple
-                    |> PatParenNode.make
-                    |> Pattern.Paren
-                    |> List.singleton
-                ),       
-                (
-                    method.ReturnType
-                    |> Type.FantomasFactory.mapToFantomas
-                    |> fun typ ->
-                        BindingReturnInfoNode(SingleTextNode.make ":", typ, Range.Zero)
-                        |> Some
-                ),
-                SingleTextNode.make "=",
-                Expr.Ident(SingleTextNode.make "Unchecked.defaultof<_>"),
-                Range.Zero
-                )
-            |> Compatibility.wrapInCompatibilityDirective method.Compatibility
-            |> MemberDefn.Member
-            )
-    member this.MakeStaticMethods() = this.MakeMethods(true)
-    member this.MakeInstanceMethods() = this.MakeMethods(false)
-    member this.MakeInstanceEvents() =
-        this.Events
-        |> List.collect _.ToMemberNode
-    member this.ToTypeDefn =
-        // The classes have a series of properties, members, and events to manage.
-        // They are all fairly trivial to implement within F#.
-        let path = Class.MapPathKeyToProcess this.Process this.PathKey
-        let attributes =
-            [
-                if
-                    this.Constructor.IsNone
-                    || this.Description
-                    |> ValueOption.exists _.Contains("cannot be subclassed in user code.")
-                then
-                    "Sealed"
-                match this.PathKey.Name.ValueOrSource with
-                | "TouchBarSpacer" | "TouchBarButton" | "TouchBarColorPicker"
-                | "TouchBarGroup" | "TouchBarLabel" | "TouchBarPopover" | "TouchBarScrubber"
-                | "TouchBarSegmentedControl" | "TouchBarSlider" | "TouchBarSpacer" as name ->
-                    $"Import(\"TouchBar.{name}\", \"electron\")"
-                | name ->
-                    $"Import(\"{name}\", \"electron\")"
-                
-            ]
-            |> MultipleAttributeListNode.make
-        let interfaces =
-            [
-                if
-                    this.Events.Length > 0
-                    || this.Description
-                    |> ValueOption.exists _.Contains("is an EventEmitter", System.StringComparison.Ordinal)
-                then
-                    MemberDefnInterfaceNode(
-                        SingleTextNode.make "interface",
-                        Type.makeSimple Injections.eventEmitterName,
-                        None,
-                        [],
-                        Range.Zero
-                        )
-                    |> MemberDefn.Interface
-            ]
-        let typeDocs =
-            [
-                this.Process
-                |> XmlDocs.Helpers.makeProcessLine
-                |> XmlDocs.wrapInPara
-                |> String.concat ""
-                
-                match this.Description with
-                | ValueSome desc -> desc
-                | ValueNone -> ()
-            ]
-            |> function
-                | [] -> None
-                | docs -> Some docs
-            |> Option.map(
-                XmlDocs.wrapInSummary
-                >> XmlDocs.Helpers.makeDocs
-                >> fun docs ->
-                    XmlDocNode(docs,Range.Zero)
-                )
-        let members =
-            interfaces
-            @ this.MakeStaticProperties()
-            @ this.MakeInstanceProperties()
-            @ this.MakeStaticMethods()
-            @ this.MakeInstanceMethods()
-            @ this.MakeInstanceEvents()
-        TypeNameNode(
-            typeDocs,
-            Some attributes,
-            SingleTextNode.make "type",
-            None,
-            // IdentListNode.make (path |> Path.tracePathOfEntry |> List.map (_.ValueOrModified >> toPascalCase)),
-            IdentListNode.make path.Name.ValueOrModified,
-            None,
-            [],
-            this.MakeConstructor(),
-            Some (SingleTextNode.make "="),
-            None,
-            Range.Zero
-            )
-        |> TypeDefnRegularNode.make members
-        |> TypeDefn.Regular
-        |> ModuleDecl.TypeDefn
-        |> fun moduleDecl ->
-            SourcePackage.Empty
-            |> SourcePackage.withDecl moduleDecl
-            |> SourcePackage.withPathKey path
-            |> SourcePackage.withTarget (
-                SourceTarget.Empty
-                |> SourceTarget.setProcesses [
-                    if this.Process.Main then Target.Process.Main
-                    if this.Process.Renderer then Target.Process.Renderer
-                    if this.Process.Utility then Target.Process.Utility
-                ]
-                )
-            // special case
-            |> if this.PathKey.Name.ValueOrSource = "TouchBar" then
-                   SourcePackage.withDecl Injections.touchBarItemsDef
-                else id
-    static member MakeFile(classes: Class list) =
-        let sharedMainRenderer =
-            classes
-            |> List.filter (fun c -> c.Process.Main && c.Process.Renderer)
-        let mainProcess =
-            classes
-            |> List.filter (fun c -> c.Process.Main && not c.Process.Renderer)
-        let rendererProcess =
-            classes
-            |> List.filter (fun c -> (not c.Process.Main) && c.Process.Renderer)
-        let rest = classes |> List.except (sharedMainRenderer @ mainProcess @ rendererProcess)
-        let makeTypes autoOpen moduleName : Class list -> _ = fun classes ->
-            classes
-            |> List.map _.ToTypeDefn
-            |> fun decls ->
-               NestedModuleNode(
-                   None, Some (MultipleAttributeListNode.make [
-                       "Erase"
-                       if autoOpen then "AutoOpen"
-                   ]),
-                   SingleTextNode.make "module", None, false,
-                   IdentListNode.make (moduleName: string), SingleTextNode.make "=",
-                   decls |> List.collect _.Decls, Range.Zero
-                   )
-               |> ModuleDecl.NestedModule
-        Oak([], [ ModuleOrNamespaceNode(None, (
-                [
-                   true, "Common", sharedMainRenderer
-                   false, "Main", mainProcess
-                   false, "Renderer", rendererProcess
-                   false, "Utility", rest
-                ]
-                |> List.map (fun p -> p |||> makeTypes)
-            ), Range.Zero) ], Range.Zero)
-        |> CodeFormatter.FormatOakAsync
-        |> Async.RunSynchronously
-                
-    static member tryDebugFileMaker (classes: Class list) =
-        Class.MakeFile(classes)
-        |> fun txt ->
-            System.IO.File.WriteAllText(System.IO.Path.Combine(__SOURCE_DIRECTORY__, "test.fs"), txt)
-    // static member tryDebugClassTypeGen (classes: Class list) =
-    //     classes
-    //     |> List.map _.ToTypeDefn
-    //     |> List.insertAt (classes |> List.findIndex (_.PathKey.Name.ValueOrModified >> (=) "TouchBar")) Injections.touchBarItemsDef
-    //     |> fun decls ->
-    //         Oak([], [ ModuleOrNamespaceNode(None, decls, Range.Zero) ], Range.Zero)
-    //         |> CodeFormatter.FormatOakAsync
-    //         |> Async.RunSynchronously
-    //         |> fun txt ->
-    //             System.IO.File.WriteAllText(System.IO.Path.Combine(__SOURCE_DIRECTORY__, "test.fs"), txt)
-    //             txt
-    //         |> printfn "%s"
-
+            | _ ->
+                GeneratorContainer.makeImported
+                >> GeneratorContainer.withStaticProperties this.StaticProperties
+        |> GeneratorContainer.mergeDescription this
+        |> GeneratorContainer.mergeProcess this
+        |> GeneratorContainer.withInstanceEvents this.Events
+        |> GeneratorContainer.withInstanceMethods this.Methods
+        |> GeneratorContainer.withInstanceProperties this.Properties
+        |> GeneratorContainer.withStaticMethods this.StaticMethods
+        |> fun gen ->
+            this.Constructor
+            |> Option.map (fun parameters -> GeneratorContainer.withConstructor parameters gen)
+            |> Option.defaultValue gen
 type Module with
-    member this.MakeEvents() =
-        this.Events
-        |> List.collect _.ToMemberNode
-    member this.MakeMethods() =
-        this.Methods
-        |> List.map (fun method ->
-            let xmlDocs =
-                [
-                    yield! [
-                        match
-                            XmlDocs.Helpers.makeCompatibilityLine method.Compatibility
-                        with
-                        | ValueSome docs -> docs |> XmlDocs.wrapInPara |> String.concat ""
-                        | _ -> ()
-                        match method.Description with
-                        | ValueSome docs -> docs
-                        | _ -> ()
-                    ]
-                    |> function
-                        | [] -> []
-                        | docs ->
-                            docs |> XmlDocs.wrapInSummary
-                    yield!
-                        method.Parameters
-                        |> List.mapi (fun i -> function
-                            | InlinedObjectProp prop -> prop.PathKey.Name.ValueOrModified, prop.Description |> ValueOption.defaultValue ""
-                            | Positional para -> $"arg{i}", para.Description |> ValueOption.defaultValue ""
-                            | Named(name,para) -> name.Name.ValueOrModified, para.Description |> ValueOption.defaultValue ""
-                        )
-                        |> List.map(fun nameDesc -> nameDesc ||> XmlDocs.makeParam)
-                ]
-                |> XmlDocs.Helpers.makeDocs
-                |> fun docs ->
-                    XmlDocNode(docs, Range.Zero)
-                    |> Some
-            let attributes = [
-                match method.PathKey.Name with
-                | Modified(source,_) -> $"CompiledName(\"{source}\")"
-                | Source _ -> ()
-                match
-                    method.Parameters
-                    |> List.tryFindIndex _.IsInlinedObjectProp
-                with
-                | Some value ->
-                    $"ParamObject({value})"
-                | None -> ()
-                if StabilityStatus.IsExperimental method then
-                    "Experimental(\"Marked Experimental by Electron\")"
-                if StabilityStatus.IsDeprecated method then
-                    "System.Obsolete"
-            ]
-            BindingNode(
-                xmlDocs,
-                (
-                    match attributes with
-                    | [] -> None
-                    | attrs -> MultipleAttributeListNode.make attrs |> Some
-                ),
-                MultipleTextsNode.make [ "static"; "member" ],
-                false,
-                None, None,
-                Choice1Of2( IdentListNode.make [ method.PathKey.Name.ValueOrModified ] ),
-                None,
-                (
-                    let inlined,nonInlined =
-                        method.Parameters
-                        |> List.partition _.IsInlinedObjectProp
-                    let required,optional =
-                        nonInlined |> List.partition _.Required
-                    required @ optional @ inlined
-                    |> List.mapi (fun i -> function
-                        | InlinedObjectProp prop ->
-                            Choice1Of2 (prop, prop.Type |> Type.FantomasFactory.mapToFantomas)
-                        | Positional para ->
-                            Choice2Of2(Source $"arg{i}", para.Type |> Type.FantomasFactory.mapToFantomas, para)
-                        | Named(name,para) ->
-                            Choice2Of2(name.Name, para.Type |> Type.FantomasFactory.mapToFantomas, para)
-                        )
-                    |> List.collect (function
-                        | Choice1Of2(prop,typ) ->
-                            [
-                                Choice1Of2 <| Method.makePropParameter(prop,typ)
-                                Choice2Of2 (SingleTextNode.make ",")
-                            ]
-                        | Choice2Of2(name,typ,para) ->
-                            [
-                                Choice1Of2 <| Method.makeParameter (not para.Required) (name,para,typ)
-                                Choice2Of2(SingleTextNode.make ",")
-                            ]
-                        )
-                    |> function
-                        | [] -> []
-                        | nodes ->
-                            nodes
-                            |> List.cutOffLast
-                    |> fun items -> PatTupleNode(items, Range.Zero)
-                    |> Pattern.Tuple
-                    |> PatParenNode.make
-                    |> Pattern.Paren
-                    |> List.singleton
-                ),       
-                (
-                    method.ReturnType
-                    |> Type.FantomasFactory.mapToFantomas
-                    |> fun typ ->
-                        BindingReturnInfoNode(SingleTextNode.make ":", typ, Range.Zero)
-                        |> Some
-                ),
-                SingleTextNode.make "=",
-                Expr.Ident(SingleTextNode.make "Unchecked.defaultof<_>"),
-                Range.Zero
-                )
-            |> Compatibility.wrapInCompatibilityDirective method.Compatibility
-            |> MemberDefn.Member
-            |> fun memberDefn ->
-                SourcePacket<MemberDefn>.Empty
-                |> SourcePacket.withMember memberDefn
-                |> SourcePacket.withPathKey method.PathKey
-                |> SourcePacket.withTarget (
-                    SourceTarget.Empty
-                    |> SourceTarget.withCompatibility method.Compatibility.ToTargetCompatibility
-                    )
-            )
-    member this.MakeProperties() =
-        this.Properties
-        |> List.map (fun prop ->
-            let isSourceName =
-                prop.PathKey.Name.IsSource
-                || prop.PathKey.Name |> function
-                    | Modified(_, text) when text.StartsWith("``") && text.EndsWith("``") -> true
-                    | Source _ -> true
-                    | _ -> false
-            let attributes =
-                [
-                    if not isSourceName then
-                        $"Emit(\"{this.PathKey.Name.ValueOrSource}.{prop.PathKey.Name.ValueOrSource}{{{{ = $0}}}}\")"
-                    elif not isSourceName then
-                        $"Emit(\"$0.{prop.PathKey.Name.ValueOrSource}{{{{ = $1 }}}}\")"
-                    if StabilityStatus.IsExperimental prop then
-                        "Experimental(\"Experimental according to Electron\")"
-                    if StabilityStatus.IsDeprecated prop then
-                        "System.Obsolete"
-                ]
-                |> function
-                    | [] -> None
-                    | attrs -> MultipleAttributeListNode.make attrs |> Some
-            let xmlDocs =
-                [
-                    match prop.Compatibility |> XmlDocs.Helpers.makeCompatibilityLine with
-                    | ValueSome docs -> XmlDocs.wrapInPara docs |> String.concat ""
-                    | ValueNone -> ()
-                    match prop.Description with
-                    | ValueSome docs -> docs
-                    | ValueNone -> ()
-                ]
-                |> function
-                    | [] -> None
-                    | docs ->
-                        XmlDocs.wrapInSummary docs
-                        |> XmlDocs.Helpers.makeDocs
-                        |> fun docs ->
-                            XmlDocNode(docs, Range.Zero)
-                            |> Some
-            match isSourceName with
-            | true ->
-                // make autoStaticProperty
-                MemberDefnAutoPropertyNode(
-                    xmlDocs,
-                    attributes,
-                    MultipleTextsNode.make [
-                        "static"
-                        "member"
-                        "val"
-                    ],
-                    None,
-                    SingleTextNode.make prop.PathKey.Name.ValueOrSource,
-                    Some (prop.Type |> Type.FantomasFactory.mapToFantomas),
-                    SingleTextNode.make "=",
-                    Expr.Ident(SingleTextNode.make "nativeOnly"),
-                    Some (MultipleTextsNode.make (if prop.ReadOnly then "with get" else "with get, set")),
-                    Range.Zero
-                    )
-                |> Compatibility.wrapInCompatibilityDirective prop.Compatibility
-                |> MemberDefn.AutoProperty
-            | false ->
-                MemberDefnPropertyGetSetNode(
-                    xmlDocs,
-                    attributes,
-                    MultipleTextsNode.make [ "static"; "member" ],
-                    None, None,
-                    IdentListNode.make [ prop.PathKey.Name.ValueOrModified ],
-                    SingleTextNode.make "with",
-                    PropertyGetSetBindingNode(
-                        None, None, None,
-                        SingleTextNode.make "get",
-                        [
-                            PatTupleNode([], Range.Zero)
-                            |> Pattern.Tuple
-                            |> PatParenNode.make
-                            |> Pattern.Paren
-                        ],
-                        Some(BindingReturnInfoNode(
-                            SingleTextNode.make ":",
-                            Type.FantomasFactory.mapToFantomas prop.Type,
-                            Range.Zero
-                            )),
-                        SingleTextNode.make "=",
-                        Expr.Ident(SingleTextNode.make "Unchecked.defaultof<_>"),
-                        Range.Zero
-                        ),
-                    (
-                        if prop.ReadOnly then None else
-                        SingleTextNode.make "and" |> Some
-                    ),
-                    (
-                        if prop.ReadOnly then
-                            None
-                        else
-                            Some (
-                                PropertyGetSetBindingNode(
-                                    None,None,None,
-                                    SingleTextNode.make "set",
-                                    [
-                                        PatParameterNode.make
-                                            (SingleTextNode.make "value")
-                                            (Type.FantomasFactory.mapToFantomas prop.Type |> Some)
-                                        |> Pattern.Parameter
-                                        |> PatParenNode.make
-                                        |> Pattern.Paren
-                                    ],
-                                    None, SingleTextNode.make "=",
-                                    Expr.Ident(SingleTextNode.make "()"), Range.Zero
-                                    )
-                                )
-                    ),
-                    Range.Zero
-                    )
-                |> Compatibility.wrapInCompatibilityDirective prop.Compatibility
-                |> MemberDefn.PropertyGetSet
-            |> fun memberDefn ->
-                SourcePacket<MemberDefn>.Empty
-                |> SourcePacket.withMember memberDefn
-                |> SourcePacket.withPathKey prop.PathKey
-                |> SourcePacket.withTarget (
-                    SourceTarget.Empty
-                    |> SourceTarget.withCompatibility prop.Compatibility.ToTargetCompatibility
-                    )
-            )
-    member this.MakeClasses() =
+    member this.ToGeneratorContainer() =
+        GeneratorContainer.create this.PathKey
+        |> GeneratorContainer.makeImported
+        |> GeneratorContainer.mergeDescription this
+        |> GeneratorContainer.mergeProcess this
+        |> GeneratorContainer.withStaticMethods this.Methods
+        |> GeneratorContainer.withStaticEvents this.Events
+        |> GeneratorContainer.withStaticProperties this.Properties
+    member this.ToGeneratorGrouper() =
+        if this.ExportedClasses.Length = 0 then
+            None
+        else
+        let grouper = GeneratorGrouper.create this.PathKey
         this.ExportedClasses
-        |> List.map _.ToTypeDefn
-    member this.ToTypeDefn=
-        let path = Class.MapPathKeyToProcess this.Process this.PathKey
-        let attributes =
-            [
-                $"Import(\"{this.PathKey.Name.ValueOrSource}\", \"electron\")"
-            ]
-            |> MultipleAttributeListNode.make
-        let interfaces =
-            [
-                if
-                    this.Events.Length > 0
-                    || this.Description
-                    |> ValueOption.exists _.Contains("is an EventEmitter", System.StringComparison.Ordinal)
-                then
-                    MemberDefnInterfaceNode(
-                        SingleTextNode.make "interface",
-                        Type.makeSimple Injections.eventEmitterName,
-                        None,[],Range.Zero
-                    )
-                    |> MemberDefn.Interface
-            ]
-        let typeDocs =
-            [
-                this.Process
-                |> XmlDocs.Helpers.makeProcessLine
-                |> XmlDocs.wrapInPara
-                |> String.concat ""
-                
-                match this.Description with
-                | ValueSome desc -> desc
-                | ValueNone -> ()
-            ]
-            |> function
-                | [] -> None
-                | docs -> Some docs
-            |> Option.map (
-                XmlDocs.wrapInSummary
-                >> XmlDocs.Helpers.makeDocs
-                >> fun docs ->
-                    XmlDocNode(docs, Range.Zero)
-                )
-        let members =
-            interfaces
-            @ this.MakeEvents()
-            @ (this.MakeMethods() |> List.collect _.Members)
-            @ (this.MakeProperties() |> List.collect _.Members)
-        TypeNameNode(
-            typeDocs, Some attributes,
-            SingleTextNode.make "type",
-            None,
-            IdentListNode.make path.Name.ValueOrModified,
-            None,
-            [],
-            None,
-            Some (SingleTextNode.make "="),
-            None,
-            Range.Zero
-            )
-        |> TypeDefnRegularNode.make members
-        |> TypeDefn.Regular
-        |> ModuleDecl.TypeDefn
-        |> fun decl ->
-            if this.ExportedClasses.Length > 0 then
-                NestedModuleNode(
-                    None,
-                    Some (MultipleAttributeListNode.make "Erase"),
-                    SingleTextNode.make "module",
-                    None, false,
-                    IdentListNode.make path.Name.ValueOrModified, SingleTextNode.make "=",
-                    (this.ExportedClasses |> List.collect (_.ToTypeDefn >> _.Decls)),
-                    Range.Zero
-                    )
-                |> ModuleDecl.NestedModule
-                |> List.singleton
-                |> fun l -> decl :: l
-            else
-                [ decl ]
-        |> fun decls ->
-            SourcePackage.Empty
-            |> SourcePackage.setDecls decls
-            |> SourcePackage.withTarget (
-                SourceTarget.Empty
-                |> SourceTarget.setProcesses [
-                    if this.Process.Main then
-                        Target.Process.Main
-                    if this.Process.Renderer then
-                        Target.Process.Renderer
-                    if this.Process.Utility then
-                        Target.Process.Utility
-                ]
-                )
+        |> List.fold (fun state item -> GeneratorGrouper.addTypeChild (item.ToGeneratorContainer()) state ) grouper
+        |> GeneratorGrouper.addAttribute "Erase"
+        |> Some
+        
 type Element with
-    member this.MakeProperties =
-        this.Properties
-    member this.ToTypeDefn =
-        let path = Class.MapPathKeyToProcess this.Process this.PathKey
-        let attributes =
-            [
-                $"Import(\"{this.PathKey.Name.ValueOrSource}\", \"electron\")"
-            ]
-            |> MultipleAttributeListNode.make
-        let interfaces =
-            [
-                if
-                    this.Events.Length > 0
-                    || this.Description
-                    |> ValueOption.exists _.Contains("is an EventEmitter", System.StringComparison.Ordinal)
-                then
-                    MemberDefnInterfaceNode(
-                        SingleTextNode.make "interface",
-                        Type.makeSimple Injections.eventEmitterName,
-                        None, [], Range.Zero
-                        )
-                    |> MemberDefn.Interface
-            ]
-        let typeDocs =
-            [
-                this.Process
-                |> XmlDocs.Helpers.makeProcessLine
-                |> XmlDocs.wrapInPara
-                |> String.concat ""
-                
-                match this.Description with
-                | ValueSome docs -> docs
-                | ValueNone -> ()
-            ]
-            |> function
-                | [] -> None
-                | docs -> Some docs
-            |> Option.map (
-                XmlDocs.wrapInSummary
-                >> XmlDocs.Helpers.makeDocs
-                >> fun docs ->
-                    XmlDocNode(docs, Range.Zero)
-                )
-        let members =
-            interfaces
-        TypeNameNode(
-            typeDocs, Some attributes,
-            SingleTextNode.make "type",
-            None, IdentListNode.make path.Name.ValueOrModified,
-            None,
-            [],
-            None,
-            Some (SingleTextNode.make "="),
-            None,
-            Range.Zero
-        )
-        |> TypeDefnRegularNode.make members
-        |> TypeDefn.Regular
-        |> ModuleDecl.TypeDefn
-        |> List.singleton
-        |> fun decls ->
-            SourcePackage.Empty
-            |> SourcePackage.setDecls decls
-            |> SourcePackage.withTarget (
-                SourceTarget.Empty
-                |> SourceTarget.setProcesses [
-                    if this.Process.Main then
-                        Target.Process.Main
-                    if this.Process.Renderer then
-                        Target.Process.Renderer
-                    if this.Process.Utility then
-                        Target.Process.Utility
-                ]
-                )
-            
+    member this.ToGeneratorContainer() =
+        GeneratorContainer.create this.PathKey
+        |> GeneratorContainer.makeImported
+        |> GeneratorContainer.mergeDescription this
+        |> GeneratorContainer.mergeProcess this
+        |> GeneratorContainer.withInstanceEvents this.Events
+        |> GeneratorContainer.withInstanceMethods this.Methods
+        |> GeneratorContainer.withInstanceProperties this.Properties

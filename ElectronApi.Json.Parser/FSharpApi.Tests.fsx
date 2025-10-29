@@ -7,6 +7,7 @@
 #load "./Types.fs"
 #load "./FSharpApi.fs"
 #load "./SourceMapper.fs"
+#load "./Generator.fs"
 
 open System.IO
 open ElectronApi.Json.Parser
@@ -246,34 +247,34 @@ open SourceMapper
 //         |> CodeFormatter.FormatOakAsync
 //         |> Async.RunSynchronously
 //         |> printfn "%s"
-let testElements =
-    Decode.fromString decode (File.ReadAllText("./electron-api.json"))
-    |> function
-        | Ok values ->
-            values
-        | Error e ->
-            failwith e
-    |> readResults
-    |> List.choose (function
-        | ModifiedResult.Element element ->
-            Some element
-        | _ -> None
-        )
-    |> List.map(fun element ->
-        GeneratorContainer.create element.PathKey
-        |> GeneratorContainer.makeImported
-        |> GeneratorContainer.mergeDescription element
-        |> GeneratorContainer.mergeProcess element
-        |> GeneratorContainer.withInstanceEvents element.Events
-        |> GeneratorContainer.withInstanceMethods element.Methods
-        |> GeneratorContainer.withInstanceProperties element.Properties
-        |> GeneratorContainer.makeDefaultTypeDecl
-        )
-    |> fun decls ->
-        Oak([], [ ModuleOrNamespaceNode(None, decls, Range.Zero) ], Range.Zero)
-        |> CodeFormatter.FormatOakAsync
-        |> Async.RunSynchronously
-        |> printfn "%s"
+// let testElements =
+//     Decode.fromString decode (File.ReadAllText("./electron-api.json"))
+//     |> function
+//         | Ok values ->
+//             values
+//         | Error e ->
+//             failwith e
+//     |> readResults
+//     |> List.map (function
+//         | ModifiedResult.Element element ->
+//             element.ToGeneratorContainer()
+//         | ModifiedResult.Class cl ->
+//             cl.ToGeneratorContainer()
+//         | ModifiedResult.Module m ->
+//             m.ToGeneratorContainer()
+//         | ModifiedResult.Structure s ->
+//             s.ToGeneratorContainer()
+//         >> GeneratorContainer.makeDefaultTypeDecl
+//         )
+//     |> ignore
+//     FuncOrMethod.getCacheValues
+//     |> Seq.toList
+//     |> List.map GeneratorContainer.makeDefaultDelegateTypeDecl
+//     |> fun decls ->
+//     Oak([], [ ModuleOrNamespaceNode(None, decls, Range.Zero) ], Range.Zero)
+//     |> CodeFormatter.FormatOakAsync
+//     |> Async.RunSynchronously
+//     |> printfn "%s"
 
 // let testResult =
 //      Decode.fromString decode (File.ReadAllText("./electron-api.json"))
@@ -290,3 +291,6 @@ let testElements =
 //      |> List.filter _.IsStringEnum
 //      |> List.map (function StringEnum v -> v | _ -> failwith "")
 //      |> StringEnum.tryDebugTypeGen
+
+let testGenerate =
+    Generator.generateFromApiFile "./electron-api.json"
