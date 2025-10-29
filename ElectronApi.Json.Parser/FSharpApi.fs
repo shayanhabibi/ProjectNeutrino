@@ -283,7 +283,7 @@ module Compatibility =
                     Spec.osWinDefine
             ]
             |> String.concat " || "
-            |> sprintf "!(!%s || !%s || !%s || !%s) || %s" Spec.osLinDefine Spec.osWinDefine Spec.osMacDefine Spec.osMasDefine
+            |> sprintf "!(%s || %s || %s || %s) || %s" Spec.osLinDefine Spec.osWinDefine Spec.osMacDefine Spec.osMasDefine
             |> fun directive ->
                 let triviaBefore = TriviaNode(
                     TriviaContent.Directive $"#if {directive}"
@@ -321,7 +321,7 @@ module Compatibility =
                     Spec.osWinDefine
             ]
             |> String.concat " || "
-            |> sprintf "!(!%s || !%s || !%s || !%s) || %s" Spec.osLinDefine Spec.osWinDefine Spec.osMacDefine Spec.osMasDefine
+            |> sprintf "!(%s || %s || %s || %s) || %s" Spec.osLinDefine Spec.osWinDefine Spec.osMacDefine Spec.osMasDefine
             |> fun directive ->
                 let triviaBefore = TriviaNode(
                     TriviaContent.Directive $"#if {directive}"
@@ -551,7 +551,7 @@ module Type =
                     |> Type.Constant
                 | "(...args: any[]) => any" ->
                     // TODO
-                    Type.StructureRef ident
+                    Type.StructureRef "FSharpFunc<_,_>"
                 | "RequestInit & { bypassCustomProtocolHandlers?: boolean }" ->
                     // TODO - what is the request init type?. It's not a structure.
                     // ANSWER - it's node.js or mdn browser type

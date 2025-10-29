@@ -8,6 +8,10 @@ open Fantomas.Core.SyntaxOak
 open Fantomas.FCS.Text
 open Fantomas.Utils
 
+module List =
+    let tryTail = function
+        | [] -> []
+        | _ :: tail -> tail
 
 // 1. ApiDecoder - parses the json directly into F#
 // 2. FSharpApi - reads and maps; modifies names and ensures everything is accounted
@@ -973,38 +977,36 @@ module GeneratorContainer =
         makeMappedNamedNode attributes required typ name
     let private makePropParameterWithDirectives (prop: Property) =
         [
-            makePropParameter prop
+            SingleTextNode.make ","
             |> Compatibility.wrapInCompatibilityDirectiveBefore prop.Compatibility
+            |> Choice2Of2
+            makePropParameter prop
+            |> Compatibility.wrapInCompatibilityDirectiveAfter prop.Compatibility
             |> Pattern.Parameter
             |> Choice1Of2
-            SingleTextNode.make ","
-            |> Compatibility.wrapInCompatibilityDirectiveAfter prop.Compatibility
-            |> Choice2Of2
         ]
     let makeReturnInfoNode typ =
         BindingReturnInfoNode(SingleTextNode.make ":", Type.FantomasFactory.mapToFantomas typ, Range.Zero)
     let unitReturnInfo = makeReturnInfoNode Type.Unit
-    let private cutOffLastTextNodeWithDirectiveMaybe (compatibility: Compatibility)  (parameters: Choice<Pattern, SingleTextNode> list) =
+    let private cutOffFirstTextNodeWithDirectiveMaybe (compatibility: Compatibility)  (parameters: Choice<Pattern, SingleTextNode> list) =
         match compatibility, parameters with
         | Specified _, []
         | Unspecific, _ ->
-            parameters |> List.cutOffLast
+            parameters |> List.tryTail
         | Specified _, _ ->
             parameters
-            |> List.cutOffLast
-            |> fun hangingDirective ->
-                [
-                    yield! hangingDirective |> List.cutOffLast
-                    hangingDirective
-                    |> List.last
-                    |> function
-                        | Choice1Of2 (Pattern.Parameter para) ->
-                            para
-                            |> Compatibility.wrapInCompatibilityDirectiveAfter compatibility
-                            |> Pattern.Parameter
-                            |> Choice1Of2
-                        | _ -> failwith "UNREACHABLE"
-                ]
+            |> List.tryTail
+            |> function
+                | head :: tail ->
+                    match head with
+                    | Choice1Of2 (Pattern.Parameter para) ->
+                        (para
+                        |> Compatibility.wrapInCompatibilityDirectiveBefore compatibility
+                        |> Pattern.Parameter
+                        |> Choice1Of2) :: tail
+                    | _ -> failwith "UNREACHABLE"
+                | _ -> failwith "UNREACHABLE"
+            
     let private makeParameter (parameter: ParameterInfo) (name: string) =
         let typ = parameter.Type |> Type.FantomasFactory.mapToFantomas
         let required = parameter.Required
@@ -1012,21 +1014,21 @@ module GeneratorContainer =
         makeMappedNamedNode attributes required typ name
     let private makePositionalParameter (idx: int) (parameterInfo: ParameterInfo) =
         [
+            SingleTextNode.make ","
+            |> Choice2Of2
             $"arg%i{idx}"
             |> makeParameter parameterInfo
             |> Pattern.Parameter
             |> Choice1Of2
-            SingleTextNode.make ","
-            |> Choice2Of2
         ]
     let private makeNamedParameter (name: Path.PathKey) (parameterInfo: ParameterInfo) =
         [
+            SingleTextNode.make ","
+            |> Choice2Of2
             name.Name.ValueOrModified
             |> makeParameter parameterInfo
             |> Pattern.Parameter
             |> Choice1Of2
-            SingleTextNode.make ","
-            |> Choice2Of2
         ]
     let private makeFunsPattern (typ: Type.ApiType) =
         typ |> Type.FantomasFactory.mapToFantomas,
@@ -1217,10 +1219,8 @@ module GeneratorContainer =
             xmlDocs,
             attributes,
             MultipleTextsNode.make ["static"; "member"],
-            inlined,
-            None, None,
-            Choice1Of2 (IdentListNode.make name),
-            None,
+            false, (if inlined then Some (SingleTextNode.make "inline") else None),
+            None, Choice1Of2 (IdentListNode.make name), None,
             parameters,
             Some returnInfo,
             SingleTextNode.make "=",
@@ -1332,7 +1332,23 @@ module GeneratorContainer =
         let mutable idx = 0
         this.Constructor
         |> function
-            | None -> None
+            | None ->
+                // Since we use `member val` properties to be compact where we can,
+                // we are required to have a primary constructor. To satisfy this requirement, we make a private primary
+                // constructor when there would otherwise not be one.
+                if
+                    this.InstanceProperties |> List.isNotEmpty
+                    || this.StaticProperties |> List.isNotEmpty
+                then
+                    ImplicitConstructorNode(
+                        None,
+                        None,
+                        Some (SingleTextNode.make "private"),
+                        Pattern.Paren(PatParenNode.make(Pattern.Null(SingleTextNode.make ""))),
+                        None, Range.Zero
+                        )
+                    |> Some
+                else None
             | Some parameters ->
                 parameters
                 |> List.sortByDescending _.Required
@@ -1345,9 +1361,9 @@ module GeneratorContainer =
                     | Parameter.Named(name, info) ->
                         makeNamedParameter name info
                     )
-                |> cutOffLastTextNodeWithDirectiveMaybe (
+                |> cutOffFirstTextNodeWithDirectiveMaybe (
                     parameters
-                    |> List.tryLast
+                    |> List.tryHead
                     |> Option.map _.Compatibility
                     |> Option.defaultValue Unspecific
                     )
@@ -1421,14 +1437,14 @@ module GeneratorContainer =
                         makeNamedParameter name info
                     | InlinedObjectProp prop ->
                         [
+                            Choice2Of2 (SingleTextNode.make ",")
                             makePropParameter prop
                             |> Pattern.Parameter
                             |> Choice1Of2
-                            Choice2Of2 (SingleTextNode.make ",")
                         ]
                     )
                 |> List.collect id
-                |> cutOffLastTextNodeWithDirectiveMaybe Unspecific
+                |> cutOffFirstTextNodeWithDirectiveMaybe Unspecific
                 |> wrapParametersIntoParenNode
                 |> List.singleton
                 // |> function
@@ -1872,7 +1888,10 @@ module GeneratorGrouper =
                             Some (MultipleAttributeListNode.make
                                     $"CompiledName(\"{case.Value.ValueOrSource}\")"),
                             Some (SingleTextNode.make "|"),
-                            SingleTextNode.make case.Value.ValueOrModified,
+                            // filter invalid string enum characters
+                            SingleTextNode.make (case.Value.ValueOrModified |> String.filter (function
+                                | '.' -> false
+                                | _ -> true)),
                             [],
                             Range.Zero
                             )

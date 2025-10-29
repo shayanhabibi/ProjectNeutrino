@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module ElectronApi.Json.Parser.Utils
 
+open System
 open System.Collections.Frozen
 open System.Collections.Generic
 open System.Text.RegularExpressions
@@ -54,7 +55,12 @@ let stropInvalidIdentifiers: string -> string = function
     | text ->
         text
 let stropReservedKeywords =
-    fun s -> if reserved.Contains s then "``" + s + "``" else s
+    fun s ->
+        if
+            reserved.Contains s
+            || s[0] |> Char.IsAsciiLetter |> not
+            || s.Contains('.')
+        then "``" + s + "``" else s
 
 // Taken from Fable.Transforms
 let dashify (separator: string) (input: string) =

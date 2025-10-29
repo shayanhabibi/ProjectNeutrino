@@ -50,8 +50,8 @@ let rec mapGroupForPath (func: GeneratorGrouper -> GeneratorGrouper) (path: Name
                     Children =
                         grouper.Children
                         |> List.map (function
-                            | Nested ({ PathKey = ValueSome path } as group) when path.Name.ValueOrModified = name.ValueOrModified ->
-                                func group
+                            | Nested ({ PathKey = ValueSome nestedPath } as group) when nestedPath.Name.ValueOrSource = name.ValueOrSource ->
+                                mapGroupForPath func path group
                                 |> Nested
                             | child -> child
                             )
@@ -59,12 +59,12 @@ let rec mapGroupForPath (func: GeneratorGrouper -> GeneratorGrouper) (path: Name
         else
             grouper
             |> GeneratorGrouper.addNestedGroup (
-                makeModuleGrouper name.ValueOrModified
+                makeModuleGrouper (name.ValueOrModified |> toPascalCase)
                 |> mapGroupForPath func path
                 )
     | None ->
         func grouper
-let addToGroup (child: GeneratorGroupChild) (group: GeneratorGrouper) =
+and addToGroup (child: GeneratorGroupChild) (group: GeneratorGrouper) =
     let add = fun genGroup ->
         {
             genGroup with
@@ -203,8 +203,6 @@ let generateFromApiFile (file: string) =
     |> fun group ->
         TypeCache.getAllTypeValues()
         |> Seq.toList
-        |> fun l ->
-            l
         |> List.fold (fun state item ->
             match item with
             // | String -> failwith "todo"
