@@ -3,6 +3,7 @@
 open System.Collections.Generic
 open System.ComponentModel
 open ElectronApi.Json.Parser.FSharpApi
+open ElectronApi.Json.Parser.Types.Name
 open Fantomas.Core
 open Fantomas.Core.SyntaxOak
 open Fantomas.FCS.Text
@@ -34,19 +35,22 @@ module List =
 /// </remarks>
 module TypeCache =
     module private Cache =
-        let stringCache = Dictionary<string, FSharpApi.Type>()
-        let stringKeyCache = Dictionary<Path.PathKey, string>()
+        let stringCache = Dictionary<Path.PathKey, FSharpApi.Type>()
+        // let stringCache = Dictionary<string, FSharpApi.Type>()
+        // let stringKeyCache = Dictionary<Path.PathKey, string>()
         let add key value =
             try
-            key
-            |> Path.tracePathOfEntry
-            |> List.map (_.ValueOrModified >> _.Trim(''') >> toPascalCase)
-            |> String.concat "."
-            |> fun stringKey ->
-               stringKeyCache.Add(key,stringKey)
-               stringCache.Add(stringKey, value)
+            stringCache.Add(key, value)
+            // key
+            // |> Path.tracePathOfEntry
+            // |> List.map (_.ValueOrModified >> _.Trim(''') >> toPascalCase)
+            // |> String.concat "."
+            // |> fun stringKey ->
+            //    stringKeyCache.Add(key,stringKey)
+            //    stringCache.Add(stringKey, value)
             with e ->
-                printfn $"%s{e.Message}\n%A{key}\nNewValue: %A{value}\nCurrentKey:%A{stringKeyCache[key]}\nCurrentValue: %A{stringCache[stringKeyCache[key]]}\n\n%A{e.StackTrace}"
+                printfn $"%A{e}"
+                // printfn $"%s{e.Message}\n%A{key}\nNewValue: %A{value}\nCurrentKey:%A{stringKeyCache[key]}\nCurrentValue: %A{stringCache[stringKeyCache[key]]}\n\n%A{e.StackTrace}"
                 #if !DEBUG
 //                 reraise()
                 #endif
@@ -55,16 +59,20 @@ module TypeCache =
             | true, value -> ValueSome value
             | _ -> ValueNone
         let retrieveByPath path =
-            match stringKeyCache.TryGetValue path with
-            | true, key -> retrieveByString key
+            match stringCache.TryGetValue path with
+            // match stringKeyCache.TryGetValue path with
+            // | true, key -> retrieveByString key
+            | true, key ->
+                // if key.IsStringEnum || path.IsStringEnum then
+                    // printfn $"%A{key}"
+                    // printfn $"%A{path}"
+                ValueSome key
             | _ -> ValueNone
-        let getAllTypeValues () = stringCache.Values
-    let addObject ({ StructOrObject.PathKey = pathKey } as object) =
-        Cache.add pathKey (Type.Object object)
-        pathKey
-        |> Path.tracePathOfEntry
-        |> List.map (_.ValueOrModified >> toPascalCase)
-        |> String.concat "."
+        let getAllTypeValues () =
+            let values = stringCache.Values |> Seq.toList
+            stringCache.Clear()
+            // stringKeyCache.Clear()
+            values
     let add = Cache.add
     let getByString = Cache.retrieveByString
     let getByPath = Cache.retrieveByPath
@@ -210,7 +218,7 @@ module XmlDocs =
     let makeSeeAlso (link: string) (description: string) =
         $"<seealso href=\"{link}\">{description}</seealso>"
     let makeParam (name: string) (description: string) =
-        $"<param name=\"{name}\">{description}</param>"
+        $"<param name=\"{name.Trim('`')}\">{description}</param>"
     module Boundaries =
         let [<Literal>] openRemarks = "<remarks>"
         let [<Literal>] closeRemarks = "</remarks>"
@@ -331,10 +339,10 @@ module Type =
             TypeArrayNode(fcsType, 1, Range.Zero)
             |> FcsType.Array
         static member makeLambda(funcOrMethod: FuncOrMethod): FcsType =
-            let maybeIsDelegate = FuncOrMethod.Cache.tryGet funcOrMethod.Name
+            let maybeIsDelegate = Type.Cache.GetFuncOrMethod funcOrMethod.PathKey
             match funcOrMethod.Parameters.Length > 1, maybeIsDelegate with
             | true, ValueSome delegatedFunc ->
-                delegatedFunc.Name
+                delegatedFunc.PathKey
                 |> Path.tracePathOfEntry
                 |> List.map (_.ValueOrModified >> toPascalCase)
                 |> String.concat "."
@@ -419,17 +427,49 @@ module Type =
             | FSharpApi.Type.Integer -> FcsType.integer
             | FSharpApi.Type.String -> FcsType.string
             | FSharpApi.Type.StructureRef value ->
-                makeSimple value
-                // Name.retrieveName value
-                // |> function
-                //     | ValueNone ->
-                //         makeSimple value
-                //     | ValueSome name ->
-                //         makeSimple name.ValueOrModified
+                match value with
+                | "UserDefaultTypes[Type]" -> FcsType.string
+                | "ClientRequestConstructorOptions" -> makeSimple "ClientRequest.Options"
+                | "MenuItemConstructorOptions" -> makeSimple "MenuItem.Options"
+                | "SaveDialogOptions" -> FcsType.obj
+                | "PopupOptions" -> makeSimple "Menu.Popup.Options"
+                | "GlobalRequest" -> makeSimple "Request"
+                | "GlobalResponse" -> makeSimple "Response"
+                | "ReadableStream" -> makeSimple "Readable<obj>"
+                | "Type" -> makeSimple "UserType" // self implemented string DU
+                | value when value.StartsWith "NodeJS." ->
+                    value.Substring "NodeJS.".Length
+                    |> FSharpApi.Type.StructureRef
+                    |> FantomasFactory.mapToFantomas
+                | value when value.StartsWith "Electron." ->
+                    value.Substring "Electron.".Length
+                    |> FSharpApi.Type.StructureRef
+                    |> FantomasFactory.mapToFantomas
+                | _ ->
+                    Path.Cache.retrievePath value
+                    |> function
+                        | Path.Cache.OkProcessMap { Main = ValueSome value }
+                        | Path.Cache.OkProcessMap { Renderer = ValueSome value }
+                        | Path.Cache.OkProcessMap { Utility = ValueSome value }
+                        | Path.Cache.OkSimple value ->
+                            value
+                            |> Path.tracePathOfEntry
+                            |> List.rev
+                            |> function
+                                | [] -> failwith "unreachable"
+                                | head :: tail ->
+                                    head.ValueOrModified :: (tail |> List.map (_.ValueOrModified >> toPascalCase))
+                            |> List.rev
+                            |> String.concat "."
+                            |> makeSimple
+                        | Path.Cache.NoResult ->
+                            makeSimple (value |> toPascalCase)
+                        | Path.Cache.OkProcessMap _ -> failwith "Ok Process Map must have at least one field filled"
             | Function funcOrMethod ->
                 FantomasFactory.makeLambda funcOrMethod
             | Event { PathKey = pathKey } when pathKey.Name.ValueOrModified = "Event" ->
                 makeSimple "Event"
+            | Object { Properties = [] } -> FcsType.obj
             | Event { PathKey = pathKey }
             | Object { PathKey = pathKey }
             | StringEnum { PathKey = pathKey } ->
@@ -554,6 +594,7 @@ module Type =
             |> CodeFormatter.FormatOakAsync
             |> Async.RunSynchronously
             |> printfn "%s"
+        
 
 /// <summary>
 /// Module for functions types and caches relating to creating interfaces for Event parameters to provide
@@ -564,7 +605,7 @@ module EventInterfaces =
     // curried, the other is accessing the args via an interface for
     // named and documented details
     let private cache = HashSet<Event>()
-    let private rootModuleName = $"{Spec.rootNamespace}.EventInterfaces"
+    let private rootModuleName = "EventInterfaces"
     let private getInterfaceName: Event -> string = _.PathKey.Name.ValueOrModified >> sprintf "IOn%s"
     let private getInterfaceModuleRoot: Event -> _ =
         _.PathKey.ParentName >> _.ValueOrModified >> toPascalCase >> sprintf "%s.%s" rootModuleName
@@ -572,19 +613,19 @@ module EventInterfaces =
     /// Indicates why an event failed to get added to the interface cache
     /// </summary>
     type CacheRejectionReason =
-        | AlreadyExists of EventInterfaceDetails
+        | AlreadyExists of Path.PathKey
         | HasLessThanTwoParameters
     /// <summary>
     /// A simple DU returned when adding an event which provides the interface name and module path
     /// to reference as the type parameter for the overloaded handler that uses the interface.
     /// </summary>
-    and EventInterfaceDetails = EventInterfaceDetails of interfaceName: string * modulePath: string
-    module EventInterfaceDetails =
-        let create modulePath interfaceName = EventInterfaceDetails(interfaceName,modulePath)
-        let interfaceName (EventInterfaceDetails(value,_))= value
-        let modulePath (EventInterfaceDetails(_,value))= value
-        let fullPath (EventInterfaceDetails(interfaceName,modulePath)) = $"{modulePath}.{interfaceName}"
-    let eventInterfaceFullPath = EventInterfaceDetails.fullPath
+    let eventInterfaceFullPath: Path.PathKey -> _ =
+        Path.tracePathOfEntry
+        >> List.mapWithLast
+               (_.ValueOrModified >> toPascalCase)
+               (_.ValueOrModified >> sprintf "IOn%s")
+        >> String.concat "."
+                
     /// <summary>
     /// Try to add an Event to be lifted into an interface. If the Event is a candidate, then it will return
     /// the intended path to access the interface when it is generated later.
@@ -593,15 +634,13 @@ module EventInterfaces =
     /// It will fail and indicate the reason as either being: because it had one or less parameters; because
     /// it already existed in the cache (with the details attached to access that event).
     /// </remarks>
-    let addEvent: Event -> Result<EventInterfaceDetails, CacheRejectionReason> = function
+    let addEvent: Event -> Result<Path.PathKey, CacheRejectionReason> = function
         // We don't need to create an interface for events with one or less parameters
         | { Parameters = [] | [ _ ] } ->
             Error CacheRejectionReason.HasLessThanTwoParameters
         | event ->
             let modulePath = getInterfaceModuleRoot event
-            event
-            |> getInterfaceName
-            |> EventInterfaceDetails.create modulePath
+            event.PathKey
             |> match cache.Add event with
                 | true ->
                     Ok
@@ -619,7 +658,7 @@ module EventInterfaces =
                         "Experimental(\"Indicated to be Experimental by Electron\")"
                     if StabilityStatus.IsDeprecated event then
                         "System.Obsolete()"
-                    "EditorBrowsable(EditorBrowsableState.Never)"
+                    "System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)"
                     "AllowNullLiteral"
                     "Interface"
                 ]
@@ -677,6 +716,7 @@ module EventInterfaces =
                         |> fun (name,paramInfo) ->
                             let name,attributes =
                                 match name with
+                                | "``...args``"
                                 | "...args" ->
                                     "args", MultipleAttributeListNode.make $"Emit(\"$0.slice({idx})\")"
                                 | _ ->
@@ -743,53 +783,42 @@ module EventInterfaces =
                     TypeDefnRegularNode(typeName, parameterMembers, Range.Zero)
                     |> Compatibility.wrapInCompatibilityDirective event.Compatibility
                     |> TypeDefn.Regular
-                )
+                ) 
             )
-        |> List.groupBy (fst >> _.ParentName)
-        |> List.map(fun (modName, typeDefs) ->
-            NestedModuleNode(
-                 None,
-                 Some (MultipleAttributeListNode.make ["AutoOpen"; "EditorBrowsable(EditorBrowsableState.Never)"]),
-                 SingleTextNode.make "module",
-                 None, false, IdentListNode.make (modName.ValueOrModified |> toPascalCase),
-                 SingleTextNode.make "=",
-                 typeDefs
-                 |> List.map (snd >> ModuleDecl.TypeDefn)
-                 , Range.Zero
-                 )
-            |> ModuleDecl.NestedModule
-            )
-        |> fun mods ->
-            let header =
-                ModuleOrNamespaceHeaderNode(
-                    None,
-                    Some (MultipleAttributeListNode.make "AutoOpen"),
-                    MultipleTextsNode.make "module",
-                    None,
-                    false,
-                    Some(IdentListNode.make rootModuleName),
-                    Range.Zero
-                )
-            let openModules =
-                let inline openModule (text: string) = Open.ModuleOrNamespace(OpenModuleOrNamespaceNode(IdentListNode.make text, Range.Zero))
-                OpenListNode([
-                    openModule "System"
-                    openModule "System.ComponentModel"
-                    openModule "Fable.Core"
-                    openModule "Fable.Core.JsInterop"
-                    openModule "Fable.Electron"
-                ])
-                |> ModuleDecl.OpenList
-            ModuleOrNamespaceNode(Some header, openModules :: mods, Range.Zero)
-    let tryDebugEventInterfaces (events: Event list) =
-        events
-        |> List.iter (addEvent >> ignore)
-        makeInterfaces()
-        |> fun namemod ->
-            Oak([], [ namemod ], Range.Zero)
-            |> CodeFormatter.FormatOakAsync
-            |> Async.RunSynchronously
-            |> printfn "%s"
+        // |> List.groupBy (fst >> _.ParentName)
+        // |> List.map(fun (modName, typeDefs) ->
+        //     NestedModuleNode(
+        //          None,
+        //          Some (MultipleAttributeListNode.make [
+        //              "AutoOpen"
+        //              "System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)"
+        //          ]),
+        //          SingleTextNode.make "module",
+        //          None, false, IdentListNode.make (modName.ValueOrModified |> toPascalCase),
+        //          SingleTextNode.make "=",
+        //          typeDefs
+        //          |> List.map (snd >> ModuleDecl.TypeDefn)
+        //          , Range.Zero
+        //          )
+        //     |> ModuleDecl.NestedModule
+        //     )
+        // |> fun mods ->
+        //     NestedModuleNode(
+        //         None,
+        //         Some (MultipleAttributeListNode.make [
+        //             "AutoOpen"
+        //             "System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)"
+        //         ]),
+        //         SingleTextNode.make "module",
+        //         None,
+        //         false,
+        //         IdentListNode.make rootModuleName,
+        //         SingleTextNode.make "=",
+        //         mods,
+        //         Range.Zero
+        //     )
+        //     |> ModuleDecl.NestedModule
+
 type GeneratorContainer = {
     PathKey: Path.PathKey
     Constructor: Parameter list option
@@ -840,6 +869,7 @@ module GeneratorContainer =
         { container with TypeAttributes = attr :: container.TypeAttributes }
     let withAttributes (attr: string list) container =
         { container with TypeAttributes = attr }
+    let withExtends (extension: string) container = { container with GeneratorContainer.Extends = ValueSome extension }
     let makeImported container =
         withAttribute $"Import(\"{container.PathKey.Name.ValueOrSource}\", \"electron\")" container
     let inline mergeCompatability (object: ^T when ^T : (member Compatibility: Compatibility)) container=
@@ -902,7 +932,7 @@ module GeneratorContainer =
                     attributes
                     |> function
                         | Some attrs ->  Some ("System.ParamArray" :: attrs)
-                        | None -> Some ([ "System.ParamArray" ])
+                        | None -> Some [ "System.ParamArray" ]
                 Type = typ
                 Required = required
                 Name = "args"
@@ -1231,7 +1261,12 @@ module GeneratorContainer =
         makeStaticBindingNode inlined xmlDocs attributes name parameters returnInfo
         |> Compatibility.wrapInCompatibilityDirective compatibility
         
-    let private makeInstanceBindingNode inlined xmlDocs attributes (name: string) parameters returnInfo =
+    let private makeInstanceBindingNode inlined xmlDocs attributes (name: string) parameters (returnInfo: BindingReturnInfoNode) =
+        let selfIdentifier, returnInfo, exprText=
+            match returnInfo.Type with
+            | Type.Anon text when text.Text = "This" || text.Text = "this" ->
+                "this", None, "this"
+            | _ -> "_", Some returnInfo, "Unchecked.defaultof<_>"
         BindingNode(
             xmlDocs,
             attributes,
@@ -1240,12 +1275,12 @@ module GeneratorContainer =
             (if inlined
              then Some (SingleTextNode.make "inline")
              else None), None,
-            Choice1Of2 (IdentListNode.make [ "_"; name ]),
+            Choice1Of2 (IdentListNode.make [ selfIdentifier; name ]),
             None,
             parameters,
-            Some returnInfo,
+            returnInfo,
             SingleTextNode.make "=",
-            Expr.Ident(SingleTextNode.make "Unchecked.defaultof<_>"),
+            Expr.Ident(SingleTextNode.make exprText),
             Range.Zero
             )
     
@@ -1420,6 +1455,10 @@ module GeneratorContainer =
             makeMethodAttributes method
             |> List.append attributes
             |> makeAttributesNode
+        let firstOptionalIdx =
+            method.Parameters
+            |> List.tryFindIndex (_.Required >> not)
+            |> Option.defaultValue method.Parameters.Length
         (if isStatic then
             makeStaticBindingNodeWithDirectives
         else
@@ -1432,10 +1471,22 @@ module GeneratorContainer =
                 (method.Parameters |> List.mapi ( fun idx ->
                     function
                     | Positional info ->
+                        let info =
+                            if idx > firstOptionalIdx then
+                                { info with Required = false }
+                            else info
                         makePositionalParameter idx info
                     | Named(name,info) ->
+                        let info =
+                            if idx > firstOptionalIdx then
+                                { info with Required = false }
+                            else info
                         makeNamedParameter name info
                     | InlinedObjectProp prop ->
+                        let prop =
+                            if idx > firstOptionalIdx then
+                                { prop with Required = false }
+                            else prop
                         [
                             Choice2Of2 (SingleTextNode.make ",")
                             makePropParameter prop
@@ -1586,12 +1637,18 @@ module GeneratorContainer =
             Some (SingleTextNode.make "="),
             None, Range.Zero
             )
-    let makeTypeNameNode = makeTypeNameNodeWithNameMap _.Name.ValueOrModified
+    let makeTypeNameNode =
+        makeTypeNameNodeWithNameMap (function
+            | Path.PathKey.Module path ->
+                path.Name.ValueOrSource
+                |> toStroppedCamelCase
+                |> _.ValueOrModified
+            | path -> path.Name.ValueOrModified |> toPascalCase)
     
     let private makeSignatureParameterTypeNode isRequired (attributes: string list) (name: string) (type': Type.FcsType) =
         let name, additives =
             match name with
-            | "...args" ->
+            | "``...args``" | "...args" ->
                 "args", ["System.ParamArray"]
             | name ->
                 name, []
@@ -1664,6 +1721,28 @@ module GeneratorContainer =
         this.StaticEvents
         |> List.collect (makeEventBindingNode true true)
         |> List.map MemberDefn.Member
+    /// <summary>
+    /// The advantage of using this over the regular type definitions in Fantomas is that
+    /// we avoid any issues if all the members of the class are erased by conditional compiler
+    /// directives.
+    /// </summary>
+    /// <param name="this"></param>
+    let makeExplicitTypeDefn(this: GeneratorContainer) =
+        TypeDefnExplicitNode(
+            makeTypeNameNode this,
+            TypeDefnExplicitBodyNode(SingleTextNode.make "class", [], SingleTextNode.make "end", Range.Zero),
+            [
+                yield! makeInheritance this
+                yield! makeInterfaces this
+                yield! makeInstanceEvents this
+                yield! makeInstanceMethods this
+                yield! makeInstanceProperties this
+                yield! makeStaticEvents this
+                yield! makeStaticMethods this
+                yield! makeStaticProperties this
+            ],
+            Range.Zero
+            )
     let makeDefaultTypeDefn (this: GeneratorContainer) =
         TypeDefnRegularNode(
             makeTypeNameNode this,
@@ -1679,7 +1758,12 @@ module GeneratorContainer =
             ],
             Range.Zero
             )
-    let makeDefaultTypeDecl = makeDefaultTypeDefn >> TypeDefn.Regular >> ModuleDecl.TypeDefn
+    // let makeDefaultTypeDecl = makeDefaultTypeDefn >> TypeDefn.Regular >> ModuleDecl.TypeDefn
+    /// <summary>
+    /// The advantage of using the ExplicitTypeDefn node is the initial 'class end' statement.
+    /// This prevents compiler conditional directives causing issue where all the members may be erased on a condition.
+    /// </summary>
+    let makeDefaultTypeDecl = makeExplicitTypeDefn >> TypeDefn.Explicit >> ModuleDecl.TypeDefn
     let private makeDefaultDelegateDefn (funcOrMethod: FuncOrMethod) =
         let returns =
             funcOrMethod.Returns
@@ -1697,7 +1781,7 @@ module GeneratorContainer =
                 docs,
                 attributes,
                 SingleTextNode.make "type",
-                None, IdentListNode.make funcOrMethod.Name.Name.ValueOrModified,
+                None, IdentListNode.make funcOrMethod.PathKey.Name.ValueOrModified,
                 None, [], None, SingleTextNode.make "=" |> Some, None, Range.Zero
                 )
             // TypeNameNode.makeSimple(funcOrMethod.Name.Name.ValueOrModified, docs=docs, attributes = attributes)
@@ -1708,6 +1792,32 @@ module GeneratorContainer =
             Range.Zero
             )
     let makeDefaultDelegateTypeDecl = makeDefaultDelegateDefn >> TypeDefn.Delegate >> ModuleDecl.TypeDefn
+    let makeDefaultEventInfoDefn (eventInfo: GeneratorContainer) =
+        let members = [
+            yield! makeInheritance eventInfo
+            yield!
+                eventInfo.InstanceProperties
+                |> List.map (fun prop ->
+                    let xmlDocs =
+                        makePropMemberDocsLines prop
+                        |> Option.bind (makeDocNode XmlDocs.wrapInSummary)
+                    let attributes = makeAttributesForInstanceProperty prop |> makeAttributesNode
+                    makeAbstractPropertyNode
+                        xmlDocs
+                        attributes
+                        prop.PathKey.Name.ValueOrModified
+                        (prop.Type |> Type.FantomasFactory.mapToFantomas)
+                        true
+                    |> MemberDefn.AbstractSlot
+                    )
+        ]
+        let attributes =
+            eventInfo.TypeAttributes
+            |> makeAttributesNode
+        let typeNameNode = TypeNameNode.Create(eventInfo.PathKey.Name.ValueOrModified, ?attributes = attributes)
+        TypeDefnRegularNode.Create(typeNameNode, members)
+            
+    let makeDefaultEventInfoTypeDecl = makeDefaultEventInfoDefn >> TypeDefn.Regular >> ModuleDecl.TypeDefn
                 
     let map (func: GeneratorContainer -> 'a) = func
     let mapPathKey (func: Path.PathKey -> Path.PathKey) group =
@@ -1736,6 +1846,7 @@ type GeneratorGroupChild =
     | Child of GeneratorContainer
     | StringEnumType of StringEnum
     | Delegate of FuncOrMethod
+    | EventInterface of pathKey: Path.PathKey * node: TypeDefn
 and GeneratorGrouper = {
     PathKey: Path.PathKey voption
     Description: string list voption
@@ -1813,7 +1924,7 @@ module GeneratorGrouper =
                 Range.Zero
             )
             |> ModuleDecl.NestedModule
-    let private makeModuleOrNamespace addRootNamespace isNamespace grouper =
+    let private makeModuleOrNamespace addRootNamespace isNamespace isRecursive grouper =
         let leader =
             if isNamespace then
                 "namespace"
@@ -1829,7 +1940,7 @@ module GeneratorGrouper =
             makeXmlDocNode grouper,
             makeMultipleAttributeListNode grouper,
             MultipleTextsNode.make leader,
-            None, false,
+            None, isRecursive,
             Some pathName,
             Range.Zero
             )
@@ -1839,10 +1950,10 @@ module GeneratorGrouper =
                 decls,
                 Range.Zero
                 )
-    let makeNamespace grouper =
-        makeModuleOrNamespace true true grouper
-    let makeModule grouper =
-        makeModuleOrNamespace true false grouper
+    let makeNamespace isRecursive grouper =
+        makeModuleOrNamespace true true isRecursive grouper
+    let makeModule isRecursive grouper =
+        makeModuleOrNamespace true false isRecursive grouper
     let makeModuleOrNamespaceNode grouper =
         if isNested grouper then
             makeNestedModule grouper
@@ -1850,14 +1961,20 @@ module GeneratorGrouper =
         else
             match grouper.PathKey with
             | ValueNone ->
-                makeNamespace grouper
+                makeNamespace false grouper
             | _ ->
-                makeModule grouper
+                makeModule false grouper
             |> Choice2Of2
     let makeChildren func: GeneratorGrouper -> ModuleDecl list = _.Children >> List.map func
     let makeDefaultDelegateType = function
         | GeneratorGroupChild.Delegate funcOrMethod ->
             GeneratorContainer.makeDefaultDelegateTypeDecl funcOrMethod
+            |> Some
+        | _ -> None
+    let makeDefaultEventInterfaceAndTypeAlias = function
+        | GeneratorGroupChild.EventInterface(_, typeDefn) ->
+            typeDefn
+            |> ModuleDecl.TypeDefn
             |> Some
         | _ -> None
 

@@ -37,7 +37,7 @@ let groupContainsNestedModuleName (name: Name) (grouper: GeneratorGrouper) =
     grouper.Children
     |> List.exists(function
         | Nested { PathKey = ValueSome path } ->
-            name.ValueOrModified = path.Name.ValueOrModified
+            name.ValueOrSource |> toPascalCase = (path.Name.ValueOrSource |> toPascalCase)
         | _ -> false
             )
 let rec mapGroupForPath (func: GeneratorGrouper -> GeneratorGrouper) (path: NamePath) (grouper: GeneratorGrouper) =
@@ -50,7 +50,9 @@ let rec mapGroupForPath (func: GeneratorGrouper -> GeneratorGrouper) (path: Name
                     Children =
                         grouper.Children
                         |> List.map (function
-                            | Nested ({ PathKey = ValueSome nestedPath } as group) when nestedPath.Name.ValueOrSource = name.ValueOrSource ->
+                            | Nested ({ PathKey = ValueSome nestedPath } as group)
+                                when (nestedPath.Name.ValueOrSource |> toPascalCase)
+                                     = (name.ValueOrSource |> toPascalCase) ->
                                 mapGroupForPath func path group
                                 |> Nested
                             | child -> child
@@ -74,7 +76,8 @@ and addToGroup (child: GeneratorGroupChild) (group: GeneratorGrouper) =
     | Nested generatorGrouper -> generatorGrouper.PathKey.Value
     | Child generatorContainer -> generatorContainer.PathKey
     | StringEnumType stringEnum -> stringEnum.PathKey
-    | Delegate funcOrMethod -> funcOrMethod.Name
+    | Delegate funcOrMethod -> funcOrMethod.PathKey
+    | EventInterface(pathKey, _) -> pathKey
     |> getNamePath
     |> fun namePath ->
         mapGroupForPath add namePath group
@@ -97,31 +100,6 @@ let mapNestedGroup
     }
     result
 
-let inline addProcessMappedChild
-    (child: GeneratorContainer)
-    (grouper: GeneratorGrouper) =
-    match child.Process with
-    | Some processBlock ->
-        grouper
-        |> if processBlock.Main then
-            mapNestedGroup "Main" (fun group ->
-                { group with Children = Child child :: group.Children }
-                )
-            else id
-        |> if processBlock.Renderer then
-            mapNestedGroup "Renderer" (fun group ->
-                { group with Children = Child child :: group.Children }
-                )
-            else id
-        |> if processBlock.Utility then
-            mapNestedGroup "Utility" (fun group ->
-                { group with Children = Child child :: group.Children }
-                )
-            else id
-    | None ->
-        grouper
-        |> addToGroup (Child child) 
-
 let tryWith (funcs: ('a -> 'b option) list) (orElse: 'a -> 'b) (input: 'a) =
     funcs
     |> List.fold (fun state func ->
@@ -135,6 +113,7 @@ let rec finalizeGeneratorGroup: GeneratorGrouper -> ModuleDecl list =
     GeneratorGrouper.makeChildren (tryWith [
         GeneratorGrouper.makeDefaultDelegateType
         GeneratorGrouper.makeDefaultStringEnumType
+        GeneratorGrouper.makeDefaultEventInterfaceAndTypeAlias
     ] (function
         | Child typ -> GeneratorContainer.makeDefaultTypeDecl typ
         | Nested group ->
@@ -146,23 +125,28 @@ let rec finalizeGeneratorGroup: GeneratorGrouper -> ModuleDecl list =
 let rootGeneratorGroup =
     GeneratorGrouper.createRoot()
     |> GeneratorGrouper.addOpen "Fable.Core"
-    |> GeneratorGrouper.addOpen "Fable.Core.JsInterop"
+    |> GeneratorGrouper.addOpen "Fable.Core.JS"
     |> GeneratorGrouper.addOpen "Browser.Types"
+    |> GeneratorGrouper.addOpen "Node.Buffer"
+    |> GeneratorGrouper.addOpen "Node.WorkerThreads"
+    |> GeneratorGrouper.addOpen "Node.Base"
+    |> GeneratorGrouper.addOpen "Node.Stream"
+    |> GeneratorGrouper.addOpen "Fetch"
     |> GeneratorGrouper.addNestedGroup(makeModuleGrouper "Main")
     |> GeneratorGrouper.addNestedGroup(makeModuleGrouper "Utility")
     |> GeneratorGrouper.addNestedGroup(makeModuleGrouper "Renderer")
     |> GeneratorGrouper.addNestedGroup(
         makeModuleGrouper "Enums"
         |> GeneratorGrouper.addAttribute "AutoOpen"
-        |> GeneratorGrouper.addAttribute "Erase"
+        |> GeneratorGrouper.addAttribute "Fable.Core.Erase"
         )
     |> GeneratorGrouper.addNestedGroup(
         makeModuleGrouper "Types"
         |> GeneratorGrouper.addAttribute "AutoOpen"
-        |> GeneratorGrouper.addAttribute "Erase"
+        |> GeneratorGrouper.addAttribute "Fable.Core.Erase"
         )
     |> GeneratorGrouper.addNestedGroup(makeModuleGrouper "Constants")
-let generateFromApiFile (file: string) =
+let generateFromApiFile (file: string) (destination: string) =
     Decode.fromString decode (File.ReadAllText(file))
     |> function
         | Ok values -> values
@@ -170,66 +154,94 @@ let generateFromApiFile (file: string) =
     |> readResults
     |> List.fold (fun state -> function
         | ModifiedResult.Module result ->
+            let moduleContainer = result.ToGeneratorContainer()
             result.ToGeneratorGrouper()
             |> Option.map (fun g -> state |> GeneratorGrouper.addNestedGroup g)
             |> Option.defaultValue state
-            |> addProcessMappedChild (result.ToGeneratorContainer())
+            |> addToGroup (moduleContainer |> Child)
         | ModifiedResult.Class result ->
             state
-            |> addProcessMappedChild (result.ToGeneratorContainer())
+            |> addToGroup (result.ToGeneratorContainer() |> Child)
         | ModifiedResult.Structure result ->
             state
-            |> addProcessMappedChild (
+            |> addToGroup (
                 result.ToGeneratorContainer()
                 |> GeneratorContainer.mapPathKey _.AddRootModule(Path.Module.Module(Path.ModulePath.Root,Source "Types"))
+                |> Child
                 )
         | ModifiedResult.Element result ->
             state
-            |> addProcessMappedChild (result.ToGeneratorContainer())
+            |> addToGroup (result.ToGeneratorContainer() |> Child)
         ) rootGeneratorGroup
     |> fun group ->
         // Holy mackarel of inefficiency Doctor!
+        // Dummy run to fill our caches
         finalizeGeneratorGroup group
         |> List.append [
                 GeneratorGrouper.makeOpenListNode group
                 |> ModuleDecl.OpenList
             ]
-        |> (GeneratorGrouper.makeNamespace group)
+        |> (GeneratorGrouper.makeNamespace false group)
         |> ignore
         group
-        // I realised too late that this api format leaves me bojangled since the caches
-        // aren't filled until the results have been transformed
-        // ... so now there's this? hahaha
     |> fun group ->
-        TypeCache.getAllTypeValues()
-        |> Seq.toList
-        |> List.fold (fun state item ->
+        // TypeCache.getAllTypeValues()
+        // |> Seq.toList
+        Type.Cache.GetInlineObjects()
+        |> List.map (fun structOrObject ->
+            structOrObject.PathKey, Type.Object structOrObject
+            )
+        |> List.append (
+            Type.Cache.GetFuncOrMethods()
+            |> List.map (
+                fun funcOrMethod ->
+                funcOrMethod.PathKey, Type.Function funcOrMethod
+                )
+            )
+        |> List.append(
+            Type.Cache.GetStringEnums()
+            |> List.map (
+                fun stringEnum ->
+                    stringEnum.PathKey, Type.StringEnum stringEnum
+                )
+            )
+        |> List.append(
+            Type.Cache.GetEventInfos()
+                |> List.map (
+                    fun eventInfo ->
+                        eventInfo.PathKey, Type.Event eventInfo
+                    )
+            )
+        |> List.distinctBy fst
+        |> List.fold (fun state (_, item) ->
             match item with
-            // | String -> failwith "todo"
-            // | Boolean -> failwith "todo"
-            // | Integer -> failwith "todo"
-            // | Float -> failwith "todo"
-            // | Double -> failwith "todo"
-            // | Number -> failwith "todo"
-            // | Unit -> failwith "todo"
-            // | Undefined -> failwith "todo"
-            // | Any -> failwith "todo"
-            // | Unknown -> failwith "todo"
-            // | Date -> failwith "todo"
-            // | Constant literalType -> failwith "todo"
             | Function funcOrMethod ->
                 state
                 |> addToGroup (Delegate funcOrMethod)
             | StringEnum stringEnum ->
                 state
                 |> addToGroup (StringEnumType stringEnum)
+            | Event eventInfo ->
+                eventInfo.PathKey
+                |> GeneratorContainer.create
+                |> GeneratorContainer.withAttribute "Interface"
+                |> GeneratorContainer.withAttribute "AllowNullLiteral"
+                |> GeneratorContainer.withExtends "Event"
+                |> GeneratorContainer.withInstanceProperties eventInfo.Properties
+                |> GeneratorContainer.makeDefaultEventInfoDefn
+                |> fun decl ->
+                    state
+                    |> addToGroup (
+                        (eventInfo.PathKey, TypeDefn.Regular decl)
+                        |> EventInterface
+                        )
             // | StructureRef s -> failwith "todo"
             | Object structOrObject ->
                 structOrObject.PathKey
                 |> GeneratorContainer.create
                 |> GeneratorContainer.withAttribute "JS.Pojo"
                 |> GeneratorContainer.withConstructor (structOrObject.Properties |> List.map Parameter.InlinedObjectProp)
-                |> GeneratorContainer.withInstanceProperties (structOrObject.Properties)
+                |> GeneratorContainer.withInstanceProperties structOrObject.Properties
                 |> fun child ->
                     state
                     |> addToGroup (Child child)
@@ -245,22 +257,40 @@ let generateFromApiFile (file: string) =
             // | OneOf types -> failwith "todo"
             // | Tuple types -> failwith "todo"
             // | Join(structureRef, props) -> failwith "todo"
-            | _ -> state
+            | _ ->
+                printfn "%A" item
+                state
             ) group
+    |> fun group ->
+        EventInterfaces.makeInterfaces()
+        |> List.fold (fun state eventInterface ->
+            addToGroup
+                (GeneratorGroupChild.EventInterface eventInterface)
+                state
+            ) group
+        |> addToGroup (
+                (Path.PathKey.Module(
+                    Path.Module.Module(Path.ModulePath.Root,Source "Main")
+                ).CreateType(Source Injections.touchBarItemsName), Injections.touchBarItemsDef)
+                |> GeneratorGroupChild.EventInterface
+            )
     |> fun group ->
         finalizeGeneratorGroup group
         |> List.append [
                 GeneratorGrouper.makeOpenListNode group
                 |> ModuleDecl.OpenList
             ]
-        |> (GeneratorGrouper.makeNamespace group)
+        |> (GeneratorGrouper.makeNamespace true group)
         |> fun node ->
-            Oak([], [
-                node
-                EventInterfaces.makeInterfaces()
-            ], Range.Zero)
+            TypeCache.getAllTypeValues() |> printfn "TypeCache: %A"
+            TypeCache.getAllTypeValues() |> printfn "TypeCache: %A"
+            Oak([
+                // let makeDirective text = ParsedHashDirectiveNode(text, [], Range.Zero)
+                // makeDirective "nowarn 1182"
+                // makeDirective "nowarn 47"
+            ], [ node ], Range.Zero)
             |> CodeFormatter.FormatOakAsync
             |> Async.RunSynchronously
             |> fun txt ->
-                File.WriteAllText("./test.fs", txt)
+                File.WriteAllText(destination, txt)
     

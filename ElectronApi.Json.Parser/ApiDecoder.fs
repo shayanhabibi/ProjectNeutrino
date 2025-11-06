@@ -677,18 +677,54 @@ module ParsedDocumentation =
     let decode: Decoder<ParsedDocumentation> =
         Decode.oneOf [
             ModuleDocumentationContainer.decode
-            |> Decode.map Module
+            |> Decode.map (Module >> ExtensionAssistant.add)
             
             ClassDocumentationContainer.decode
-            |> Decode.map Class
+            |> Decode.map (Class >> ExtensionAssistant.add)
             
             StructureDocumentationContainer.decode
-            |> Decode.map Structure
+            |> Decode.map (Structure >> ExtensionAssistant.add)
             
             ElementDocumentationContainer.decode
-            |> Decode.map Element
+            |> Decode.map (Element >> ExtensionAssistant.add)
         ]
-        
+type ExtensionSearchResult =
+    | OkResult of ParsedDocumentation
+    | OkParentResult of ParsedDocumentation * ModuleDocumentationContainer
+    | NotFound of searchString: string
+module ExtensionAssistant =
+    /// <summary>
+    /// Key is name of the type. The value is the type info, with an optional second type which represents the parent
+    /// in the case of classes exported from modules.
+    /// </summary>
+    let private cache = Dictionary<string, ParsedDocumentation * ModuleDocumentationContainer voption>()
+    let add = function
+        | Module ({
+                BaseDocumentationContainer = { Name = name }
+                ExportedClasses = classes
+            } as modTyp) as typ ->
+            cache.TryAdd(name, (typ, ValueNone)) |> ignore
+            classes
+            |> Array.iter (function
+               | { BaseDocumentationContainer = { Name = className } } as classTyp ->
+                   cache.TryAdd(className, (Class classTyp, ValueSome modTyp)) |> ignore)
+            typ
+        | Class { BaseDocumentationContainer = { Name = name } }
+        | Element { BaseDocumentationContainer = { Name = name } }
+        | Structure { BaseDocumentationContainer = { Name = name } } as typ ->
+            cache.TryAdd(name, (typ, ValueNone)) |> ignore
+            typ
+    let tryGet name =
+        match cache.TryGetValue(name) with
+        | true, (typ, ValueNone) ->
+            OkResult typ
+        | true, (typ, ValueSome moduleTyp) ->
+            OkParentResult(typ, moduleTyp)
+        | false, _ ->
+            NotFound name
+    let clear () = cache.Clear()
+    let internal peek () = cache |> Seq.toList
+            
 type ParsedDocumentationResults = ParsedDocumentation[]
 
 let decode: Decoder<ParsedDocumentationResults> = Decode.array ParsedDocumentation.decode

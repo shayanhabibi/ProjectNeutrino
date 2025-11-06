@@ -42,72 +42,144 @@ type Name =
 /// </summary>
 module Name =
     /// <summary>
-    /// A cache of generated names; relevant for Types, where we may want to ensure that
-    /// there are no conflicting names. This is mostly made redundant by the <c>PathKey</c> system.
-    /// </summary>
-    let private cache = System.Collections.Generic.Dictionary<string, Name>()
-    /// <summary>
     /// A private helper which applies the given function to the input, and then
     /// ensures it has an apostrophe appended (if it is reserved).<br/><br/>
     /// The output is checked against the input, and a <c>Name</c> union is made.
     /// </summary>
     /// <param name="f">The string modifier function</param>
     /// <param name="input">The input string</param>
-    let inline private map f input =
+    /// <param name="reservedMapper">The scheme to manage reserved keywords (ie stropping)</param>
+    let inline private map reservedMapper f input =
         f input
-        // |> appendApostropheToReservedKeywords
         |> String.filter ((<>) ' ')
-        |> stropReservedKeywords
+        |> _.TrimEnd(':')
+        |> reservedMapper
         |> function
             | output when String.Equals(input,output,StringComparison.Ordinal) -> Source output
             | output -> Modified(input,output)
-    // Dumps name into cache
-    let cacheName (name: Name) =
-        let key = name.ValueOrSource
-        cache.ContainsKey key
-        |> function
-            | false -> cache.Add(key, name)
-            | true -> ()
-    // Retrieves name from cache
-    let retrieveName (key: string) =
-        cache.TryGetValue(key)
-        |> function
-            | true, name -> ValueSome name
-            | false,  _ -> ValueNone
-    // Changes casing to 'camelCase'
-    let createCamel (input: string) =
-        map toCamelCase input
-    // Changes casing to 'PascalCase'
-    let createPascal (input: string) =
-        map toPascalCase input
-    // Checks cache for name; if not present, then creates
-    // for the cache and returns that value.
-    let cacheOrCreatePascal nameInput =
-        retrieveName nameInput
-        |> ValueOption.defaultWith(fun () ->
-            createPascal nameInput
-            |> fun outputName ->
-                outputName
-                |> cacheName
-                outputName
-            )
-    // Checks cache for name; if not present, then creates
-    // for the cache and returns that value
-    let cacheOrCreateCamel nameInput =
-        retrieveName nameInput
-        |> ValueOption.defaultWith(fun () ->
-            createCamel nameInput
-            |> fun output ->
-                output |> cacheName
-                output
-            )
-    let dumpCache () = cache.Clear()
+    let private stroppedMap = map stropReservedKeywords
+    let private apostropheMap = map appendApostropheToReservedKeywords
+    let toStroppedPascalCase = stroppedMap toPascalCase
+    let toStroppedCamelCase = stroppedMap toCamelCase
+    let toApostrophePascalCase = apostropheMap toPascalCase
+    let toApostropheCamelCase = apostropheMap toCamelCase
+    let toStropped = stroppedMap id
+    let toApostrophe = apostropheMap id
+        
+    /// Changes casing to 'camelCase'
+    let createCamel = toStroppedCamelCase
+        
+    /// Changes casing to 'PascalCase'
+    let createPascal = toStroppedPascalCase
 
 /// <summary>
 /// The Path module contains recursive types which are modeled after the 'path' of modules/namespaces that one
 /// would take to reach their location.<br/>
 /// </summary>
 module Path =
+    module Cache =
+        type ProcessCacheMap = {
+            Main: System.Collections.Generic.Dictionary<string, Path.PathKey>
+            Renderer: System.Collections.Generic.Dictionary<string, Path.PathKey>
+            Utility: System.Collections.Generic.Dictionary<string, Path.PathKey>
+            Global: System.Collections.Generic.Dictionary<string, Path.PathKey>
+        }
+        type ProcessMappedResult = {
+            Main: PathKey voption
+            Renderer: PathKey voption
+            Utility: PathKey voption
+        }
+        type SearchResult =
+            | OkSimple of PathKey
+            | OkProcessMap of ProcessMappedResult
+            | NoResult
+        let private cache = {
+            Main = System.Collections.Generic.Dictionary()
+            Renderer = System.Collections.Generic.Dictionary()
+            Utility = System.Collections.Generic.Dictionary()
+            Global = System.Collections.Generic.Dictionary()
+        }
+        let private retrievePathFromImpl
+            (cacheMapTarget: ProcessCacheMap -> System.Collections.Generic.Dictionary<string, PathKey>)
+            input =
+            match cache |> cacheMapTarget |> _.TryGetValue(input) with
+            | true, value -> ValueSome value
+            | _ -> ValueNone
+        let private retrievePathImpl strict input =
+            let impl input = 
+                match
+                    [
+                        0, retrievePathFromImpl _.Main input 
+                        1, retrievePathFromImpl _.Renderer input 
+                        2, retrievePathFromImpl _.Utility input 
+                    ] |> List.filter (snd >> _.IsSome)
+                with
+                | l when l |> List.isEmpty ->
+                    retrievePathFromImpl _.Global input
+                    |> function
+                        | ValueSome value -> OkSimple value
+                        | ValueNone -> NoResult
+                | [ _, ValueSome value ] -> OkSimple value
+                | values ->
+                    let result = { Main = ValueNone; Utility = ValueNone; Renderer = ValueNone }
+                    values
+                    |> List.fold (fun state -> function
+                        | 0, value -> { state with ProcessMappedResult.Main = value }
+                        | 1, value -> { state with ProcessMappedResult.Renderer = value }
+                        | 2, value -> { state with ProcessMappedResult.Utility = value }
+                        | _ -> state
+                        ) result
+                    |> OkProcessMap
+            match impl input with
+            | NoResult when not strict ->
+                toCamelCase input
+                |> impl
+            | result -> result
+        let retrievePath = retrievePathImpl false
+        let retrievePathStrict = retrievePathImpl true
+        let inline private keyForPath (path: PathKey) = (path.Name: Name).ValueOrSource
+        let addMain (path: PathKey) = cache.Main.Add(keyForPath path, path)
+        let addRenderer (path: PathKey) = cache.Renderer.Add(keyForPath path, path)
+        let addUtility (path: PathKey) = cache.Utility.Add(keyForPath path, path)
+        let addGlobal (path: PathKey) = cache.Global.Add(keyForPath path, path)
+        let add (path: PathKey) =
+            path
+            |> tracePathOfEntry
+            |> List.head
+            |> fun (name: Name) -> name.ValueOrSource
+            |> function
+                | "Main" -> addMain path
+                | "Renderer" -> addRenderer path
+                | "Utilities" -> addUtility path
+                | _ -> addGlobal path
+        let tryAddMain (path: PathKey) =
+            try addMain path |> Ok with e -> cache.Main[keyForPath path] |> Error
+        let tryAddRenderer (path: PathKey) =
+            try addRenderer path |> Ok with e -> cache.Renderer[keyForPath path] |> Error
+        let tryAddUtility (path: PathKey) =
+            try addUtility path |> Ok with e -> cache.Utility[keyForPath path] |> Error
+        let tryAddGlobal (path: PathKey) =
+            try addGlobal path |> Ok with e -> cache.Global[keyForPath path] |> Error
+        let tryAdd (path: PathKey) =
+            try
+            add path
+            with e -> ()
+        let dumpCache () =
+            cache.Main.Clear()
+            cache.Utility.Clear()
+            cache.Renderer.Clear()
+            cache.Global.Clear()
+        let getMainPaths () = cache.Main.Values |> Seq.toList
+        let getUtilityPaths () = cache.Utility.Values |> Seq.toList
+        let getRendererPaths () = cache.Renderer.Values |> Seq.toList
+        let getGlobalPaths () = cache.Global.Values |> Seq.toList
+        let getPaths () =
+            getMainPaths ()
+            @ getUtilityPaths ()
+            @ getRendererPaths ()
+            @ getGlobalPaths()
+    
+        
     /// <summary>
     /// A discriminated union representing the module/namespace that is containing
     /// types and bindings.
@@ -346,10 +418,17 @@ module Path =
         member inline this.Destructured = let (Module(p,n)) = this in (p,n)
         member this.Path = this.Destructured |> fst
         member this.Name = this.Destructured |> snd
+        static member Create(path, name) = Module(path,name)
         member this.AddRootModule(m: Module) =
             match this.Destructured with
             | path, name ->
-                Module.Module(path.AddRootModule(m), name)
+                match name with
+                // We identify the Process modules as a type of 'root' and prevent recursion going further.
+                | Source "Main" | Source "Renderer" | Source "Utility" when this.Path.IsRoot ->
+                    m.AddRootModule(Module(path, name))
+                | _ ->
+                    // Recurse through module paths to add the module at the top level
+                    Module.Module(path.AddRootModule(m), name)
     type Parameter with
         member inline this.Destructured = let (Parameter(p,n)) = this in (p,n)
         member this.Path =
@@ -480,7 +559,7 @@ module Path =
         member this.CreateModule(name: Name) =
             match this with
             | Module m ->
-                Path.Module.Module(m.Path, name)
+                Path.Module.Module(ModulePath.Module m, name)
                 |> PathKey.Module
             | e ->
                 failwith $"Tried to create a module pathkey for {e}"
@@ -787,6 +866,7 @@ type SourcePackage = {
         Target = SourceTarget.Empty
     }
 module SourcePackage =
+    module Packet = SourcePacket
     let pathKey { SourcePackage.PathKey = value } = value
     let decls { SourcePackage.Decls = value } = value
     let target { SourcePackage.Target = value } = value

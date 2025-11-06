@@ -3,8 +3,8 @@
 #load "./Spec.fs"
 #load "./Utils.fs"
 #load "./ApiDecoder.fs"
-#load "./Fantomas.Utils.fs"
 #load "./Types.fs"
+#load "./Fantomas.Utils.fs"
 #load "./FSharpApi.fs"
 #load "./SourceMapper.fs"
 #load "./Generator.fs"
@@ -293,4 +293,5 @@ open SourceMapper
 //      |> StringEnum.tryDebugTypeGen
 
 let testGenerate =
-    Generator.generateFromApiFile "./electron-api.json"
+    Generator.generateFromApiFile "./electron-api.json" "./Fable.Electron/Program.fs"
+    exit 0

@@ -1,9 +1,11 @@
 ﻿module rec ElectronApi.Json.Parser.FSharpApi
 
 open System
+open System.Collections.Generic
 open System.IO
 
 open ElectronApi.Json.Parser.Decoder
+open ElectronApi.Json.Parser.Types.Path
 open ElectronApi.Json.Parser.Utils
 open Fantomas.Core
 open Fantomas.Core.SyntaxOak
@@ -12,192 +14,9 @@ open Thoth.Json.Net
 
 #nowarn 40
 
-type ExtensionHelper =
-    static let cache = System.Collections.Generic.Dictionary<Name, ModifiedResult>()
-    static let toResolve = ResizeArray<ModifiedResult>()
-    static member add(input: Class) =
-        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Class input)
-        cache.Add(input.PathKey.Name, ModifiedResult.Class input)
-        input
-    static member add(input: Structure) =
-        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Structure input)
-        cache.Add(input.Name, ModifiedResult.Structure input)
-        input
-    static member add(input: Element) =
-        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Element input)
-        cache.Add(input.PathKey.Name, ModifiedResult.Element input)
-        input
-    static member add(input: Module) =
-        if input.Extends.IsSome then toResolve.Add(ModifiedResult.Module input)
-        cache.Add(input.PathKey.Name, ModifiedResult.Module input)
-        input
-    static member private merge(structure: Structure, incoming: ModifiedResult) =
-        match incoming with
-        | Module ``module`` ->
-            failwith "structure vs module"
-            {
-                structure with
-                    Properties = structure.Properties @ ``module``.Properties
-            }
-        | Class ``class`` ->
-            failwith "structure vs class"
-            {
-                structure with
-                    Properties = structure.Properties @ ``class``.Properties
-            }
-        | Element element ->
-            failwith "structure vs element"
-            {
-                structure with
-                    Properties = structure.Properties @ element.Properties
-            }
-        | Structure incomingStructure ->
-            {
-                structure with
-                    Properties = structure.Properties @ incomingStructure.Properties
-            }
-        |> fun structure ->
-            {
-                structure with Extends = ValueNone
-            }
-    static member private merge(class': Class, incoming: ModifiedResult) =
-        match incoming with
-        | Module ``module`` ->
-            failwith "class vs module"
-            {
-                class' with
-                    Events = class'.Events @ ``module``.Events // TODO - this seems incorrect; module events are static
-                    StaticMethods = ``module``.Methods
-                    StaticProperties = ``module``.Properties
-            }
-        | Class ``class`` ->
-            {
-                class' with
-                    Properties = class'.Properties @ ``class``.Properties
-                    Methods = class'.Methods @ ``class``.Methods
-                    Events = class'.Events @ ``class``.Events
-                    StaticMethods = class'.StaticMethods @ ``class``.StaticMethods
-                    StaticProperties = class'.StaticProperties @ ``class``.StaticProperties
-            }
-        | Element element ->
-            failwith "class vs element"
-            {
-                class' with
-                    Properties = class'.Properties @ element.Properties
-                    Methods = class'.Methods @ element.Methods
-                    Events = class'.Events @ element.Events
-            }
-        | Structure structure ->
-            failwith "class vs structure"
-            {
-                class' with
-                    Properties = class'.Properties @ structure.Properties
-            }
-        |> fun class' ->
-            { class' with Extends = None }
-    static member private merge(module': Module, incoming: ModifiedResult) =
-        match incoming with
-        | Module incoming ->
-            {
-                module' with
-                    Properties = module'.Properties @ incoming.Properties
-                    Methods = module'.Methods @ incoming.Methods
-                    Events = module'.Events @ incoming.Events
-            }
-        | Class incoming ->
-            failwith "module vs class"
-            {
-                module' with
-                    Properties = module'.Properties @ incoming.StaticProperties
-                    Methods = module'.Methods @ incoming.StaticMethods
-                    Events = module'.Events @ incoming.Events // TODO - this seems incorrect
-            }
-        | Element incoming ->
-            failwith "module vs element"
-            {
-                module' with
-                    Properties = module'.Properties @ incoming.Properties
-                    Methods = module'.Methods @ incoming.Methods
-                    Events = module'.Events @ incoming.Events
-            }
-        | Structure incoming ->
-            failwith "module vs structure"
-            {
-                module' with
-                    Properties = module'.Properties @ incoming.Properties
-            }
-        |> fun module' ->
-            { module' with Extends = ValueNone }
-    static member private merge(element: Element, incoming: ModifiedResult) =
-        match incoming with
-        | Module incoming ->
-            failwith "element vs module"
-            {
-                element with
-                    Properties = element.Properties @ incoming.Properties
-                    Methods = element.Methods @ incoming.Methods
-                    Events = element.Events @ incoming.Events
-            }
-        | Class incoming ->
-            failwith "element vs class"
-            {
-                element with
-                    Properties = element.Properties @ incoming.Properties
-                    Methods = element.Methods @ incoming.Methods
-                    Events = element.Events @ incoming.Events
-            }
-        | Element incoming ->
-            {
-                element with
-                    Properties = element.Properties @ incoming.Properties
-                    Methods = element.Methods @ incoming.Methods
-                    Events = element.Events @ incoming.Events
-            }
-        | Structure incoming ->
-            failwith "element vs structure"
-            {
-                element with
-                    Properties = element.Properties @ incoming.Properties
-            }
-        |> fun element ->
-            { element with Extends = None }
-    static member resolveAndRetrieve() =
-        toResolve
-        |> Seq.toArray
-        |> Array.map (function
-            | ModifiedResult.Class item ->
-                match cache.TryGetValue(item.Extends.Value) with
-                | true, value ->
-                    ExtensionHelper.merge(item,value)
-                    |> ModifiedResult.Class
-                | false, _ ->
-                    ModifiedResult.Class item
-            | ModifiedResult.Module item ->
-                match cache.TryGetValue(item.Extends.Value) with
-                | true, value ->
-                    ExtensionHelper.merge(item,value)
-                    |> ModifiedResult.Module
-                | false, _ ->
-                    ModifiedResult.Module item
-            | ModifiedResult.Structure item ->
-                match cache.TryGetValue(item.Extends.Value) with
-                | true, value ->
-                    ExtensionHelper.merge(item,value)
-                    |> ModifiedResult.Structure 
-                | false, _ ->
-                    ModifiedResult.Structure item
-            | ModifiedResult.Element item ->
-                match cache.TryGetValue(item.Extends.Value) with
-                | true, value ->
-                    ExtensionHelper.merge(item,value)
-                    |> ModifiedResult.Element
-                | false, _ ->
-                    ModifiedResult.Element item
-            )
-        |> fun result ->
-            toResolve.Clear()
-            cache.Clear()
-            result
+let stringToValueOption = function
+    | txt when String.IsNullOrWhiteSpace txt -> ValueNone
+    | txt -> ValueSome txt
 
 type ContextType =
     | MethodParameter
@@ -222,6 +41,7 @@ module Constants =
     let [<Literal>] promise = "Promise"
     let [<Literal>] record = "Record"
     let [<Literal>] any = "any"
+    let [<Literal>] Any = "Any"
     let [<Literal>] unknown = "unknown"
     let [<Literal>] event = "Event"
     let [<Literal>] number = "number"
@@ -418,27 +238,10 @@ type Parameter =
         
 
 type FuncOrMethod = {
-    Name: Path.PathKey
+    PathKey: Path.PathKey
     Parameters: Parameter list
     Returns: Type
 }
-
-module FuncOrMethod =
-    // We want to store lambdas/funcs so we can raise them to delegates IF they have
-    // more than 1 parameter.
-    let private cache = System.Collections.Generic.Dictionary<Path.PathKey, FuncOrMethod>()
-    module Cache =
-        let add key value = cache.Add(key,value)
-        let tryAdd key value =
-            if cache.TryAdd(key,value)
-            then Ok value
-            else Error value
-        let get key = cache[key]
-        let tryGet key =
-            match cache.TryGetValue(key) with
-            | true, value -> ValueSome value
-            | false, _ -> ValueNone
-    let getCacheValues = cache.Values
 
 type EventInfo = {
     PathKey: Path.PathKey
@@ -480,8 +283,122 @@ type Type =
     | Tuple of Type list
     | Join of structureRef: string * props: Property list
 
-
 module Type =
+    type Cache =
+        static let stringEnumCache = Dictionary<Path.PathKey, StringEnum>()
+        static let delegateCache = Dictionary<Path.PathKey, FuncOrMethod>()
+        static let eventNameCache = Dictionary<Path.PathKey, string>()
+        static let eventObjectCache = Dictionary<Path.PathKey, Event>()
+        static let eventInfoCache = Dictionary<Path.PathKey, EventInfo>()
+        static let pojoCache = ResizeArray<StructOrObject>()
+        static member Add(eventInfo: EventInfo, ?errorOnDuplicate) =
+            let errorOnDuplicate = defaultArg errorOnDuplicate false
+            let eventInfo = {
+                eventInfo with
+                    PathKey =
+                        match eventInfo.PathKey with
+                        | Path.PathKey.Event(Path.Event(parent,name)) ->
+                            match name with
+                            | Modified(source, "Event")
+                            | Source("event" as source) | Source("Event" as source) ->
+                                Modified(source, "EventInfo")
+                            | name -> name
+                            |> fun name ->
+                                Path.PathKey.Event(Path.Event(parent, name))
+                        | _ -> failwith "unreachable"
+            }
+            if
+                eventInfo.PathKey.ParentName.ValueOrSource <> "Event"
+                && List.isNotEmpty eventInfo.Properties
+                && not(eventInfoCache.TryAdd(eventInfo.PathKey, eventInfo))
+                && errorOnDuplicate
+            then failwith $"Duplicate Path for EventInfo in cache: {eventInfo}"
+            eventInfo
+        static member GetEventInfos(?peek) =
+            let peek = defaultArg peek false
+            let result = eventInfoCache.Values |> Seq.toList
+            if not peek then eventInfoCache.Clear()
+            result
+        static member GetEventInfo(path) =
+            match eventInfoCache.TryGetValue(path) with
+            | true, value -> ValueSome value
+            | _ -> ValueNone
+        static member PeekEventInfos() = Cache.GetEventInfos(true)
+            
+        static member Add(inlineObject: StructOrObject) =
+            pojoCache.Add inlineObject
+            inlineObject
+        static member Add(stringEnum: StringEnum, ?errorOnDuplicate: bool) =
+            let errorOnDuplicate = defaultArg errorOnDuplicate false
+            if
+                stringEnum.Cases |> List.isNotEmpty
+                && not(stringEnumCache.TryAdd(stringEnum.PathKey, stringEnum))
+                && errorOnDuplicate
+            then
+                failwith $"Duplicate Path for StringEnum in cache: {stringEnum}"
+            stringEnum
+        static member Add(funcOrMethod: FuncOrMethod, ?errorOnDuplicate: bool) =
+            let errorOnDuplicate = defaultArg errorOnDuplicate false
+            if
+                funcOrMethod.Parameters.Length > 1 
+                && not(delegateCache.TryAdd(funcOrMethod.PathKey, funcOrMethod))
+                && errorOnDuplicate
+            then
+                failwith $"Duplicate Path for FuncOrMethod in cache: {funcOrMethod}"
+            funcOrMethod
+            
+        static member Add(eventObject: Event, ?errorOnDuplicate: bool) =
+            let errorOnDuplicate = defaultArg errorOnDuplicate false
+            if
+                eventObject.Parameters.Length > 1
+                && not(eventObjectCache.TryAdd(eventObject.PathKey, eventObject))
+                && not(eventNameCache.TryAdd(eventObject.PathKey, eventObject.PathKey.Name.ValueOrSource))
+                && errorOnDuplicate
+            then
+                failwith $"Duplicate Path for Event in cache: {eventObject}"
+            eventObject
+        static member GetStringEnums(?peek) =
+            let peek = defaultArg peek false
+            let result =
+                stringEnumCache.Values
+                |> Seq.toList
+            if not peek then stringEnumCache.Clear()
+            result
+        static member PeekStringEnums() = Cache.GetStringEnums(true)
+        static member GetFuncOrMethods(?peek) =
+            let peek = defaultArg peek false
+            let result =
+                delegateCache.Values
+                |> Seq.toList
+            if not peek then delegateCache.Clear()
+            result
+        static member PeekFuncOrMethods() = Cache.GetFuncOrMethods(true)
+        static member GetEventObjects(?peek) =
+            let peek = defaultArg peek false
+            let result =
+                eventObjectCache.Values
+                |> Seq.toList
+            if not peek then eventObjectCache.Clear()
+            result
+        static member PeekEventObjects() = Cache.GetEventObjects(true)
+        static member GetEventStrings(?peek) =
+            let peek = defaultArg peek false
+            let result = eventNameCache.Values |> Seq.toList
+            if not peek then eventNameCache.Clear()
+            result
+        static member PeekEventStrings() = Cache.GetEventStrings(false)
+        static member GetFuncOrMethod(path: Path.PathKey) =
+            match delegateCache.TryGetValue(path) with
+            | true, value -> ValueSome value
+            | _ -> ValueNone
+        static member GetInlineObjects(?peek: bool) =
+            let peek = defaultArg peek false
+            let result = pojoCache |> Seq.toList
+            if not peek then
+                pojoCache.Clear()
+            result
+        static member PeekInlineObjects() = Cache.GetInlineObjects(true)
+            
     let readStringEnumCase (_: FactoryContext): PossibleStringValue -> StringEnumCase = fun { Value = value; Description = desc } ->
         {
             Value =
@@ -503,11 +420,13 @@ module Type =
                     possibleValues
                     |> Option.map (
                         Array.filter (_.Value.Length >> (<) 0)
+                        >> Array.distinctBy _.Value
                         >> Array.map (readStringEnumCase ctx)
                         >> Array.toList
                         )
                     |> Option.defaultValue []
             }
+            |> Cache.Add
     // If we hit an unknown, we want to throw so we can see how that type should be managed.
     let readInfoString (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.InfoString -> Type = function
         | info when innerTypes.IsNone ->
@@ -515,7 +434,7 @@ module Type =
             | { Type = Constants.float | Constants.number | "Number" | "Float" } -> Type.Float
             | { Type = Constants.double } -> Type.Double
             | { Type = Constants.integer } -> Type.Integer
-            | { Type = Constants.unknown | Constants.any } -> Type.Any
+            | { Type = Constants.unknown | Constants.any | Constants.Any } -> Type.Any
             | { Type = Constants.undefined } -> Type.Undefined
             | { Type = Constants.event } ->
                 {
@@ -572,7 +491,7 @@ module Type =
                 | "(options: BrowserWindowConstructorOptions) => WebContents" ->
                     let funcName = ctx.PathKey.CreateLambda()
                     {
-                        FuncOrMethod.Name = funcName
+                        FuncOrMethod.PathKey = funcName
                         Parameters = [
                             Named(
                                 funcName.CreateParameter(Source "options"),
@@ -634,6 +553,7 @@ module Type =
             |> Array.toList
             |> fun props ->
                 { StructOrObject.PathKey = ctx.PathKey; Properties = props }
+                |> Type.Cache.Add
                 |> Type.Object
     let readInfoArray (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.InfoArray -> Type = function
         | a when innerTypes.IsSome ->
@@ -697,7 +617,7 @@ module Type =
             let ctx = { ctx with PathKey = ctx.PathKey.CreateLambda() }
             {
                 // Lambda probably, we're only really interested in the signature then
-                Name = ctx.PathKey
+                PathKey = ctx.PathKey
                 Parameters =
                     parameters
                     |> Array.map (readMethodParameter ctx)
@@ -708,17 +628,8 @@ module Type =
                     |> ValueOption.map (fromTypeInformation ctx)
                     |> ValueOption.defaultValue Type.Unit
             }
-            |> fun lambda ->
-                if lambda.Parameters.Length > 1 then
-                    FuncOrMethod.Cache.tryAdd
-                        lambda.Name
-                        lambda
-                    |> function
-                        | Ok lambda -> Type.Function lambda
-                        | Error lambda ->
-                            failwith $"Duplicate definitions of lambda {lambda}"
-                else Type.Function lambda
-            
+            |> Cache.Add 
+            |> Type.Function 
     let readEventKind (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.Event -> Type = function
         | e when innerTypes.IsSome ->
             failwith $"unhandled event type {e} with inner types {innerTypes}"
@@ -734,6 +645,7 @@ module Type =
             |> fun props ->
                 { PathKey = ctx.PathKey
                   Properties = props }
+                |> Cache.Add
                 |> Type.Event
     let readEventRefKind (ctx: FactoryContext) (innerTypes: TypeInformation array voption): TypeInformationKind.EventRef -> Type = function
         | e when innerTypes.IsSome ->
@@ -834,7 +746,7 @@ type Event = {
 
 module Event =
     let fromDocBlock (ctx: FactoryContext) (block: EventDocumentationBlock): Event =
-        let name = block.DocumentationBlock.Name |> Name.cacheOrCreatePascal
+        let name = block.DocumentationBlock.Name |> Name.createPascal
         // We make assumptions that these event blocks are always the child of a module or a type.
         // We then create the binding off this.
         if not (ctx.PathKey.IsModule || ctx.PathKey.IsType) then
@@ -863,6 +775,7 @@ module Event =
                 block.DocumentationBlock.AdditionalTags
                 |> StabilityStatus.fromTags
         }
+        |> Type.Cache.Add
 
 type Structure = {
     Name: Name
@@ -875,8 +788,7 @@ type Structure = {
 module Structure =
     let readFromDocContainer (ctx: FactoryContext option) (container: StructureDocumentationContainer) =
         let name =
-            container.BaseDocumentationContainer.Name
-            |> Name.cacheOrCreatePascal
+            container.BaseDocumentationContainer.Name |> Name.createPascal
         let pathKey =
             match ctx with
             | None ->
@@ -888,7 +800,7 @@ module Structure =
             Name = name
             Extends =
                 container.BaseDocumentationContainer.Extends
-                |> Option.map Name.cacheOrCreatePascal
+                |> Option.map Name.createPascal
                 |> Option.toValueOption
             Description =
                 container.BaseDocumentationContainer.Description
@@ -905,7 +817,6 @@ module Structure =
                 |> Array.map (extractFromPropertyDocumentationBlock ctx)
                 |> Array.toList
         }
-        |> ExtensionHelper.add
 
 type Method = {
     PathKey: Path.PathKey
@@ -1029,7 +940,8 @@ module Class =
                     | InlinedObjectProp _ -> failwith "Tried to inline an already inlined parameter option"
                 )
                 >> List.filter _.IsObject
-                >> List.iter (function Type.Object o -> objectParameterCache.Add o | _ -> failwith "UNREACHABLE")
+                // >> List.iter (function Type.Object o -> objectParameterCache.Add o | _ -> failwith "UNREACHABLE")
+                >> List.iter (function Type.Object o -> Type.Cache.Add o |> ignore | _ -> failwith "UNREACHABLE")
             let inlineObject: StructOrObject -> Parameter list = _.Properties >> List.map Parameter.InlinedObjectProp
             match parameters |> List.tryLast with
             | Some (Named(_, { Type = Type.Object structOrObject }))
@@ -1056,7 +968,8 @@ module Class =
             | Some (Named(_, { Type = Type.Object structOrObject }))
             | Some (Positional { Type = Type.Object structOrObject }) ->
                 // no we cannot inline; cache the object
-                structOrObject |> objectParameterCache.Add
+                // structOrObject |> objectParameterCache.Add
+                structOrObject |> Type.Cache.Add |> ignore
                 cacheNonLastObjects parameters
                 class'
             // NA
@@ -1066,7 +979,7 @@ module Class =
     let fromDocContainer (ctx: FactoryContext option) (container: ClassDocumentationContainer): Class =
         let name =
             container.BaseDocumentationContainer.Name
-            |> Name.cacheOrCreatePascal
+            |> Name.createPascal
         let ctx =
             match ctx with
             | Some ctx ->
@@ -1076,6 +989,7 @@ module Class =
                 let name = name
                 let pathKey = Path.PathKey.Type(Path.Type(root,name))
                 { PathKey = pathKey; Type = ContextType.NA }
+        Path.Cache.add ctx.PathKey
         {
             Process = container.Process
             Constructor =
@@ -1117,7 +1031,7 @@ module Class =
             PathKey = ctx.PathKey
             Extends =
                 container.BaseDocumentationContainer.Extends
-                |> Option.map Name.cacheOrCreatePascal
+                |> Option.map Name.createPascal
             Description =
                 container.BaseDocumentationContainer.Description
                 |> function
@@ -1130,7 +1044,6 @@ module Class =
                     .WebsiteUrl
         }
         |> inlineObjectParameters
-        |> ExtensionHelper.add
 
 type Element = {
     PathKey: Path.PathKey
@@ -1147,7 +1060,7 @@ module Element =
     let fromDocContainer (ctx: FactoryContext option) (container: ElementDocumentationContainer): Element =
         let name =
             container.BaseDocumentationContainer.Name
-            |> Name.cacheOrCreatePascal
+            |> Name.createPascal
         let ctx =
             match ctx with
             | Some ctx ->
@@ -1155,11 +1068,12 @@ module Element =
             | None ->
                 let pathKey = Path.Type(Path.ModulePath.Root, name) |> Path.PathKey.Type
                 { PathKey = pathKey; Type = ContextType.NA }
+        Path.Cache.add ctx.PathKey
         {
             PathKey = ctx.PathKey
             Extends =
                 container.BaseDocumentationContainer.Extends
-                |> Option.map Name.cacheOrCreatePascal
+                |> Option.map Name.createPascal
             Description =
                 container.BaseDocumentationContainer.Description
                 |> function
@@ -1182,7 +1096,6 @@ module Element =
                 |> Array.map (extractFromPropertyDocumentationBlock { ctx with Type = ContextType.ObjectProperty })
                 |> Array.toList
         }
-        |> ExtensionHelper.add
 
 type Module = {
     PathKey: Path.PathKey
@@ -1201,19 +1114,19 @@ module Module =
     let fromDocContainer (ctx: FactoryContext option) (container: ModuleDocumentationContainer): Module =
         let name =
             container.BaseDocumentationContainer.Name
-            |> Name.cacheOrCreatePascal
+            |> Name.toStropped
         let ctx =
             match ctx with
             | Some ctx ->
                 { ctx with PathKey = ctx.PathKey.CreateModule(name) }
             | None ->
                 { PathKey = Path.PathKey.CreateModule(name); Type = ContextType.NA }
-                
+        Path.Cache.add ctx.PathKey
         {
             PathKey = ctx.PathKey
             Extends =
                 container.BaseDocumentationContainer.Extends
-                |> Option.map Name.cacheOrCreatePascal
+                |> Option.map Name.createPascal
                 |> Option.toValueOption
             WebsiteUrl =
                 container.BaseDocumentationContainer.WebsiteUrl
@@ -1245,24 +1158,225 @@ module Module =
                 |> Array.map (Class.fromDocContainer (Some ctx))
                 |> Array.toList
         }
-        |> ExtensionHelper.add
         
 type ModifiedResult =
     | Module of Module
     | Class of Class
     | Element of Element
     | Structure of Structure
-let readResult = function
+
+let private unifyWith (extensionDoc: ParsedDocumentation) (inputDoc: ParsedDocumentation) =
+    match inputDoc,extensionDoc with
+    | ParsedDocumentation.Module moduleDocumentationContainer, ParsedDocumentation.Module documentationContainer ->
+        {
+            moduleDocumentationContainer with
+                Events =
+                    documentationContainer.Events
+                    |> Array.filter (fun docEvent ->
+                        moduleDocumentationContainer.Events
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) docEvent.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append moduleDocumentationContainer.Events
+                Methods =
+                    documentationContainer.Methods
+                    |> Array.filter (fun docMethod ->
+                        moduleDocumentationContainer.Methods
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) docMethod.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append moduleDocumentationContainer.Methods
+                Properties =
+                    documentationContainer.Properties
+                    |> Array.filter (fun docProp ->
+                        moduleDocumentationContainer.Properties
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) docProp.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append moduleDocumentationContainer.Properties
+        }
+        |> ParsedDocumentation.Module
+    | ParsedDocumentation.Class classDocumentationContainer, ParsedDocumentation.Class documentationContainer ->
+        {
+            classDocumentationContainer with
+                InstanceEvents =
+                    documentationContainer.InstanceEvents
+                    |> Array.filter (fun docEvent ->
+                        classDocumentationContainer.InstanceEvents
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) docEvent.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append classDocumentationContainer.InstanceEvents
+                InstanceMethods =
+                    documentationContainer.InstanceMethods
+                    |> Array.filter (fun doc ->
+                        classDocumentationContainer.InstanceMethods
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append classDocumentationContainer.InstanceMethods
+                InstanceProperties =
+                    documentationContainer.InstanceProperties
+                    |> Array.filter (fun doc ->
+                        classDocumentationContainer.InstanceProperties
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append classDocumentationContainer.InstanceProperties
+                StaticMethods =
+                    documentationContainer.StaticMethods
+                    |> Array.filter (fun doc ->
+                        classDocumentationContainer.StaticMethods
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append classDocumentationContainer.StaticMethods
+                StaticProperties =
+                    documentationContainer.StaticProperties
+                    |> Array.filter (fun doc ->
+                        classDocumentationContainer.StaticProperties
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append classDocumentationContainer.StaticProperties
+        }
+        |> ParsedDocumentation.Class
+        
+    | ParsedDocumentation.Structure structureDocumentationContainer, ParsedDocumentation.Structure documentationContainer ->
+        {
+            structureDocumentationContainer with
+                Properties =
+                    documentationContainer.Properties
+                    |> Array.filter (fun doc ->
+                        structureDocumentationContainer.Properties
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append structureDocumentationContainer.Properties
+        }
+        |> ParsedDocumentation.Structure
+    | ParsedDocumentation.Element elementDocumentationContainer, ParsedDocumentation.Element documentationContainer ->
+        {
+            elementDocumentationContainer with
+                Properties =
+                    documentationContainer.Properties
+                    |> Array.filter (fun doc ->
+                        elementDocumentationContainer.Properties
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append elementDocumentationContainer.Properties
+                Events =
+                    documentationContainer.Events
+                    |> Array.filter (fun doc ->
+                        elementDocumentationContainer.Events
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append elementDocumentationContainer.Events
+                Methods =
+                    documentationContainer.Methods
+                    |> Array.filter (fun doc ->
+                        elementDocumentationContainer.Methods
+                        |> Array.exists (_.DocumentationBlock.Name >> (=) doc.DocumentationBlock.Name)
+                        |> not
+                        )
+                    |> Array.append elementDocumentationContainer.Methods
+        }
+        |> ParsedDocumentation.Element
+    | inputDoc, extensionDoc ->
+        failwith $"Unable to unify documentations of different types:
+Input: {inputDoc}
+
+Extension: {extensionDoc}"
+    // | ParsedDocumentation.Module moduleDocumentationContainer, ParsedDocumentation.Class classDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Module moduleDocumentationContainer, ParsedDocumentation.Structure structureDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Module moduleDocumentationContainer, ParsedDocumentation.Element elementDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Class classDocumentationContainer, ParsedDocumentation.Module moduleDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Class classDocumentationContainer, ParsedDocumentation.Structure structureDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Class classDocumentationContainer, ParsedDocumentation.Element elementDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Structure structureDocumentationContainer, ParsedDocumentation.Module moduleDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Structure structureDocumentationContainer, ParsedDocumentation.Class classDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Structure structureDocumentationContainer, ParsedDocumentation.Element elementDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Element elementDocumentationContainer, ParsedDocumentation.Module moduleDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Element elementDocumentationContainer, ParsedDocumentation.Class classDocumentationContainer -> failwith "todo"
+    // | ParsedDocumentation.Element elementDocumentationContainer, ParsedDocumentation.Structure structureDocumentationContainer -> failwith "todo"
+
+let private ifExtensionThenUnify: ParsedDocumentation -> ParsedDocumentation = function
+    | ParsedDocumentation.Structure { BaseDocumentationContainer = { Extends = Some name; Name = docName } }
+    | ParsedDocumentation.Element { BaseDocumentationContainer = { Extends = Some name; Name = docName } }
+    | ParsedDocumentation.Class { BaseDocumentationContainer = { Extends = Some name; Name = docName } }
+    | ParsedDocumentation.Module { BaseDocumentationContainer = { Extends = Some name; Name = docName } } as parsedDocumentation ->
+        let replaceExtendsWith value = function
+            | ParsedDocumentation.Structure r ->
+                { r with StructureDocumentationContainer.BaseDocumentationContainer.Extends = value }
+                |> ParsedDocumentation.Structure 
+            | ParsedDocumentation.Element r ->
+                { r with ElementDocumentationContainer.BaseDocumentationContainer.Extends = value }
+                |> ParsedDocumentation.Element 
+            | ParsedDocumentation.Class r ->
+                { r with ClassDocumentationContainer.BaseDocumentationContainer.Extends = value }
+                |> ParsedDocumentation.Class 
+            | ParsedDocumentation.Module r ->
+                { r with ModuleDocumentationContainer.BaseDocumentationContainer.Extends = value }
+                |> ParsedDocumentation.Module 
+        ExtensionAssistant.tryGet name
+        |> function
+            | ExtensionSearchResult.OkResult extensionDoc ->
+                #if DEBUG
+                printfn $"Found extension named {name} for {docName}"
+                #endif
+                parsedDocumentation
+                |> replaceExtendsWith None
+                |> unifyWith extensionDoc
+            | ExtensionSearchResult.OkParentResult(extensionDoc,_) ->
+                #if DEBUG
+                printfn $"Found extension named {name} for {docName}"
+                #endif
+                parsedDocumentation
+                |> replaceExtendsWith None
+                |> unifyWith extensionDoc
+            | NotFound value ->
+                #if DEBUG
+                printfn $"Unable to find extension type named {value} for {docName}"
+                #endif
+                parsedDocumentation
+    | parsedDocumentation -> parsedDocumentation
+let readResult =
+    let makeProcessContexts: ProcessBlock -> FactoryContext option array = fun processBlock ->
+        [|
+            if processBlock.Main then
+                Some { PathKey = Path.PathKey.CreateModule(Source "Main"); Type = ContextType.NA }
+            if processBlock.Renderer then
+                Some { PathKey = Path.PathKey.CreateModule(Source "Renderer"); Type = ContextType.NA }
+            if processBlock.Utility then
+                Some { PathKey = Path.PathKey.CreateModule(Source "Utility"); Type = ContextType.NA }
+        |]
+        |> function
+            | [||] ->
+                [| None |]
+            | processes ->
+                processes
+    ifExtensionThenUnify >> function
     | ParsedDocumentation.Module value ->
-        Module.fromDocContainer None value
-        |> ModifiedResult.Module
+        makeProcessContexts value.Process
+        |> Array.map(fun proc ->
+            Module.fromDocContainer proc value
+            |> ModifiedResult.Module
+            )
     | ParsedDocumentation.Class value ->
-        Class.fromDocContainer None value
-        |> ModifiedResult.Class
+        makeProcessContexts value.Process
+        |> Array.map (fun proc ->
+            Class.fromDocContainer proc value
+            |> ModifiedResult.Class
+            )
     | ParsedDocumentation.Element value ->
         // TODO - place elements in a 'Tags' or 'Elements' module?
-        Element.fromDocContainer None value
-        |> ModifiedResult.Element
+        makeProcessContexts value.Process
+        |> Array.map (fun proc ->
+            Element.fromDocContainer proc value
+            |> ModifiedResult.Element
+            )
     | ParsedDocumentation.Structure value ->
         // we'll place root structs into a "Structure" or "Types" module
         let module' =
@@ -1271,34 +1385,6 @@ let readResult = function
             |> Some
         Structure.readFromDocContainer module' value
         |> ModifiedResult.Structure
+        |> Array.singleton
 
-let readResults =
-    Array.map readResult >> (fun results ->
-        let resolved = ExtensionHelper.resolveAndRetrieve()
-        results
-        |> Array.map (fun item ->
-            let findItem name  = function
-            | Module ``module`` ->
-                ``module``.PathKey.Name = name
-            | Class ``class`` ->
-                ``class``.PathKey.Name = name
-            | Element element ->
-                element.PathKey.Name = name
-            | Structure structure ->
-                structure.Name = name
-            match item with
-            | Module ``module`` ->
-                resolved
-                |> Array.tryFind (findItem ``module``.PathKey.Name)
-            | Class ``class`` ->
-                resolved
-                |> Array.tryFind (findItem ``class``.PathKey.Name)
-            | Element element ->
-                resolved
-                |> Array.tryFind (findItem element.PathKey.Name)
-            | Structure structure -> 
-                resolved
-                |> Array.tryFind (findItem structure.Name)
-            |> Option.defaultValue item
-            )
-        ) >> Array.toList
+let readResults = Array.collect readResult >> Array.toList

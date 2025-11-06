@@ -43,7 +43,7 @@ let private reserved =
       // reserved for future expansion
       "break"; "checked"; "component"; "constraint"; "continue"; (* "event" *)
       "external"; "include"; "mixin"; "parallel"; "process"; "protected"
-      "pure"; "sealed"; "tailcall"; "trait"; "virtual"
+      "pure"; "sealed"; "tailcall"; "trait"; "virtual"; "params"
     ].ToFrozenSet()
 
 let isReserved = reserved.Contains
