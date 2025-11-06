@@ -9,9 +9,6 @@ open Node.Base
 open Node.Stream
 open Fetch
 
-module Constants =
-    begin end
-
 [<Fable.Core.Erase; AutoOpen>]
 module Types =
     module WebPreferences =
@@ -6543,6 +6540,45 @@ module Enums =
                 | [<CompiledName("inactive")>] Inactive
 
 module Renderer =
+    module Constants =
+        module WebviewTag =
+            [<Literal; Erase>]
+            let DevtoolsSearchQuery = "devtools-search-query"
+
+            [<Literal; Erase>]
+            let IpcMessage = "ipc-message"
+
+            [<Literal; Erase>]
+            let DidNavigateInPage = "did-navigate-in-page"
+
+            [<Literal; Erase>]
+            let DidFrameNavigate = "did-frame-navigate"
+
+            [<Literal; Erase>]
+            let DidRedirectNavigation = "did-redirect-navigation"
+
+            [<Literal; Erase>]
+            let DidStartNavigation = "did-start-navigation"
+
+            [<Literal; Erase>]
+            let WillFrameNavigate = "will-frame-navigate"
+
+            [<Literal; Erase>]
+            let ConsoleMessage = "console-message"
+
+            [<Literal; Erase>]
+            let PageTitleUpdated = "page-title-updated"
+
+            [<Literal; Erase>]
+            let DidFailLoad = "did-fail-load"
+
+            [<Literal; Erase>]
+            let LoadCommit = "load-commit"
+
+        module UtilityProcess =
+            [<Literal; Erase>]
+            let Error = "error"
+
     module UtilityProcess =
         /// <summary>
         /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
@@ -11846,6 +11882,22 @@ module Renderer =
             Unchecked.defaultof<_>
 
 module Utility =
+    module Constants =
+        module UtilityProcess =
+            [<Literal; Erase>]
+            let Error = "error"
+
+        module SystemPreferences =
+            [<Literal; Erase>]
+            let AccentColorChanged = "accent-color-changed"
+
+        module ClientRequest =
+            [<Literal; Erase>]
+            let Redirect = "redirect"
+
+            [<Literal; Erase>]
+            let Login = "login"
+
     module UtilityProcess =
         /// <summary>
         /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
@@ -13860,6 +13912,419 @@ module Utility =
         member val chunkedEncoding: bool = Unchecked.defaultof<_> with get, set
 
 module Main =
+    module Constants =
+        module WebContents =
+            [<Literal; Erase>]
+            let FrameCreated = "frame-created"
+
+            [<Literal; Erase>]
+            let PreferredSizeChanged = "preferred-size-changed"
+
+            [<Literal; Erase>]
+            let IpcMessageSync = "ipc-message-sync"
+
+            [<Literal; Erase>]
+            let IpcMessage = "ipc-message"
+
+            [<Literal; Erase>]
+            let PreloadError = "preload-error"
+
+            [<Literal; Erase>]
+            let ConsoleMessage = "console-message"
+
+            [<Literal; Erase>]
+            let DidAttachWebview = "did-attach-webview"
+
+            [<Literal; Erase>]
+            let WillAttachWebview = "will-attach-webview"
+
+            [<Literal; Erase>]
+            let Paint = "paint"
+
+            [<Literal; Erase>]
+            let SelectBluetoothDevice = "select-bluetooth-device"
+
+            [<Literal; Erase>]
+            let ContextMenu = "context-menu"
+
+            [<Literal; Erase>]
+            let CursorChanged = "cursor-changed"
+
+            [<Literal; Erase>]
+            let UpdateTargetUrl = "update-target-url"
+
+            [<Literal; Erase>]
+            let DidChangeThemeColor = "did-change-theme-color"
+
+            [<Literal; Erase>]
+            let FoundInPage = "found-in-page"
+
+            [<Literal; Erase>]
+            let Login = "login"
+
+            [<Literal; Erase>]
+            let SelectClientCertificate = "select-client-certificate"
+
+            [<Literal; Erase>]
+            let CertificateError = "certificate-error"
+
+            [<Literal; Erase>]
+            let DevtoolsSearchQuery = "devtools-search-query"
+
+            [<Literal; Erase>]
+            let DevtoolsOpenUrl = "devtools-open-url"
+
+            [<Literal; Erase>]
+            let ZoomChanged = "zoom-changed"
+
+            [<Literal; Erase>]
+            let BeforeMouseEvent = "before-mouse-event"
+
+            [<Literal; Erase>]
+            let BeforeInputEvent = "before-input-event"
+
+            [<Literal; Erase>]
+            let InputEvent = "input-event"
+
+            [<Literal; Erase>]
+            let RenderProcessGone = "render-process-gone"
+
+            [<Literal; Erase>]
+            let DidNavigateInPage = "did-navigate-in-page"
+
+            [<Literal; Erase>]
+            let DidFrameNavigate = "did-frame-navigate"
+
+            [<Literal; Erase>]
+            let DidNavigate = "did-navigate"
+
+            [<Literal; Erase>]
+            let DidRedirectNavigation = "did-redirect-navigation"
+
+            [<Literal; Erase>]
+            let WillRedirect = "will-redirect"
+
+            [<Literal; Erase>]
+            let DidStartNavigation = "did-start-navigation"
+
+            [<Literal; Erase>]
+            let WillNavigate = "will-navigate"
+
+            [<Literal; Erase>]
+            let DidCreateWindow = "did-create-window"
+
+            [<Literal; Erase>]
+            let ContentBoundsUpdated = "content-bounds-updated"
+
+            [<Literal; Erase>]
+            let PageFaviconUpdated = "page-favicon-updated"
+
+            [<Literal; Erase>]
+            let PageTitleUpdated = "page-title-updated"
+
+            [<Literal; Erase>]
+            let DidFrameFinishLoad = "did-frame-finish-load"
+
+            [<Literal; Erase>]
+            let DidFailProvisionalLoad = "did-fail-provisional-load"
+
+            [<Literal; Erase>]
+            let DidFailLoad = "did-fail-load"
+
+        module UtilityProcess =
+            [<Literal; Erase>]
+            let Error = "error"
+
+        module Tray =
+            [<Literal; Erase>]
+            let MouseMove = "mouse-move"
+
+            [<Literal; Erase>]
+            let MouseLeave = "mouse-leave"
+
+            [<Literal; Erase>]
+            let MouseEnter = "mouse-enter"
+
+            [<Literal; Erase>]
+            let MouseDown = "mouse-down"
+
+            [<Literal; Erase>]
+            let MouseUp = "mouse-up"
+
+            [<Literal; Erase>]
+            let DropText = "drop-text"
+
+            [<Literal; Erase>]
+            let DropFiles = "drop-files"
+
+            [<Literal; Erase>]
+            let MiddleClick = "middle-click"
+
+            [<Literal; Erase>]
+            let DoubleClick = "double-click"
+
+            [<Literal; Erase>]
+            let RightClick = "right-click"
+
+            [<Literal; Erase>]
+            let Click = "click"
+
+        module SystemPreferences =
+            [<Literal; Erase>]
+            let AccentColorChanged = "accent-color-changed"
+
+        module Session =
+            [<Literal; Erase>]
+            let UsbDeviceRevoked = "usb-device-revoked"
+
+            [<Literal; Erase>]
+            let UsbDeviceRemoved = "usb-device-removed"
+
+            [<Literal; Erase>]
+            let UsbDeviceAdded = "usb-device-added"
+
+            [<Literal; Erase>]
+            let SelectUsbDevice = "select-usb-device"
+
+            [<Literal; Erase>]
+            let SerialPortRevoked = "serial-port-revoked"
+
+            [<Literal; Erase>]
+            let SerialPortRemoved = "serial-port-removed"
+
+            [<Literal; Erase>]
+            let SerialPortAdded = "serial-port-added"
+
+            [<Literal; Erase>]
+            let SelectSerialPort = "select-serial-port"
+
+            [<Literal; Erase>]
+            let HidDeviceRevoked = "hid-device-revoked"
+
+            [<Literal; Erase>]
+            let HidDeviceRemoved = "hid-device-removed"
+
+            [<Literal; Erase>]
+            let HidDeviceAdded = "hid-device-added"
+
+            [<Literal; Erase>]
+            let SelectHidDevice = "select-hid-device"
+
+            [<Literal; Erase>]
+            let SpellcheckDictionaryDownloadFailure = "spellcheck-dictionary-download-failure"
+
+            [<Literal; Erase>]
+            let SpellcheckDictionaryDownloadSuccess = "spellcheck-dictionary-download-success"
+
+            [<Literal; Erase>]
+            let SpellcheckDictionaryDownloadBegin = "spellcheck-dictionary-download-begin"
+
+            [<Literal; Erase>]
+            let SpellcheckDictionaryInitialized = "spellcheck-dictionary-initialized"
+
+            [<Literal; Erase>]
+            let Preconnect = "preconnect"
+
+            [<Literal; Erase>]
+            let FileSystemAccessRestricted = "file-system-access-restricted"
+
+            [<Literal; Erase>]
+            let ExtensionReady = "extension-ready"
+
+            [<Literal; Erase>]
+            let ExtensionUnloaded = "extension-unloaded"
+
+            [<Literal; Erase>]
+            let ExtensionLoaded = "extension-loaded"
+
+            [<Literal; Erase>]
+            let WillDownload = "will-download"
+
+        module ServiceWorkers =
+            [<Literal; Erase>]
+            let RegistrationCompleted = "registration-completed"
+
+            [<Literal; Erase>]
+            let ConsoleMessage = "console-message"
+
+        module Screen =
+            [<Literal; Erase>]
+            let DisplayMetricsChanged = "display-metrics-changed"
+
+            [<Literal; Erase>]
+            let DisplayRemoved = "display-removed"
+
+            [<Literal; Erase>]
+            let DisplayAdded = "display-added"
+
+        module PushNotifications =
+            [<Literal; Erase>]
+            let ReceivedApnsNotification = "received-apns-notification"
+
+        module Notification =
+            [<Literal; Erase>]
+            let Failed = "failed"
+
+            [<Literal; Erase>]
+            let Action = "action"
+
+            [<Literal; Erase>]
+            let Reply = "reply"
+
+        module InAppPurchase =
+            [<Literal; Erase>]
+            let TransactionsUpdated = "transactions-updated"
+
+        module Extensions =
+            [<Literal; Erase>]
+            let ExtensionReady = "extension-ready"
+
+            [<Literal; Erase>]
+            let ExtensionUnloaded = "extension-unloaded"
+
+            [<Literal; Erase>]
+            let ExtensionLoaded = "extension-loaded"
+
+        module DownloadItem =
+            [<Literal; Erase>]
+            let Done = "done"
+
+            [<Literal; Erase>]
+            let Updated = "updated"
+
+        module Debugger =
+            [<Literal; Erase>]
+            let Message = "message"
+
+            [<Literal; Erase>]
+            let Detach = "detach"
+
+        module Cookies =
+            [<Literal; Erase>]
+            let Changed = "changed"
+
+        module ClientRequest =
+            [<Literal; Erase>]
+            let Redirect = "redirect"
+
+            [<Literal; Erase>]
+            let Login = "login"
+
+        module BrowserWindow =
+            [<Literal; Erase>]
+            let SystemContextMenu = "system-context-menu"
+
+            [<Literal; Erase>]
+            let RotateGesture = "rotate-gesture"
+
+            [<Literal; Erase>]
+            let Swipe = "swipe"
+
+            [<Literal; Erase>]
+            let AppCommand = "app-command"
+
+            [<Literal; Erase>]
+            let AlwaysOnTopChanged = "always-on-top-changed"
+
+            [<Literal; Erase>]
+            let WillMove = "will-move"
+
+            [<Literal; Erase>]
+            let WillResize = "will-resize"
+
+            [<Literal; Erase>]
+            let PageTitleUpdated = "page-title-updated"
+
+        module BaseWindow =
+            [<Literal; Erase>]
+            let SystemContextMenu = "system-context-menu"
+
+            [<Literal; Erase>]
+            let RotateGesture = "rotate-gesture"
+
+            [<Literal; Erase>]
+            let Swipe = "swipe"
+
+            [<Literal; Erase>]
+            let AppCommand = "app-command"
+
+            [<Literal; Erase>]
+            let AlwaysOnTopChanged = "always-on-top-changed"
+
+            [<Literal; Erase>]
+            let WillMove = "will-move"
+
+            [<Literal; Erase>]
+            let WillResize = "will-resize"
+
+        module AutoUpdater =
+            [<Literal; Erase>]
+            let UpdateDownloaded = "update-downloaded"
+
+        module App =
+            [<Literal; Erase>]
+            let SecondInstance = "second-instance"
+
+            [<Literal; Erase>]
+            let AccessibilitySupportChanged = "accessibility-support-changed"
+
+            [<Literal; Erase>]
+            let ChildProcessGone = "child-process-gone"
+
+            [<Literal; Erase>]
+            let RenderProcessGone = "render-process-gone"
+
+            [<Literal; Erase>]
+            let Login = "login"
+
+            [<Literal; Erase>]
+            let SelectClientCertificate = "select-client-certificate"
+
+            [<Literal; Erase>]
+            let CertificateError = "certificate-error"
+
+            [<Literal; Erase>]
+            let WebContentsCreated = "web-contents-created"
+
+            [<Literal; Erase>]
+            let BrowserWindowCreated = "browser-window-created"
+
+            [<Literal; Erase>]
+            let BrowserWindowFocus = "browser-window-focus"
+
+            [<Literal; Erase>]
+            let BrowserWindowBlur = "browser-window-blur"
+
+            [<Literal; Erase>]
+            let UpdateActivityState = "update-activity-state"
+
+            [<Literal; Erase>]
+            let ActivityWasContinued = "activity-was-continued"
+
+            [<Literal; Erase>]
+            let ContinueActivityError = "continue-activity-error"
+
+            [<Literal; Erase>]
+            let WillContinueActivity = "will-continue-activity"
+
+            [<Literal; Erase>]
+            let ContinueActivity = "continue-activity"
+
+            [<Literal; Erase>]
+            let Activate = "activate"
+
+            [<Literal; Erase>]
+            let OpenUrl = "open-url"
+
+            [<Literal; Erase>]
+            let OpenFile = "open-file"
+
+            [<Literal; Erase>]
+            let Quit = "quit"
+
+            [<Literal; Erase>]
+            let Ready = "ready"
+
     [<Erase>]
     type TouchBarItem =
         | Button of TouchBarButton

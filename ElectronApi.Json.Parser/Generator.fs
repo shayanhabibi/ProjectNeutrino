@@ -77,7 +77,7 @@ and addToGroup (child: GeneratorGroupChild) (group: GeneratorGrouper) =
     | Child generatorContainer -> generatorContainer.PathKey
     | StringEnumType stringEnum -> stringEnum.PathKey
     | Delegate funcOrMethod -> funcOrMethod.PathKey
-    | EventInterface(pathKey, _) -> pathKey
+    | EventConstant pathKey | EventInterface(pathKey, _) -> pathKey
     |> getNamePath
     |> fun namePath ->
         mapGroupForPath add namePath group
@@ -114,6 +114,7 @@ let rec finalizeGeneratorGroup: GeneratorGrouper -> ModuleDecl list =
         GeneratorGrouper.makeDefaultDelegateType
         GeneratorGrouper.makeDefaultStringEnumType
         GeneratorGrouper.makeDefaultEventInterfaceAndTypeAlias
+        GeneratorGrouper.makeDefaultEventStringConstant
     ] (function
         | Child typ -> GeneratorContainer.makeDefaultTypeDecl typ
         | Nested group ->
@@ -145,7 +146,6 @@ let rootGeneratorGroup =
         |> GeneratorGrouper.addAttribute "AutoOpen"
         |> GeneratorGrouper.addAttribute "Fable.Core.Erase"
         )
-    |> GeneratorGrouper.addNestedGroup(makeModuleGrouper "Constants")
 let generateFromApiFile (file: string) (destination: string) =
     Decode.fromString decode (File.ReadAllText(file))
     |> function
@@ -275,6 +275,15 @@ let generateFromApiFile (file: string) (destination: string) =
                 |> GeneratorGroupChild.EventInterface
             )
     |> fun group ->
+        Type.Cache.GetEventStrings()
+        |> List.fold (fun state item ->
+            state
+            |> addToGroup (
+                item.AddRootModule(Path.Module.Module(Path.ModulePath.Root, Source "Constants"))
+                |> GeneratorGroupChild.EventConstant
+                )
+            ) group
+    |> fun group ->
         finalizeGeneratorGroup group
         |> List.append [
                 GeneratorGrouper.makeOpenListNode group
@@ -282,8 +291,6 @@ let generateFromApiFile (file: string) (destination: string) =
             ]
         |> (GeneratorGrouper.makeNamespace true group)
         |> fun node ->
-            TypeCache.getAllTypeValues() |> printfn "TypeCache: %A"
-            TypeCache.getAllTypeValues() |> printfn "TypeCache: %A"
             Oak([
                 // let makeDirective text = ParsedHashDirectiveNode(text, [], Range.Zero)
                 // makeDirective "nowarn 1182"

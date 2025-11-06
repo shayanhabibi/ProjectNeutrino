@@ -287,7 +287,6 @@ module Type =
     type Cache =
         static let stringEnumCache = Dictionary<Path.PathKey, StringEnum>()
         static let delegateCache = Dictionary<Path.PathKey, FuncOrMethod>()
-        static let eventNameCache = Dictionary<Path.PathKey, string>()
         static let eventObjectCache = Dictionary<Path.PathKey, Event>()
         static let eventInfoCache = Dictionary<Path.PathKey, EventInfo>()
         static let pojoCache = ResizeArray<StructOrObject>()
@@ -352,7 +351,6 @@ module Type =
             if
                 eventObject.Parameters.Length > 1
                 && not(eventObjectCache.TryAdd(eventObject.PathKey, eventObject))
-                && not(eventNameCache.TryAdd(eventObject.PathKey, eventObject.PathKey.Name.ValueOrSource))
                 && errorOnDuplicate
             then
                 failwith $"Duplicate Path for Event in cache: {eventObject}"
@@ -383,8 +381,8 @@ module Type =
         static member PeekEventObjects() = Cache.GetEventObjects(true)
         static member GetEventStrings(?peek) =
             let peek = defaultArg peek false
-            let result = eventNameCache.Values |> Seq.toList
-            if not peek then eventNameCache.Clear()
+            let result = eventObjectCache.Keys |> Seq.toList
+            if not peek then eventObjectCache.Clear()
             result
         static member PeekEventStrings() = Cache.GetEventStrings(false)
         static member GetFuncOrMethod(path: Path.PathKey) =

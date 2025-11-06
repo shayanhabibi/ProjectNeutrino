@@ -18,201 +18,6 @@ module List =
 // 2. FSharpApi - reads and maps; modifies names and ensures everything is accounted
 // 3. SourceMapper - maps the types to their respective end types, including attributes et al
 
-/// <summary>
-/// <para>There are multitude of option objects, delegates, or structures that might/do have to be
-/// lifted into types while maintaining a path of entry that is sensible.</para>
-/// <para>The <c>TypeCache</c> contains helpers and dictionary caches to assist by allowing us to
-/// cache a type that needs to be lifted when we are preparing the source generation.</para>
-/// <para>By using a dictionoary, we can catch potential conflicts or other issues, and treat
-/// them at the call site.</para>
-/// </summary>
-/// <remarks>
-/// <para>Internally, there are two caches.</para>
-/// <para>One cache caches a <c>FSharpApi.Type</c> against the <c>string</c> formatted path
-/// of the object.</para>
-/// <para>The second cache, stores the <c>Path.PathKey</c> against the <c>string</c> formatted key for the first cache.</para>
-/// <para>This acts as a fallback.</para>
-/// </remarks>
-module TypeCache =
-    module private Cache =
-        let stringCache = Dictionary<Path.PathKey, FSharpApi.Type>()
-        // let stringCache = Dictionary<string, FSharpApi.Type>()
-        // let stringKeyCache = Dictionary<Path.PathKey, string>()
-        let add key value =
-            try
-            stringCache.Add(key, value)
-            // key
-            // |> Path.tracePathOfEntry
-            // |> List.map (_.ValueOrModified >> _.Trim(''') >> toPascalCase)
-            // |> String.concat "."
-            // |> fun stringKey ->
-            //    stringKeyCache.Add(key,stringKey)
-            //    stringCache.Add(stringKey, value)
-            with e ->
-                printfn $"%A{e}"
-                // printfn $"%s{e.Message}\n%A{key}\nNewValue: %A{value}\nCurrentKey:%A{stringKeyCache[key]}\nCurrentValue: %A{stringCache[stringKeyCache[key]]}\n\n%A{e.StackTrace}"
-                #if !DEBUG
-//                 reraise()
-                #endif
-        let retrieveByString str =
-            match stringCache.TryGetValue str with
-            | true, value -> ValueSome value
-            | _ -> ValueNone
-        let retrieveByPath path =
-            match stringCache.TryGetValue path with
-            // match stringKeyCache.TryGetValue path with
-            // | true, key -> retrieveByString key
-            | true, key ->
-                // if key.IsStringEnum || path.IsStringEnum then
-                    // printfn $"%A{key}"
-                    // printfn $"%A{path}"
-                ValueSome key
-            | _ -> ValueNone
-        let getAllTypeValues () =
-            let values = stringCache.Values |> Seq.toList
-            stringCache.Clear()
-            // stringKeyCache.Clear()
-            values
-    let add = Cache.add
-    let getByString = Cache.retrieveByString
-    let getByPath = Cache.retrieveByPath
-    let getAllTypeValues = Cache.getAllTypeValues
-module EventConstants =
-    let private cache = HashSet<Path.PathKey>()
-    let addEvent (event: Event) =
-        cache.Add(event.PathKey)
-    type private ModulePath =
-        { Module: Name; Class: Name option; Event: Name }
-        static member Create(path: Path.PathKey) =
-            Path.tracePathOfEntry path
-            |> function
-                | [] -> failwith $"path {path} is empty. Cannot make Event Constant"
-                | [ _ ] -> failwith $"Cannot make an event {path} without a parent module or type"
-                | [ m; e ] ->
-                    {
-                        Module = m
-                        Class = None
-                        Event = e
-                    }
-                | [ m; c; e ] ->
-                    {
-                        Module = m
-                        Class = Some c
-                        Event = e
-                    }
-                | paths -> failwith $"{paths}"
-    
-    let genEventConstantModule () =
-        cache
-        |> Seq.toArray
-        |> Array.map ModulePath.Create
-        |> Array.groupBy _.Module
-        |> Array.map (fun (key,arr) ->
-            arr
-            |> Array.groupBy _.Class
-            |> Array.toList
-            |> List.collect (fun (maybeClass, events) ->
-                events
-                |> Array.map (_.Event >> fun eventName ->
-                    BindingNode(
-                        None,
-                        Some (MultipleAttributeListNode.make "Literal"),
-                        MultipleTextsNode.make "let",
-                        false,
-                        None,
-                        None,
-                        Choice1Of2(IdentListNode.make (eventName.ValueOrModified |> toCamelCase)),
-                        None,
-                        [],
-                        None,
-                        SingleTextNode.make "=",
-                        Expr.Constant (Constant.FromText(SingleTextNode.make $"\"{eventName.ValueOrSource}\"")),
-                        Range.Zero
-                        )
-                    |> ModuleDecl.TopLevelBinding
-                )
-                |> Array.toList
-                |> fun constants ->
-                    match maybeClass with
-                    | Some name ->
-                        NestedModuleNode(
-                            None,
-                            Some (MultipleAttributeListNode.make "RequireQualifiedAccess"),
-                            SingleTextNode.make "module",
-                            None,
-                            false,
-                            IdentListNode.make (name.ValueOrModified |> toPascalCase),
-                            SingleTextNode.make "=",
-                            constants,
-                            Range.Zero
-                            )
-                        |> ModuleDecl.NestedModule
-                        |> List.singleton
-                    | None ->
-                        constants
-                )
-            |> fun decls ->
-                NestedModuleNode(None, Some (MultipleAttributeListNode.make "RequireQualifiedAccess"),
-                                 SingleTextNode.make "module", None, false, IdentListNode.make key.ValueOrModified,
-                                 SingleTextNode.make "=", decls, Range.Zero)
-                |> ModuleDecl.NestedModule
-            )
-        |> Array.toList
-        |> fun decls ->
-            let xmlDoc = XmlDocNode(
-                [|
-                    "// THIS FILE IS AUTOMATICALLY GENERATED - DO NOT EDIT"
-                    "/// <summary>"
-                    "/// Literal strings for the event names of different modules and classes for manual event listening."
-                    "/// </summary>"
-                |]
-                , Range.Zero
-            )
-            ModuleOrNamespaceNode(
-                Some(ModuleOrNamespaceHeaderNode(
-                    Some xmlDoc,
-                    None,
-                    MultipleTextsNode.make "module",
-                    None,
-                    false,
-                    Some (IdentListNode.make $"{Spec.rootNamespace}.Constants.Events"),
-                    Range.Zero
-                    )),
-                decls,
-                Range.Zero
-                )
-    let tryDebugConstantProduction (events: Event list) =
-        events
-        |> List.iter (addEvent >> ignore)
-        |> genEventConstantModule
-        |> fun namemod ->
-            Oak([], [ namemod ], Range.Zero)
-            |> CodeFormatter.FormatOakAsync
-            |> Async.RunSynchronously
-            |> printfn "%s"
-//
-// module ModuleNameCache =
-//     open Path
-//     type Cache = Dictionary<Path.ModulePath, HashSet<Name>>
-//     let private cache = Cache()
-//     
-//     /// <summary>
-//     /// Tries to add the entry to the name cache. If it fails then it means there is a conflicting entry.
-//     /// </summary>
-//     /// <param name="entry"></param>
-//     let add (entry: PathKey) =
-//         // We try to add a fresh path/set. If that fails, then we just add the entry
-//         // to the existing path key.
-//         if
-//             cache.TryAdd(entry.Path, HashSet([entry.Name]))
-//             || cache[entry.Path].Add(entry.Name)
-//         // If either of the above return true, then this a unique entry.
-//         then Ok entry
-//         // If both of the above return false, then this is a duplicate entry
-//         else Error entry
-//         // If this errors, then you will likely just need to nest the type within
-//         // another module
-
 module XmlDocs =
     let makeClosedSeeAlso (link: string) = $"<seealso href=\"{link}\"/>"
     let makeSeeAlso (link: string) (description: string) =
@@ -473,8 +278,6 @@ module Type =
             | Event { PathKey = pathKey }
             | Object { PathKey = pathKey }
             | StringEnum { PathKey = pathKey } ->
-                if TypeCache.getByPath pathKey |> _.IsNone
-                then TypeCache.add pathKey apiType
                 Path.tracePathOfEntry pathKey
                 |> List.map (_.ValueOrModified >> _.Trim(''') >> toPascalCase)
                 |> String.concat "."
@@ -1818,6 +1621,17 @@ module GeneratorContainer =
         TypeDefnRegularNode.Create(typeNameNode, members)
             
     let makeDefaultEventInfoTypeDecl = makeDefaultEventInfoDefn >> TypeDefn.Regular >> ModuleDecl.TypeDefn
+    
+    let makeDefaultEventStringConstant (pathKey: Path.PathKey) =
+        BindingNode(
+            None, (MultipleAttributeListNode.make [ "Literal"; "Erase" ] |> Some),
+            MultipleTextsNode.make "let", false, None, None,
+            Choice1Of2 (IdentListNode.make pathKey.Name.ValueOrModified),
+            None, [], None, SingleTextNode.make "=",
+            Expr.makeString pathKey.Name.ValueOrSource, Range.Zero
+            )
+        |> ModuleDecl.TopLevelBinding
+        
                 
     let map (func: GeneratorContainer -> 'a) = func
     let mapPathKey (func: Path.PathKey -> Path.PathKey) group =
@@ -1847,6 +1661,7 @@ type GeneratorGroupChild =
     | StringEnumType of StringEnum
     | Delegate of FuncOrMethod
     | EventInterface of pathKey: Path.PathKey * node: TypeDefn
+    | EventConstant of pathKey: Path.PathKey
 and GeneratorGrouper = {
     PathKey: Path.PathKey voption
     Description: string list voption
@@ -1975,6 +1790,11 @@ module GeneratorGrouper =
         | GeneratorGroupChild.EventInterface(_, typeDefn) ->
             typeDefn
             |> ModuleDecl.TypeDefn
+            |> Some
+        | _ -> None
+    let makeDefaultEventStringConstant = function
+        | GeneratorGroupChild.EventConstant path ->
+            GeneratorContainer.makeDefaultEventStringConstant path
             |> Some
         | _ -> None
 

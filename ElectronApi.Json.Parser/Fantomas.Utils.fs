@@ -289,8 +289,10 @@ module Utils =
     type Expr with
         static member makeIdent text =
             Expr.Ident(SingleTextNode.make text)
-        static member makeString text =
-            ExprQuoteNode.make text |> Expr.Quote
+        static member makeString (text: string) =
+            let text = text.Trim()
+            // ExprQuoteNode.make text |> Expr.Quote
+            Expr.makeIdent $"\"{text}\""
     type TypeAppPrefixNode with
         static member Create(identifier, postIdentifier, types) =
             TypeAppPrefixNode(
