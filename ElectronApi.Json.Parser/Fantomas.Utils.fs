@@ -126,33 +126,6 @@ module Utils =
                     yield SingleTextNode.make "," |> PatTupleNode.makeItem
                 ] |> List.cutOffLast, Range.Zero
                 )
-    type MemberDefnInheritNode with
-        /// Gets the last identifier in a chain which should be the type without accessors
-        member this.tryGetIdentifier with get() =
-            let rec getIdent: Node -> string option = function
-                | :? IdentListNode as ident ->
-                    ident.lastIdent
-                    |> Some
-                | :? TypeAppPrefixNode as node ->
-                    getIdent node.Children[0]
-                | _ -> None
-            this.Children[1] |> getIdent
-    type ITypeDefn with
-        member this.getInheritMembers with get() =
-            this.Members
-            |> List.choose (function MemberDefn.Inherit node -> Some node | _ -> None)
-        member this.getInterfaceMembers with get() =
-            this.Members
-            |> List.choose (function MemberDefn.Interface node -> Some node | _ -> None)
-        member this.getAbstractMembers with get() =
-            this.Members
-            |> List.choose(function MemberDefn.AbstractSlot node -> Some node | _ -> None)
-        member this.getIdentifier = this.TypeName.Identifier.lastIdent
-        member this.getAttributes = this.TypeName.Attributes
-        member this.getInheritMembersIdentifiers with get() =
-            this.getInheritMembers
-            |> List.map _.tryGetIdentifier
-            |> List.choose id
     type TypeDefnRegularNode with
         member this.TypeDefn = this :> ITypeDefn
     type XmlDocNode with
@@ -166,71 +139,6 @@ module Utils =
                         do yield subline
                 yield "/// </summary>"
             |], Range.Zero)
-    type MemberDefnInheritNode with
-        static member make identifier =
-            MemberDefnInheritNode(
-                SingleTextNode.make "inherit",
-                Type.LongIdent (IdentListNode.make identifier),
-                Range.Zero
-                )
-    type MemberDefnAbstractSlotNode with
-        member this.getIdentifierTypeTuple =
-            this.Identifier.Text, this.Type
-        static member makeSimple(
-            identifier: string,
-            typ: Type,
-            ?docs: string seq,
-            ?attributes: string seq,
-            ?withGetSet: bool
-            ) =
-            let withGetSet = defaultArg withGetSet false
-            MemberDefnAbstractSlotNode(
-                docs |> Option.map XmlDocNode.make,
-                attributes |> Option.map MultipleAttributeListNode.make,
-                MultipleTextsNode.make ["abstract"; "member"],
-                SingleTextNode.make identifier,
-                None,
-                typ,
-                if withGetSet then
-                    MultipleTextsNode.make [ "with"; "get,"; "set" ]
-                    |> Some
-                else None
-                ,Range.Zero
-                )
-    type MemberDefn with
-        static member makeInherit identifier =
-            MemberDefnInheritNode.make identifier |> MemberDefn.Inherit
-        static member makeAbstract (attrName: string, typ: Type) =
-            MemberDefnAbstractSlotNode.makeSimple(attrName, typ)
-            |> MemberDefn.AbstractSlot
-        static member makeExtensionGetSetWith (name: string, typ: Type, ?inlineOverload: string) =
-            MemberDefnPropertyGetSetNode(
-                None,Some(MultipleAttributeListNode.make "Erase"),MultipleTextsNode.make "member",None,None,
-                IdentListNode.make $"_.{name}", SingleTextNode.make "with",
-                PropertyGetSetBindingNode(
-                      None, None, None, SingleTextNode.make "set", [
-                          Pattern.Parameter(PatParameterNode.make (SingleTextNode.make "_") (Some typ))
-                          |> PatParenNode.make
-                          |> Pattern.Paren
-                      ], None, SingleTextNode.make "=", Expr.Null(SingleTextNode.make "()"), Range.Zero
-                    ),
-                SingleTextNode.make "and" |> Some,
-                PropertyGetSetBindingNode(
-                    None,
-                    MultipleAttributeListNode.make "Erase" |> Some,
-                    None, SingleTextNode.make "get", [
-                        Pattern.Unit(UnitNode(PatParenNode.makeOpening, PatParenNode.makeClosing, Range.Zero))
-                    ],
-                    BindingReturnInfoNode(SingleTextNode.make ":", typ, Range.Zero)
-                    |> Some,
-                    SingleTextNode.make "=",
-                    Expr.Ident(SingleTextNode.make "JS.undefined"),
-                    Range.Zero
-                    ) |> Some,
-                Range.Zero
-                ) |> MemberDefn.PropertyGetSet
-        static member makeExtensionGetSet (name: string) (typ: Type) =
-            MemberDefn.makeExtensionGetSetWith(name, typ)
     type TypeNameNode with
         static member Create(identifier, ?constructor, ?docs, ?attributes, ?withWith) =
             let withWith = defaultArg withWith false
@@ -262,30 +170,6 @@ module Utils =
                 suffix |> Option.map SingleTextNode.make,
                 Range.Zero
                 )
-        static member makeExtension (identifier: IdentListNode) =
-            TypeNameNode(None,None,SingleTextNode.make "type", None,
-                         identifier, None, [], None,
-                         SingleTextNode.make "with" |> Some, None, Range.Zero)
-        static member makeExtension (identifier: string) =
-            IdentListNode.make identifier |> TypeNameNode.makeExtension
-    type TypeDefnRegularNode with
-        static member make members typeNameNode =
-            TypeDefnRegularNode(typeNameNode, members, Range.Zero)
-    type ModuleDecl with
-        static member wrapInNestedModule name (attributes: string seq option) decls =
-            NestedModuleNode(
-                None, attributes |> Option.map MultipleAttributeListNode.make,
-                SingleTextNode.make "module",None,false,IdentListNode.make name,
-                SingleTextNode.make "=", decls, Range.Zero
-                )
-            |> ModuleDecl.NestedModule
-    type ExprQuoteNode with
-        static member make text =
-            ExprQuoteNode(
-                openToken = SingleTextNode.make "\"",
-                expr = Expr.Constant (Constant.FromText (SingleTextNode.make text)),
-                closeToken = SingleTextNode.make "\"",
-                range = Range.Zero)
     type Expr with
         static member makeIdent text =
             Expr.Ident(SingleTextNode.make text)

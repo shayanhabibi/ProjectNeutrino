@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Fable.Electron.Forge\Fable.Electron.Forge.fsproj" />
+      <ProjectReference Include="..\Fable.Electron.Playground.Shared\Fable.Electron.Playground.Shared.fsproj" />
+      <ProjectReference Include="..\Fable.Electron.Routing\Fable.Electron.Routing.fsproj" />
+      <ProjectReference Include="..\Fable.Electron\Fable.Electron.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="src\index.css" />
+      <Compile Include="src\main.fs" />
+      <Compile Include="src\preload.fs" />
+      <Compile Include="src\renderer.fs" />
+      <Content Include="forge.config.js" />
+      <Content Include="index.html" />
+      <Content Include="package.json" />
+      <Content Include="vite.main.config.mjs" />
+      <Content Include="vite.preload.config.mjs" />
+      <Content Include="vite.renderer.config.mjs" />
+    </ItemGroup>
+
+</Project>

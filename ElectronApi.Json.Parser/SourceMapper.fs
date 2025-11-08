@@ -328,7 +328,7 @@ module Type =
                     FSharpApi.Type.StructureRef "TouchBarSlider"
                     FSharpApi.Type.StructureRef "TouchBarSpacer"
                 ] ->
-                    FantomasFactory.mapToFantomas (FSharpApi.Type.StructureRef Injections.touchBarItemsName)
+                    FantomasFactory.mapToFantomas (FSharpApi.Type.StructureRef Spec.touchBarItemsName)
             | OneOf types when types |> List.truncate 9 |> (=) [
                     FSharpApi.Type.StructureRef "TouchBarButton"
                     FSharpApi.Type.StructureRef "TouchBarColorPicker"
@@ -341,7 +341,7 @@ module Type =
                     FSharpApi.Type.StructureRef "TouchBarSpacer"
                 ] ->
                     FSharpApi.Type.OneOf [
-                        yield FSharpApi.Type.StructureRef Injections.touchBarItemsName
+                        yield FSharpApi.Type.StructureRef Spec.touchBarItemsName
                         yield! types |> List.skip 9
                     ]
                     |> FantomasFactory.mapToFantomas 
@@ -702,7 +702,7 @@ module GeneratorContainer =
                 || object.Description
                 |> ValueOption.exists _.Contains("is an EventEmitter", System.StringComparison.Ordinal)
             then
-                makeSimpleInterfaceNode Injections.eventEmitterName
+                makeSimpleInterfaceNode Spec.eventEmitterName
         ]
     let private makeParamObjectParameterAttribute (parameters: Parameter list) =
         parameters
@@ -1096,7 +1096,7 @@ module GeneratorContainer =
             || this.Description
             |> ValueOption.exists _.Contains("is an EventEmitter", System.StringComparison.Ordinal)
         then
-            makeSimpleInterfaceNode Injections.eventEmitterName
+            makeSimpleInterfaceNode Spec.eventEmitterName
             |> MemberDefn.Interface
     ]
     let makeInheritance (this: GeneratorContainer) = [
@@ -1825,10 +1825,7 @@ module GeneratorGrouper =
                             Some (MultipleAttributeListNode.make
                                     $"CompiledName(\"{case.Value.ValueOrSource}\")"),
                             Some (SingleTextNode.make "|"),
-                            // filter invalid string enum characters
-                            SingleTextNode.make (case.Value.ValueOrModified |> String.filter (function
-                                | '.' -> false
-                                | _ -> true)),
+                            SingleTextNode.make case.Value.ValueOrModified,
                             [],
                             Range.Zero
                             )
@@ -1871,29 +1868,6 @@ type StringEnum with
             |> printfn "%s"
 
 type Class with
-    static member MapPathKeyToProcess (processBlock: Decoder.ProcessBlock) (pathKey: Path.PathKey) =
-        match processBlock, pathKey with
-        | { Renderer = true; Main = true }, (Path.PathKey.Type _ | Path.PathKey.Module _) -> pathKey
-        | { Renderer = true }, Path.PathKey.Type typ ->
-            typ.AddRootModule(Path.Module.Module(Path.ModulePath.Root, Name.createPascal "Renderer"))
-            |> Path.PathKey.Type 
-        | { Renderer = true }, Path.PathKey.Module typ ->
-            typ.AddRootModule(Path.Module.Module(Path.ModulePath.Root, Name.createPascal "Renderer"))
-            |> Path.PathKey.Module 
-        | { Main = true }, Path.PathKey.Type typ ->
-            typ.AddRootModule(Path.Module.Module(Path.ModulePath.Root, Name.createPascal "Main"))
-            |> Path.PathKey.Type 
-        | { Main = true }, Path.PathKey.Module typ ->
-            typ.AddRootModule(Path.Module.Module(Path.ModulePath.Root, Name.createPascal "Main"))
-            |> Path.PathKey.Module 
-        | { Utility = true }, Path.PathKey.Module typ ->
-            typ.AddRootModule(Path.Module.Module(Path.ModulePath.Root, Name.createPascal "Utility"))
-            |> Path.PathKey.Module
-        | { Utility = true }, Path.PathKey.Type typ ->
-            typ.AddRootModule(Path.Module.Module(Path.ModulePath.Root, Name.createPascal "Utility"))
-            |> Path.PathKey.Type
-        | _, pathKey ->
-            failwith $"Class pathkeys that are not of type PathKey.Type cannot be mapped to a process: {pathKey}"
     member this.ToGeneratorContainer() =
         GeneratorContainer.create this.PathKey
         |> match this.PathKey.Name.ValueOrSource with

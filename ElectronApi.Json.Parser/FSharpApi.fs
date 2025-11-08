@@ -400,7 +400,7 @@ module Type =
     let readStringEnumCase (_: FactoryContext): PossibleStringValue -> StringEnumCase = fun { Value = value; Description = desc } ->
         {
             Value =
-                Name.createPascal value
+                Name.createStringEnumCase value
             Description =
                 if String.IsNullOrWhiteSpace desc
                 then ValueNone
@@ -1287,19 +1287,6 @@ let private unifyWith (extensionDoc: ParsedDocumentation) (inputDoc: ParsedDocum
 Input: {inputDoc}
 
 Extension: {extensionDoc}"
-    // | ParsedDocumentation.Module moduleDocumentationContainer, ParsedDocumentation.Class classDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Module moduleDocumentationContainer, ParsedDocumentation.Structure structureDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Module moduleDocumentationContainer, ParsedDocumentation.Element elementDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Class classDocumentationContainer, ParsedDocumentation.Module moduleDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Class classDocumentationContainer, ParsedDocumentation.Structure structureDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Class classDocumentationContainer, ParsedDocumentation.Element elementDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Structure structureDocumentationContainer, ParsedDocumentation.Module moduleDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Structure structureDocumentationContainer, ParsedDocumentation.Class classDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Structure structureDocumentationContainer, ParsedDocumentation.Element elementDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Element elementDocumentationContainer, ParsedDocumentation.Module moduleDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Element elementDocumentationContainer, ParsedDocumentation.Class classDocumentationContainer -> failwith "todo"
-    // | ParsedDocumentation.Element elementDocumentationContainer, ParsedDocumentation.Structure structureDocumentationContainer -> failwith "todo"
-
 let private ifExtensionThenUnify: ParsedDocumentation -> ParsedDocumentation = function
     | ParsedDocumentation.Structure { BaseDocumentationContainer = { Extends = Some name; Name = docName } }
     | ParsedDocumentation.Element { BaseDocumentationContainer = { Extends = Some name; Name = docName } }
@@ -1369,7 +1356,6 @@ let readResult =
             |> ModifiedResult.Class
             )
     | ParsedDocumentation.Element value ->
-        // TODO - place elements in a 'Tags' or 'Elements' module?
         makeProcessContexts value.Process
         |> Array.map (fun proc ->
             Element.fromDocContainer proc value

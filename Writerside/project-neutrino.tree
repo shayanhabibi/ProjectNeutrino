@@ -6,7 +6,15 @@
                  name="ProjectNeutrino"
                  start-page="projectneutrino.md">
 
+    <toc-element toc-title="ElectronApi.Json.Parser">
+        <toc-element topic="Introduction.md"/>
+        <toc-element toc-title="Source">
+            <toc-element topic="Overview.md"/>
+            <toc-element topic="Spec.md"/>
+        </toc-element>
+    </toc-element>
     <toc-element topic="projectneutrino.md">
+        <toc-element topic="Fable-Electron-Overview.md"/>
         <toc-element topic="Project-Brief.md"/>
         <toc-element toc-title="API Parser">
             <toc-element topic="PathKey.md"/>

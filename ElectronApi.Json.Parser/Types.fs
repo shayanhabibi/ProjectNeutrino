@@ -2,7 +2,6 @@
 module rec ElectronApi.Json.Parser.Types
 
 open System
-open Fantomas.Core.SyntaxOak
 
 /// <summary>
 /// A Discriminated Union which stores the source name, and the modified (if modified
@@ -52,7 +51,7 @@ module Name =
     let inline private map reservedMapper f input =
         f input
         |> String.filter ((<>) ' ')
-        |> _.TrimEnd(':')
+        |> _.TrimEnd(':') // invalid even if stropped
         |> reservedMapper
         |> function
             | output when String.Equals(input,output,StringComparison.Ordinal) -> Source output
@@ -71,6 +70,13 @@ module Name =
         
     /// Changes casing to 'PascalCase'
     let createPascal = toStroppedPascalCase
+    /// Changes casing to 'PascalCase' with some extra filters to handle invalid enum identifiers
+    let createStringEnumCase =
+        let inline filter c =
+            match c with
+            | '-' | '.' -> false
+            | _ -> true
+        stroppedMap (toPascalCase >> String.filter filter)
 
 /// <summary>
 /// The Path module contains recursive types which are modeled after the 'path' of modules/namespaces that one
@@ -79,10 +85,10 @@ module Name =
 module Path =
     module Cache =
         type ProcessCacheMap = {
-            Main: System.Collections.Generic.Dictionary<string, Path.PathKey>
-            Renderer: System.Collections.Generic.Dictionary<string, Path.PathKey>
-            Utility: System.Collections.Generic.Dictionary<string, Path.PathKey>
-            Global: System.Collections.Generic.Dictionary<string, Path.PathKey>
+            Main: System.Collections.Generic.Dictionary<string, PathKey>
+            Renderer: System.Collections.Generic.Dictionary<string, PathKey>
+            Utility: System.Collections.Generic.Dictionary<string, PathKey>
+            Global: System.Collections.Generic.Dictionary<string, PathKey>
         }
         type ProcessMappedResult = {
             Main: PathKey voption
@@ -585,12 +591,6 @@ module Path =
             | InlineLambda inlineLambda -> addModule Choice5Of6 inlineLambda
             | Event e -> addModule Choice6Of6 e
             | e -> failwith $"Tried to create a string enum pathkey for path {e}"
-            // | Type ``type`` -> failwith "todo"
-            // | Event event -> failwith "todo"
-            // | InlineOptions inlineOptions -> failwith "todo"
-            // | InlineLambda inlineLambda -> failwith "todo"
-            // | Module ``module`` -> failwith "todo"
-            // | StringEnum stringEnum -> failwith "todo"
             |> Path.StringEnum |> PathKey.StringEnum
 
         member this.CreateBinding(name: Name) =
@@ -814,64 +814,3 @@ module Target =
             if hasLin compats then Compatibility.Lin
         ]
         let fromList: Compatibility list -> Compatibility = List.fold (|||) (enum<Compatibility> 0)
-
-type SourceTarget = {
-    Compatibility: Target.Compatibility
-    Process: Target.Process list
-} with
-    static member Empty = {
-        Compatibility = enum<Target.Compatibility> 0
-        Process = []
-    }
-module SourceTarget =
-    let compatibility { Compatibility = value } = value
-    let processes { Process = value } = value
-    let isGeneral = function
-        | { Compatibility = Target.Compatibility.all; Process = [] } -> true
-        | _ -> false
-    let withCompatibility compatibility sourceTarget = { sourceTarget with Compatibility = sourceTarget.Compatibility ||| compatibility }
-    let withProcess process' sourceTarget = { sourceTarget with Process = process' :: sourceTarget.Process }
-    let setCompatibility compatibility sourceTarget = { sourceTarget with Compatibility = compatibility }
-    let setProcesses processes sourceTarget = { sourceTarget with Process = processes }
-type SourcePacket<'T> = {
-    PathKey: Path.PathKey option
-    Members: 'T list
-    Target: SourceTarget
-} with
-    static member Empty: SourcePacket<'T> = {
-        PathKey = None
-        Members = []
-        Target = SourceTarget.Empty
-    }
-module SourcePacket =
-    let withPathKey pathKey sourcePacket = { sourcePacket with SourcePacket.PathKey = Some pathKey }
-    let withMember member' sourcePacket = { sourcePacket with SourcePacket.Members = member' :: sourcePacket.Members }
-    let setMembers members sourcePacket = { sourcePacket with Members = members }
-    let appendMembers members sourcePacket = { sourcePacket with Members = sourcePacket.Members @ members }
-    let withSourceTarget sourceTarget sourcePacket = { sourcePacket with SourcePacket.Target = sourceTarget }
-    let withTarget = withSourceTarget
-    let target { SourcePacket.Target = value } = value
-    let pathKey { SourcePacket.PathKey = value } = value
-    let members { SourcePacket.Members = value } = value
-    let bind f (sourcePacket: SourcePacket<'T>): SourcePacket<'T> = f sourcePacket
-    let inline map f (sourcePacket: SourcePacket<'T>): 'U = f sourcePacket
-type SourcePackage = {
-    PathKey: Path.PathKey option
-    Decls: ModuleDecl list
-    Target: SourceTarget
-} with
-    static member Empty = {
-        PathKey = None
-        Decls = []
-        Target = SourceTarget.Empty
-    }
-module SourcePackage =
-    module Packet = SourcePacket
-    let pathKey { SourcePackage.PathKey = value } = value
-    let decls { SourcePackage.Decls = value } = value
-    let target { SourcePackage.Target = value } = value
-    let setDecls decls sourcePackage = { sourcePackage with Decls = decls }
-    let withDecl decl sourcePackage = { sourcePackage with Decls = decl :: decls sourcePackage }
-    let withTarget target sourcePackage = { sourcePackage with SourcePackage.Target = target }
-    let withPathKey pathKey sourcePackage = { sourcePackage with SourcePackage.PathKey = Some pathKey }
-    let appendDecls decls sourcePackage = { sourcePackage with Decls = sourcePackage.Decls @ decls }
