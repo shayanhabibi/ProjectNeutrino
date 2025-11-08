@@ -10,4 +10,16 @@
     <term name="parser">
         The <code>ElectronApi.Json.Parser</code> project which reads the <code>electron-api.json</code> file.
     </term>
+    <term name="thoth-json">
+        A F# JSON decoder and encoder with functional declaration and configuration.
+    </term>
+    <term name="camel-case">
+        from (kebab case) <code>some-identifier</code> to (camel case) <code>someIdentifier</code>
+    </term>
+    <term name="pascal-case">
+        from (kebab case) <code>some-identifier</code> to (pascal case) <code>SomeIdentifier</code>
+    </term>
+    <term name="kebab-case">
+        from (pascal case) <code>SomeIdentifier</code> to (kebab case) <code>some-identifier</code>
+    </term>
 </terms>
