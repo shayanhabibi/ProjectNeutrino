@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fable.Electron.Routing\Fable.Electron.Routing.fsproj" />
+      <ProjectReference Include="..\Fable.Electron.Remoting\Fable.Electron.Remoting.fsproj" />
     </ItemGroup>
 
 </Project>

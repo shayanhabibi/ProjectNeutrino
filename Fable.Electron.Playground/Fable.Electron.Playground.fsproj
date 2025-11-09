@@ -8,7 +8,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Fable.Electron.Forge\Fable.Electron.Forge.fsproj" />
       <ProjectReference Include="..\Fable.Electron.Playground.Shared\Fable.Electron.Playground.Shared.fsproj" />
-      <ProjectReference Include="..\Fable.Electron.Routing\Fable.Electron.Routing.fsproj" />
+      <ProjectReference Include="..\Fable.Electron.Remoting\Fable.Electron.Remoting.fsproj" />
       <ProjectReference Include="..\Fable.Electron\Fable.Electron.fsproj" />
     </ItemGroup>
 

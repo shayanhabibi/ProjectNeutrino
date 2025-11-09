@@ -28,7 +28,7 @@ Fable.Electron
 For conditional compiler directives, the mannerisms would need to specifically permit all code when nothing is defined,
 and then filter out non-compatible api when something is defined.
 
-```fsharp
+```f#
 #if OS1 || !(!OS1 || !OS2 || !OS3)
 ```
 

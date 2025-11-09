@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module ElectronApi.Json.Parser.Generator
 
+open System
 open System.IO
 open ElectronApi.Json.Parser.Decoder
 open ElectronApi.Json.Parser.FSharpApi
@@ -74,8 +75,9 @@ let rec private mapGroupForPath (func: GeneratorGrouper -> GeneratorGrouper) (pa
                         grouper.Children
                         |> List.map (function
                             | Nested ({ PathKey = ValueSome nestedPath } as group)
-                                when (nestedPath.Name.ValueOrSource |> toPascalCase)
-                                     = (name.ValueOrSource |> toPascalCase) ->
+                                when nestedPath.Name.ValueOrSource.Equals(name.ValueOrSource, StringComparison.OrdinalIgnoreCase) ->
+                                     // (nestedPath.Name.ValueOrSource |> toPascalCase)
+                                     // = (name.ValueOrSource |> toPascalCase) ->
                                 mapGroupForPath func path group
                                 |> Nested
                             | child -> child
@@ -262,7 +264,7 @@ module Transpiler =
     let private getStringEnums =
         List.append(
             // Generates string enums
-            Type.Cache.GetStringEnums()
+            Type.Cache.GetStringEnums(true)
             |> List.map (
                 fun stringEnum ->
                     stringEnum.PathKey, Type.StringEnum stringEnum
@@ -347,7 +349,7 @@ module Transpiler =
                 )
         // Add other material, such as prebaked interfaces and constants
         |> fun group ->
-            Type.Cache.GetEventStrings()
+            Type.Cache.GetEventStrings(true)
             |> List.fold (fun state item ->
                 state
                 |> addToGroup (

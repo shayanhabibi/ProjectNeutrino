@@ -4,7 +4,11 @@ open Fable.Core.JS
 open Fable.Core.JsInterop
 open Fable.Electron
 open Fable.Electron.Playground.Shared
-open Fable.Electron.Routing.Preload
+open Fable.Electron.Remoting.Preload
 
 Remoting.init
-|> Remoting.build<ExampleRouting>
+|> Remoting.buildRendererToMain<ExampleRouting>
+
+Remoting.init
+|> Remoting.withApiName "FE"
+|> Remoting.buildMainToRenderer<ExampleMainToRenderer>

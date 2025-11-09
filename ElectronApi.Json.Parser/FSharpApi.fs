@@ -396,6 +396,12 @@ module Type =
                 pojoCache.Clear()
             result
         static member PeekInlineObjects() = Cache.GetInlineObjects(true)
+        static member Clear() =
+            delegateCache.Clear()
+            pojoCache.Clear()
+            eventObjectCache.Clear()
+            eventInfoCache.Clear()
+            stringEnumCache.Clear()
             
     let readStringEnumCase (_: FactoryContext): PossibleStringValue -> StringEnumCase = fun { Value = value; Description = desc } ->
         {
@@ -410,8 +416,6 @@ module Type =
         fun { PossibleValues = possibleValues } ->
             if innerTypes.IsSome then
                 failwith $"Unexpected inner types for a String {innerTypes}"
-            // If we're not reading the string enum as a parameter or something else which gives us a name, then
-            // we'll have to generate a name later.
             {
                 PathKey = ctx.PathKey.CreateStringEnum()
                 Cases =

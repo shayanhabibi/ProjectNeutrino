@@ -5,3 +5,7 @@ type ExampleRouting = {
     LogText: string -> int -> Promise<Result<string, unit>>
     LogBanana: int -> Promise<bool>
 }
+
+type ExampleMainToRenderer = {
+    CheckText: string -> int -> unit
+}

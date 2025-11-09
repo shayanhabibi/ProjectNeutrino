@@ -293,5 +293,8 @@ open SourceMapper
 //      |> StringEnum.tryDebugTypeGen
 
 let testGenerate =
-    Generator.generateFromApiFile "./electron-api.json" "./Fable.Electron/Program.fs"
+    Transpiler.generateFromApiFile "./electron-api.json" "./Fable.Electron/Program.fs"
+    // Transpiler.generateMainProcessOnlyFromApiFile "./electron-api.json" "./Fable.Electron.Main/Program.fs"
+    // Transpiler.generateRendererProcessOnlyFromApiFile "./electron-api.json" "./Fable.Electron.Renderer/Program.fs"
+    // Transpiler.generateUtilityProcessOnlyFromApiFile "./electron-api.json" "./Fable.Electron.Utility/Program.fs"
     exit 0

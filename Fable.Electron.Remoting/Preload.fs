@@ -3,7 +3,7 @@
 // Serialization is handled entirely by electron, and argument calls for the proxies is immaterial since
 // type safety is assured by FCS
 // However, we will ensure the type signatures are correct for completeness.
-module Fable.Electron.Routing.Preload
+module Fable.Electron.Remoting.Preload
 open System
 open System.ComponentModel
 open Browser
@@ -17,17 +17,35 @@ open Fable.Electron
 open Fable.Electron.Renderer
 open Fable.SimpleJson
 
+/// <summary>
+/// Configuration of Proxy routers
+/// </summary>
 type RemotingConfig = {
-    ApiName: string
+    /// <summary>
+    /// Used in the ApiNameMap to create the property name on the window that the proxy
+    /// is exposed through.
+    /// </summary>
+    ApiNameBase: string
+    /// <summary>
+    /// A map that takes the <c>ApiNameBase</c> and the <c>TypeName</c> of the implementation to
+    /// create the name of the property on the window that the proxy is exposed through.
+    /// </summary>
+    ApiNameMap: string -> string -> string
+    /// <summary>
+    /// A function that takes the <c>Type</c> name and the <c>Field</c> name to create a channel
+    /// name which messages are proxied through.
+    /// </summary>
     ChannelNameMap: string -> string -> string
 }
 [<Erase>]
 module Remoting =
     let init = {
-        ApiName = "FABLE_REMOTING"
+        ApiNameBase = "FABLE_REMOTING"
+        ApiNameMap = fun baseName typeName -> sprintf $"%s{baseName}_{typeName}"
         ChannelNameMap = fun typeName fieldName -> sprintf $"%s{typeName}:%s{fieldName}"
     }
-    let withApiName apiName config = { config with ApiName = apiName }
+    let withApiNameBase apiName config = { config with ApiNameBase = apiName }
+    let withApiNameMap func config = { config with ApiNameMap = func }
     let withChannelNameMap func config = { config with ChannelNameMap = func }
 [<EditorBrowsable(EditorBrowsableState.Never)>]
 module private Proxy =
@@ -60,16 +78,14 @@ module private Proxy =
 [<Erase>]
 type Remoting =
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    static member buildProxy(config: RemotingConfig, resolvedType: Type) =
+    static member buildRendererToMainProxy(config: RemotingConfig, resolvedType: Type) =
         let schemaType = createTypeInfo resolvedType
         match schemaType with
         | TypeInfo.Record getFields ->
             let fields, recordType = getFields()
-            let fieldTypes = Reflection.FSharpType.GetRecordFields recordType |> Array.map (fun prop -> prop.Name, prop.PropertyType)
             let recordFields = [|
                 for field in fields do
                     let normalize n =
-                        let fieldType = fieldTypes |> Array.pick (fun (name, typ) -> if name = field.FieldName then Some typ else None)
                         let fn = Proxy.proxyFetch recordType.Name field config
                         match n with
                         | 0 -> box (fn null null null null null null null null)
@@ -112,11 +128,51 @@ type Remoting =
                 |]
 
             let proxy = FSharpValue.MakeRecord(recordType, recordFields)
-            contextBridge.exposeInMainWorld(config.ApiName, proxy)
+            contextBridge.exposeInMainWorld(config.ApiNameBase, proxy)
         | _ ->
             failwithf
                 $"Cannot build proxy. Exepected type %s{resolvedType.FullName} to be \
                 a valid protocol definition which is a record of functions"
 
-    static member inline build<'t>(config: RemotingConfig) =
-        Remoting.buildProxy(config, typeof<'t>)
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    static member buildMainToRendererProxy(config: RemotingConfig, resolvedType: Type) =
+        let schemaType = createTypeInfo resolvedType
+        let bridgeName = config.ApiNameMap config.ApiNameBase resolvedType.Name
+        let makeChannelName = config.ChannelNameMap resolvedType.Name
+        match schemaType with
+        | TypeInfo.Record getFields ->
+            let fields, recordType = getFields()
+            let recordFields = [|
+                for field in fields do
+                    let fieldName = field.FieldName
+                    let channelName = makeChannelName fieldName
+                    let func =
+                        emitJsExpr
+                            channelName
+                            "(callback) => ipcRenderer.on($0, (_event, ...args) => callback(...args))"
+                    box func
+            |]
+            let proxy = FSharpValue.MakeRecord(recordType, recordFields)
+            contextBridge.exposeInMainWorld(bridgeName, proxy)
+        | _ -> 
+            failwithf
+                $"Cannot build proxy. Exepected type %s{resolvedType.FullName} to be \
+                a valid protocol definition which is a record of functions"
+        
+    /// <summary>
+    /// Builds the preload router for a two way <c>Main &lt;-> Renderer</c> interprocess communication
+    /// in Fable.Remoting style.
+    /// </summary>
+    /// <remarks>
+    /// <para>All three processes must be built </para>
+    /// </remarks>
+    /// <param name="config"></param>
+    static member inline buildRendererToMain<'t>(config: RemotingConfig) =
+        Remoting.buildRendererToMainProxy(config, typeof<'t>)
+    /// <summary>
+    /// Builds the preload router for a <c>Main -> Renderer</c> interprocess communication
+    /// in Fable.Remoting style.
+    /// </summary>
+    /// <param name="config"></param>
+    static member inline buildMainToRenderer<'T>(config: RemotingConfig) =
+        Remoting.buildMainToRendererProxy(config, typeof<'T>)
