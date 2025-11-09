@@ -3,8 +3,20 @@
 // The schema for the types is derived from the
 // @electron/docs-parser ParsedDocumentation.d.ts
 open System.Collections.Generic
+open System.Text.RegularExpressions
 open Thoth.Json.Net
 #nowarn 40
+let private transformCodeBlocks (input: string) =
+    let fencedReplaced = Regex.Replace(input, @"```(.*?)```", "<code>$1</code>", RegexOptions.Singleline)
+    Regex.Replace(fencedReplaced, @"`([^`]+)`", "<c>$1</c>")
+let normalizeDocs =
+    String.collect (function
+        | '<' -> "&lt;"
+        | '>' -> "&gt;"
+        | '&' -> "&amp;"
+        | c -> string c
+        )
+    >> transformCodeBlocks
 
 /// <summary>
 /// The documentation tag is used to provide supplementary remarks to the API, such

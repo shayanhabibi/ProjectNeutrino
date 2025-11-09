@@ -1,7 +1,7 @@
 ﻿module FSharpApi
 
 open Expecto
-open ElectronApi.Json.Parser.FSharpApi
+open ElectronApi.Json.Parser.Prelude
 open Samples
 
 [<Tests>]

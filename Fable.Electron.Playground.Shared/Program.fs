@@ -2,10 +2,10 @@
 open Fable.Core.JS
 open Browser.Types
 type ExampleRouting = {
-    LogText: string -> int -> Promise<Result<string, unit>>
-    LogBanana: int -> Promise<bool>
+    SayHelloWorld: string -> Promise<Result<string, unit>>
 }
 
 type ExampleMainToRenderer = {
-    CheckText: string -> int -> unit
+    // Dummy parameter to demonstrate multi param functions
+    LogMove: string -> int -> unit
 }

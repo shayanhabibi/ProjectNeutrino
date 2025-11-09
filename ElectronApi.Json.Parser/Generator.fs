@@ -4,7 +4,7 @@ module ElectronApi.Json.Parser.Generator
 open System
 open System.IO
 open ElectronApi.Json.Parser.Decoder
-open ElectronApi.Json.Parser.FSharpApi
+open ElectronApi.Json.Parser.Prelude
 open ElectronApi.Json.Parser.SourceMapper
 open Fantomas.Core
 open Fantomas.Core.SyntaxOak
@@ -466,3 +466,8 @@ module Transpiler =
     /// <param name="apiFile"></param>
     let generateUtilityProcessOnlyFromApiFile apiFile =
         generateFromApiFileForProcess ProcessType.Utility apiFile
+
+let testGenerate =
+    Transpiler.generateFromApiFile
+        (Path.Combine(__SOURCE_DIRECTORY__, "../electron-api.json"))
+        (Path.Combine(__SOURCE_DIRECTORY__, "../Fable.Electron/Program.fs"))

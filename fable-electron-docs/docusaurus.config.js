@@ -7,10 +7,14 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+const prodUrl = 'https://your-docusaurus-site.example.com'
+const organizationName = 'Fable'
+const projectName = 'Fable.Electron'
+const projectUrl = 'https://github.com/Fable'
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Fable.Electron',
+  title: projectName,
   tagline: 'Full suite of bindings and helpers for creating ElectronJS apps entirely in F# with Fable!',
   favicon: 'img/favicon.ico',
 
@@ -20,15 +24,15 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: prodUrl,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Fable', // Usually your GitHub org/user name.
-  projectName: 'Fable.Electron', // Usually your repo name.
+  organizationName: organizationName, // Usually your GitHub org/user name.
+  projectName: projectName, // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -50,7 +54,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/',
         },
         blog: {
           showReadingTime: true,
@@ -61,7 +65,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -83,10 +87,12 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Fable.Electron',
+          hideOnScroll: true,
+        title: projectName,
         logo: {
           alt: 'Fable.Electron Logo',
           src: 'img/feleico.png',
+            srcDark: 'img/feleico-dark.png',
         },
         items: [
             {
@@ -95,15 +101,15 @@ const config = {
                 position: 'left',
                 label: 'Guide',
             },
+            {
+                type: 'docSidebar',
+                sidebarId: 'devSidebar',
+                position: 'left',
+                label: 'Dev',
+            },
+          // {to: '/blog', label: 'Blog', position: 'left'},
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Tutorial',
-          },
-          {to: '/blog', label: 'Blog', position: 'left'},
-          {
-            href: 'https://github.com/facebook/docusaurus',
+            href: projectUrl,
             label: 'GitHub',
             position: 'right',
           },
@@ -111,52 +117,69 @@ const config = {
       },
       footer: {
         style: 'dark',
+          logo: {
+            alt: 'Fable.Electron Logo',
+              src: 'img/feleico-dark.png',
+              width: '64px',
+              height: '64px',
+          },
         links: [
           {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'Guide',
+                to: '/docs/guide/intro',
               },
+                {
+                    label: 'Dev',
+                    to: '/docs/dev/intro',
+                }
             ],
           },
           {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
                 label: 'Discord',
                 href: 'https://discordapp.com/invite/docusaurus',
               },
-              {
-                label: 'X',
-                href: 'https://x.com/docusaurus',
-              },
+                {
+                    label: 'GitHub',
+                    href: projectUrl,
+                }
             ],
           },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          },
+            {
+                title: 'Related',
+                items: [
+                    {
+                        label: 'Fable',
+                        href: 'https://fable.io',
+                    },
+                    {
+                        label: 'Electron',
+                        href: 'https://electron.io',
+                    },
+                ]
+            }
+          // {
+          //   title: 'More',
+          //   items: [
+          //     {
+          //       label: 'Blog',
+          //       to: '/blog',
+          //     },
+          //   ],
+          // },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Fable.Electron contributors`,
       },
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+          additionalLanguages: [ 'fsharp' ],
+          defaultLanguage: 'fsharp',
       },
     }),
 };

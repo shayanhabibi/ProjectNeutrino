@@ -32,23 +32,22 @@ let createWindow() =
         Remoting.init
         |> Remoting.withApiNameBase "FE"
         |> Remoting.withWindow mainWindow
-        |> Remoting.buildSender<Shared.ExampleMainToRenderer>
+        |> Remoting.buildClient<Shared.ExampleMainToRenderer>
     mainWindow.onMove(fun _ ->
-        sendMsg.CheckText "Testing" 5
+        sendMsg.LogMove "Testing" 5
     )
     
 app.whenReady().``then``(fun () ->
     let api: Shared.ExampleRouting = {
-        LogText = fun text i -> promise {
+        SayHelloWorld = fun text -> promise {
             if text = "hello" then
-                return Ok <| text + "Yep"
+                return Ok <| text + " world!"
             else
                 return Error()
         }
-        LogBanana = fun _ -> promise { return true }
     }
     Remoting.init
-    |> Remoting.buildReceiver(api)
+    |> Remoting.buildHandler(api)
     createWindow()
     
     app.onActivate(fun _ ->

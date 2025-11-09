@@ -147,13 +147,13 @@ type Remoting =
     /// </summary>
     /// <param name="implementation">The record of functions which respond to received messages.</param>
     /// <param name="config"></param>
-    static member inline buildReceiver<'t> (implementation: 't) (config: RemotingConfig) : unit =
+    static member inline buildHandler<'t> (implementation: 't) (config: RemotingConfig) : unit =
         Remoting.buildReceiverProxy(config, implementation, typeof<'t>)
     /// <summary>
     /// Builds a client for <c>Main -> Renderer</c> IPC proxy router.
     /// </summary>
     /// <param name="config"></param>
-    static member inline buildSender<'T> (config: RemotingConfig): 'T =
+    static member inline buildClient<'T> (config: RemotingConfig): 'T =
         if config.Windows.Length = 0 then
             console.error "Building a Main -> Renderer remoting client \
                         with no browser windows will do nothing or cause errors. \

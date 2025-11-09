@@ -78,13 +78,13 @@ type Remoting =
     /// Builds the client for the <c>Main &lt;-> Renderer</c> two way IPC communication.
     /// </summary>
     /// <param name="config"></param>
-    static member inline buildSender<'t> (config: RemotingConfig) : 't =
+    static member inline buildClient<'t> (config: RemotingConfig) : 't =
         Remoting.buildProxySender(config, typeof<'t>)
     /// <summary>
     /// Builds the receiver for the <c>Main -> Renderer</c> IPC communication.
     /// </summary>
     /// <param name="impl">The implemented record of functions that respond to messages.</param>
     /// <param name="config"></param>
-    static member inline buildReceiver<'T> (impl: 'T) (config: RemotingConfig) =
+    static member inline buildHandler<'T> (impl: 'T) (config: RemotingConfig) =
         Remoting.buildProxyReceiver(impl, config, typeof<'T>)
         

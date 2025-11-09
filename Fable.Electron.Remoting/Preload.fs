@@ -167,12 +167,12 @@ type Remoting =
     /// <para>All three processes must be built </para>
     /// </remarks>
     /// <param name="config"></param>
-    static member inline buildRendererToMain<'t>(config: RemotingConfig) =
+    static member inline buildTwoWayBridge<'t>(config: RemotingConfig) =
         Remoting.buildRendererToMainProxy(config, typeof<'t>)
     /// <summary>
     /// Builds the preload router for a <c>Main -> Renderer</c> interprocess communication
     /// in Fable.Remoting style.
     /// </summary>
     /// <param name="config"></param>
-    static member inline buildMainToRenderer<'T>(config: RemotingConfig) =
+    static member inline buildBridge<'T>(config: RemotingConfig) =
         Remoting.buildMainToRendererProxy(config, typeof<'T>)

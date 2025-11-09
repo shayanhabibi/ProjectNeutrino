@@ -7,8 +7,8 @@ open Fable.Electron.Playground.Shared
 open Fable.Electron.Remoting.Preload
 
 Remoting.init
-|> Remoting.buildRendererToMain<ExampleRouting>
+|> Remoting.buildTwoWayBridge<ExampleRouting>
 
 Remoting.init
-|> Remoting.withApiName "FE"
-|> Remoting.buildMainToRenderer<ExampleMainToRenderer>
+|> Remoting.withApiNameBase "FE"
+|> Remoting.buildBridge<ExampleMainToRenderer>

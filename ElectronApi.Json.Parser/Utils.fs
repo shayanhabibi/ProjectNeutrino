@@ -96,18 +96,6 @@ let toPascalCase (input: string) =
     let camel = (toCamelCase input).Trim('`')
     camel.Substring(0,1).ToUpper() + camel.Substring(1)
 
-let private transformCodeBlocks (input: string) =
-    let fencedReplaced = Regex.Replace(input, @"```(.*?)```", "<code>$1</code>", RegexOptions.Singleline)
-    Regex.Replace(fencedReplaced, @"`([^`]+)`", "<c>$1</c>")
-let normalizeDocs =
-    String.collect (function
-        | '<' -> "&lt;"
-        | '>' -> "&gt;"
-        | '&' -> "&amp;"
-        | c -> string c
-        )
-    >> transformCodeBlocks
-
 module XmlDcs =
     module Boundaries =
         let [<Literal>] openRemarks = "<remarks>"

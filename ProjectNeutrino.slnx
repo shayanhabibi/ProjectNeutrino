@@ -1,18 +1,25 @@
 ﻿<Solution>
   <Folder Name="/.github/workflows/" />
+  <Folder Name="/docs/">
+    <Project Path="fable-electron-docs\Docs.fsproj" Type="Classic F#" />
+  </Folder>
   <Folder Name="/Scripts/" />
   <Folder Name="/Scripts/ElectronApiParser/">
     <File Path="ApiDecoder.fsx" />
   </Folder>
-  <Project Path="ElectronApi.Json.Parser.Tests\ElectronApi.Json.Parser.Tests.fsproj" Type="Classic F#" />
-  <Project Path="ElectronApi.Json.Parser\ElectronApi.Json.Parser.fsproj" Type="Classic F#" />
-  <Project Path="Fable.Electron.Forge\Fable.Electron.Forge.fsproj" Type="Classic F#" />
-  <Project Path="Fable.Electron.Main\Fable.Electron.Main.fsproj" Type="Classic F#" />
+  <Folder Name="/src/">
+    <Project Path="ElectronApi.Json.Parser\ElectronApi.Json.Parser.fsproj" Type="Classic F#" />
+    <Project Path="Fable.Electron.Forge\Fable.Electron.Forge.fsproj" Type="Classic F#" />
+    <Project Path="Fable.Electron.Remoting\Fable.Electron.Remoting.fsproj" Type="Classic F#" />
+    <Project Path="Fable.Electron\Fable.Electron.fsproj" Type="Classic F#" />
+  </Folder>
+  <Folder Name="/wip/">
+    <Project Path="ElectronApi.Json.Parser.Tests\ElectronApi.Json.Parser.Tests.fsproj" Type="Classic F#" />
+    <Project Path="Fable.Electron.Main\Fable.Electron.Main.fsproj" Type="Classic F#" />
+    <Project Path="Fable.Electron.Renderer\Fable.Electron.Renderer.fsproj" Type="Classic F#" />
+    <Project Path="Fable.Electron.Tests\Fable.Electron.Tests.fsproj" Type="Classic F#" />
+    <Project Path="Fable.Electron.Utility\Fable.Electron.Utility.fsproj" Type="Classic F#" />
+  </Folder>
   <Project Path="Fable.Electron.Playground.Shared\Fable.Electron.Playground.Shared.fsproj" Type="Classic F#" />
   <Project Path="Fable.Electron.Playground\Fable.Electron.Playground.fsproj" Type="Classic F#" />
-  <Project Path="Fable.Electron.Remoting\Fable.Electron.Remoting.fsproj" Type="Classic F#" />
-  <Project Path="Fable.Electron.Renderer\Fable.Electron.Renderer.fsproj" Type="Classic F#" />
-  <Project Path="Fable.Electron.Tests\Fable.Electron.Tests.fsproj" Type="Classic F#" />
-  <Project Path="Fable.Electron.Utility\Fable.Electron.Utility.fsproj" Type="Classic F#" />
-  <Project Path="Fable.Electron\Fable.Electron.fsproj" Type="Classic F#" />
 </Solution>

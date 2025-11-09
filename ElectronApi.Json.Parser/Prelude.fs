@@ -1,16 +1,11 @@
-﻿module rec ElectronApi.Json.Parser.FSharpApi
+﻿module rec ElectronApi.Json.Parser.Prelude
 
 open System
 open System.Collections.Generic
-open System.IO
-
 open ElectronApi.Json.Parser.Decoder
-open ElectronApi.Json.Parser.Types.Path
-open ElectronApi.Json.Parser.Utils
 open Fantomas.Core
 open Fantomas.Core.SyntaxOak
 open Fantomas.FCS.Text
-open Thoth.Json.Net
 
 #nowarn 40
 

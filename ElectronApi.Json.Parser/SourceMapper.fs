@@ -2,7 +2,7 @@
 
 open System.Collections.Generic
 open System.ComponentModel
-open ElectronApi.Json.Parser.FSharpApi
+open ElectronApi.Json.Parser.Prelude
 open ElectronApi.Json.Parser.Types.Name
 open Fantomas.Core
 open Fantomas.Core.SyntaxOak
@@ -93,7 +93,7 @@ module XmlDocs =
             |> Array.collect (chunkDocStringBySize 20)
 
 module Type =
-    type internal ApiType = FSharpApi.Type
+    type internal ApiType = Prelude.Type
     type internal FcsType = Fantomas.Core.SyntaxOak.Type
     let inline internal makeSimple text = FcsType.Anon (SingleTextNode.make text)
     type internal Fantomas.Core.SyntaxOak.Type with
@@ -223,15 +223,15 @@ module Type =
             |> FantomasFactory.makeTuple
         static member mapToFantomas (apiType: ApiType): FcsType =
             match apiType with
-            | ApiType.Any | FSharpApi.Type.Undefined | ApiType.Unknown -> FcsType.obj
+            | ApiType.Any | Prelude.Type.Undefined | ApiType.Unknown -> FcsType.obj
             | ApiType.Unit -> FcsType.unit
-            | FSharpApi.Type.Boolean -> FcsType.boolean
-            | FSharpApi.Type.Date -> FcsType.LongIdent(IdentListNode.make [ "System"; "DateTime" ])
-            | FSharpApi.Type.Double -> FcsType.double
-            | FSharpApi.Type.Float | FSharpApi.Type.Number -> FcsType.float
-            | FSharpApi.Type.Integer -> FcsType.integer
-            | FSharpApi.Type.String -> FcsType.string
-            | FSharpApi.Type.StructureRef value ->
+            | Prelude.Type.Boolean -> FcsType.boolean
+            | Prelude.Type.Date -> FcsType.LongIdent(IdentListNode.make [ "System"; "DateTime" ])
+            | Prelude.Type.Double -> FcsType.double
+            | Prelude.Type.Float | Prelude.Type.Number -> FcsType.float
+            | Prelude.Type.Integer -> FcsType.integer
+            | Prelude.Type.String -> FcsType.string
+            | Prelude.Type.StructureRef value ->
                 match value with
                 | "UserDefaultTypes[Type]" -> FcsType.string
                 | "ClientRequestConstructorOptions" -> makeSimple "ClientRequest.Options"
@@ -244,11 +244,11 @@ module Type =
                 | "Type" -> makeSimple "UserType" // self implemented string DU
                 | value when value.StartsWith "NodeJS." ->
                     value.Substring "NodeJS.".Length
-                    |> FSharpApi.Type.StructureRef
+                    |> Prelude.Type.StructureRef
                     |> FantomasFactory.mapToFantomas
                 | value when value.StartsWith "Electron." ->
                     value.Substring "Electron.".Length
-                    |> FSharpApi.Type.StructureRef
+                    |> Prelude.Type.StructureRef
                     |> FantomasFactory.mapToFantomas
                 | _ ->
                     Path.Cache.retrievePath value
@@ -318,30 +318,30 @@ module Type =
                 FantomasFactory.mapToFantomas ``type``
                 |> FantomasFactory.makeCollection
             | OneOf [
-                    FSharpApi.Type.StructureRef "TouchBarButton"
-                    FSharpApi.Type.StructureRef "TouchBarColorPicker"
-                    FSharpApi.Type.StructureRef "TouchBarGroup"
-                    FSharpApi.Type.StructureRef "TouchBarLabel"
-                    FSharpApi.Type.StructureRef "TouchBarPopover"
-                    FSharpApi.Type.StructureRef "TouchBarScrubber"
-                    FSharpApi.Type.StructureRef "TouchBarSegmentedControl"
-                    FSharpApi.Type.StructureRef "TouchBarSlider"
-                    FSharpApi.Type.StructureRef "TouchBarSpacer"
+                    Prelude.Type.StructureRef "TouchBarButton"
+                    Prelude.Type.StructureRef "TouchBarColorPicker"
+                    Prelude.Type.StructureRef "TouchBarGroup"
+                    Prelude.Type.StructureRef "TouchBarLabel"
+                    Prelude.Type.StructureRef "TouchBarPopover"
+                    Prelude.Type.StructureRef "TouchBarScrubber"
+                    Prelude.Type.StructureRef "TouchBarSegmentedControl"
+                    Prelude.Type.StructureRef "TouchBarSlider"
+                    Prelude.Type.StructureRef "TouchBarSpacer"
                 ] ->
-                    FantomasFactory.mapToFantomas (FSharpApi.Type.StructureRef Spec.touchBarItemsName)
+                    FantomasFactory.mapToFantomas (Prelude.Type.StructureRef Spec.touchBarItemsName)
             | OneOf types when types |> List.truncate 9 |> (=) [
-                    FSharpApi.Type.StructureRef "TouchBarButton"
-                    FSharpApi.Type.StructureRef "TouchBarColorPicker"
-                    FSharpApi.Type.StructureRef "TouchBarGroup"
-                    FSharpApi.Type.StructureRef "TouchBarLabel"
-                    FSharpApi.Type.StructureRef "TouchBarPopover"
-                    FSharpApi.Type.StructureRef "TouchBarScrubber"
-                    FSharpApi.Type.StructureRef "TouchBarSegmentedControl"
-                    FSharpApi.Type.StructureRef "TouchBarSlider"
-                    FSharpApi.Type.StructureRef "TouchBarSpacer"
+                    Prelude.Type.StructureRef "TouchBarButton"
+                    Prelude.Type.StructureRef "TouchBarColorPicker"
+                    Prelude.Type.StructureRef "TouchBarGroup"
+                    Prelude.Type.StructureRef "TouchBarLabel"
+                    Prelude.Type.StructureRef "TouchBarPopover"
+                    Prelude.Type.StructureRef "TouchBarScrubber"
+                    Prelude.Type.StructureRef "TouchBarSegmentedControl"
+                    Prelude.Type.StructureRef "TouchBarSlider"
+                    Prelude.Type.StructureRef "TouchBarSpacer"
                 ] ->
-                    FSharpApi.Type.OneOf [
-                        yield FSharpApi.Type.StructureRef Spec.touchBarItemsName
+                    Prelude.Type.OneOf [
+                        yield Prelude.Type.StructureRef Spec.touchBarItemsName
                         yield! types |> List.skip 9
                     ]
                     |> FantomasFactory.mapToFantomas 
@@ -786,7 +786,7 @@ module GeneratorContainer =
             | docs ->
                 docs
                 |> Some
-    let private makeParametersXmlDocs (parameter: Parameter list) =
+    let makeParametersXmlDocs (parameter: Parameter list) =
         parameter |> List.mapi (fun idx -> function
         | Positional parameterInfo -> makeParameterDocLine parameterInfo $"arg{idx}"
         | Named(name, info) -> makeParameterDocLine info name.Name.ValueOrModified
