@@ -25,6 +25,163 @@ module Constants =
         [<Literal; Erase>]
         let Login = "login"
 
+module UtilityProcess =
+    /// <summary>
+    /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
+    /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
+    /// </summary>
+    [<Experimental("Indicated to be Experimental by Electron");
+      System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+      AllowNullLiteral;
+      Interface>]
+    type IOnError =
+        /// <summary>
+        /// Type of error. One of the following values:
+        /// </summary>
+        [<Emit("$0[0]")>]
+        abstract member ``type``: Enums.UtilityProcess.Error.Type with get, set
+
+        /// <summary>
+        /// Source location from where the error originated.
+        /// </summary>
+        [<Emit("$0[1]")>]
+        abstract member location: string with get, set
+
+        /// <summary>
+        /// <c>Node.js diagnostic report</c>.
+        /// </summary>
+        [<Emit("$0[2]")>]
+        abstract member report: string with get, set
+
+module ParentPort =
+    module Message =
+        [<JS.Pojo>]
+        type MessageEvent
+            /// <param name="data"></param>
+            /// <param name="ports"></param>
+            (data: obj, ports: MessagePortMain[]) =
+            class
+            end
+
+            [<Erase>]
+            member val data: obj = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val ports: MessagePortMain[] = Unchecked.defaultof<_> with get, set
+
+module Net =
+    module ResolveHost =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="queryType">Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:</param>
+            /// <param name="source">The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use
+            /// of big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results
+            /// can still come from cache, resolving "localhost" or IP literals, etc. One of the following values:</param>
+            /// <param name="cacheUsage">Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:</param>
+            /// <param name="secureDnsPolicy">Controls the resolver's Secure DNS behavior for this request. One of the following values:</param>
+            (
+                ?queryType: Enums.Net.ResolveHost.Options.QueryType,
+                ?source: Enums.Net.ResolveHost.Options.Source,
+                ?cacheUsage: Enums.Net.ResolveHost.Options.CacheUsage,
+                ?secureDnsPolicy: Enums.Net.ResolveHost.Options.SecureDnsPolicy
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:
+            /// </summary>
+            [<Erase>]
+            member val queryType: Enums.Net.ResolveHost.Options.QueryType = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use of
+            /// big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results can
+            /// still come from cache, resolving "localhost" or IP literals, etc. One of the following values:
+            /// </summary>
+            [<Erase>]
+            member val source: Enums.Net.ResolveHost.Options.Source = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:
+            /// </summary>
+            [<Erase>]
+            member val cacheUsage: Enums.Net.ResolveHost.Options.CacheUsage = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Controls the resolver's Secure DNS behavior for this request. One of the following values:
+            /// </summary>
+            [<Erase>]
+            member val secureDnsPolicy: Enums.Net.ResolveHost.Options.SecureDnsPolicy =
+                Unchecked.defaultof<_> with get, set
+
+module SystemPreferences =
+    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+    /// <summary>
+    /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+    /// </summary>
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+      AllowNullLiteral;
+      Interface>]
+    type IOnAccentColorChanged =
+        [<Emit("$0[0]")>]
+        abstract member event: Event with get, set
+
+        /// <summary>
+        /// The new RGBA color the user assigned to be their system accent color.
+        /// </summary>
+        [<Emit("$0[1]")>]
+        abstract member newColor: string with get, set
+    #endif
+
+
+    [<JS.Pojo>]
+    type GetAnimationSettings
+        /// <param name="shouldRenderRichAnimation">Returns true if rich animations should be rendered. Looks at session type (e.g. remote desktop) and accessibility settings to
+        /// give guidance for heavy animations.</param>
+        /// <param name="scrollAnimationsEnabledBySystem">Determines on a per-platform basis whether scroll animations (e.g. produced by home/end key) should be enabled.</param>
+        /// <param name="prefersReducedMotion">Determines whether the user desires reduced motion based on platform APIs.</param>
+        (shouldRenderRichAnimation: bool, scrollAnimationsEnabledBySystem: bool, prefersReducedMotion: bool) =
+        class
+        end
+
+        /// <summary>
+        /// Returns true if rich animations should be rendered. Looks at session type (e.g. remote desktop) and accessibility settings to give
+        /// guidance for heavy animations.
+        /// </summary>
+        [<Erase>]
+        member val shouldRenderRichAnimation: bool = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// Determines on a per-platform basis whether scroll animations (e.g. produced by home/end key) should be enabled.
+        /// </summary>
+        [<Erase>]
+        member val scrollAnimationsEnabledBySystem: bool = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// Determines whether the user desires reduced motion based on platform APIs.
+        /// </summary>
+        [<Erase>]
+        member val prefersReducedMotion: bool = Unchecked.defaultof<_> with get, set
+
+    module SubscribeWorkspaceNotification =
+        /// <param name="event"></param>
+        /// <param name="userInfo"></param>
+        /// <param name="object"></param>
+        type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
+    module SubscribeLocalNotification =
+        /// <param name="event"></param>
+        /// <param name="userInfo"></param>
+        /// <param name="object"></param>
+        type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
+    module SubscribeNotification =
+        /// <param name="event"></param>
+        /// <param name="userInfo"></param>
+        /// <param name="object"></param>
+        type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
 module ClientRequest =
     /// <summary>
     /// Emitted when the server returns a redirect response (e.g. 301 Moved Permanently). Calling <c>request.followRedirect</c> will continue with the redirection.
@@ -58,55 +215,239 @@ module ClientRequest =
         abstract member authInfo: ClientRequest.Login.AuthInfo with get, set
 
         [<Emit("$0[1]")>]
-        abstract member callback: ClientRequest.Login.Callback with get, set
+        abstract member callback: Option<string> * Option<string> -> unit with get, set
 
-module SystemPreferences =
-    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-    /// <summary>
-    /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-    /// </summary>
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-      AllowNullLiteral;
-      Interface>]
-    type IOnAccentColorChanged =
-        [<Emit("$0[0]")>]
-        abstract member event: Event with get, set
+    [<JS.Pojo>]
+    type GetUploadProgress
+        /// <param name="active">Whether the request is currently active. If this is false no other properties will be set</param>
+        /// <param name="started">Whether the upload has started. If this is false both <c>current</c> and <c>total</c> will be set to 0.</param>
+        /// <param name="current">The number of bytes that have been uploaded so far</param>
+        /// <param name="total">The number of bytes that will be uploaded this request</param>
+        (active: bool, started: bool, current: int, total: int) =
+        class
+        end
 
         /// <summary>
-        /// The new RGBA color the user assigned to be their system accent color.
+        /// Whether the request is currently active. If this is false no other properties will be set
         /// </summary>
-        [<Emit("$0[1]")>]
-        abstract member newColor: string with get, set
-    #endif
-
-
-module UtilityProcess =
-    /// <summary>
-    /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
-    /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
-    /// </summary>
-    [<Experimental("Indicated to be Experimental by Electron");
-      System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-      AllowNullLiteral;
-      Interface>]
-    type IOnError =
-        /// <summary>
-        /// Type of error. One of the following values:
-        /// </summary>
-        [<Emit("$0[0]")>]
-        abstract member ``type``: Enums.UtilityProcess.Error.Type with get, set
+        [<Erase>]
+        member val active: bool = Unchecked.defaultof<_> with get, set
 
         /// <summary>
-        /// Source location from where the error originated.
+        /// Whether the upload has started. If this is false both <c>current</c> and <c>total</c> will be set to 0.
         /// </summary>
-        [<Emit("$0[1]")>]
-        abstract member location: string with get, set
+        [<Erase>]
+        member val started: bool = Unchecked.defaultof<_> with get, set
 
         /// <summary>
-        /// <c>Node.js diagnostic report</c>.
+        /// The number of bytes that have been uploaded so far
         /// </summary>
-        [<Emit("$0[2]")>]
-        abstract member report: string with get, set
+        [<Erase>]
+        member val current: int = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The number of bytes that will be uploaded this request
+        /// </summary>
+        [<Erase>]
+        member val total: int = Unchecked.defaultof<_> with get, set
+
+    [<JS.Pojo>]
+    type Options
+        /// <param name="method">The HTTP request method. Defaults to the GET method.</param>
+        /// <param name="url">The request URL. Must be provided in the absolute form with the protocol scheme specified as http or https.</param>
+        /// <param name="headers">Headers to be sent with the request.</param>
+        /// <param name="session">The <c>Session</c> instance with which the request is associated.</param>
+        /// <param name="partition">The name of the <c>partition</c> with which the request is associated. Defaults to the empty string. The <c>session</c> option
+        /// supersedes <c>partition</c>. Thus if a <c>session</c> is explicitly specified, <c>partition</c> is ignored.</param>
+        /// <param name="credentials">Can be <c>include</c>, <c>omit</c> or <c>same-origin</c>. Whether to send credentials with this request. If set to <c>include</c>, credentials from
+        /// the session associated with the request will be used. If set to <c>omit</c>, credentials will not be sent with the
+        /// request (and the <c>'login'</c> event will not be triggered in the event of a 401). If set to <c>same-origin</c>, <c>origin</c>
+        /// must also be specified. This matches the behavior of the fetch option of the same name. If this option is
+        /// not specified, authentication data from the session will be sent, and cookies will not be sent (unless <c>useSessionCookies</c> is set).</param>
+        /// <param name="useSessionCookies">Whether to send cookies with this request from the provided session. If <c>credentials</c> is specified, this option has no
+        /// effect. Default is <c>false</c>.</param>
+        /// <param name="protocol">Can be <c>http:</c> or <c>https:</c>. The protocol scheme in the form 'scheme:'. Defaults to 'http:'.</param>
+        /// <param name="host">The server host provided as a concatenation of the hostname and the port number 'hostname:port'.</param>
+        /// <param name="hostname">The server host name.</param>
+        /// <param name="port">The server's listening port number.</param>
+        /// <param name="path">The path part of the request URL.</param>
+        /// <param name="redirect">Can be <c>follow</c>, <c>error</c> or <c>manual</c>. The redirect mode for this request. When mode is <c>error</c>, any redirection will
+        /// be aborted. When mode is <c>manual</c> the redirection will be cancelled unless <c>request.followRedirect</c> is invoked synchronously during the <c>redirect</c> event.
+        ///  Defaults to <c>follow</c>.</param>
+        /// <param name="origin">The origin URL of the request.</param>
+        /// <param name="referrerPolicy">can be "", <c>no-referrer</c>, <c>no-referrer-when-downgrade</c>, <c>origin</c>, <c>origin-when-cross-origin</c>, <c>unsafe-url</c>, <c>same-origin</c>, <c>strict-origin</c>, or <c>strict-origin-when-cross-origin</c>. Defaults to <c>strict-origin-when-cross-origin</c>.</param>
+        /// <param name="cache">can be <c>default</c>, <c>no-store</c>, <c>reload</c>, <c>no-cache</c>, <c>force-cache</c> or <c>only-if-cached</c>.</param>
+        /// <param name="priority">can be <c>throttled</c>, <c>idle</c>, <c>lowest</c>, <c>low</c>, <c>medium</c>, or <c>highest</c>. Defaults to <c>idle</c>.</param>
+        /// <param name="priorityIncremental">the incremental loading flag as part of HTTP extensible priorities (RFC 9218). Default is <c>true</c>.</param>
+        (
+            ?method: string,
+            ?url: string,
+            ?headers: Record<string, U2<string, string[]>>,
+            ?session: Session,
+            ?partition: string,
+            ?credentials: Enums.ClientRequest.Options.Credentials,
+            ?useSessionCookies: bool,
+            ?protocol: Enums.ClientRequest.Options.Protocol,
+            ?host: string,
+            ?hostname: string,
+            ?port: int,
+            ?path: string,
+            ?redirect: Enums.ClientRequest.Options.Redirect,
+            ?origin: string,
+            ?referrerPolicy: Enums.ClientRequest.Options.ReferrerPolicy,
+            ?cache: Enums.ClientRequest.Options.Cache,
+            ?priority: Enums.ClientRequest.Options.Priority,
+            ?priorityIncremental: bool
+        ) =
+        class
+        end
+
+        /// <summary>
+        /// The HTTP request method. Defaults to the GET method.
+        /// </summary>
+        [<Erase>]
+        member val method: string = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The request URL. Must be provided in the absolute form with the protocol scheme specified as http or https.
+        /// </summary>
+        [<Erase>]
+        member val url: string = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// Headers to be sent with the request.
+        /// </summary>
+        [<Erase>]
+        member val headers: Record<string, U2<string, string[]>> = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The <c>Session</c> instance with which the request is associated.
+        /// </summary>
+        [<Erase>]
+        member val session: Session = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The name of the <c>partition</c> with which the request is associated. Defaults to the empty string. The <c>session</c> option supersedes
+        /// <c>partition</c>. Thus if a <c>session</c> is explicitly specified, <c>partition</c> is ignored.
+        /// </summary>
+        [<Erase>]
+        member val partition: string = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// Can be <c>include</c>, <c>omit</c> or <c>same-origin</c>. Whether to send credentials with this request. If set to <c>include</c>, credentials from the
+        /// session associated with the request will be used. If set to <c>omit</c>, credentials will not be sent with the request
+        /// (and the <c>'login'</c> event will not be triggered in the event of a 401). If set to <c>same-origin</c>, <c>origin</c> must
+        /// also be specified. This matches the behavior of the fetch option of the same name. If this option is not
+        /// specified, authentication data from the session will be sent, and cookies will not be sent (unless <c>useSessionCookies</c> is set).
+        /// </summary>
+        [<Erase>]
+        member val credentials: Enums.ClientRequest.Options.Credentials = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// Whether to send cookies with this request from the provided session. If <c>credentials</c> is specified, this option has no effect.
+        /// Default is <c>false</c>.
+        /// </summary>
+        [<Erase>]
+        member val useSessionCookies: bool = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// Can be <c>http:</c> or <c>https:</c>. The protocol scheme in the form 'scheme:'. Defaults to 'http:'.
+        /// </summary>
+        [<Erase>]
+        member val protocol: Enums.ClientRequest.Options.Protocol = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The server host provided as a concatenation of the hostname and the port number 'hostname:port'.
+        /// </summary>
+        [<Erase>]
+        member val host: string = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The server host name.
+        /// </summary>
+        [<Erase>]
+        member val hostname: string = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The server's listening port number.
+        /// </summary>
+        [<Erase>]
+        member val port: int = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The path part of the request URL.
+        /// </summary>
+        [<Erase>]
+        member val path: string = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// Can be <c>follow</c>, <c>error</c> or <c>manual</c>. The redirect mode for this request. When mode is <c>error</c>, any redirection will be
+        /// aborted. When mode is <c>manual</c> the redirection will be cancelled unless <c>request.followRedirect</c> is invoked synchronously during the <c>redirect</c> event.
+        /// Defaults to <c>follow</c>.
+        /// </summary>
+        [<Erase>]
+        member val redirect: Enums.ClientRequest.Options.Redirect = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// The origin URL of the request.
+        /// </summary>
+        [<Erase>]
+        member val origin: string = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// can be "", <c>no-referrer</c>, <c>no-referrer-when-downgrade</c>, <c>origin</c>, <c>origin-when-cross-origin</c>, <c>unsafe-url</c>, <c>same-origin</c>, <c>strict-origin</c>, or <c>strict-origin-when-cross-origin</c>. Defaults to <c>strict-origin-when-cross-origin</c>.
+        /// </summary>
+        [<Erase>]
+        member val referrerPolicy: Enums.ClientRequest.Options.ReferrerPolicy = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// can be <c>default</c>, <c>no-store</c>, <c>reload</c>, <c>no-cache</c>, <c>force-cache</c> or <c>only-if-cached</c>.
+        /// </summary>
+        [<Erase>]
+        member val cache: Enums.ClientRequest.Options.Cache = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// can be <c>throttled</c>, <c>idle</c>, <c>lowest</c>, <c>low</c>, <c>medium</c>, or <c>highest</c>. Defaults to <c>idle</c>.
+        /// </summary>
+        [<Erase>]
+        member val priority: Enums.ClientRequest.Options.Priority = Unchecked.defaultof<_> with get, set
+
+        /// <summary>
+        /// the incremental loading flag as part of HTTP extensible priorities (RFC 9218). Default is <c>true</c>.
+        /// </summary>
+        [<Erase>]
+        member val priorityIncremental: bool = Unchecked.defaultof<_> with get, set
+
+    module Login =
+        [<JS.Pojo>]
+        type AuthInfo
+            /// <param name="isProxy"></param>
+            /// <param name="scheme"></param>
+            /// <param name="host"></param>
+            /// <param name="port"></param>
+            /// <param name="realm"></param>
+            (isProxy: bool, scheme: string, host: string, port: int, realm: string) =
+            class
+            end
+
+            [<Erase>]
+            member val isProxy: bool = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val scheme: string = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val host: string = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val port: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val realm: string = Unchecked.defaultof<_> with get, set
+
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        type Callback = delegate of ?username: string * ?password: string -> unit
 
 /// <summary>
 /// <para>⚠ Process Availability: Main ❌ | Renderer ❌ | Utility ❌ | Exported ❌</para>
@@ -434,7 +775,7 @@ type systemPreferences private () =
     /// <param name="callback"></param>
     [<Erase>]
     static member inline subscribeNotification
-        (event: Option<string>, callback: SystemPreferences.SubscribeNotification.Callback)
+        (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
         : float =
         Unchecked.defaultof<_>
     #endif
@@ -452,7 +793,7 @@ type systemPreferences private () =
     /// <param name="callback"></param>
     [<Erase>]
     static member inline subscribeLocalNotification
-        (event: Option<string>, callback: SystemPreferences.SubscribeLocalNotification.Callback)
+        (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
         : float =
         Unchecked.defaultof<_>
     #endif
@@ -469,7 +810,7 @@ type systemPreferences private () =
     /// <param name="callback"></param>
     [<Erase>]
     static member inline subscribeWorkspaceNotification
-        (event: Option<string>, callback: SystemPreferences.SubscribeWorkspaceNotification.Callback)
+        (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
         : float =
         Unchecked.defaultof<_>
     #endif
@@ -1008,7 +1349,9 @@ type ClientRequest
     /// credentials:<br/><br/>* <c>username</c> string<br/>* <c>password</c> string<br/><br/>Providing empty credentials will cancel the request and report an authentication error on the response object:
     /// </summary>
     [<Emit("$0.on('login', $1)")>]
-    member inline _.onLogin(handler: ClientRequest.Login.AuthInfo -> ClientRequest.Login.Callback -> unit) : unit =
+    member inline _.onLogin
+        (handler: ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
+        : unit =
         Unchecked.defaultof<_>
 
     /// <summary>
@@ -1023,7 +1366,9 @@ type ClientRequest
     /// credentials:<br/><br/>* <c>username</c> string<br/>* <c>password</c> string<br/><br/>Providing empty credentials will cancel the request and report an authentication error on the response object:
     /// </summary>
     [<Emit("$0.once('login', $1)")>]
-    member inline _.onceLogin(handler: ClientRequest.Login.AuthInfo -> ClientRequest.Login.Callback -> unit) : unit =
+    member inline _.onceLogin
+        (handler: ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
+        : unit =
         Unchecked.defaultof<_>
 
     /// <summary>
@@ -1038,7 +1383,9 @@ type ClientRequest
     /// credentials:<br/><br/>* <c>username</c> string<br/>* <c>password</c> string<br/><br/>Providing empty credentials will cancel the request and report an authentication error on the response object:
     /// </summary>
     [<Emit("$0.off('login', $1)")>]
-    member inline _.offLogin(handler: ClientRequest.Login.AuthInfo -> ClientRequest.Login.Callback -> unit) : unit =
+    member inline _.offLogin
+        (handler: ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
+        : unit =
         Unchecked.defaultof<_>
 
     /// <summary>
@@ -1259,6 +1606,764 @@ type ClientRequest
 
 [<Fable.Core.Erase; AutoOpen>]
 module Types =
+    module WebPreferences =
+        [<JS.Pojo>]
+        type Offscreen
+            /// <param name="useSharedTexture">Whether to use GPU shared texture for accelerated paint event. Defaults to <c>false</c>. See the offscreen rendering tutorial for
+            /// more details.</param>
+            /// <param name="sharedTexturePixelFormat">The requested output format of the shared texture. Defaults to <c>argb</c>. The name is originated from Chromium <c>media::VideoPixelFormat</c> enum
+            /// suffix and only subset of them are supported. The actual output pixel format and color space of the texture should
+            /// refer to <c>OffscreenSharedTexture</c> object in the <c>paint</c> event.</param>
+            (
+                ?useSharedTexture: bool,
+                ?sharedTexturePixelFormat: Enums.Types.WebPreferences.Offscreen.SharedTexturePixelFormat
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Whether to use GPU shared texture for accelerated paint event. Defaults to <c>false</c>. See the offscreen rendering tutorial for more
+            /// details.
+            /// </summary>
+            [<Erase; Experimental("Experimental according to Electron")>]
+            member val useSharedTexture: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The requested output format of the shared texture. Defaults to <c>argb</c>. The name is originated from Chromium <c>media::VideoPixelFormat</c> enum suffix
+            /// and only subset of them are supported. The actual output pixel format and color space of the texture should refer
+            /// to <c>OffscreenSharedTexture</c> object in the <c>paint</c> event.
+            /// </summary>
+            [<Erase; Experimental("Experimental according to Electron")>]
+            member val sharedTexturePixelFormat: Enums.Types.WebPreferences.Offscreen.SharedTexturePixelFormat =
+                Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type DefaultFontFamily
+            /// <param name="standard">Defaults to <c>Times New Roman</c>.</param>
+            /// <param name="serif">Defaults to <c>Times New Roman</c>.</param>
+            /// <param name="sansSerif">Defaults to <c>Arial</c>.</param>
+            /// <param name="monospace">Defaults to <c>Courier New</c>.</param>
+            /// <param name="cursive">Defaults to <c>Script</c>.</param>
+            /// <param name="fantasy">Defaults to <c>Impact</c>.</param>
+            /// <param name="math">Defaults to <c>Latin Modern Math</c>.</param>
+            (
+                ?standard: string,
+                ?serif: string,
+                ?sansSerif: string,
+                ?monospace: string,
+                ?cursive: string,
+                ?fantasy: string,
+                ?math: string
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Defaults to <c>Times New Roman</c>.
+            /// </summary>
+            [<Erase>]
+            member val standard: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Times New Roman</c>.
+            /// </summary>
+            [<Erase>]
+            member val serif: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Arial</c>.
+            /// </summary>
+            [<Erase>]
+            member val sansSerif: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Courier New</c>.
+            /// </summary>
+            [<Erase>]
+            member val monospace: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Script</c>.
+            /// </summary>
+            [<Erase>]
+            member val cursive: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Impact</c>.
+            /// </summary>
+            [<Erase>]
+            member val fantasy: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Latin Modern Math</c>.
+            /// </summary>
+            [<Erase>]
+            member val math: string = Unchecked.defaultof<_> with get, set
+
+    module USBDevice =
+        [<JS.Pojo>]
+        type Configurations() = class end
+
+        [<JS.Pojo>]
+        type Configuration
+            /// <param name="configurationValue">the configuration value of this configuration.</param>
+            /// <param name="configurationName">the name provided by the device to describe this configuration.</param>
+            /// <param name="interfaces">An array of USBInterface objects containing information about an interface provided by the USB device.</param>
+            (configurationValue: int, configurationName: string, interfaces: Types.USBDevice.Configuration.Interfaces[])
+            =
+            class
+            end
+
+            /// <summary>
+            /// the configuration value of this configuration.
+            /// </summary>
+            [<Erase>]
+            member val configurationValue: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// the name provided by the device to describe this configuration.
+            /// </summary>
+            [<Erase>]
+            member val configurationName: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of USBInterface objects containing information about an interface provided by the USB device.
+            /// </summary>
+            [<Erase>]
+            member val interfaces: Types.USBDevice.Configuration.Interfaces[] = Unchecked.defaultof<_> with get, set
+
+        module Configuration =
+            [<JS.Pojo>]
+            type Interfaces
+                /// <param name="interfaceNumber">the interface number of this interface.</param>
+                /// <param name="alternate">the currently selected alternative configuration of this interface.</param>
+                /// <param name="alternates">an array containing instances of the USBAlternateInterface interface describing each of the alternative configurations possible for this interface.</param>
+                (interfaceNumber: int, alternate: Types.USBDevice.Configuration.Interfaces.Alternate, alternates: obj[])
+                =
+                class
+                end
+
+                /// <summary>
+                /// the interface number of this interface.
+                /// </summary>
+                [<Erase>]
+                member val interfaceNumber: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// the currently selected alternative configuration of this interface.
+                /// </summary>
+                [<Erase>]
+                member val alternate: Types.USBDevice.Configuration.Interfaces.Alternate =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// an array containing instances of the USBAlternateInterface interface describing each of the alternative configurations possible for this interface.
+                /// </summary>
+                [<Erase>]
+                member val alternates: obj[] = Unchecked.defaultof<_> with get, set
+
+            module Interfaces =
+                [<JS.Pojo>]
+                type Alternates() = class end
+
+                [<JS.Pojo>]
+                type Alternate
+                    /// <param name="alternateSetting">the alternate setting number of this interface.</param>
+                    /// <param name="interfaceClass">the class of this interface. See USB.org for class code descriptions.</param>
+                    /// <param name="interfaceSubclass">the subclass of this interface.</param>
+                    /// <param name="interfaceProtocol">the protocol supported by this interface.</param>
+                    /// <param name="interfaceName">the name of the interface, if one is provided by the device.</param>
+                    /// <param name="endpoints">an array containing instances of the USBEndpoint interface describing each of the endpoints that are part of this interface.</param>
+                    (
+                        alternateSetting: int,
+                        interfaceClass: int,
+                        interfaceSubclass: int,
+                        interfaceProtocol: int,
+                        endpoints: Types.USBDevice.Configuration.Interfaces.Alternate.Endpoints[],
+                        ?interfaceName: string
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// the alternate setting number of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val alternateSetting: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the class of this interface. See USB.org for class code descriptions.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceClass: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the subclass of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceSubclass: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the protocol supported by this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceProtocol: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the name of the interface, if one is provided by the device.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceName: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// an array containing instances of the USBEndpoint interface describing each of the endpoints that are part of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val endpoints: Types.USBDevice.Configuration.Interfaces.Alternate.Endpoints[] =
+                        Unchecked.defaultof<_> with get, set
+
+                module Alternate =
+                    [<JS.Pojo>]
+                    type Endpoints
+                        /// <param name="endpointNumber">this endpoint's "endpoint number" which is a value from 1 to 15.</param>
+                        /// <param name="direction">the direction in which this endpoint transfers data - can be either 'in' or 'out'.</param>
+                        /// <param name="type">the type of this endpoint - can be either 'bulk', 'interrupt', or 'isochronous'.</param>
+                        /// <param name="packetSize">the size of the packets that data sent through this endpoint will be divided into.</param>
+                        (endpointNumber: int, direction: string, ``type``: string, packetSize: int) =
+                        class
+                        end
+
+                        /// <summary>
+                        /// this endpoint's "endpoint number" which is a value from 1 to 15.
+                        /// </summary>
+                        [<Erase>]
+                        member val endpointNumber: int = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the direction in which this endpoint transfers data - can be either 'in' or 'out'.
+                        /// </summary>
+                        [<Erase>]
+                        member val direction: string = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the type of this endpoint - can be either 'bulk', 'interrupt', or 'isochronous'.
+                        /// </summary>
+                        [<Erase>]
+                        member val ``type``: string = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the size of the packets that data sent through this endpoint will be divided into.
+                        /// </summary>
+                        [<Erase>]
+                        member val packetSize: int = Unchecked.defaultof<_> with get, set
+
+    module Transaction =
+        [<JS.Pojo>]
+        type Payment
+            /// <param name="productIdentifier">The identifier of the purchased product.</param>
+            /// <param name="quantity">The quantity purchased.</param>
+            /// <param name="applicationUsername">An opaque identifier for the user’s account on your system.</param>
+            /// <param name="paymentDiscount">The details of the discount offer to apply to the payment.</param>
+            (productIdentifier: string, quantity: int, applicationUsername: string, ?paymentDiscount: PaymentDiscount) =
+            class
+            end
+
+            /// <summary>
+            /// The identifier of the purchased product.
+            /// </summary>
+            [<Erase>]
+            member val productIdentifier: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The quantity purchased.
+            /// </summary>
+            [<Erase>]
+            member val quantity: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An opaque identifier for the user’s account on your system.
+            /// </summary>
+            [<Erase>]
+            member val applicationUsername: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The details of the discount offer to apply to the payment.
+            /// </summary>
+            [<Erase>]
+            member val paymentDiscount: PaymentDiscount = Unchecked.defaultof<_> with get, set
+
+    module SharedTextureHandle =
+        [<JS.Pojo>]
+        type NativePixmap
+            /// <param name="planes">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || Each plane's info of
+            /// the shared texture.</param>
+            /// <param name="modifier">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || The modifier is retrieved
+            /// from GBM library and passed to EGL driver.</param>
+            /// <param name="supportsZeroCopyWebGpuImport">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || Indicates whether supports zero
+            /// copy import to WebGPU.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                planes: Types.SharedTextureHandle.NativePixmap.Planes[]
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                ,
+                modifier: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                ,
+                supportsZeroCopyWebGpuImport: bool
+                #endif
+
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// Each plane's info of the shared texture.
+            /// </summary>
+            [<Erase>]
+            member val planes: Types.SharedTextureHandle.NativePixmap.Planes[] = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The modifier is retrieved from GBM library and passed to EGL driver.
+            /// </summary>
+            [<Erase>]
+            member val modifier: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// Indicates whether supports zero copy import to WebGPU.
+            /// </summary>
+            [<Erase>]
+            member val supportsZeroCopyWebGpuImport: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        module NativePixmap =
+            [<JS.Pojo>]
+            type Planes
+                /// <param name="stride">The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per
+                /// plane per entry.</param>
+                /// <param name="offset">The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per
+                /// plane per entry.</param>
+                /// <param name="size">Size in bytes of the plane. This is necessary to map the buffers.</param>
+                /// <param name="fd">File descriptor for the underlying memory object (usually dmabuf).</param>
+                (stride: float, offset: float, size: float, fd: float) =
+                class
+                end
+
+                /// <summary>
+                /// The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per plane
+                /// per entry.
+                /// </summary>
+                [<Erase>]
+                member val stride: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per plane
+                /// per entry.
+                /// </summary>
+                [<Erase>]
+                member val offset: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Size in bytes of the plane. This is necessary to map the buffers.
+                /// </summary>
+                [<Erase>]
+                member val size: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// File descriptor for the underlying memory object (usually dmabuf).
+                /// </summary>
+                [<Erase>]
+                member val fd: float = Unchecked.defaultof<_> with get, set
+
+    module PrinterInfo =
+        [<JS.Pojo>]
+        type Options() = class end
+
+    module OffscreenSharedTexture =
+        [<JS.Pojo>]
+        type TextureInfo
+            /// <param name="widgetType">The widget type of the texture. Can be <c>popup</c> or <c>frame</c>.</param>
+            /// <param name="pixelFormat">The pixel format of the texture.</param>
+            /// <param name="codedSize">The full dimensions of the video frame.</param>
+            /// <param name="colorSpace">The color space of the video frame.</param>
+            /// <param name="visibleRect">A subsection of [0, 0, codedSize.width, codedSize.height]. In OSR case, it is expected to have the full section area.</param>
+            /// <param name="contentRect">The region of the video frame that capturer would like to populate. In OSR case, it is the same
+            /// with <c>dirtyRect</c> that needs to be painted.</param>
+            /// <param name="timestamp">The time in microseconds since the capture start.</param>
+            /// <param name="metadata">Extra metadata. See comments in src\media\base\video_frame_metadata.h for accurate details.</param>
+            /// <param name="handle">The shared texture handle data.</param>
+            (
+                widgetType: Enums.Types.OffscreenSharedTexture.TextureInfo.WidgetType,
+                pixelFormat: Enums.Types.OffscreenSharedTexture.TextureInfo.PixelFormat,
+                codedSize: Size,
+                colorSpace: ColorSpace,
+                visibleRect: Rectangle,
+                contentRect: Rectangle,
+                timestamp: float,
+                metadata: Types.OffscreenSharedTexture.TextureInfo.Metadata,
+                handle: SharedTextureHandle
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The widget type of the texture. Can be <c>popup</c> or <c>frame</c>.
+            /// </summary>
+            [<Erase>]
+            member val widgetType: Enums.Types.OffscreenSharedTexture.TextureInfo.WidgetType =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The pixel format of the texture.
+            /// </summary>
+            [<Erase>]
+            member val pixelFormat: Enums.Types.OffscreenSharedTexture.TextureInfo.PixelFormat =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The full dimensions of the video frame.
+            /// </summary>
+            [<Erase>]
+            member val codedSize: Size = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The color space of the video frame.
+            /// </summary>
+            [<Erase>]
+            member val colorSpace: ColorSpace = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// A subsection of [0, 0, codedSize.width, codedSize.height]. In OSR case, it is expected to have the full section area.
+            /// </summary>
+            [<Erase>]
+            member val visibleRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The region of the video frame that capturer would like to populate. In OSR case, it is the same with
+            /// <c>dirtyRect</c> that needs to be painted.
+            /// </summary>
+            [<Erase>]
+            member val contentRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The time in microseconds since the capture start.
+            /// </summary>
+            [<Erase>]
+            member val timestamp: float = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Extra metadata. See comments in src\media\base\video_frame_metadata.h for accurate details.
+            /// </summary>
+            [<Erase>]
+            member val metadata: Types.OffscreenSharedTexture.TextureInfo.Metadata =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The shared texture handle data.
+            /// </summary>
+            [<Erase>]
+            member val handle: SharedTextureHandle = Unchecked.defaultof<_> with get, set
+
+        module TextureInfo =
+            [<JS.Pojo>]
+            type Metadata
+                /// <param name="captureUpdateRect">Updated area of frame, can be considered as the <c>dirty</c> area.</param>
+                /// <param name="regionCaptureRect">May reflect the frame's contents origin if region capture is used internally.</param>
+                /// <param name="sourceSize">Full size of the source frame.</param>
+                /// <param name="frameCount">The increasing count of captured frame. May contain gaps if frames are dropped between two consecutively received frames.</param>
+                (
+                    ?captureUpdateRect: Rectangle,
+                    ?regionCaptureRect: Rectangle,
+                    ?sourceSize: Rectangle,
+                    ?frameCount: float
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Updated area of frame, can be considered as the <c>dirty</c> area.
+                /// </summary>
+                [<Erase>]
+                member val captureUpdateRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// May reflect the frame's contents origin if region capture is used internally.
+                /// </summary>
+                [<Erase>]
+                member val regionCaptureRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Full size of the source frame.
+                /// </summary>
+                [<Erase>]
+                member val sourceSize: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The increasing count of captured frame. May contain gaps if frames are dropped between two consecutively received frames.
+                /// </summary>
+                [<Erase>]
+                member val frameCount: float = Unchecked.defaultof<_> with get, set
+
+    module HIDDevice =
+        [<JS.Pojo>]
+        type Collections
+            /// <param name="usage">An integer representing the usage ID component of the HID usage associated with this collection.</param>
+            /// <param name="usagePage">An integer representing the usage page component of the HID usage associated with this collection.</param>
+            /// <param name="type">An 8-bit value representing the collection type, which describes a different relationship between the grouped items.</param>
+            /// <param name="children">An array of sub-collections which takes the same format as a top-level collection.</param>
+            /// <param name="inputReports">An array of inputReport items which represent individual input reports described in this collection.</param>
+            /// <param name="outputReports">An array of outputReport items which represent individual output reports described in this collection.</param>
+            /// <param name="featureReports">An array of featureReport items which represent individual feature reports described in this collection.</param>
+            (
+                usage: int,
+                usagePage: int,
+                ``type``: int,
+                children: obj[],
+                inputReports: obj[],
+                outputReports: obj[],
+                featureReports: obj[]
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// An integer representing the usage ID component of the HID usage associated with this collection.
+            /// </summary>
+            [<Erase>]
+            member val usage: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An integer representing the usage page component of the HID usage associated with this collection.
+            /// </summary>
+            [<Erase>]
+            member val usagePage: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An 8-bit value representing the collection type, which describes a different relationship between the grouped items.
+            /// </summary>
+            [<Erase>]
+            member val ``type``: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of sub-collections which takes the same format as a top-level collection.
+            /// </summary>
+            [<Erase>]
+            member val children: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of inputReport items which represent individual input reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val inputReports: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of outputReport items which represent individual output reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val outputReports: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of featureReport items which represent individual feature reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val featureReports: obj[] = Unchecked.defaultof<_> with get, set
+
+        module Collections =
+            [<JS.Pojo>]
+            type FeatureReports() = class end
+
+            [<JS.Pojo>]
+            type OutputReports() = class end
+
+            [<JS.Pojo>]
+            type InputReports() = class end
+
+            [<JS.Pojo>]
+            type Children() = class end
+
+    module CustomScheme =
+        [<JS.Pojo>]
+        type Privileges
+            /// <param name="standard">Default false.</param>
+            /// <param name="secure">Default false.</param>
+            /// <param name="bypassCSP">Default false.</param>
+            /// <param name="allowServiceWorkers">Default false.</param>
+            /// <param name="supportFetchAPI">Default false.</param>
+            /// <param name="corsEnabled">Default false.</param>
+            /// <param name="stream">Default false.</param>
+            /// <param name="codeCache">Enable V8 code cache for the scheme, only works when <c>standard</c> is also set to true. Default false.</param>
+            (
+                ?standard: bool,
+                ?secure: bool,
+                ?bypassCSP: bool,
+                ?allowServiceWorkers: bool,
+                ?supportFetchAPI: bool,
+                ?corsEnabled: bool,
+                ?stream: bool,
+                ?codeCache: bool
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val standard: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val secure: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val bypassCSP: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val allowServiceWorkers: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val supportFetchAPI: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val corsEnabled: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val stream: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Enable V8 code cache for the scheme, only works when <c>standard</c> is also set to true. Default false.
+            /// </summary>
+            [<Erase>]
+            member val codeCache: bool = Unchecked.defaultof<_> with get, set
+
+    module BrowserWindowConstructorOptions =
+        [<JS.Pojo>]
+        type TitleBarOverlay
+            /// <param name="color">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="symbolColor">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the symbols on the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="height">The height of the title bar and Window Controls Overlay in pixels. Default is system height.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ?color: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?symbolColor: string
+                #endif
+                ,
+                ?height: int
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val color: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the symbols on the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val symbolColor: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// The height of the title bar and Window Controls Overlay in pixels. Default is system height.
+            /// </summary>
+            [<Erase>]
+            member val height: int = Unchecked.defaultof<_> with get, set
+
+    module BaseWindowConstructorOptions =
+        [<JS.Pojo>]
+        type TitleBarOverlay
+            /// <param name="color">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="symbolColor">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the symbols on the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="height">The height of the title bar and Window Controls Overlay in pixels. Default is system height.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ?color: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?symbolColor: string
+                #endif
+                ,
+                ?height: int
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val color: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the symbols on the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val symbolColor: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// The height of the title bar and Window Controls Overlay in pixels. Default is system height.
+            /// </summary>
+            [<Erase>]
+            member val height: int = Unchecked.defaultof<_> with get, set
+
+    module IpcMainServiceWorkerEvent =
+        /// <param name="channel"></param>
+        /// <param name="...args"></param>
+        type Reply = delegate of channel: string * [<System.ParamArray>] args: obj[] -> unit
+
+    module IpcMainEvent =
+        /// <param name="channel"></param>
+        /// <param name="...args"></param>
+        type Reply = delegate of channel: string * [<System.ParamArray>] args: obj[] -> unit
+
     /// <summary>
     /// Unfortunately, Windows does not offer a way to differentiate between a shutdown and a reboot, meaning the 'shutdown' reason is
     /// triggered in both scenarios. For more details on the <c>WM_ENDSESSION</c> message and its associated reasons, refer to the MSDN documentation.
@@ -4414,7 +5519,7 @@ module Types =
             session: Session,
             returnValue: obj,
             ports: MessagePortMain[],
-            reply: Types.IpcMainServiceWorkerEvent.Reply
+            reply: string * obj[] -> unit
         ) =
         class
         end
@@ -4461,7 +5566,7 @@ module Types =
         /// will go to the correct process and frame.
         /// </summary>
         [<Erase>]
-        member val reply: Types.IpcMainServiceWorkerEvent.Reply = Unchecked.defaultof<_> with get, set
+        member val reply: string * obj[] -> unit = Unchecked.defaultof<_> with get, set
 
     [<JS.Pojo>]
     type IpcMainInvokeEvent
@@ -4532,7 +5637,7 @@ module Types =
             sender: WebContents,
             senderFrame: Option<WebFrameMain>,
             ports: MessagePortMain[],
-            reply: Types.IpcMainEvent.Reply
+            reply: string * obj[] -> unit
         ) =
         class
         end
@@ -4585,7 +5690,7 @@ module Types =
         /// will go to the correct process and frame.
         /// </summary>
         [<Erase>]
-        member val reply: Types.IpcMainEvent.Reply = Unchecked.defaultof<_> with get, set
+        member val reply: string * obj[] -> unit = Unchecked.defaultof<_> with get, set
 
     [<JS.Pojo>]
     type InputEvent
@@ -6756,7 +7861,1271 @@ module Types =
 
 [<Fable.Core.Erase; AutoOpen>]
 module Enums =
-    begin end
+    module Types =
+        module WindowSessionEndEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Reasons =
+                | [<CompiledName("shutdown")>] Shutdown
+                | [<CompiledName("close-app")>] CloseApp
+                | [<CompiledName("critical")>] Critical
+                | [<CompiledName("logoff")>] Logoff
+
+        module WindowOpenHandlerResponse =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Action =
+                | [<CompiledName("allow")>] Allow
+                | [<CompiledName("deny")>] Deny
+
+        module WebRequestFilter =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Types =
+                | [<CompiledName("mainFrame")>] MainFrame
+                | [<CompiledName("subFrame")>] SubFrame
+                | [<CompiledName("stylesheet")>] Stylesheet
+                | [<CompiledName("script")>] Script
+                | [<CompiledName("image")>] Image
+                | [<CompiledName("font")>] Font
+                | [<CompiledName("object")>] Object
+                | [<CompiledName("xhr")>] Xhr
+                | [<CompiledName("ping")>] Ping
+                | [<CompiledName("cspReport")>] CspReport
+                | [<CompiledName("media")>] Media
+                | [<CompiledName("webSocket")>] WebSocket
+
+        module WebPreferences =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type V8CacheOptions =
+                /// <summary>
+                /// Disables code caching
+                /// </summary>
+                | [<CompiledName("none")>] None
+                /// <summary>
+                /// Heuristic based code caching
+                /// </summary>
+                | [<CompiledName("code")>] Code
+                /// <summary>
+                /// Bypass code caching heuristics but with lazy compilation
+                /// </summary>
+                | [<CompiledName("bypassHeatCheck")>] BypassHeatCheck
+                /// <summary>
+                /// Same as above except compilation is eager. Default policy is <c>code</c>.
+                /// </summary>
+                | [<CompiledName("bypassHeatCheckAndEagerCompile")>] BypassHeatCheckAndEagerCompile
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type AutoplayPolicy =
+                | [<CompiledName("no-user-gesture-required")>] NoUserGestureRequired
+                | [<CompiledName("user-gesture-required")>] UserGestureRequired
+                | [<CompiledName("document-user-activation-required")>] DocumentUserActivationRequired
+
+            module Offscreen =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type SharedTexturePixelFormat =
+                    /// <summary>
+                    /// The requested output texture format is 8-bit unorm RGBA, with SRGB SDR color space.
+                    /// </summary>
+                    | [<CompiledName("argb")>] Argb
+                    /// <summary>
+                    /// The requested output texture format is 16-bit float RGBA, with scRGB HDR color space.
+                    /// </summary>
+                    | [<CompiledName("rgbaf16")>] Rgbaf16
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type ImageAnimationPolicy =
+                | [<CompiledName("animate")>] Animate
+                | [<CompiledName("animateOnce")>] AnimateOnce
+                | [<CompiledName("noAnimation")>] NoAnimation
+
+        module Transaction =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TransactionState =
+                | [<CompiledName("purchasing")>] Purchasing
+                | [<CompiledName("purchased")>] Purchased
+                | [<CompiledName("failed")>] Failed
+                | [<CompiledName("restored")>] Restored
+                | [<CompiledName("deferred")>] Deferred
+
+        module TraceConfig =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type RecordingMode =
+                | [<CompiledName("record-until-full")>] RecordUntilFull
+                | [<CompiledName("record-continuously")>] RecordContinuously
+                | [<CompiledName("record-as-much-as-possible")>] RecordAsMuchAsPossible
+                | [<CompiledName("trace-to-console")>] TraceToConsole
+
+        module ResolvedEndpoint =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Family =
+                /// <summary>
+                /// Corresponds to <c>AF_INET</c>
+                /// </summary>
+                | [<CompiledName("ipv4")>] Ipv4
+                /// <summary>
+                /// Corresponds to <c>AF_INET6</c>
+                /// </summary>
+                | [<CompiledName("ipv6")>] Ipv6
+                /// <summary>
+                /// Corresponds to <c>AF_UNSPEC</c>
+                /// </summary>
+                | [<CompiledName("unspec")>] Unspec
+
+        module RenderProcessGoneDetails =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Reason =
+                /// <summary>
+                /// Process exited with an exit code of zero
+                /// </summary>
+                | [<CompiledName("clean-exit")>] CleanExit
+                /// <summary>
+                /// Process exited with a non-zero exit code
+                /// </summary>
+                | [<CompiledName("abnormal-exit")>] AbnormalExit
+                /// <summary>
+                /// Process was sent a SIGTERM or otherwise killed externally
+                /// </summary>
+                | [<CompiledName("killed")>] Killed
+                /// <summary>
+                /// Process crashed
+                /// </summary>
+                | [<CompiledName("crashed")>] Crashed
+                /// <summary>
+                /// Process ran out of memory
+                /// </summary>
+                | [<CompiledName("oom")>] Oom
+                /// <summary>
+                /// Process never successfully launched
+                /// </summary>
+                | [<CompiledName("launch-failed")>] LaunchFailed
+                /// <summary>
+                /// Windows code integrity checks failed
+                /// </summary>
+                | [<CompiledName("integrity-failure")>] IntegrityFailure
+                /// <summary>
+                /// Process proactively terminated to prevent a future out-of-memory (OOM) situation
+                /// </summary>
+                | [<CompiledName("memory-eviction")>] MemoryEviction
+
+        module Referrer =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Policy =
+                | [<CompiledName("default")>] Default
+                | [<CompiledName("unsafe-url")>] UnsafeUrl
+                | [<CompiledName("no-referrer-when-downgrade")>] NoReferrerWhenDowngrade
+                | [<CompiledName("no-referrer")>] NoReferrer
+                | [<CompiledName("origin")>] Origin
+                | [<CompiledName("strict-origin-when-cross-origin")>] StrictOriginWhenCrossOrigin
+                | [<CompiledName("same-origin")>] SameOrigin
+                | [<CompiledName("strict-origin")>] StrictOrigin
+
+        module ProxyConfig =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Mode =
+                /// <summary>
+                /// In direct mode all connections are created directly, without any proxy involved.
+                /// </summary>
+                | [<CompiledName("direct")>] Direct
+                /// <summary>
+                /// In auto_detect mode the proxy configuration is determined by a PAC script that can be downloaded at http://wpad/wpad.dat.
+                /// </summary>
+                | [<CompiledName("auto_detect")>] AutoDetect
+                /// <summary>
+                /// In pac_script mode the proxy configuration is determined by a PAC script that is retrieved from the URL specified in
+                /// the <c>pacScript</c>. This is the default mode if <c>pacScript</c> is specified.
+                /// </summary>
+                | [<CompiledName("pac_script")>] PacScript
+                /// <summary>
+                /// In fixed_servers mode the proxy configuration is specified in <c>proxyRules</c>. This is the default mode if <c>proxyRules</c> is specified.
+                /// </summary>
+                | [<CompiledName("fixed_servers")>] FixedServers
+                /// <summary>
+                /// In system mode the proxy configuration is taken from the operating system. Note that the system mode is different from
+                /// setting no proxy configuration. In the latter case, Electron falls back to the system settings only if no command-line options
+                /// influence the proxy configuration.
+                /// </summary>
+                | [<CompiledName("system")>] System
+
+        module ProductSubscriptionPeriod =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Unit =
+                | [<CompiledName("day")>] Day
+                | [<CompiledName("week")>] Week
+                | [<CompiledName("month")>] Month
+                | [<CompiledName("year")>] Year
+
+        module ProductDiscount =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type PaymentMode =
+                | [<CompiledName("payAsYouGo")>] PayAsYouGo
+                | [<CompiledName("payUpFront")>] PayUpFront
+                | [<CompiledName("freeTrial")>] FreeTrial
+
+        module ProcessMetric =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type IntegrityLevel =
+                | [<CompiledName("untrusted")>] Untrusted
+                | [<CompiledName("low")>] Low
+                | [<CompiledName("medium")>] Medium
+                | [<CompiledName("high")>] High
+                | [<CompiledName("unknown")>] Unknown
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("Browser")>] Browser
+                | [<CompiledName("Tab")>] Tab
+                | [<CompiledName("Utility")>] Utility
+                | [<CompiledName("Zygote")>] Zygote
+                | [<CompiledName("Sandbox helper")>] SandboxHelper
+                | [<CompiledName("GPU")>] GPU
+                | [<CompiledName("Pepper Plugin")>] PepperPlugin
+                | [<CompiledName("Pepper Plugin Broker")>] PepperPluginBroker
+                | [<CompiledName("Unknown")>] Unknown
+
+        module PreloadScript =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("frame")>] Frame
+                | [<CompiledName("service-worker")>] ServiceWorker
+
+        module PreloadScriptRegistration =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("frame")>] Frame
+                | [<CompiledName("service-worker")>] ServiceWorker
+
+        module OffscreenSharedTexture =
+            module TextureInfo =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type PixelFormat =
+                    /// <summary>
+                    /// The texture format is 8-bit unorm RGBA.
+                    /// </summary>
+                    | [<CompiledName("rgba")>] Rgba
+                    /// <summary>
+                    /// The texture format is 8-bit unorm BGRA.
+                    /// </summary>
+                    | [<CompiledName("bgra")>] Bgra
+                    /// <summary>
+                    /// The texture format is 16-bit float RGBA.
+                    /// </summary>
+                    | [<CompiledName("rgbaf16")>] Rgbaf16
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type WidgetType =
+                    | [<CompiledName("popup")>] Popup
+                    | [<CompiledName("frame")>] Frame
+
+        module NotificationAction =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("button")>] Button
+
+        module MouseWheelInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Button =
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("middle")>] Middle
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("mouseWheel")>] MouseWheel
+
+        module MouseInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Button =
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("middle")>] Middle
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("mouseDown")>] MouseDown
+                | [<CompiledName("mouseUp")>] MouseUp
+                | [<CompiledName("mouseEnter")>] MouseEnter
+                | [<CompiledName("mouseLeave")>] MouseLeave
+                | [<CompiledName("contextMenu")>] ContextMenu
+                | [<CompiledName("mouseWheel")>] MouseWheel
+                | [<CompiledName("mouseMove")>] MouseMove
+
+        module MediaAccessPermissionRequest =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type MediaTypes =
+                | [<CompiledName("video")>] Video
+                | [<CompiledName("audio")>] Audio
+
+        module KeyboardInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("rawKeyDown")>] RawKeyDown
+                | [<CompiledName("keyDown")>] KeyDown
+                | [<CompiledName("keyUp")>] KeyUp
+                | [<CompiledName("char")>] Char
+
+        module JumpListItem =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// A task will launch an app with specific arguments.
+                /// </summary>
+                | [<CompiledName("task")>] Task
+                /// <summary>
+                /// Can be used to separate items in the standard <c>Tasks</c> category.
+                /// </summary>
+                | [<CompiledName("separator")>] Separator
+                /// <summary>
+                /// A file link will open a file using the app that created the Jump List, for this to work the
+                /// app must be registered as a handler for the file type (though it doesn't have to be the default handler).
+                /// </summary>
+                | [<CompiledName("file")>] File
+
+        module JumpListCategory =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// Items in this category will be placed into the standard <c>Tasks</c> category. There can be only one such category, and
+                /// it will always be displayed at the bottom of the Jump List.
+                /// </summary>
+                | [<CompiledName("tasks")>] Tasks
+                /// <summary>
+                /// Displays a list of files frequently opened by the app, the name of the category and its items are set
+                /// by Windows.
+                /// </summary>
+                | [<CompiledName("frequent")>] Frequent
+                /// <summary>
+                /// Displays a list of files recently opened by the app, the name of the category and its items are set
+                /// by Windows. Items may be added to this category indirectly using <c>app.addRecentDocument(path)</c>.
+                /// </summary>
+                | [<CompiledName("recent")>] Recent
+                /// <summary>
+                /// Displays tasks or file links, <c>name</c> must be set by the app.
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+
+        module IpcMainServiceWorkerInvokeEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("service-worker")>] ServiceWorker
+
+        module IpcMainServiceWorkerEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("service-worker")>] ServiceWorker
+
+        module IpcMainInvokeEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("frame")>] Frame
+
+        module IpcMainEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("frame")>] Frame
+
+        module InputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("undefined")>] Undefined
+                | [<CompiledName("mouseDown")>] MouseDown
+                | [<CompiledName("mouseUp")>] MouseUp
+                | [<CompiledName("mouseMove")>] MouseMove
+                | [<CompiledName("mouseEnter")>] MouseEnter
+                | [<CompiledName("mouseLeave")>] MouseLeave
+                | [<CompiledName("contextMenu")>] ContextMenu
+                | [<CompiledName("mouseWheel")>] MouseWheel
+                | [<CompiledName("rawKeyDown")>] RawKeyDown
+                | [<CompiledName("keyDown")>] KeyDown
+                | [<CompiledName("keyUp")>] KeyUp
+                | [<CompiledName("char")>] Char
+                | [<CompiledName("gestureScrollBegin")>] GestureScrollBegin
+                | [<CompiledName("gestureScrollEnd")>] GestureScrollEnd
+                | [<CompiledName("gestureScrollUpdate")>] GestureScrollUpdate
+                | [<CompiledName("gestureFlingStart")>] GestureFlingStart
+                | [<CompiledName("gestureFlingCancel")>] GestureFlingCancel
+                | [<CompiledName("gesturePinchBegin")>] GesturePinchBegin
+                | [<CompiledName("gesturePinchEnd")>] GesturePinchEnd
+                | [<CompiledName("gesturePinchUpdate")>] GesturePinchUpdate
+                | [<CompiledName("gestureTapDown")>] GestureTapDown
+                | [<CompiledName("gestureShowPress")>] GestureShowPress
+                | [<CompiledName("gestureTap")>] GestureTap
+                | [<CompiledName("gestureTapCancel")>] GestureTapCancel
+                | [<CompiledName("gestureShortPress")>] GestureShortPress
+                | [<CompiledName("gestureLongPress")>] GestureLongPress
+                | [<CompiledName("gestureLongTap")>] GestureLongTap
+                | [<CompiledName("gestureTwoFingerTap")>] GestureTwoFingerTap
+                | [<CompiledName("gestureTapUnconfirmed")>] GestureTapUnconfirmed
+                | [<CompiledName("gestureDoubleTap")>] GestureDoubleTap
+                | [<CompiledName("touchStart")>] TouchStart
+                | [<CompiledName("touchMove")>] TouchMove
+                | [<CompiledName("touchEnd")>] TouchEnd
+                | [<CompiledName("touchCancel")>] TouchCancel
+                | [<CompiledName("touchScrollStarted")>] TouchScrollStarted
+                | [<CompiledName("pointerDown")>] PointerDown
+                | [<CompiledName("pointerUp")>] PointerUp
+                | [<CompiledName("pointerMove")>] PointerMove
+                | [<CompiledName("pointerRawUpdate")>] PointerRawUpdate
+                | [<CompiledName("pointerCancel")>] PointerCancel
+                | [<CompiledName("pointerCausedUaAction")>] PointerCausedUaAction
+
+        module FilesystemPermissionRequest =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type FileAccessType =
+                | [<CompiledName("writable")>] Writable
+                | [<CompiledName("readable")>] Readable
+
+        module Display =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TouchSupport =
+                | [<CompiledName("available")>] Available
+                | [<CompiledName("unavailable")>] Unavailable
+                | [<CompiledName("unknown")>] Unknown
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type AccelerometerSupport =
+                | [<CompiledName("available")>] Available
+                | [<CompiledName("unavailable")>] Unavailable
+                | [<CompiledName("unknown")>] Unknown
+
+        module Cookie =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type SameSite =
+                | [<CompiledName("unspecified")>] Unspecified
+                | [<CompiledName("no_restriction")>] NoRestriction
+                | [<CompiledName("lax")>] Lax
+                | [<CompiledName("strict")>] Strict
+
+        module ColorSpace =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Range =
+                /// <summary>
+                /// Limited color range (RGB values ranging from 16 to 235)
+                /// </summary>
+                | [<CompiledName("limited")>] Limited
+                /// <summary>
+                /// Full color range (RGB values from 0 to 255)
+                /// </summary>
+                | [<CompiledName("full")>] Full
+                /// <summary>
+                /// Range defined by the transfer function and matrix
+                /// </summary>
+                | [<CompiledName("derived")>] Derived
+                /// <summary>
+                /// Invalid range
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Matrix =
+                /// <summary>
+                /// RGB matrix
+                /// </summary>
+                | [<CompiledName("rgb")>] Rgb
+                /// <summary>
+                /// BT709 matrix
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// FCC matrix
+                /// </summary>
+                | [<CompiledName("fcc")>] Fcc
+                /// <summary>
+                /// BT470BG matrix
+                /// </summary>
+                | [<CompiledName("bt470bg")>] Bt470bg
+                /// <summary>
+                /// SMPTE170M matrix
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M matrix
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// YCoCg matrix
+                /// </summary>
+                | [<CompiledName("ycocg")>] Ycocg
+                /// <summary>
+                /// BT2020 NCL matrix
+                /// </summary>
+                | [<CompiledName("bt2020-ncl")>] Bt2020Ncl
+                /// <summary>
+                /// YDzDx matrix
+                /// </summary>
+                | [<CompiledName("ydzdx")>] Ydzdx
+                /// <summary>
+                /// GBR matrix
+                /// </summary>
+                | [<CompiledName("gbr")>] Gbr
+                /// <summary>
+                /// Invalid matrix
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Transfer =
+                /// <summary>
+                /// BT709 transfer function
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// BT709 Apple transfer function
+                /// </summary>
+                | [<CompiledName("bt709-apple")>] Bt709Apple
+                /// <summary>
+                /// Gamma 1.8 transfer function
+                /// </summary>
+                | [<CompiledName("gamma18")>] Gamma18
+                /// <summary>
+                /// Gamma 2.2 transfer function
+                /// </summary>
+                | [<CompiledName("gamma22")>] Gamma22
+                /// <summary>
+                /// Gamma 2.4 transfer function
+                /// </summary>
+                | [<CompiledName("gamma24")>] Gamma24
+                /// <summary>
+                /// Gamma 2.8 transfer function
+                /// </summary>
+                | [<CompiledName("gamma28")>] Gamma28
+                /// <summary>
+                /// SMPTE170M transfer function
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M transfer function
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// Linear transfer function
+                /// </summary>
+                | [<CompiledName("linear")>] Linear
+                /// <summary>
+                /// Log transfer function
+                /// </summary>
+                | [<CompiledName("log")>] Log
+                /// <summary>
+                /// Log Square Root transfer function
+                /// </summary>
+                | [<CompiledName("log-sqrt")>] LogSqrt
+                /// <summary>
+                /// IEC61966-2-4 transfer function
+                /// </summary>
+                | [<CompiledName("iec61966-2-4")>] Iec6196624
+                /// <summary>
+                /// BT1361 ECG transfer function
+                /// </summary>
+                | [<CompiledName("bt1361-ecg")>] Bt1361Ecg
+                /// <summary>
+                /// sRGB transfer function
+                /// </summary>
+                | [<CompiledName("srgb")>] Srgb
+                /// <summary>
+                /// BT2020-10 transfer function
+                /// </summary>
+                | [<CompiledName("bt2020-10")>] Bt202010
+                /// <summary>
+                /// BT2020-12 transfer function
+                /// </summary>
+                | [<CompiledName("bt2020-12")>] Bt202012
+                /// <summary>
+                /// PQ (Perceptual Quantizer) transfer function
+                /// </summary>
+                | [<CompiledName("pq")>] Pq
+                /// <summary>
+                /// SMPTEST428-1 transfer function
+                /// </summary>
+                | [<CompiledName("smptest428-1")>] Smptest4281
+                /// <summary>
+                /// HLG (Hybrid Log-Gamma) transfer function
+                /// </summary>
+                | [<CompiledName("hlg")>] Hlg
+                /// <summary>
+                /// sRGB HDR transfer function
+                /// </summary>
+                | [<CompiledName("srgb-hdr")>] SrgbHdr
+                /// <summary>
+                /// Linear HDR transfer function
+                /// </summary>
+                | [<CompiledName("linear-hdr")>] LinearHdr
+                /// <summary>
+                /// Custom transfer function
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+                /// <summary>
+                /// Custom HDR transfer function
+                /// </summary>
+                | [<CompiledName("custom-hdr")>] CustomHdr
+                /// <summary>
+                /// scRGB Linear 80 nits transfer function
+                /// </summary>
+                | [<CompiledName("scrgb-linear-80-nits")>] ScrgbLinear80Nits
+                /// <summary>
+                /// Invalid transfer function
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Primaries =
+                /// <summary>
+                /// BT709 primaries (also used for sRGB)
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// BT470M primaries
+                /// </summary>
+                | [<CompiledName("bt470m")>] Bt470m
+                /// <summary>
+                /// BT470BG primaries
+                /// </summary>
+                | [<CompiledName("bt470bg")>] Bt470bg
+                /// <summary>
+                /// SMPTE170M primaries
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M primaries
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// Film primaries
+                /// </summary>
+                | [<CompiledName("film")>] Film
+                /// <summary>
+                /// BT2020 primaries
+                /// </summary>
+                | [<CompiledName("bt2020")>] Bt2020
+                /// <summary>
+                /// SMPTEST428-1 primaries
+                /// </summary>
+                | [<CompiledName("smptest428-1")>] Smptest4281
+                /// <summary>
+                /// SMPTEST431-2 primaries
+                /// </summary>
+                | [<CompiledName("smptest431-2")>] Smptest4312
+                /// <summary>
+                /// P3 primaries
+                /// </summary>
+                | [<CompiledName("p3")>] P3
+                /// <summary>
+                /// XYZ D50 primaries
+                /// </summary>
+                | [<CompiledName("xyz-d50")>] XyzD50
+                /// <summary>
+                /// Adobe RGB primaries
+                /// </summary>
+                | [<CompiledName("adobe-rgb")>] AdobeRgb
+                /// <summary>
+                /// Apple Generic RGB primaries
+                /// </summary>
+                | [<CompiledName("apple-generic-rgb")>] AppleGenericRgb
+                /// <summary>
+                /// Wide Gamut Color Spin primaries
+                /// </summary>
+                | [<CompiledName("wide-gamut-color-spin")>] WideGamutColorSpin
+                /// <summary>
+                /// EBU 3213-E primaries
+                /// </summary>
+                | [<CompiledName("ebu-3213-e")>] Ebu3213E
+                /// <summary>
+                /// Custom primaries
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+                /// <summary>
+                /// Invalid primaries
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+        module BrowserWindowConstructorOptions =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type BackgroundMaterial =
+                | [<CompiledName("auto")>] Auto
+                | [<CompiledName("none")>] None
+                | [<CompiledName("mica")>] Mica
+                | [<CompiledName("acrylic")>] Acrylic
+                | [<CompiledName("tabbed")>] Tabbed
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Vibrancy =
+                | [<CompiledName("appearance-based")>] AppearanceBased
+                | [<CompiledName("titlebar")>] Titlebar
+                | [<CompiledName("selection")>] Selection
+                | [<CompiledName("menu")>] Menu
+                | [<CompiledName("popover")>] Popover
+                | [<CompiledName("sidebar")>] Sidebar
+                | [<CompiledName("header")>] Header
+                | [<CompiledName("sheet")>] Sheet
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("hud")>] Hud
+                | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                | [<CompiledName("tooltip")>] Tooltip
+                | [<CompiledName("content")>] Content
+                | [<CompiledName("under-window")>] UnderWindow
+                | [<CompiledName("under-page")>] UnderPage
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TitleBarStyle =
+                /// <summary>
+                /// Results in the standard title bar for macOS or Windows respectively.
+                /// </summary>
+                | [<CompiledName("default")>] Default
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window. On macOS, the window still has the standard
+                /// window controls (“traffic lights”) in the top left. On Windows and Linux, when combined with <c>titleBarOverlay: true</c> it will activate
+                /// the Window Controls Overlay (see <c>titleBarOverlay</c> for more information), otherwise no window controls will be shown.
+                /// </summary>
+                | [<CompiledName("hidden")>] Hidden
+                /// <summary>
+                /// Results in a hidden title bar with an alternative look where the traffic light buttons are slightly more inset from
+                /// the window edge.
+                /// </summary>
+                | [<CompiledName("hiddenInset")>] HiddenInset
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window, the traffic light buttons will display when being
+                /// hovered over in the top left of the window. **Note:** This option is currently experimental.
+                /// </summary>
+                | [<CompiledName("customButtonsOnHover")>] CustomButtonsOnHover
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type VisualEffectState =
+                /// <summary>
+                /// The backdrop should automatically appear active when the window is active, and inactive when it is not. This is the
+                /// default.
+                /// </summary>
+                | [<CompiledName("followWindow")>] FollowWindow
+                /// <summary>
+                /// The backdrop should always appear active.
+                /// </summary>
+                | [<CompiledName("active")>] Active
+                /// <summary>
+                /// The backdrop should always appear inactive.
+                /// </summary>
+                | [<CompiledName("inactive")>] Inactive
+
+        module BaseWindowConstructorOptions =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type BackgroundMaterial =
+                | [<CompiledName("auto")>] Auto
+                | [<CompiledName("none")>] None
+                | [<CompiledName("mica")>] Mica
+                | [<CompiledName("acrylic")>] Acrylic
+                | [<CompiledName("tabbed")>] Tabbed
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Vibrancy =
+                | [<CompiledName("appearance-based")>] AppearanceBased
+                | [<CompiledName("titlebar")>] Titlebar
+                | [<CompiledName("selection")>] Selection
+                | [<CompiledName("menu")>] Menu
+                | [<CompiledName("popover")>] Popover
+                | [<CompiledName("sidebar")>] Sidebar
+                | [<CompiledName("header")>] Header
+                | [<CompiledName("sheet")>] Sheet
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("hud")>] Hud
+                | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                | [<CompiledName("tooltip")>] Tooltip
+                | [<CompiledName("content")>] Content
+                | [<CompiledName("under-window")>] UnderWindow
+                | [<CompiledName("under-page")>] UnderPage
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TitleBarStyle =
+                /// <summary>
+                /// Results in the standard title bar for macOS or Windows respectively.
+                /// </summary>
+                | [<CompiledName("default")>] Default
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window. On macOS, the window still has the standard
+                /// window controls (“traffic lights”) in the top left. On Windows and Linux, when combined with <c>titleBarOverlay: true</c> it will activate
+                /// the Window Controls Overlay (see <c>titleBarOverlay</c> for more information), otherwise no window controls will be shown.
+                /// </summary>
+                | [<CompiledName("hidden")>] Hidden
+                /// <summary>
+                /// Results in a hidden title bar with an alternative look where the traffic light buttons are slightly more inset from
+                /// the window edge.
+                /// </summary>
+                | [<CompiledName("hiddenInset")>] HiddenInset
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window, the traffic light buttons will display when being
+                /// hovered over in the top left of the window. **Note:** This option is currently experimental.
+                /// </summary>
+                | [<CompiledName("customButtonsOnHover")>] CustomButtonsOnHover
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type VisualEffectState =
+                /// <summary>
+                /// The backdrop should automatically appear active when the window is active, and inactive when it is not. This is the
+                /// default.
+                /// </summary>
+                | [<CompiledName("followWindow")>] FollowWindow
+                /// <summary>
+                /// The backdrop should always appear active.
+                /// </summary>
+                | [<CompiledName("active")>] Active
+                /// <summary>
+                /// The backdrop should always appear inactive.
+                /// </summary>
+                | [<CompiledName("inactive")>] Inactive
+
+    module UtilityProcess =
+        module Error =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("FatalError")>] FatalError
+
+    module SystemPreferences =
+        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+        type EffectiveAppearance =
+            | [<CompiledName("dark")>] Dark
+            | [<CompiledName("light")>] Light
+            | [<CompiledName("unknown")>] Unknown
+
+        module AskForMediaAccess =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type MediaType =
+                | [<CompiledName("microphone")>] Microphone
+                | [<CompiledName("camera")>] Camera
+
+        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+        type GetMediaAccessStatus =
+            | [<CompiledName("not-determined")>] NotDetermined
+            | [<CompiledName("granted")>] Granted
+            | [<CompiledName("denied")>] Denied
+            | [<CompiledName("restricted")>] Restricted
+            | [<CompiledName("unknown")>] Unknown
+
+        module GetMediaAccessStatus =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type MediaType =
+                | [<CompiledName("microphone")>] Microphone
+                | [<CompiledName("camera")>] Camera
+                | [<CompiledName("screen")>] Screen
+
+        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+        type GetEffectiveAppearance =
+            | [<CompiledName("dark")>] Dark
+            | [<CompiledName("light")>] Light
+            | [<CompiledName("unknown")>] Unknown
+
+        module GetSystemColor =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Color =
+                | [<CompiledName("blue")>] Blue
+                | [<CompiledName("brown")>] Brown
+                | [<CompiledName("gray")>] Gray
+                | [<CompiledName("green")>] Green
+                | [<CompiledName("orange")>] Orange
+                | [<CompiledName("pink")>] Pink
+                | [<CompiledName("purple")>] Purple
+                | [<CompiledName("red")>] Red
+                | [<CompiledName("yellow")>] Yellow
+
+        module GetColor =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Color =
+                /// <summary>
+                /// Dark shadow for three-dimensional display elements.
+                /// </summary>
+                | [<CompiledName("3d-dark-shadow")>] ``3dDarkShadow``
+                /// <summary>
+                /// Face color for three-dimensional display elements and for dialog box backgrounds.
+                /// </summary>
+                | [<CompiledName("3d-face")>] ``3dFace``
+                /// <summary>
+                /// Highlight color for three-dimensional display elements.
+                /// </summary>
+                | [<CompiledName("3d-highlight")>] ``3dHighlight``
+                /// <summary>
+                /// Light color for three-dimensional display elements.
+                /// </summary>
+                | [<CompiledName("3d-light")>] ``3dLight``
+                /// <summary>
+                /// Shadow color for three-dimensional display elements.
+                /// </summary>
+                | [<CompiledName("3d-shadow")>] ``3dShadow``
+                /// <summary>
+                /// Active window border.
+                /// </summary>
+                | [<CompiledName("active-border")>] ActiveBorder
+                /// <summary>
+                /// Active window title bar. Specifies the left side color in the color gradient of an active window's title bar if
+                /// the gradient effect is enabled.
+                /// </summary>
+                | [<CompiledName("active-caption")>] ActiveCaption
+                /// <summary>
+                /// Right side color in the color gradient of an active window's title bar.
+                /// </summary>
+                | [<CompiledName("active-caption-gradient")>] ActiveCaptionGradient
+                /// <summary>
+                /// Background color of multiple document interface (MDI) applications.
+                /// </summary>
+                | [<CompiledName("app-workspace")>] AppWorkspace
+                /// <summary>
+                /// Text on push buttons.
+                /// </summary>
+                | [<CompiledName("button-text")>] ButtonText
+                /// <summary>
+                /// Text in caption, size box, and scroll bar arrow box.
+                /// </summary>
+                | [<CompiledName("caption-text")>] CaptionText
+                /// <summary>
+                /// Desktop background color.
+                /// </summary>
+                | [<CompiledName("desktop")>] Desktop
+                /// <summary>
+                /// Grayed (disabled) text.
+                /// </summary>
+                | [<CompiledName("disabled-text")>] DisabledText
+                /// <summary>
+                /// Item(s) selected in a control.
+                /// </summary>
+                | [<CompiledName("highlight")>] Highlight
+                /// <summary>
+                /// Text of item(s) selected in a control.
+                /// </summary>
+                | [<CompiledName("highlight-text")>] HighlightText
+                /// <summary>
+                /// Color for a hyperlink or hot-tracked item.
+                /// </summary>
+                | [<CompiledName("hotlight")>] Hotlight
+                /// <summary>
+                /// Inactive window border.
+                /// </summary>
+                | [<CompiledName("inactive-border")>] InactiveBorder
+                /// <summary>
+                /// Inactive window caption. Specifies the left side color in the color gradient of an inactive window's title bar if the
+                /// gradient effect is enabled.
+                /// </summary>
+                | [<CompiledName("inactive-caption")>] InactiveCaption
+                /// <summary>
+                /// Right side color in the color gradient of an inactive window's title bar.
+                /// </summary>
+                | [<CompiledName("inactive-caption-gradient")>] InactiveCaptionGradient
+                /// <summary>
+                /// Color of text in an inactive caption.
+                /// </summary>
+                | [<CompiledName("inactive-caption-text")>] InactiveCaptionText
+                /// <summary>
+                /// Background color for tooltip controls.
+                /// </summary>
+                | [<CompiledName("info-background")>] InfoBackground
+                /// <summary>
+                /// Text color for tooltip controls.
+                /// </summary>
+                | [<CompiledName("info-text")>] InfoText
+                /// <summary>
+                /// Menu background.
+                /// </summary>
+                | [<CompiledName("menu")>] Menu
+                /// <summary>
+                /// The color used to highlight menu items when the menu appears as a flat menu.
+                /// </summary>
+                | [<CompiledName("menu-highlight")>] MenuHighlight
+                /// <summary>
+                /// The background color for the menu bar when menus appear as flat menus.
+                /// </summary>
+                | [<CompiledName("menubar")>] Menubar
+                /// <summary>
+                /// Text in menus.
+                /// </summary>
+                | [<CompiledName("menu-text")>] MenuText
+                /// <summary>
+                /// Scroll bar gray area.
+                /// </summary>
+                | [<CompiledName("scrollbar")>] Scrollbar
+                /// <summary>
+                /// Window background.
+                /// </summary>
+                | [<CompiledName("window")>] Window
+                /// <summary>
+                /// Window frame.
+                /// </summary>
+                | [<CompiledName("window-frame")>] WindowFrame
+                /// <summary>
+                /// Text in windows.
+                /// </summary>
+                | [<CompiledName("window-text")>] WindowText
+                /// <summary>
+                /// The background of a large interface element, such as a browser or table.
+                /// </summary>
+                | [<CompiledName("control-background")>] ControlBackground
+                /// <summary>
+                /// The surface of a control.
+                /// </summary>
+                | [<CompiledName("control")>] Control
+                /// <summary>
+                /// The text of a control that isn’t disabled.
+                /// </summary>
+                | [<CompiledName("control-text")>] ControlText
+                /// <summary>
+                /// The text of a control that’s disabled.
+                /// </summary>
+                | [<CompiledName("disabled-control-text")>] DisabledControlText
+                /// <summary>
+                /// The color of a find indicator.
+                /// </summary>
+                | [<CompiledName("find-highlight")>] FindHighlight
+                /// <summary>
+                /// The gridlines of an interface element such as a table.
+                /// </summary>
+                | [<CompiledName("grid")>] Grid
+                /// <summary>
+                /// The text of a header cell in a table.
+                /// </summary>
+                | [<CompiledName("header-text")>] HeaderText
+                /// <summary>
+                /// The ring that appears around the currently focused control when using the keyboard for interface navigation.
+                /// </summary>
+                | [<CompiledName("keyboard-focus-indicator")>] KeyboardFocusIndicator
+                /// <summary>
+                /// The text of a label containing primary content.
+                /// </summary>
+                | [<CompiledName("label")>] Label
+                /// <summary>
+                /// A link to other content.
+                /// </summary>
+                | [<CompiledName("link")>] Link
+                /// <summary>
+                ///  A placeholder string in a control or text view.
+                /// </summary>
+                | [<CompiledName("placeholder-text")>] PlaceholderText
+                /// <summary>
+                /// The text of a label of lesser importance than a tertiary label such as watermark text.
+                /// </summary>
+                | [<CompiledName("quaternary-label")>] QuaternaryLabel
+                /// <summary>
+                /// The background of a scrubber in the Touch Bar.
+                /// </summary>
+                | [<CompiledName("scrubber-textured-background")>] ScrubberTexturedBackground
+                /// <summary>
+                /// The text of a label of lesser importance than a normal label such as a label used to represent a
+                /// subheading or additional information.
+                /// </summary>
+                | [<CompiledName("secondary-label")>] SecondaryLabel
+                /// <summary>
+                /// The background for selected content in a key window or view.
+                /// </summary>
+                | [<CompiledName("selected-content-background")>] SelectedContentBackground
+                /// <summary>
+                /// The surface of a selected control.
+                /// </summary>
+                | [<CompiledName("selected-control")>] SelectedControl
+                /// <summary>
+                /// The text of a selected control.
+                /// </summary>
+                | [<CompiledName("selected-control-text")>] SelectedControlText
+                /// <summary>
+                /// The text of a selected menu.
+                /// </summary>
+                | [<CompiledName("selected-menu-item-text")>] SelectedMenuItemText
+                /// <summary>
+                /// The background of selected text.
+                /// </summary>
+                | [<CompiledName("selected-text-background")>] SelectedTextBackground
+                /// <summary>
+                /// Selected text.
+                /// </summary>
+                | [<CompiledName("selected-text")>] SelectedText
+                /// <summary>
+                /// A separator between different sections of content.
+                /// </summary>
+                | [<CompiledName("separator")>] Separator
+                /// <summary>
+                /// The virtual shadow cast by a raised object onscreen.
+                /// </summary>
+                | [<CompiledName("shadow")>] Shadow
+                /// <summary>
+                /// The text of a label of lesser importance than a secondary label such as a label used to represent disabled
+                /// text.
+                /// </summary>
+                | [<CompiledName("tertiary-label")>] TertiaryLabel
+                /// <summary>
+                /// Text background.
+                /// </summary>
+                | [<CompiledName("text-background")>] TextBackground
+                /// <summary>
+                ///  The text in a document.
+                /// </summary>
+                | [<CompiledName("text")>] Text
+                /// <summary>
+                ///  The background behind a document's content.
+                /// </summary>
+                | [<CompiledName("under-page-background")>] UnderPageBackground
+                /// <summary>
+                /// The selected content in a non-key window or view.
+                /// </summary>
+                | [<CompiledName("unemphasized-selected-content-background")>] UnemphasizedSelectedContentBackground
+                /// <summary>
+                /// A background for selected text in a non-key window or view.
+                /// </summary>
+                | [<CompiledName("unemphasized-selected-text-background")>] UnemphasizedSelectedTextBackground
+                /// <summary>
+                /// Selected text in a non-key window or view.
+                /// </summary>
+                | [<CompiledName("unemphasized-selected-text")>] UnemphasizedSelectedText
+                /// <summary>
+                /// The background of a window.
+                /// </summary>
+                | [<CompiledName("window-background")>] WindowBackground
+                /// <summary>
+                /// The text in the window's titlebar area.
+                /// </summary>
+                | [<CompiledName("window-frame-text")>] WindowFrameText
+
+    module Net =
+        module ResolveHost =
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type SecureDnsPolicy =
+                    | [<CompiledName("allow")>] Allow
+                    | [<CompiledName("disable")>] Disable
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type CacheUsage =
+                    /// <summary>
+                    /// Results may come from the host cache if non-stale
+                    /// </summary>
+                    | [<CompiledName("allowed")>] Allowed
+                    /// <summary>
+                    /// Results may come from the host cache even if stale (by expiration or network changes)
+                    /// </summary>
+                    | [<CompiledName("staleAllowed")>] StaleAllowed
+                    /// <summary>
+                    /// Results will not come from the host cache.
+                    /// </summary>
+                    | [<CompiledName("disallowed")>] Disallowed
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Source =
+                    /// <summary>
+                    /// Resolver will pick an appropriate source. Results could come from DNS, MulticastDNS, HOSTS file, etc
+                    /// </summary>
+                    | [<CompiledName("any")>] Any
+                    /// <summary>
+                    /// Results will only be retrieved from the system or OS, e.g. via the <c>getaddrinfo()</c> system call
+                    /// </summary>
+                    | [<CompiledName("system")>] System
+                    /// <summary>
+                    /// Results will only come from DNS queries
+                    /// </summary>
+                    | [<CompiledName("dns")>] Dns
+                    /// <summary>
+                    /// Results will only come from Multicast DNS queries
+                    /// </summary>
+                    | [<CompiledName("mdns")>] Mdns
+                    /// <summary>
+                    /// No external sources will be used. Results will only come from fast local sources that are available no matter the
+                    /// source setting, e.g. cache, hosts file, IP literal resolution, etc.
+                    /// </summary>
+                    | [<CompiledName("localOnly")>] LocalOnly
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type QueryType =
+                    /// <summary>
+                    /// Fetch only A records
+                    /// </summary>
+                    | [<CompiledName("A")>] A
+                    /// <summary>
+                    /// Fetch only AAAA records.
+                    /// </summary>
+                    | [<CompiledName("AAAA")>] AAAA
+
+    module ClientRequest =
+        module Options =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Priority =
+                | [<CompiledName("throttled")>] Throttled
+                | [<CompiledName("idle")>] Idle
+                | [<CompiledName("lowest")>] Lowest
+                | [<CompiledName("low")>] Low
+                | [<CompiledName("medium")>] Medium
+                | [<CompiledName("highest")>] Highest
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Cache =
+                | [<CompiledName("default")>] Default
+                | [<CompiledName("no-store")>] NoStore
+                | [<CompiledName("reload")>] Reload
+                | [<CompiledName("no-cache")>] NoCache
+                | [<CompiledName("force-cache")>] ForceCache
+                | [<CompiledName("only-if-cached")>] OnlyIfCached
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type ReferrerPolicy =
+                | [<CompiledName("no-referrer")>] NoReferrer
+                | [<CompiledName("no-referrer-when-downgrade")>] NoReferrerWhenDowngrade
+                | [<CompiledName("origin")>] Origin
+                | [<CompiledName("origin-when-cross-origin")>] OriginWhenCrossOrigin
+                | [<CompiledName("unsafe-url")>] UnsafeUrl
+                | [<CompiledName("same-origin")>] SameOrigin
+                | [<CompiledName("strict-origin")>] StrictOrigin
+                | [<CompiledName("strict-origin-when-cross-origin")>] StrictOriginWhenCrossOrigin
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Redirect =
+                | [<CompiledName("follow")>] Follow
+                | [<CompiledName("error")>] Error
+                | [<CompiledName("manual")>] Manual
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Protocol =
+                | [<CompiledName("http:")>] Http
+                | [<CompiledName("https:")>] Https
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Credentials =
+                | [<CompiledName("include")>] Include
+                | [<CompiledName("omit")>] Omit
+                | [<CompiledName("same-origin")>] SameOrigin
 
 module Renderer =
     module UtilityProcess =
@@ -7271,7 +9640,7 @@ module Utility =
             abstract member authInfo: Utility.ClientRequest.Login.AuthInfo with get, set
 
             [<Emit("$0[1]")>]
-            abstract member callback: Utility.ClientRequest.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
     module SystemPreferences =
         #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
@@ -7442,7 +9811,7 @@ module Main =
             abstract member authInfo: Main.App.Login.AuthInfo with get, set
 
             [<Emit("$0[4]")>]
-            abstract member callback: Main.App.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
         /// <summary>
         /// Emitted when a client certificate is requested.<br/><br/>The <c>url</c> corresponds to the navigation entry requesting the client certificate and <c>callback</c> can
@@ -8120,7 +10489,7 @@ module Main =
             abstract member authInfo: Main.ClientRequest.Login.AuthInfo with get, set
 
             [<Emit("$0[1]")>]
-            abstract member callback: Main.ClientRequest.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
     module Cookies =
         /// <summary>
@@ -9382,7 +11751,7 @@ module Main =
             abstract member authInfo: Main.WebContents.Login.AuthInfo with get, set
 
             [<Emit("$0[3]")>]
-            abstract member callback: Main.WebContents.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
         /// <summary>
         /// Emitted when a client certificate is requested.<br/><br/>The usage is the same with the <c>select-client-certificate</c> event of <c>app</c>.

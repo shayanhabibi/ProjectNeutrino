@@ -380,7 +380,7 @@ module Type =
             result
         static member PeekEventObjects() = Cache.GetEventObjects(true)
         static member GetEventStrings(?peek) =
-            let peek = defaultArg peek false
+            let peek = defaultArg peek true
             let result = eventObjectCache.Keys |> Seq.toList
             if not peek then eventObjectCache.Clear()
             result

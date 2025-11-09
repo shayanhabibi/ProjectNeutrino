@@ -11,6 +11,764 @@ open Fetch
 
 [<Fable.Core.Erase; AutoOpen>]
 module Types =
+    module WebPreferences =
+        [<JS.Pojo>]
+        type Offscreen
+            /// <param name="useSharedTexture">Whether to use GPU shared texture for accelerated paint event. Defaults to <c>false</c>. See the offscreen rendering tutorial for
+            /// more details.</param>
+            /// <param name="sharedTexturePixelFormat">The requested output format of the shared texture. Defaults to <c>argb</c>. The name is originated from Chromium <c>media::VideoPixelFormat</c> enum
+            /// suffix and only subset of them are supported. The actual output pixel format and color space of the texture should
+            /// refer to <c>OffscreenSharedTexture</c> object in the <c>paint</c> event.</param>
+            (
+                ?useSharedTexture: bool,
+                ?sharedTexturePixelFormat: Enums.Types.WebPreferences.Offscreen.SharedTexturePixelFormat
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Whether to use GPU shared texture for accelerated paint event. Defaults to <c>false</c>. See the offscreen rendering tutorial for more
+            /// details.
+            /// </summary>
+            [<Erase; Experimental("Experimental according to Electron")>]
+            member val useSharedTexture: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The requested output format of the shared texture. Defaults to <c>argb</c>. The name is originated from Chromium <c>media::VideoPixelFormat</c> enum suffix
+            /// and only subset of them are supported. The actual output pixel format and color space of the texture should refer
+            /// to <c>OffscreenSharedTexture</c> object in the <c>paint</c> event.
+            /// </summary>
+            [<Erase; Experimental("Experimental according to Electron")>]
+            member val sharedTexturePixelFormat: Enums.Types.WebPreferences.Offscreen.SharedTexturePixelFormat =
+                Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type DefaultFontFamily
+            /// <param name="standard">Defaults to <c>Times New Roman</c>.</param>
+            /// <param name="serif">Defaults to <c>Times New Roman</c>.</param>
+            /// <param name="sansSerif">Defaults to <c>Arial</c>.</param>
+            /// <param name="monospace">Defaults to <c>Courier New</c>.</param>
+            /// <param name="cursive">Defaults to <c>Script</c>.</param>
+            /// <param name="fantasy">Defaults to <c>Impact</c>.</param>
+            /// <param name="math">Defaults to <c>Latin Modern Math</c>.</param>
+            (
+                ?standard: string,
+                ?serif: string,
+                ?sansSerif: string,
+                ?monospace: string,
+                ?cursive: string,
+                ?fantasy: string,
+                ?math: string
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Defaults to <c>Times New Roman</c>.
+            /// </summary>
+            [<Erase>]
+            member val standard: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Times New Roman</c>.
+            /// </summary>
+            [<Erase>]
+            member val serif: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Arial</c>.
+            /// </summary>
+            [<Erase>]
+            member val sansSerif: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Courier New</c>.
+            /// </summary>
+            [<Erase>]
+            member val monospace: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Script</c>.
+            /// </summary>
+            [<Erase>]
+            member val cursive: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Impact</c>.
+            /// </summary>
+            [<Erase>]
+            member val fantasy: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Latin Modern Math</c>.
+            /// </summary>
+            [<Erase>]
+            member val math: string = Unchecked.defaultof<_> with get, set
+
+    module USBDevice =
+        [<JS.Pojo>]
+        type Configurations() = class end
+
+        [<JS.Pojo>]
+        type Configuration
+            /// <param name="configurationValue">the configuration value of this configuration.</param>
+            /// <param name="configurationName">the name provided by the device to describe this configuration.</param>
+            /// <param name="interfaces">An array of USBInterface objects containing information about an interface provided by the USB device.</param>
+            (configurationValue: int, configurationName: string, interfaces: Types.USBDevice.Configuration.Interfaces[])
+            =
+            class
+            end
+
+            /// <summary>
+            /// the configuration value of this configuration.
+            /// </summary>
+            [<Erase>]
+            member val configurationValue: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// the name provided by the device to describe this configuration.
+            /// </summary>
+            [<Erase>]
+            member val configurationName: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of USBInterface objects containing information about an interface provided by the USB device.
+            /// </summary>
+            [<Erase>]
+            member val interfaces: Types.USBDevice.Configuration.Interfaces[] = Unchecked.defaultof<_> with get, set
+
+        module Configuration =
+            [<JS.Pojo>]
+            type Interfaces
+                /// <param name="interfaceNumber">the interface number of this interface.</param>
+                /// <param name="alternate">the currently selected alternative configuration of this interface.</param>
+                /// <param name="alternates">an array containing instances of the USBAlternateInterface interface describing each of the alternative configurations possible for this interface.</param>
+                (interfaceNumber: int, alternate: Types.USBDevice.Configuration.Interfaces.Alternate, alternates: obj[])
+                =
+                class
+                end
+
+                /// <summary>
+                /// the interface number of this interface.
+                /// </summary>
+                [<Erase>]
+                member val interfaceNumber: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// the currently selected alternative configuration of this interface.
+                /// </summary>
+                [<Erase>]
+                member val alternate: Types.USBDevice.Configuration.Interfaces.Alternate =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// an array containing instances of the USBAlternateInterface interface describing each of the alternative configurations possible for this interface.
+                /// </summary>
+                [<Erase>]
+                member val alternates: obj[] = Unchecked.defaultof<_> with get, set
+
+            module Interfaces =
+                [<JS.Pojo>]
+                type Alternates() = class end
+
+                [<JS.Pojo>]
+                type Alternate
+                    /// <param name="alternateSetting">the alternate setting number of this interface.</param>
+                    /// <param name="interfaceClass">the class of this interface. See USB.org for class code descriptions.</param>
+                    /// <param name="interfaceSubclass">the subclass of this interface.</param>
+                    /// <param name="interfaceProtocol">the protocol supported by this interface.</param>
+                    /// <param name="interfaceName">the name of the interface, if one is provided by the device.</param>
+                    /// <param name="endpoints">an array containing instances of the USBEndpoint interface describing each of the endpoints that are part of this interface.</param>
+                    (
+                        alternateSetting: int,
+                        interfaceClass: int,
+                        interfaceSubclass: int,
+                        interfaceProtocol: int,
+                        endpoints: Types.USBDevice.Configuration.Interfaces.Alternate.Endpoints[],
+                        ?interfaceName: string
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// the alternate setting number of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val alternateSetting: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the class of this interface. See USB.org for class code descriptions.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceClass: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the subclass of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceSubclass: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the protocol supported by this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceProtocol: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the name of the interface, if one is provided by the device.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceName: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// an array containing instances of the USBEndpoint interface describing each of the endpoints that are part of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val endpoints: Types.USBDevice.Configuration.Interfaces.Alternate.Endpoints[] =
+                        Unchecked.defaultof<_> with get, set
+
+                module Alternate =
+                    [<JS.Pojo>]
+                    type Endpoints
+                        /// <param name="endpointNumber">this endpoint's "endpoint number" which is a value from 1 to 15.</param>
+                        /// <param name="direction">the direction in which this endpoint transfers data - can be either 'in' or 'out'.</param>
+                        /// <param name="type">the type of this endpoint - can be either 'bulk', 'interrupt', or 'isochronous'.</param>
+                        /// <param name="packetSize">the size of the packets that data sent through this endpoint will be divided into.</param>
+                        (endpointNumber: int, direction: string, ``type``: string, packetSize: int) =
+                        class
+                        end
+
+                        /// <summary>
+                        /// this endpoint's "endpoint number" which is a value from 1 to 15.
+                        /// </summary>
+                        [<Erase>]
+                        member val endpointNumber: int = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the direction in which this endpoint transfers data - can be either 'in' or 'out'.
+                        /// </summary>
+                        [<Erase>]
+                        member val direction: string = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the type of this endpoint - can be either 'bulk', 'interrupt', or 'isochronous'.
+                        /// </summary>
+                        [<Erase>]
+                        member val ``type``: string = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the size of the packets that data sent through this endpoint will be divided into.
+                        /// </summary>
+                        [<Erase>]
+                        member val packetSize: int = Unchecked.defaultof<_> with get, set
+
+    module Transaction =
+        [<JS.Pojo>]
+        type Payment
+            /// <param name="productIdentifier">The identifier of the purchased product.</param>
+            /// <param name="quantity">The quantity purchased.</param>
+            /// <param name="applicationUsername">An opaque identifier for the user’s account on your system.</param>
+            /// <param name="paymentDiscount">The details of the discount offer to apply to the payment.</param>
+            (productIdentifier: string, quantity: int, applicationUsername: string, ?paymentDiscount: PaymentDiscount) =
+            class
+            end
+
+            /// <summary>
+            /// The identifier of the purchased product.
+            /// </summary>
+            [<Erase>]
+            member val productIdentifier: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The quantity purchased.
+            /// </summary>
+            [<Erase>]
+            member val quantity: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An opaque identifier for the user’s account on your system.
+            /// </summary>
+            [<Erase>]
+            member val applicationUsername: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The details of the discount offer to apply to the payment.
+            /// </summary>
+            [<Erase>]
+            member val paymentDiscount: PaymentDiscount = Unchecked.defaultof<_> with get, set
+
+    module SharedTextureHandle =
+        [<JS.Pojo>]
+        type NativePixmap
+            /// <param name="planes">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || Each plane's info of
+            /// the shared texture.</param>
+            /// <param name="modifier">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || The modifier is retrieved
+            /// from GBM library and passed to EGL driver.</param>
+            /// <param name="supportsZeroCopyWebGpuImport">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || Indicates whether supports zero
+            /// copy import to WebGPU.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                planes: Types.SharedTextureHandle.NativePixmap.Planes[]
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                ,
+                modifier: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                ,
+                supportsZeroCopyWebGpuImport: bool
+                #endif
+
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// Each plane's info of the shared texture.
+            /// </summary>
+            [<Erase>]
+            member val planes: Types.SharedTextureHandle.NativePixmap.Planes[] = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The modifier is retrieved from GBM library and passed to EGL driver.
+            /// </summary>
+            [<Erase>]
+            member val modifier: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// Indicates whether supports zero copy import to WebGPU.
+            /// </summary>
+            [<Erase>]
+            member val supportsZeroCopyWebGpuImport: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        module NativePixmap =
+            [<JS.Pojo>]
+            type Planes
+                /// <param name="stride">The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per
+                /// plane per entry.</param>
+                /// <param name="offset">The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per
+                /// plane per entry.</param>
+                /// <param name="size">Size in bytes of the plane. This is necessary to map the buffers.</param>
+                /// <param name="fd">File descriptor for the underlying memory object (usually dmabuf).</param>
+                (stride: float, offset: float, size: float, fd: float) =
+                class
+                end
+
+                /// <summary>
+                /// The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per plane
+                /// per entry.
+                /// </summary>
+                [<Erase>]
+                member val stride: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per plane
+                /// per entry.
+                /// </summary>
+                [<Erase>]
+                member val offset: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Size in bytes of the plane. This is necessary to map the buffers.
+                /// </summary>
+                [<Erase>]
+                member val size: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// File descriptor for the underlying memory object (usually dmabuf).
+                /// </summary>
+                [<Erase>]
+                member val fd: float = Unchecked.defaultof<_> with get, set
+
+    module PrinterInfo =
+        [<JS.Pojo>]
+        type Options() = class end
+
+    module OffscreenSharedTexture =
+        [<JS.Pojo>]
+        type TextureInfo
+            /// <param name="widgetType">The widget type of the texture. Can be <c>popup</c> or <c>frame</c>.</param>
+            /// <param name="pixelFormat">The pixel format of the texture.</param>
+            /// <param name="codedSize">The full dimensions of the video frame.</param>
+            /// <param name="colorSpace">The color space of the video frame.</param>
+            /// <param name="visibleRect">A subsection of [0, 0, codedSize.width, codedSize.height]. In OSR case, it is expected to have the full section area.</param>
+            /// <param name="contentRect">The region of the video frame that capturer would like to populate. In OSR case, it is the same
+            /// with <c>dirtyRect</c> that needs to be painted.</param>
+            /// <param name="timestamp">The time in microseconds since the capture start.</param>
+            /// <param name="metadata">Extra metadata. See comments in src\media\base\video_frame_metadata.h for accurate details.</param>
+            /// <param name="handle">The shared texture handle data.</param>
+            (
+                widgetType: Enums.Types.OffscreenSharedTexture.TextureInfo.WidgetType,
+                pixelFormat: Enums.Types.OffscreenSharedTexture.TextureInfo.PixelFormat,
+                codedSize: Size,
+                colorSpace: ColorSpace,
+                visibleRect: Rectangle,
+                contentRect: Rectangle,
+                timestamp: float,
+                metadata: Types.OffscreenSharedTexture.TextureInfo.Metadata,
+                handle: SharedTextureHandle
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The widget type of the texture. Can be <c>popup</c> or <c>frame</c>.
+            /// </summary>
+            [<Erase>]
+            member val widgetType: Enums.Types.OffscreenSharedTexture.TextureInfo.WidgetType =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The pixel format of the texture.
+            /// </summary>
+            [<Erase>]
+            member val pixelFormat: Enums.Types.OffscreenSharedTexture.TextureInfo.PixelFormat =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The full dimensions of the video frame.
+            /// </summary>
+            [<Erase>]
+            member val codedSize: Size = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The color space of the video frame.
+            /// </summary>
+            [<Erase>]
+            member val colorSpace: ColorSpace = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// A subsection of [0, 0, codedSize.width, codedSize.height]. In OSR case, it is expected to have the full section area.
+            /// </summary>
+            [<Erase>]
+            member val visibleRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The region of the video frame that capturer would like to populate. In OSR case, it is the same with
+            /// <c>dirtyRect</c> that needs to be painted.
+            /// </summary>
+            [<Erase>]
+            member val contentRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The time in microseconds since the capture start.
+            /// </summary>
+            [<Erase>]
+            member val timestamp: float = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Extra metadata. See comments in src\media\base\video_frame_metadata.h for accurate details.
+            /// </summary>
+            [<Erase>]
+            member val metadata: Types.OffscreenSharedTexture.TextureInfo.Metadata =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The shared texture handle data.
+            /// </summary>
+            [<Erase>]
+            member val handle: SharedTextureHandle = Unchecked.defaultof<_> with get, set
+
+        module TextureInfo =
+            [<JS.Pojo>]
+            type Metadata
+                /// <param name="captureUpdateRect">Updated area of frame, can be considered as the <c>dirty</c> area.</param>
+                /// <param name="regionCaptureRect">May reflect the frame's contents origin if region capture is used internally.</param>
+                /// <param name="sourceSize">Full size of the source frame.</param>
+                /// <param name="frameCount">The increasing count of captured frame. May contain gaps if frames are dropped between two consecutively received frames.</param>
+                (
+                    ?captureUpdateRect: Rectangle,
+                    ?regionCaptureRect: Rectangle,
+                    ?sourceSize: Rectangle,
+                    ?frameCount: float
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Updated area of frame, can be considered as the <c>dirty</c> area.
+                /// </summary>
+                [<Erase>]
+                member val captureUpdateRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// May reflect the frame's contents origin if region capture is used internally.
+                /// </summary>
+                [<Erase>]
+                member val regionCaptureRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Full size of the source frame.
+                /// </summary>
+                [<Erase>]
+                member val sourceSize: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The increasing count of captured frame. May contain gaps if frames are dropped between two consecutively received frames.
+                /// </summary>
+                [<Erase>]
+                member val frameCount: float = Unchecked.defaultof<_> with get, set
+
+    module HIDDevice =
+        [<JS.Pojo>]
+        type Collections
+            /// <param name="usage">An integer representing the usage ID component of the HID usage associated with this collection.</param>
+            /// <param name="usagePage">An integer representing the usage page component of the HID usage associated with this collection.</param>
+            /// <param name="type">An 8-bit value representing the collection type, which describes a different relationship between the grouped items.</param>
+            /// <param name="children">An array of sub-collections which takes the same format as a top-level collection.</param>
+            /// <param name="inputReports">An array of inputReport items which represent individual input reports described in this collection.</param>
+            /// <param name="outputReports">An array of outputReport items which represent individual output reports described in this collection.</param>
+            /// <param name="featureReports">An array of featureReport items which represent individual feature reports described in this collection.</param>
+            (
+                usage: int,
+                usagePage: int,
+                ``type``: int,
+                children: obj[],
+                inputReports: obj[],
+                outputReports: obj[],
+                featureReports: obj[]
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// An integer representing the usage ID component of the HID usage associated with this collection.
+            /// </summary>
+            [<Erase>]
+            member val usage: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An integer representing the usage page component of the HID usage associated with this collection.
+            /// </summary>
+            [<Erase>]
+            member val usagePage: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An 8-bit value representing the collection type, which describes a different relationship between the grouped items.
+            /// </summary>
+            [<Erase>]
+            member val ``type``: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of sub-collections which takes the same format as a top-level collection.
+            /// </summary>
+            [<Erase>]
+            member val children: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of inputReport items which represent individual input reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val inputReports: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of outputReport items which represent individual output reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val outputReports: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of featureReport items which represent individual feature reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val featureReports: obj[] = Unchecked.defaultof<_> with get, set
+
+        module Collections =
+            [<JS.Pojo>]
+            type FeatureReports() = class end
+
+            [<JS.Pojo>]
+            type OutputReports() = class end
+
+            [<JS.Pojo>]
+            type InputReports() = class end
+
+            [<JS.Pojo>]
+            type Children() = class end
+
+    module CustomScheme =
+        [<JS.Pojo>]
+        type Privileges
+            /// <param name="standard">Default false.</param>
+            /// <param name="secure">Default false.</param>
+            /// <param name="bypassCSP">Default false.</param>
+            /// <param name="allowServiceWorkers">Default false.</param>
+            /// <param name="supportFetchAPI">Default false.</param>
+            /// <param name="corsEnabled">Default false.</param>
+            /// <param name="stream">Default false.</param>
+            /// <param name="codeCache">Enable V8 code cache for the scheme, only works when <c>standard</c> is also set to true. Default false.</param>
+            (
+                ?standard: bool,
+                ?secure: bool,
+                ?bypassCSP: bool,
+                ?allowServiceWorkers: bool,
+                ?supportFetchAPI: bool,
+                ?corsEnabled: bool,
+                ?stream: bool,
+                ?codeCache: bool
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val standard: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val secure: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val bypassCSP: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val allowServiceWorkers: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val supportFetchAPI: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val corsEnabled: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val stream: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Enable V8 code cache for the scheme, only works when <c>standard</c> is also set to true. Default false.
+            /// </summary>
+            [<Erase>]
+            member val codeCache: bool = Unchecked.defaultof<_> with get, set
+
+    module BrowserWindowConstructorOptions =
+        [<JS.Pojo>]
+        type TitleBarOverlay
+            /// <param name="color">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="symbolColor">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the symbols on the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="height">The height of the title bar and Window Controls Overlay in pixels. Default is system height.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ?color: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?symbolColor: string
+                #endif
+                ,
+                ?height: int
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val color: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the symbols on the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val symbolColor: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// The height of the title bar and Window Controls Overlay in pixels. Default is system height.
+            /// </summary>
+            [<Erase>]
+            member val height: int = Unchecked.defaultof<_> with get, set
+
+    module BaseWindowConstructorOptions =
+        [<JS.Pojo>]
+        type TitleBarOverlay
+            /// <param name="color">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="symbolColor">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the symbols on the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="height">The height of the title bar and Window Controls Overlay in pixels. Default is system height.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ?color: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?symbolColor: string
+                #endif
+                ,
+                ?height: int
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val color: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the symbols on the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val symbolColor: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// The height of the title bar and Window Controls Overlay in pixels. Default is system height.
+            /// </summary>
+            [<Erase>]
+            member val height: int = Unchecked.defaultof<_> with get, set
+
+    module IpcMainServiceWorkerEvent =
+        /// <param name="channel"></param>
+        /// <param name="...args"></param>
+        type Reply = delegate of channel: string * [<System.ParamArray>] args: obj[] -> unit
+
+    module IpcMainEvent =
+        /// <param name="channel"></param>
+        /// <param name="...args"></param>
+        type Reply = delegate of channel: string * [<System.ParamArray>] args: obj[] -> unit
+
     /// <summary>
     /// Unfortunately, Windows does not offer a way to differentiate between a shutdown and a reboot, meaning the 'shutdown' reason is
     /// triggered in both scenarios. For more details on the <c>WM_ENDSESSION</c> message and its associated reasons, refer to the MSDN documentation.
@@ -3167,7 +3925,7 @@ module Types =
             session: Main.Session,
             returnValue: obj,
             ports: Main.MessagePortMain[],
-            reply: Types.IpcMainServiceWorkerEvent.Reply
+            reply: string * obj[] -> unit
         ) =
         class
         end
@@ -3214,7 +3972,7 @@ module Types =
         /// will go to the correct process and frame.
         /// </summary>
         [<Erase>]
-        member val reply: Types.IpcMainServiceWorkerEvent.Reply = Unchecked.defaultof<_> with get, set
+        member val reply: string * obj[] -> unit = Unchecked.defaultof<_> with get, set
 
     [<JS.Pojo>]
     type IpcMainInvokeEvent
@@ -3285,7 +4043,7 @@ module Types =
             sender: Main.WebContents,
             senderFrame: Option<Main.WebFrameMain>,
             ports: Main.MessagePortMain[],
-            reply: Types.IpcMainEvent.Reply
+            reply: string * obj[] -> unit
         ) =
         class
         end
@@ -3338,7 +4096,7 @@ module Types =
         /// will go to the correct process and frame.
         /// </summary>
         [<Erase>]
-        member val reply: Types.IpcMainEvent.Reply = Unchecked.defaultof<_> with get, set
+        member val reply: string * obj[] -> unit = Unchecked.defaultof<_> with get, set
 
     [<JS.Pojo>]
     type InputEvent
@@ -5509,7 +6267,861 @@ module Types =
 
 [<Fable.Core.Erase; AutoOpen>]
 module Enums =
-    begin end
+    module Types =
+        module WindowSessionEndEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Reasons =
+                | [<CompiledName("shutdown")>] Shutdown
+                | [<CompiledName("close-app")>] CloseApp
+                | [<CompiledName("critical")>] Critical
+                | [<CompiledName("logoff")>] Logoff
+
+        module WindowOpenHandlerResponse =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Action =
+                | [<CompiledName("allow")>] Allow
+                | [<CompiledName("deny")>] Deny
+
+        module WebRequestFilter =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Types =
+                | [<CompiledName("mainFrame")>] MainFrame
+                | [<CompiledName("subFrame")>] SubFrame
+                | [<CompiledName("stylesheet")>] Stylesheet
+                | [<CompiledName("script")>] Script
+                | [<CompiledName("image")>] Image
+                | [<CompiledName("font")>] Font
+                | [<CompiledName("object")>] Object
+                | [<CompiledName("xhr")>] Xhr
+                | [<CompiledName("ping")>] Ping
+                | [<CompiledName("cspReport")>] CspReport
+                | [<CompiledName("media")>] Media
+                | [<CompiledName("webSocket")>] WebSocket
+
+        module WebPreferences =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type V8CacheOptions =
+                /// <summary>
+                /// Disables code caching
+                /// </summary>
+                | [<CompiledName("none")>] None
+                /// <summary>
+                /// Heuristic based code caching
+                /// </summary>
+                | [<CompiledName("code")>] Code
+                /// <summary>
+                /// Bypass code caching heuristics but with lazy compilation
+                /// </summary>
+                | [<CompiledName("bypassHeatCheck")>] BypassHeatCheck
+                /// <summary>
+                /// Same as above except compilation is eager. Default policy is <c>code</c>.
+                /// </summary>
+                | [<CompiledName("bypassHeatCheckAndEagerCompile")>] BypassHeatCheckAndEagerCompile
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type AutoplayPolicy =
+                | [<CompiledName("no-user-gesture-required")>] NoUserGestureRequired
+                | [<CompiledName("user-gesture-required")>] UserGestureRequired
+                | [<CompiledName("document-user-activation-required")>] DocumentUserActivationRequired
+
+            module Offscreen =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type SharedTexturePixelFormat =
+                    /// <summary>
+                    /// The requested output texture format is 8-bit unorm RGBA, with SRGB SDR color space.
+                    /// </summary>
+                    | [<CompiledName("argb")>] Argb
+                    /// <summary>
+                    /// The requested output texture format is 16-bit float RGBA, with scRGB HDR color space.
+                    /// </summary>
+                    | [<CompiledName("rgbaf16")>] Rgbaf16
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type ImageAnimationPolicy =
+                | [<CompiledName("animate")>] Animate
+                | [<CompiledName("animateOnce")>] AnimateOnce
+                | [<CompiledName("noAnimation")>] NoAnimation
+
+        module Transaction =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TransactionState =
+                | [<CompiledName("purchasing")>] Purchasing
+                | [<CompiledName("purchased")>] Purchased
+                | [<CompiledName("failed")>] Failed
+                | [<CompiledName("restored")>] Restored
+                | [<CompiledName("deferred")>] Deferred
+
+        module TraceConfig =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type RecordingMode =
+                | [<CompiledName("record-until-full")>] RecordUntilFull
+                | [<CompiledName("record-continuously")>] RecordContinuously
+                | [<CompiledName("record-as-much-as-possible")>] RecordAsMuchAsPossible
+                | [<CompiledName("trace-to-console")>] TraceToConsole
+
+        module ResolvedEndpoint =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Family =
+                /// <summary>
+                /// Corresponds to <c>AF_INET</c>
+                /// </summary>
+                | [<CompiledName("ipv4")>] Ipv4
+                /// <summary>
+                /// Corresponds to <c>AF_INET6</c>
+                /// </summary>
+                | [<CompiledName("ipv6")>] Ipv6
+                /// <summary>
+                /// Corresponds to <c>AF_UNSPEC</c>
+                /// </summary>
+                | [<CompiledName("unspec")>] Unspec
+
+        module RenderProcessGoneDetails =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Reason =
+                /// <summary>
+                /// Process exited with an exit code of zero
+                /// </summary>
+                | [<CompiledName("clean-exit")>] CleanExit
+                /// <summary>
+                /// Process exited with a non-zero exit code
+                /// </summary>
+                | [<CompiledName("abnormal-exit")>] AbnormalExit
+                /// <summary>
+                /// Process was sent a SIGTERM or otherwise killed externally
+                /// </summary>
+                | [<CompiledName("killed")>] Killed
+                /// <summary>
+                /// Process crashed
+                /// </summary>
+                | [<CompiledName("crashed")>] Crashed
+                /// <summary>
+                /// Process ran out of memory
+                /// </summary>
+                | [<CompiledName("oom")>] Oom
+                /// <summary>
+                /// Process never successfully launched
+                /// </summary>
+                | [<CompiledName("launch-failed")>] LaunchFailed
+                /// <summary>
+                /// Windows code integrity checks failed
+                /// </summary>
+                | [<CompiledName("integrity-failure")>] IntegrityFailure
+                /// <summary>
+                /// Process proactively terminated to prevent a future out-of-memory (OOM) situation
+                /// </summary>
+                | [<CompiledName("memory-eviction")>] MemoryEviction
+
+        module Referrer =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Policy =
+                | [<CompiledName("default")>] Default
+                | [<CompiledName("unsafe-url")>] UnsafeUrl
+                | [<CompiledName("no-referrer-when-downgrade")>] NoReferrerWhenDowngrade
+                | [<CompiledName("no-referrer")>] NoReferrer
+                | [<CompiledName("origin")>] Origin
+                | [<CompiledName("strict-origin-when-cross-origin")>] StrictOriginWhenCrossOrigin
+                | [<CompiledName("same-origin")>] SameOrigin
+                | [<CompiledName("strict-origin")>] StrictOrigin
+
+        module ProxyConfig =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Mode =
+                /// <summary>
+                /// In direct mode all connections are created directly, without any proxy involved.
+                /// </summary>
+                | [<CompiledName("direct")>] Direct
+                /// <summary>
+                /// In auto_detect mode the proxy configuration is determined by a PAC script that can be downloaded at http://wpad/wpad.dat.
+                /// </summary>
+                | [<CompiledName("auto_detect")>] AutoDetect
+                /// <summary>
+                /// In pac_script mode the proxy configuration is determined by a PAC script that is retrieved from the URL specified in
+                /// the <c>pacScript</c>. This is the default mode if <c>pacScript</c> is specified.
+                /// </summary>
+                | [<CompiledName("pac_script")>] PacScript
+                /// <summary>
+                /// In fixed_servers mode the proxy configuration is specified in <c>proxyRules</c>. This is the default mode if <c>proxyRules</c> is specified.
+                /// </summary>
+                | [<CompiledName("fixed_servers")>] FixedServers
+                /// <summary>
+                /// In system mode the proxy configuration is taken from the operating system. Note that the system mode is different from
+                /// setting no proxy configuration. In the latter case, Electron falls back to the system settings only if no command-line options
+                /// influence the proxy configuration.
+                /// </summary>
+                | [<CompiledName("system")>] System
+
+        module ProductSubscriptionPeriod =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Unit =
+                | [<CompiledName("day")>] Day
+                | [<CompiledName("week")>] Week
+                | [<CompiledName("month")>] Month
+                | [<CompiledName("year")>] Year
+
+        module ProductDiscount =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type PaymentMode =
+                | [<CompiledName("payAsYouGo")>] PayAsYouGo
+                | [<CompiledName("payUpFront")>] PayUpFront
+                | [<CompiledName("freeTrial")>] FreeTrial
+
+        module ProcessMetric =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type IntegrityLevel =
+                | [<CompiledName("untrusted")>] Untrusted
+                | [<CompiledName("low")>] Low
+                | [<CompiledName("medium")>] Medium
+                | [<CompiledName("high")>] High
+                | [<CompiledName("unknown")>] Unknown
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("Browser")>] Browser
+                | [<CompiledName("Tab")>] Tab
+                | [<CompiledName("Utility")>] Utility
+                | [<CompiledName("Zygote")>] Zygote
+                | [<CompiledName("Sandbox helper")>] SandboxHelper
+                | [<CompiledName("GPU")>] GPU
+                | [<CompiledName("Pepper Plugin")>] PepperPlugin
+                | [<CompiledName("Pepper Plugin Broker")>] PepperPluginBroker
+                | [<CompiledName("Unknown")>] Unknown
+
+        module PreloadScript =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("frame")>] Frame
+                | [<CompiledName("service-worker")>] ServiceWorker
+
+        module PreloadScriptRegistration =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("frame")>] Frame
+                | [<CompiledName("service-worker")>] ServiceWorker
+
+        module OffscreenSharedTexture =
+            module TextureInfo =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type PixelFormat =
+                    /// <summary>
+                    /// The texture format is 8-bit unorm RGBA.
+                    /// </summary>
+                    | [<CompiledName("rgba")>] Rgba
+                    /// <summary>
+                    /// The texture format is 8-bit unorm BGRA.
+                    /// </summary>
+                    | [<CompiledName("bgra")>] Bgra
+                    /// <summary>
+                    /// The texture format is 16-bit float RGBA.
+                    /// </summary>
+                    | [<CompiledName("rgbaf16")>] Rgbaf16
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type WidgetType =
+                    | [<CompiledName("popup")>] Popup
+                    | [<CompiledName("frame")>] Frame
+
+        module NotificationAction =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("button")>] Button
+
+        module MouseWheelInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Button =
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("middle")>] Middle
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("mouseWheel")>] MouseWheel
+
+        module MouseInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Button =
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("middle")>] Middle
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("mouseDown")>] MouseDown
+                | [<CompiledName("mouseUp")>] MouseUp
+                | [<CompiledName("mouseEnter")>] MouseEnter
+                | [<CompiledName("mouseLeave")>] MouseLeave
+                | [<CompiledName("contextMenu")>] ContextMenu
+                | [<CompiledName("mouseWheel")>] MouseWheel
+                | [<CompiledName("mouseMove")>] MouseMove
+
+        module MediaAccessPermissionRequest =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type MediaTypes =
+                | [<CompiledName("video")>] Video
+                | [<CompiledName("audio")>] Audio
+
+        module KeyboardInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("rawKeyDown")>] RawKeyDown
+                | [<CompiledName("keyDown")>] KeyDown
+                | [<CompiledName("keyUp")>] KeyUp
+                | [<CompiledName("char")>] Char
+
+        module JumpListItem =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// A task will launch an app with specific arguments.
+                /// </summary>
+                | [<CompiledName("task")>] Task
+                /// <summary>
+                /// Can be used to separate items in the standard <c>Tasks</c> category.
+                /// </summary>
+                | [<CompiledName("separator")>] Separator
+                /// <summary>
+                /// A file link will open a file using the app that created the Jump List, for this to work the
+                /// app must be registered as a handler for the file type (though it doesn't have to be the default handler).
+                /// </summary>
+                | [<CompiledName("file")>] File
+
+        module JumpListCategory =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// Items in this category will be placed into the standard <c>Tasks</c> category. There can be only one such category, and
+                /// it will always be displayed at the bottom of the Jump List.
+                /// </summary>
+                | [<CompiledName("tasks")>] Tasks
+                /// <summary>
+                /// Displays a list of files frequently opened by the app, the name of the category and its items are set
+                /// by Windows.
+                /// </summary>
+                | [<CompiledName("frequent")>] Frequent
+                /// <summary>
+                /// Displays a list of files recently opened by the app, the name of the category and its items are set
+                /// by Windows. Items may be added to this category indirectly using <c>app.addRecentDocument(path)</c>.
+                /// </summary>
+                | [<CompiledName("recent")>] Recent
+                /// <summary>
+                /// Displays tasks or file links, <c>name</c> must be set by the app.
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+
+        module IpcMainServiceWorkerInvokeEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("service-worker")>] ServiceWorker
+
+        module IpcMainServiceWorkerEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("service-worker")>] ServiceWorker
+
+        module IpcMainInvokeEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("frame")>] Frame
+
+        module IpcMainEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("frame")>] Frame
+
+        module InputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("undefined")>] Undefined
+                | [<CompiledName("mouseDown")>] MouseDown
+                | [<CompiledName("mouseUp")>] MouseUp
+                | [<CompiledName("mouseMove")>] MouseMove
+                | [<CompiledName("mouseEnter")>] MouseEnter
+                | [<CompiledName("mouseLeave")>] MouseLeave
+                | [<CompiledName("contextMenu")>] ContextMenu
+                | [<CompiledName("mouseWheel")>] MouseWheel
+                | [<CompiledName("rawKeyDown")>] RawKeyDown
+                | [<CompiledName("keyDown")>] KeyDown
+                | [<CompiledName("keyUp")>] KeyUp
+                | [<CompiledName("char")>] Char
+                | [<CompiledName("gestureScrollBegin")>] GestureScrollBegin
+                | [<CompiledName("gestureScrollEnd")>] GestureScrollEnd
+                | [<CompiledName("gestureScrollUpdate")>] GestureScrollUpdate
+                | [<CompiledName("gestureFlingStart")>] GestureFlingStart
+                | [<CompiledName("gestureFlingCancel")>] GestureFlingCancel
+                | [<CompiledName("gesturePinchBegin")>] GesturePinchBegin
+                | [<CompiledName("gesturePinchEnd")>] GesturePinchEnd
+                | [<CompiledName("gesturePinchUpdate")>] GesturePinchUpdate
+                | [<CompiledName("gestureTapDown")>] GestureTapDown
+                | [<CompiledName("gestureShowPress")>] GestureShowPress
+                | [<CompiledName("gestureTap")>] GestureTap
+                | [<CompiledName("gestureTapCancel")>] GestureTapCancel
+                | [<CompiledName("gestureShortPress")>] GestureShortPress
+                | [<CompiledName("gestureLongPress")>] GestureLongPress
+                | [<CompiledName("gestureLongTap")>] GestureLongTap
+                | [<CompiledName("gestureTwoFingerTap")>] GestureTwoFingerTap
+                | [<CompiledName("gestureTapUnconfirmed")>] GestureTapUnconfirmed
+                | [<CompiledName("gestureDoubleTap")>] GestureDoubleTap
+                | [<CompiledName("touchStart")>] TouchStart
+                | [<CompiledName("touchMove")>] TouchMove
+                | [<CompiledName("touchEnd")>] TouchEnd
+                | [<CompiledName("touchCancel")>] TouchCancel
+                | [<CompiledName("touchScrollStarted")>] TouchScrollStarted
+                | [<CompiledName("pointerDown")>] PointerDown
+                | [<CompiledName("pointerUp")>] PointerUp
+                | [<CompiledName("pointerMove")>] PointerMove
+                | [<CompiledName("pointerRawUpdate")>] PointerRawUpdate
+                | [<CompiledName("pointerCancel")>] PointerCancel
+                | [<CompiledName("pointerCausedUaAction")>] PointerCausedUaAction
+
+        module FilesystemPermissionRequest =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type FileAccessType =
+                | [<CompiledName("writable")>] Writable
+                | [<CompiledName("readable")>] Readable
+
+        module Display =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TouchSupport =
+                | [<CompiledName("available")>] Available
+                | [<CompiledName("unavailable")>] Unavailable
+                | [<CompiledName("unknown")>] Unknown
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type AccelerometerSupport =
+                | [<CompiledName("available")>] Available
+                | [<CompiledName("unavailable")>] Unavailable
+                | [<CompiledName("unknown")>] Unknown
+
+        module Cookie =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type SameSite =
+                | [<CompiledName("unspecified")>] Unspecified
+                | [<CompiledName("no_restriction")>] NoRestriction
+                | [<CompiledName("lax")>] Lax
+                | [<CompiledName("strict")>] Strict
+
+        module ColorSpace =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Range =
+                /// <summary>
+                /// Limited color range (RGB values ranging from 16 to 235)
+                /// </summary>
+                | [<CompiledName("limited")>] Limited
+                /// <summary>
+                /// Full color range (RGB values from 0 to 255)
+                /// </summary>
+                | [<CompiledName("full")>] Full
+                /// <summary>
+                /// Range defined by the transfer function and matrix
+                /// </summary>
+                | [<CompiledName("derived")>] Derived
+                /// <summary>
+                /// Invalid range
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Matrix =
+                /// <summary>
+                /// RGB matrix
+                /// </summary>
+                | [<CompiledName("rgb")>] Rgb
+                /// <summary>
+                /// BT709 matrix
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// FCC matrix
+                /// </summary>
+                | [<CompiledName("fcc")>] Fcc
+                /// <summary>
+                /// BT470BG matrix
+                /// </summary>
+                | [<CompiledName("bt470bg")>] Bt470bg
+                /// <summary>
+                /// SMPTE170M matrix
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M matrix
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// YCoCg matrix
+                /// </summary>
+                | [<CompiledName("ycocg")>] Ycocg
+                /// <summary>
+                /// BT2020 NCL matrix
+                /// </summary>
+                | [<CompiledName("bt2020-ncl")>] Bt2020Ncl
+                /// <summary>
+                /// YDzDx matrix
+                /// </summary>
+                | [<CompiledName("ydzdx")>] Ydzdx
+                /// <summary>
+                /// GBR matrix
+                /// </summary>
+                | [<CompiledName("gbr")>] Gbr
+                /// <summary>
+                /// Invalid matrix
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Transfer =
+                /// <summary>
+                /// BT709 transfer function
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// BT709 Apple transfer function
+                /// </summary>
+                | [<CompiledName("bt709-apple")>] Bt709Apple
+                /// <summary>
+                /// Gamma 1.8 transfer function
+                /// </summary>
+                | [<CompiledName("gamma18")>] Gamma18
+                /// <summary>
+                /// Gamma 2.2 transfer function
+                /// </summary>
+                | [<CompiledName("gamma22")>] Gamma22
+                /// <summary>
+                /// Gamma 2.4 transfer function
+                /// </summary>
+                | [<CompiledName("gamma24")>] Gamma24
+                /// <summary>
+                /// Gamma 2.8 transfer function
+                /// </summary>
+                | [<CompiledName("gamma28")>] Gamma28
+                /// <summary>
+                /// SMPTE170M transfer function
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M transfer function
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// Linear transfer function
+                /// </summary>
+                | [<CompiledName("linear")>] Linear
+                /// <summary>
+                /// Log transfer function
+                /// </summary>
+                | [<CompiledName("log")>] Log
+                /// <summary>
+                /// Log Square Root transfer function
+                /// </summary>
+                | [<CompiledName("log-sqrt")>] LogSqrt
+                /// <summary>
+                /// IEC61966-2-4 transfer function
+                /// </summary>
+                | [<CompiledName("iec61966-2-4")>] Iec6196624
+                /// <summary>
+                /// BT1361 ECG transfer function
+                /// </summary>
+                | [<CompiledName("bt1361-ecg")>] Bt1361Ecg
+                /// <summary>
+                /// sRGB transfer function
+                /// </summary>
+                | [<CompiledName("srgb")>] Srgb
+                /// <summary>
+                /// BT2020-10 transfer function
+                /// </summary>
+                | [<CompiledName("bt2020-10")>] Bt202010
+                /// <summary>
+                /// BT2020-12 transfer function
+                /// </summary>
+                | [<CompiledName("bt2020-12")>] Bt202012
+                /// <summary>
+                /// PQ (Perceptual Quantizer) transfer function
+                /// </summary>
+                | [<CompiledName("pq")>] Pq
+                /// <summary>
+                /// SMPTEST428-1 transfer function
+                /// </summary>
+                | [<CompiledName("smptest428-1")>] Smptest4281
+                /// <summary>
+                /// HLG (Hybrid Log-Gamma) transfer function
+                /// </summary>
+                | [<CompiledName("hlg")>] Hlg
+                /// <summary>
+                /// sRGB HDR transfer function
+                /// </summary>
+                | [<CompiledName("srgb-hdr")>] SrgbHdr
+                /// <summary>
+                /// Linear HDR transfer function
+                /// </summary>
+                | [<CompiledName("linear-hdr")>] LinearHdr
+                /// <summary>
+                /// Custom transfer function
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+                /// <summary>
+                /// Custom HDR transfer function
+                /// </summary>
+                | [<CompiledName("custom-hdr")>] CustomHdr
+                /// <summary>
+                /// scRGB Linear 80 nits transfer function
+                /// </summary>
+                | [<CompiledName("scrgb-linear-80-nits")>] ScrgbLinear80Nits
+                /// <summary>
+                /// Invalid transfer function
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Primaries =
+                /// <summary>
+                /// BT709 primaries (also used for sRGB)
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// BT470M primaries
+                /// </summary>
+                | [<CompiledName("bt470m")>] Bt470m
+                /// <summary>
+                /// BT470BG primaries
+                /// </summary>
+                | [<CompiledName("bt470bg")>] Bt470bg
+                /// <summary>
+                /// SMPTE170M primaries
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M primaries
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// Film primaries
+                /// </summary>
+                | [<CompiledName("film")>] Film
+                /// <summary>
+                /// BT2020 primaries
+                /// </summary>
+                | [<CompiledName("bt2020")>] Bt2020
+                /// <summary>
+                /// SMPTEST428-1 primaries
+                /// </summary>
+                | [<CompiledName("smptest428-1")>] Smptest4281
+                /// <summary>
+                /// SMPTEST431-2 primaries
+                /// </summary>
+                | [<CompiledName("smptest431-2")>] Smptest4312
+                /// <summary>
+                /// P3 primaries
+                /// </summary>
+                | [<CompiledName("p3")>] P3
+                /// <summary>
+                /// XYZ D50 primaries
+                /// </summary>
+                | [<CompiledName("xyz-d50")>] XyzD50
+                /// <summary>
+                /// Adobe RGB primaries
+                /// </summary>
+                | [<CompiledName("adobe-rgb")>] AdobeRgb
+                /// <summary>
+                /// Apple Generic RGB primaries
+                /// </summary>
+                | [<CompiledName("apple-generic-rgb")>] AppleGenericRgb
+                /// <summary>
+                /// Wide Gamut Color Spin primaries
+                /// </summary>
+                | [<CompiledName("wide-gamut-color-spin")>] WideGamutColorSpin
+                /// <summary>
+                /// EBU 3213-E primaries
+                /// </summary>
+                | [<CompiledName("ebu-3213-e")>] Ebu3213E
+                /// <summary>
+                /// Custom primaries
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+                /// <summary>
+                /// Invalid primaries
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+        module BrowserWindowConstructorOptions =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type BackgroundMaterial =
+                | [<CompiledName("auto")>] Auto
+                | [<CompiledName("none")>] None
+                | [<CompiledName("mica")>] Mica
+                | [<CompiledName("acrylic")>] Acrylic
+                | [<CompiledName("tabbed")>] Tabbed
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Vibrancy =
+                | [<CompiledName("appearance-based")>] AppearanceBased
+                | [<CompiledName("titlebar")>] Titlebar
+                | [<CompiledName("selection")>] Selection
+                | [<CompiledName("menu")>] Menu
+                | [<CompiledName("popover")>] Popover
+                | [<CompiledName("sidebar")>] Sidebar
+                | [<CompiledName("header")>] Header
+                | [<CompiledName("sheet")>] Sheet
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("hud")>] Hud
+                | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                | [<CompiledName("tooltip")>] Tooltip
+                | [<CompiledName("content")>] Content
+                | [<CompiledName("under-window")>] UnderWindow
+                | [<CompiledName("under-page")>] UnderPage
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TitleBarStyle =
+                /// <summary>
+                /// Results in the standard title bar for macOS or Windows respectively.
+                /// </summary>
+                | [<CompiledName("default")>] Default
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window. On macOS, the window still has the standard
+                /// window controls (“traffic lights”) in the top left. On Windows and Linux, when combined with <c>titleBarOverlay: true</c> it will activate
+                /// the Window Controls Overlay (see <c>titleBarOverlay</c> for more information), otherwise no window controls will be shown.
+                /// </summary>
+                | [<CompiledName("hidden")>] Hidden
+                /// <summary>
+                /// Results in a hidden title bar with an alternative look where the traffic light buttons are slightly more inset from
+                /// the window edge.
+                /// </summary>
+                | [<CompiledName("hiddenInset")>] HiddenInset
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window, the traffic light buttons will display when being
+                /// hovered over in the top left of the window. **Note:** This option is currently experimental.
+                /// </summary>
+                | [<CompiledName("customButtonsOnHover")>] CustomButtonsOnHover
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type VisualEffectState =
+                /// <summary>
+                /// The backdrop should automatically appear active when the window is active, and inactive when it is not. This is the
+                /// default.
+                /// </summary>
+                | [<CompiledName("followWindow")>] FollowWindow
+                /// <summary>
+                /// The backdrop should always appear active.
+                /// </summary>
+                | [<CompiledName("active")>] Active
+                /// <summary>
+                /// The backdrop should always appear inactive.
+                /// </summary>
+                | [<CompiledName("inactive")>] Inactive
+
+        module BaseWindowConstructorOptions =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type BackgroundMaterial =
+                | [<CompiledName("auto")>] Auto
+                | [<CompiledName("none")>] None
+                | [<CompiledName("mica")>] Mica
+                | [<CompiledName("acrylic")>] Acrylic
+                | [<CompiledName("tabbed")>] Tabbed
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Vibrancy =
+                | [<CompiledName("appearance-based")>] AppearanceBased
+                | [<CompiledName("titlebar")>] Titlebar
+                | [<CompiledName("selection")>] Selection
+                | [<CompiledName("menu")>] Menu
+                | [<CompiledName("popover")>] Popover
+                | [<CompiledName("sidebar")>] Sidebar
+                | [<CompiledName("header")>] Header
+                | [<CompiledName("sheet")>] Sheet
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("hud")>] Hud
+                | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                | [<CompiledName("tooltip")>] Tooltip
+                | [<CompiledName("content")>] Content
+                | [<CompiledName("under-window")>] UnderWindow
+                | [<CompiledName("under-page")>] UnderPage
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TitleBarStyle =
+                /// <summary>
+                /// Results in the standard title bar for macOS or Windows respectively.
+                /// </summary>
+                | [<CompiledName("default")>] Default
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window. On macOS, the window still has the standard
+                /// window controls (“traffic lights”) in the top left. On Windows and Linux, when combined with <c>titleBarOverlay: true</c> it will activate
+                /// the Window Controls Overlay (see <c>titleBarOverlay</c> for more information), otherwise no window controls will be shown.
+                /// </summary>
+                | [<CompiledName("hidden")>] Hidden
+                /// <summary>
+                /// Results in a hidden title bar with an alternative look where the traffic light buttons are slightly more inset from
+                /// the window edge.
+                /// </summary>
+                | [<CompiledName("hiddenInset")>] HiddenInset
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window, the traffic light buttons will display when being
+                /// hovered over in the top left of the window. **Note:** This option is currently experimental.
+                /// </summary>
+                | [<CompiledName("customButtonsOnHover")>] CustomButtonsOnHover
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type VisualEffectState =
+                /// <summary>
+                /// The backdrop should automatically appear active when the window is active, and inactive when it is not. This is the
+                /// default.
+                /// </summary>
+                | [<CompiledName("followWindow")>] FollowWindow
+                /// <summary>
+                /// The backdrop should always appear active.
+                /// </summary>
+                | [<CompiledName("active")>] Active
+                /// <summary>
+                /// The backdrop should always appear inactive.
+                /// </summary>
+                | [<CompiledName("inactive")>] Inactive
 
 module Renderer =
     module Constants =
@@ -5803,6 +7415,1886 @@ module Renderer =
 
             [<Emit("$0[1]")>]
             abstract member isMainFrame: bool with get, set
+
+        module ContextMenu =
+            [<JS.Pojo>]
+            type Params
+                /// <param name="x">x coordinate.</param>
+                /// <param name="y">y coordinate.</param>
+                /// <param name="linkURL">URL of the link that encloses the node the context menu was invoked on.</param>
+                /// <param name="linkText">Text associated with the link. May be an empty string if the contents of the link are an image.</param>
+                /// <param name="pageURL">URL of the top level page that the context menu was invoked on.</param>
+                /// <param name="frameURL">URL of the subframe that the context menu was invoked on.</param>
+                /// <param name="srcURL">Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio
+                /// and video.</param>
+                /// <param name="mediaType">Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or
+                /// <c>plugin</c>.</param>
+                /// <param name="hasImageContents">Whether the context menu was invoked on an image which has non-empty contents.</param>
+                /// <param name="isEditable">Whether the context is editable.</param>
+                /// <param name="selectionText">Text of the selection that the context menu was invoked on.</param>
+                /// <param name="titleText">Title text of the selection that the context menu was invoked on.</param>
+                /// <param name="altText">Alt text of the selection that the context menu was invoked on.</param>
+                /// <param name="suggestedFilename">Suggested filename to be used when saving file through 'Save Link As' option of context menu.</param>
+                /// <param name="selectionRect">Rect representing the coordinates in the document space of the selection.</param>
+                /// <param name="selectionStartOffset">Start position of the selection text.</param>
+                /// <param name="referrerPolicy">The referrer policy of the frame on which the menu is invoked.</param>
+                /// <param name="misspelledWord">The misspelled word under the cursor, if any.</param>
+                /// <param name="dictionarySuggestions">An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is
+                /// a misspelled word and spellchecker is enabled.</param>
+                /// <param name="frameCharset">The character encoding of the frame on which the menu was invoked.</param>
+                /// <param name="formControlType">The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>,
+                /// <c>input-datetime-local</c>, <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>,
+                /// <c>select-list</c>, <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,</param>
+                /// <param name="spellcheckEnabled">If the context is editable, whether or not spellchecking is enabled.</param>
+                /// <param name="menuSourceType">Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>,
+                /// or <c>adjustSelectionReset</c>.</param>
+                /// <param name="mediaFlags">The flags for the media element the context menu was invoked on.</param>
+                /// <param name="editFlags">These flags indicate whether the renderer believes it is able to perform the corresponding action.</param>
+                (
+                    x: int,
+                    y: int,
+                    linkURL: string,
+                    linkText: string,
+                    pageURL: string,
+                    frameURL: string,
+                    srcURL: string,
+                    mediaType: Renderer.Enums.WebviewTag.ContextMenu.Params.MediaType,
+                    hasImageContents: bool,
+                    isEditable: bool,
+                    selectionText: string,
+                    titleText: string,
+                    altText: string,
+                    suggestedFilename: string,
+                    selectionRect: Rectangle,
+                    selectionStartOffset: float,
+                    referrerPolicy: Referrer,
+                    misspelledWord: string,
+                    dictionarySuggestions: string[],
+                    frameCharset: string,
+                    formControlType: Renderer.Enums.WebviewTag.ContextMenu.Params.FormControlType,
+                    spellcheckEnabled: bool,
+                    menuSourceType: Renderer.Enums.WebviewTag.ContextMenu.Params.MenuSourceType,
+                    mediaFlags: Renderer.WebviewTag.ContextMenu.Params.MediaFlags,
+                    editFlags: Renderer.WebviewTag.ContextMenu.Params.EditFlags
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// x coordinate.
+                /// </summary>
+                [<Erase>]
+                member val x: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// y coordinate.
+                /// </summary>
+                [<Erase>]
+                member val y: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the link that encloses the node the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val linkURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Text associated with the link. May be an empty string if the contents of the link are an image.
+                /// </summary>
+                [<Erase>]
+                member val linkText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the top level page that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val pageURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the subframe that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val frameURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio and
+                /// video.
+                /// </summary>
+                [<Erase>]
+                member val srcURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or <c>plugin</c>.
+                /// </summary>
+                [<Erase>]
+                member val mediaType: Renderer.Enums.WebviewTag.ContextMenu.Params.MediaType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context menu was invoked on an image which has non-empty contents.
+                /// </summary>
+                [<Erase>]
+                member val hasImageContents: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context is editable.
+                /// </summary>
+                [<Erase>]
+                member val isEditable: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val selectionText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Title text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val titleText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Alt text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val altText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Suggested filename to be used when saving file through 'Save Link As' option of context menu.
+                /// </summary>
+                [<Erase>]
+                member val suggestedFilename: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Rect representing the coordinates in the document space of the selection.
+                /// </summary>
+                [<Erase>]
+                member val selectionRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Start position of the selection text.
+                /// </summary>
+                [<Erase>]
+                member val selectionStartOffset: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The referrer policy of the frame on which the menu is invoked.
+                /// </summary>
+                [<Erase>]
+                member val referrerPolicy: Referrer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The misspelled word under the cursor, if any.
+                /// </summary>
+                [<Erase>]
+                member val misspelledWord: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is a
+                /// misspelled word and spellchecker is enabled.
+                /// </summary>
+                [<Erase>]
+                member val dictionarySuggestions: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The character encoding of the frame on which the menu was invoked.
+                /// </summary>
+                [<Erase>]
+                member val frameCharset: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>, <c>input-datetime-local</c>,
+                /// <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>, <c>select-list</c>,
+                /// <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,
+                /// </summary>
+                [<Erase>]
+                member val formControlType: Renderer.Enums.WebviewTag.ContextMenu.Params.FormControlType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If the context is editable, whether or not spellchecking is enabled.
+                /// </summary>
+                [<Erase>]
+                member val spellcheckEnabled: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>, or
+                /// <c>adjustSelectionReset</c>.
+                /// </summary>
+                [<Erase>]
+                member val menuSourceType: Renderer.Enums.WebviewTag.ContextMenu.Params.MenuSourceType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The flags for the media element the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val mediaFlags: Renderer.WebviewTag.ContextMenu.Params.MediaFlags =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// These flags indicate whether the renderer believes it is able to perform the corresponding action.
+                /// </summary>
+                [<Erase>]
+                member val editFlags: Renderer.WebviewTag.ContextMenu.Params.EditFlags =
+                    Unchecked.defaultof<_> with get, set
+
+            module Params =
+                [<JS.Pojo>]
+                type EditFlags
+                    /// <param name="canUndo">Whether the renderer believes it can undo.</param>
+                    /// <param name="canRedo">Whether the renderer believes it can redo.</param>
+                    /// <param name="canCut">Whether the renderer believes it can cut.</param>
+                    /// <param name="canCopy">Whether the renderer believes it can copy.</param>
+                    /// <param name="canPaste">Whether the renderer believes it can paste.</param>
+                    /// <param name="canDelete">Whether the renderer believes it can delete.</param>
+                    /// <param name="canSelectAll">Whether the renderer believes it can select all.</param>
+                    /// <param name="canEditRichly">Whether the renderer believes it can edit text richly.</param>
+                    (
+                        canUndo: bool,
+                        canRedo: bool,
+                        canCut: bool,
+                        canCopy: bool,
+                        canPaste: bool,
+                        canDelete: bool,
+                        canSelectAll: bool,
+                        canEditRichly: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the renderer believes it can undo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canUndo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can redo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRedo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can cut.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCut: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can copy.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCopy: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can paste.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPaste: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can delete.
+                    /// </summary>
+                    [<Erase>]
+                    member val canDelete: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can select all.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSelectAll: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can edit text richly.
+                    /// </summary>
+                    [<Erase>]
+                    member val canEditRichly: bool = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type MediaFlags
+                    /// <param name="inError">Whether the media element has crashed.</param>
+                    /// <param name="isPaused">Whether the media element is paused.</param>
+                    /// <param name="isMuted">Whether the media element is muted.</param>
+                    /// <param name="hasAudio">Whether the media element has audio.</param>
+                    /// <param name="isLooping">Whether the media element is looping.</param>
+                    /// <param name="isControlsVisible">Whether the media element's controls are visible.</param>
+                    /// <param name="canToggleControls">Whether the media element's controls are toggleable.</param>
+                    /// <param name="canPrint">Whether the media element can be printed.</param>
+                    /// <param name="canSave">Whether or not the media element can be downloaded.</param>
+                    /// <param name="canShowPictureInPicture">Whether the media element can show picture-in-picture.</param>
+                    /// <param name="isShowingPictureInPicture">Whether the media element is currently showing picture-in-picture.</param>
+                    /// <param name="canRotate">Whether the media element can be rotated.</param>
+                    /// <param name="canLoop">Whether the media element can be looped.</param>
+                    (
+                        inError: bool,
+                        isPaused: bool,
+                        isMuted: bool,
+                        hasAudio: bool,
+                        isLooping: bool,
+                        isControlsVisible: bool,
+                        canToggleControls: bool,
+                        canPrint: bool,
+                        canSave: bool,
+                        canShowPictureInPicture: bool,
+                        isShowingPictureInPicture: bool,
+                        canRotate: bool,
+                        canLoop: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the media element has crashed.
+                    /// </summary>
+                    [<Erase>]
+                    member val inError: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is paused.
+                    /// </summary>
+                    [<Erase>]
+                    member val isPaused: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is muted.
+                    /// </summary>
+                    [<Erase>]
+                    member val isMuted: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element has audio.
+                    /// </summary>
+                    [<Erase>]
+                    member val hasAudio: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is looping.
+                    /// </summary>
+                    [<Erase>]
+                    member val isLooping: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are visible.
+                    /// </summary>
+                    [<Erase>]
+                    member val isControlsVisible: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are toggleable.
+                    /// </summary>
+                    [<Erase>]
+                    member val canToggleControls: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be printed.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPrint: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether or not the media element can be downloaded.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSave: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can show picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val canShowPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is currently showing picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val isShowingPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be rotated.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRotate: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be looped.
+                    /// </summary>
+                    [<Erase>]
+                    member val canLoop: bool = Unchecked.defaultof<_> with get, set
+
+        module FoundInPage =
+            [<JS.Pojo>]
+            type Result
+                /// <param name="requestId"></param>
+                /// <param name="activeMatchOrdinal">Position of the active match.</param>
+                /// <param name="matches">Number of Matches.</param>
+                /// <param name="selectionArea">Coordinates of first match region.</param>
+                /// <param name="finalUpdate"></param>
+                (requestId: int, activeMatchOrdinal: int, matches: int, selectionArea: Rectangle, finalUpdate: bool) =
+                class
+                end
+
+                [<Erase>]
+                member val requestId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Position of the active match.
+                /// </summary>
+                [<Erase>]
+                member val activeMatchOrdinal: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Number of Matches.
+                /// </summary>
+                [<Erase>]
+                member val matches: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Coordinates of first match region.
+                /// </summary>
+                [<Erase>]
+                member val selectionArea: Rectangle = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val finalUpdate: bool = Unchecked.defaultof<_> with get, set
+
+        module PrintToPDF =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="landscape">Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.</param>
+                /// <param name="displayHeaderFooter">Whether to display header and footer. Defaults to false.</param>
+                /// <param name="printBackground">Whether to print background graphics. Defaults to false.</param>
+                /// <param name="scale">Scale of the webpage rendering. Defaults to 1.</param>
+                /// <param name="pageSize">Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>,
+                /// <c>Ledger</c>, or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="pageRanges">Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.</param>
+                /// <param name="headerTemplate">HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values
+                /// into them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages
+                /// in the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.</param>
+                /// <param name="footerTemplate">HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.</param>
+                /// <param name="preferCSSPageSize">Whether or not to prefer page size as defined by css. Defaults to false, in which case the content
+                /// will be scaled to fit the paper size.</param>
+                /// <param name="generateTaggedPDF">Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated
+                /// PDF may not adhere fully to PDF/UA and WCAG standards.</param>
+                /// <param name="generateDocumentOutline">Whether or not to generate a PDF document outline from content headers. Defaults to false.</param>
+                (
+                    ?landscape: bool,
+                    ?displayHeaderFooter: bool,
+                    ?printBackground: bool,
+                    ?scale: float,
+                    ?pageSize: U2<Renderer.Enums.WebviewTag.PrintToPDF.Options.PageSize, Size>,
+                    ?margins: Renderer.WebviewTag.PrintToPDF.Options.Margins,
+                    ?pageRanges: string,
+                    ?headerTemplate: string,
+                    ?footerTemplate: string,
+                    ?preferCSSPageSize: bool,
+                    ?generateTaggedPDF: bool,
+                    ?generateDocumentOutline: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to display header and footer. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val displayHeaderFooter: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to print background graphics. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Scale of the webpage rendering. Defaults to 1.
+                /// </summary>
+                [<Erase>]
+                member val scale: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>, <c>Ledger</c>,
+                /// or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Renderer.Enums.WebviewTag.PrintToPDF.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Renderer.WebviewTag.PrintToPDF.Options.Margins =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into
+                /// them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages in
+                /// the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.
+                /// </summary>
+                [<Erase>]
+                member val headerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.
+                /// </summary>
+                [<Erase>]
+                member val footerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to prefer page size as defined by css. Defaults to false, in which case the content will
+                /// be scaled to fit the paper size.
+                /// </summary>
+                [<Erase>]
+                member val preferCSSPageSize: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated PDF
+                /// may not adhere fully to PDF/UA and WCAG standards.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateTaggedPDF: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a PDF document outline from content headers. Defaults to false.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateDocumentOutline: bool = Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="top">Top margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="bottom">Bottom margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="left">Left margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="right">Right margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    (?top: float, ?bottom: float, ?left: float, ?right: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Top margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Bottom margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Left margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Right margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+        module Print =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="silent">Don't ask user for print settings. Default is <c>false</c>.</param>
+                /// <param name="printBackground">Prints the background color and image of the web page. Default is <c>false</c>.</param>
+                /// <param name="deviceName">Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB'
+                /// and not 'Brother QL-820NWB'.</param>
+                /// <param name="color">Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="landscape">Whether the web page should be printed in landscape mode. Default is <c>false</c>.</param>
+                /// <param name="scaleFactor">The scale factor of the web page.</param>
+                /// <param name="pagesPerSheet">The number of pages to print per page sheet.</param>
+                /// <param name="collate">Whether the web page should be collated.</param>
+                /// <param name="copies">The number of copies of the web page to print.</param>
+                /// <param name="pageRanges">The page range to print.</param>
+                /// <param name="duplexMode">Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.</param>
+                /// <param name="dpi"></param>
+                /// <param name="header">string to be printed as page header.</param>
+                /// <param name="footer">string to be printed as page footer.</param>
+                /// <param name="pageSize">Specify page size of the printed document. Can be <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c> or an Object containing
+                /// <c>height</c> in microns.</param>
+                (
+                    ?silent: bool,
+                    ?printBackground: bool,
+                    ?deviceName: string,
+                    ?color: bool,
+                    ?margins: Renderer.WebviewTag.Print.Options.Margins,
+                    ?landscape: bool,
+                    ?scaleFactor: float,
+                    ?pagesPerSheet: float,
+                    ?collate: bool,
+                    ?copies: float,
+                    ?pageRanges: Renderer.WebviewTag.Print.Options.PageRanges[],
+                    ?duplexMode: Renderer.Enums.WebviewTag.Print.Options.DuplexMode,
+                    ?dpi: Record<string, float>,
+                    ?header: string,
+                    ?footer: string,
+                    ?pageSize: U2<Renderer.Enums.WebviewTag.Print.Options.PageSize, Size>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Don't ask user for print settings. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val silent: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Prints the background color and image of the web page. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB' and
+                /// not 'Brother QL-820NWB'.
+                /// </summary>
+                [<Erase>]
+                member val deviceName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val color: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Renderer.WebviewTag.Print.Options.Margins = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be printed in landscape mode. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The scale factor of the web page.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of pages to print per page sheet.
+                /// </summary>
+                [<Erase>]
+                member val pagesPerSheet: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be collated.
+                /// </summary>
+                [<Erase>]
+                member val collate: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of copies of the web page to print.
+                /// </summary>
+                [<Erase>]
+                member val copies: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The page range to print.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: Renderer.WebviewTag.Print.Options.PageRanges[] =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.
+                /// </summary>
+                [<Erase>]
+                member val duplexMode: Renderer.Enums.WebviewTag.Print.Options.DuplexMode =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val dpi: Record<string, float> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page header.
+                /// </summary>
+                [<Erase>]
+                member val header: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page footer.
+                /// </summary>
+                [<Erase>]
+                member val footer: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the printed document. Can be <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c> or an Object containing <c>height</c>
+                /// in microns.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Renderer.Enums.WebviewTag.Print.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type PageRanges
+                    /// <param name="from">Index of the first page to print (0-based).</param>
+                    /// <param name="to">Index of the last page to print (inclusive) (0-based).</param>
+                    (from: float, ``to``: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Index of the first page to print (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val from: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Index of the last page to print (inclusive) (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val ``to``: float = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="marginType">Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>,
+                    /// <c>left</c>, and <c>right</c>.</param>
+                    /// <param name="top">The top margin of the printed web page, in pixels.</param>
+                    /// <param name="bottom">The bottom margin of the printed web page, in pixels.</param>
+                    /// <param name="left">The left margin of the printed web page, in pixels.</param>
+                    /// <param name="right">The right margin of the printed web page, in pixels.</param>
+                    (
+                        ?marginType: Renderer.Enums.WebviewTag.Print.Options.Margins.MarginType,
+                        ?top: float,
+                        ?bottom: float,
+                        ?left: float,
+                        ?right: float
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>, <c>left</c>,
+                    /// and <c>right</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val marginType: Renderer.Enums.WebviewTag.Print.Options.Margins.MarginType =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The top margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The bottom margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The left margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The right margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+        module FindInPage =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="forward">Whether to search forward or backward, defaults to <c>true</c>.</param>
+                /// <param name="findNext">Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c>
+                /// for follow-up requests. Defaults to <c>false</c>.</param>
+                /// <param name="matchCase">Whether search should be case-sensitive, defaults to <c>false</c>.</param>
+                (?forward: bool, ?findNext: bool, ?matchCase: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to search forward or backward, defaults to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val forward: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c> for
+                /// follow-up requests. Defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val findNext: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether search should be case-sensitive, defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val matchCase: bool = Unchecked.defaultof<_> with get, set
+
+        module AdjustSelection =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="start">Amount to shift the start index of the current selection.</param>
+                /// <param name="end">Amount to shift the end index of the current selection.</param>
+                (?start: float, ?``end``: float) =
+                class
+                end
+
+                /// <summary>
+                /// Amount to shift the start index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val start: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Amount to shift the end index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val ``end``: float = Unchecked.defaultof<_> with get, set
+
+        module DownloadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="headers">HTTP request headers.</param>
+                (?headers: Record<string, string>) =
+                class
+                end
+
+                /// <summary>
+                /// HTTP request headers.
+                /// </summary>
+                [<Erase>]
+                member val headers: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+        module LoadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="httpReferrer">An HTTP Referrer url.</param>
+                /// <param name="userAgent">A user agent originating the request.</param>
+                /// <param name="extraHeaders">Extra headers separated by "\n"</param>
+                /// <param name="postData"></param>
+                /// <param name="baseURLForDataURL">Base url (with trailing path separator) for files to be loaded by the data url. This is needed only
+                /// if the specified <c>url</c> is a data url and needs to load other files.</param>
+                (
+                    ?httpReferrer: U2<string, Referrer>,
+                    ?userAgent: string,
+                    ?extraHeaders: string,
+                    ?postData: U2<UploadRawData, UploadFile>[],
+                    ?baseURLForDataURL: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// An HTTP Referrer url.
+                /// </summary>
+                [<Erase>]
+                member val httpReferrer: U2<string, Referrer> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// A user agent originating the request.
+                /// </summary>
+                [<Erase>]
+                member val userAgent: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra headers separated by "\n"
+                /// </summary>
+                [<Erase>]
+                member val extraHeaders: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val postData: U2<UploadRawData, UploadFile>[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Base url (with trailing path separator) for files to be loaded by the data url. This is needed only if
+                /// the specified <c>url</c> is a data url and needs to load other files.
+                /// </summary>
+                [<Erase>]
+                member val baseURLForDataURL: string = Unchecked.defaultof<_> with get, set
+
+    module Shell =
+        module OpenExternal =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="activate">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> to bring the
+                /// opened application to the foreground. The default is <c>true</c>.</param>
+                /// <param name="workingDirectory">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The working directory.</param>
+                /// <param name="logUsage">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || Indicates a user initiated
+                /// launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ?activate: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?workingDirectory: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?logUsage: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// <c>true</c> to bring the opened application to the foreground. The default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val activate: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The working directory.
+                /// </summary>
+                [<Erase>]
+                member val workingDirectory: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// Indicates a user initiated launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val logUsage: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+    module Process =
+        [<JS.Pojo>]
+        type GetSystemMemoryInfo
+            /// <param name="total">The total amount of physical memory in Kilobytes available to the system.</param>
+            /// <param name="free">The total amount of memory not being used by applications or disk cache.</param>
+            /// <param name="fileBacked">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that currently has been paged out to storage. Includes memory for file caches, network buffers, and other system services.</param>
+            /// <param name="purgeable">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that is marked as "purgeable". The system can reclaim it if memory pressure increases.</param>
+            /// <param name="swapTotal">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The total amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            /// <param name="swapFree">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The free amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            (
+                total: int,
+                free: int
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                fileBacked: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                purgeable: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapTotal: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapFree: int
+                #endif
+
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The total amount of physical memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The total amount of memory not being used by applications or disk cache.
+            /// </summary>
+            [<Erase>]
+            member val free: int = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that currently has been paged out to storage. Includes memory for file caches, network buffers, and
+            /// other system services.
+            /// </summary>
+            [<Erase>]
+            member val fileBacked: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that is marked as "purgeable". The system can reclaim it if memory pressure increases.
+            /// </summary>
+            [<Erase>]
+            member val purgeable: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The total amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapTotal: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The free amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapFree: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        [<JS.Pojo>]
+        type GetBlinkMemoryInfo
+            /// <param name="allocated">Size of all allocated objects in Kilobytes.</param>
+            /// <param name="total">Total allocated space in Kilobytes.</param>
+            (allocated: int, total: int) =
+            class
+            end
+
+            /// <summary>
+            /// Size of all allocated objects in Kilobytes.
+            /// </summary>
+            [<Erase>]
+            member val allocated: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Total allocated space in Kilobytes.
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type GetHeapStatistics
+            /// <param name="totalHeapSize"></param>
+            /// <param name="totalHeapSizeExecutable"></param>
+            /// <param name="totalPhysicalSize"></param>
+            /// <param name="totalAvailableSize"></param>
+            /// <param name="usedHeapSize"></param>
+            /// <param name="heapSizeLimit"></param>
+            /// <param name="mallocedMemory"></param>
+            /// <param name="peakMallocedMemory"></param>
+            /// <param name="doesZapGarbage"></param>
+            (
+                totalHeapSize: int,
+                totalHeapSizeExecutable: int,
+                totalPhysicalSize: int,
+                totalAvailableSize: int,
+                usedHeapSize: int,
+                heapSizeLimit: int,
+                mallocedMemory: int,
+                peakMallocedMemory: int,
+                doesZapGarbage: bool
+            ) =
+            class
+            end
+
+            [<Erase>]
+            member val totalHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalHeapSizeExecutable: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalPhysicalSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalAvailableSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val usedHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val heapSizeLimit: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val mallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val peakMallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val doesZapGarbage: bool = Unchecked.defaultof<_> with get, set
+
+    module NativeImage =
+        module AddRepresentation =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">The scale factor to add the image representation for.</param>
+                /// <param name="width">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="height">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="buffer">The buffer containing the raw image data.</param>
+                /// <param name="dataURL">The data URL containing either a base 64 encoded PNG or JPEG image.</param>
+                (?scaleFactor: float, ?width: int, ?height: int, ?buffer: Buffer, ?dataURL: string) =
+                class
+                end
+
+                /// <summary>
+                /// The scale factor to add the image representation for.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The buffer containing the raw image data.
+                /// </summary>
+                [<Erase>]
+                member val buffer: Buffer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The data URL containing either a base 64 encoded PNG or JPEG image.
+                /// </summary>
+                [<Erase>]
+                member val dataURL: string = Unchecked.defaultof<_> with get, set
+
+        module Resize =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Defaults to the image's width.</param>
+                /// <param name="height">Defaults to the image's height.</param>
+                /// <param name="quality">The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These
+                /// values express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU)
+                /// of the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a
+                /// given platform.</param>
+                (?width: int, ?height: int, ?quality: Renderer.Enums.NativeImage.Resize.Options.Quality) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to the image's width.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to the image's height.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These values
+                /// express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU) of
+                /// the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a given
+                /// platform.
+                /// </summary>
+                [<Erase>]
+                member val quality: Renderer.Enums.NativeImage.Resize.Options.Quality =
+                    Unchecked.defaultof<_> with get, set
+
+        module GetBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToDataURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToPNG =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBuffer =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Required for bitmap buffers.</param>
+                /// <param name="height">Required for bitmap buffers.</param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?width: int, ?height: int, ?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width"></param>
+                /// <param name="height"></param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (width: int, height: int, ?scaleFactor: float) =
+                class
+                end
+
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+    module CrashReporter =
+        module Start =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="submitURL">URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.</param>
+                /// <param name="productName">Defaults to <c>app.name</c>.</param>
+                /// <param name="companyName">Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.</param>
+                /// <param name="uploadToServer">Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in
+                /// the crashes directory, but not uploaded. Default is <c>true</c>.</param>
+                /// <param name="ignoreSystemCrashHandler">If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is
+                /// <c>false</c>.</param>
+                /// <param name="rateLimit">⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌ || If true, limit the
+                /// number of crashes uploaded to 1/hour. Default is <c>false</c>.</param>
+                /// <param name="compress">If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.</param>
+                /// <param name="extra">Extra string key/value annotations that will be sent along with crash reports that are generated in the main process.
+                /// Only string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters
+                /// to crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.</param>
+                /// <param name="globalExtra">Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations
+                /// cannot be changed once the crash reporter has been started. If a key is present in both the global extra
+                /// parameters and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version
+                /// are included, as well as the Electron version.</param>
+                (
+                    ?submitURL: string,
+                    ?productName: string,
+                    ?companyName: string,
+                    ?uploadToServer: bool,
+                    ?ignoreSystemCrashHandler: bool
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                    ,
+                    ?rateLimit: bool
+                    #endif
+                    ,
+                    ?compress: bool,
+                    ?extra: Record<string, string>,
+                    ?globalExtra: Record<string, string>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val submitURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to <c>app.name</c>.
+                /// </summary>
+                [<Erase>]
+                member val productName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.
+                /// </summary>
+                [<Erase; System.Obsolete>]
+                member val companyName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in the
+                /// crashes directory, but not uploaded. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val uploadToServer: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val ignoreSystemCrashHandler: bool = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// If true, limit the number of crashes uploaded to 1/hour. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val rateLimit: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                /// <summary>
+                /// If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val compress: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with crash reports that are generated in the main process. Only
+                /// string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters to
+                /// crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.
+                /// </summary>
+                [<Erase>]
+                member val extra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations cannot
+                /// be changed once the crash reporter has been started. If a key is present in both the global extra parameters
+                /// and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version are
+                /// included, as well as the Electron version.
+                /// </summary>
+                [<Erase>]
+                member val globalExtra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+    module ContextBridge =
+        module ExecuteInMainWorld =
+            [<JS.Pojo>]
+            type ExecutionScript
+                /// <param name="func">A JavaScript function to execute. This function will be serialized which means that any bound parameters and execution context
+                /// will be lost.</param>
+                /// <param name="args">An array of arguments to pass to the provided function. These arguments will be copied between worlds in accordance
+                /// with the table of supported types.</param>
+                (func: FSharpFunc<_,_>, ?args: obj[]) =
+                class
+                end
+
+                /// <summary>
+                /// A JavaScript function to execute. This function will be serialized which means that any bound parameters and execution context will
+                /// be lost.
+                /// </summary>
+                [<Erase>]
+                member val func: FSharpFunc<_,_> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// An array of arguments to pass to the provided function. These arguments will be copied between worlds in accordance with
+                /// the table of supported types.
+                /// </summary>
+                [<Erase>]
+                member val args: obj[] = Unchecked.defaultof<_> with get, set
+
+    module Clipboard =
+        module Write =
+            [<JS.Pojo>]
+            type Data
+                /// <param name="text"></param>
+                /// <param name="html"></param>
+                /// <param name="image"></param>
+                /// <param name="rtf"></param>
+                /// <param name="bookmark">The title of the URL at <c>text</c>.</param>
+                (?text: string, ?html: string, ?image: Main.NativeImage, ?rtf: string, ?bookmark: string) =
+                class
+                end
+
+                [<Erase>]
+                member val text: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val html: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val image: Main.NativeImage = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val rtf: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The title of the URL at <c>text</c>.
+                /// </summary>
+                [<Erase>]
+                member val bookmark: string = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type ReadBookmark
+            /// <param name="title"></param>
+            /// <param name="url"></param>
+            (title: string, url: string) =
+            class
+            end
+
+            [<Erase>]
+            member val title: string = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val url: string = Unchecked.defaultof<_> with get, set
+
+    module WebFrame =
+        [<JS.Pojo>]
+        type GetResourceUsage
+            /// <param name="images"></param>
+            /// <param name="scripts"></param>
+            /// <param name="cssStyleSheets"></param>
+            /// <param name="xslStyleSheets"></param>
+            /// <param name="fonts"></param>
+            /// <param name="other"></param>
+            (
+                images: MemoryUsageDetails,
+                scripts: MemoryUsageDetails,
+                cssStyleSheets: MemoryUsageDetails,
+                xslStyleSheets: MemoryUsageDetails,
+                fonts: MemoryUsageDetails,
+                other: MemoryUsageDetails
+            ) =
+            class
+            end
+
+            [<Erase>]
+            member val images: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val scripts: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val cssStyleSheets: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val xslStyleSheets: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val fonts: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val other: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+        module SetIsolatedWorldInfo =
+            [<JS.Pojo>]
+            type Info
+                /// <param name="securityOrigin">Security origin for the isolated world.</param>
+                /// <param name="csp">Content Security Policy for the isolated world.</param>
+                /// <param name="name">Name for isolated world. Useful in devtools.</param>
+                (?securityOrigin: string, ?csp: string, ?name: string) =
+                class
+                end
+
+                /// <summary>
+                /// Security origin for the isolated world.
+                /// </summary>
+                [<Erase>]
+                member val securityOrigin: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Content Security Policy for the isolated world.
+                /// </summary>
+                [<Erase>]
+                member val csp: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Name for isolated world. Useful in devtools.
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+
+        module InsertCSS =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="cssOrigin">Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.</param>
+                (?cssOrigin: Renderer.Enums.WebFrame.InsertCSS.Options.CssOrigin) =
+                class
+                end
+
+                /// <summary>
+                /// Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.
+                /// </summary>
+                [<Erase>]
+                member val cssOrigin: Renderer.Enums.WebFrame.InsertCSS.Options.CssOrigin =
+                    Unchecked.defaultof<_> with get, set
+
+        module ExecuteJavaScriptInIsolatedWorld =
+            /// <param name="result"></param>
+            /// <param name="error"></param>
+            type Callback = delegate of result: obj * error: Error -> unit
+
+        module ExecuteJavaScript =
+            /// <param name="result"></param>
+            /// <param name="error"></param>
+            type Callback = delegate of result: obj * error: Error -> unit
+
+        module SetSpellCheckProvider =
+            [<JS.Pojo>]
+            type Provider
+                /// <param name="spellCheck"></param>
+                (spellCheck: string[] * string[] -> unit -> unit) =
+                class
+                end
+
+                [<Erase>]
+                member val spellCheck: string[] * string[] -> unit -> unit = Unchecked.defaultof<_> with get, set
+
+            module Provider =
+                /// <param name="words"></param>
+                /// <param name="callback"></param>
+                type SpellCheck = delegate of words: string[] * callback: (string[] -> unit) -> unit
+
+    module IpcRenderer =
+        module RemoveListener =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module AddListener =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Once =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Off =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module On =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+    module Enums =
+        module WebviewTag =
+            module ContextMenu =
+                module Params =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MenuSourceType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("mouse")>] Mouse
+                        | [<CompiledName("keyboard")>] Keyboard
+                        | [<CompiledName("touch")>] Touch
+                        | [<CompiledName("touchMenu")>] TouchMenu
+                        | [<CompiledName("longPress")>] LongPress
+                        | [<CompiledName("longTap")>] LongTap
+                        | [<CompiledName("touchHandle")>] TouchHandle
+                        | [<CompiledName("stylus")>] Stylus
+                        | [<CompiledName("adjustSelection")>] AdjustSelection
+                        | [<CompiledName("adjustSelectionReset")>] AdjustSelectionReset
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type FormControlType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("button-button")>] ButtonButton
+                        | [<CompiledName("field-set")>] FieldSet
+                        | [<CompiledName("input-button")>] InputButton
+                        | [<CompiledName("input-checkbox")>] InputCheckbox
+                        | [<CompiledName("input-color")>] InputColor
+                        | [<CompiledName("input-date")>] InputDate
+                        | [<CompiledName("input-datetime-local")>] InputDatetimeLocal
+                        | [<CompiledName("input-email")>] InputEmail
+                        | [<CompiledName("input-file")>] InputFile
+                        | [<CompiledName("input-hidden")>] InputHidden
+                        | [<CompiledName("input-image")>] InputImage
+                        | [<CompiledName("input-month")>] InputMonth
+                        | [<CompiledName("input-number")>] InputNumber
+                        | [<CompiledName("input-password")>] InputPassword
+                        | [<CompiledName("input-radio")>] InputRadio
+                        | [<CompiledName("input-range")>] InputRange
+                        | [<CompiledName("input-reset")>] InputReset
+                        | [<CompiledName("input-search")>] InputSearch
+                        | [<CompiledName("input-submit")>] InputSubmit
+                        | [<CompiledName("input-telephone")>] InputTelephone
+                        | [<CompiledName("input-text")>] InputText
+                        | [<CompiledName("input-time")>] InputTime
+                        | [<CompiledName("input-url")>] InputUrl
+                        | [<CompiledName("input-week")>] InputWeek
+                        | [<CompiledName("output")>] Output
+                        | [<CompiledName("reset-button")>] ResetButton
+                        | [<CompiledName("select-list")>] SelectList
+                        | [<CompiledName("select-multiple")>] SelectMultiple
+                        | [<CompiledName("select-one")>] SelectOne
+                        | [<CompiledName("submit-button")>] SubmitButton
+                        | [<CompiledName("text-area")>] TextArea
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MediaType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("image")>] Image
+                        | [<CompiledName("audio")>] Audio
+                        | [<CompiledName("video")>] Video
+                        | [<CompiledName("canvas")>] Canvas
+                        | [<CompiledName("file")>] File
+                        | [<CompiledName("plugin")>] Plugin
+
+            module PrintToPDF =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A0")>] A0
+                        | [<CompiledName("A1")>] A1
+                        | [<CompiledName("A2")>] A2
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("A6")>] A6
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+                        | [<CompiledName("Ledger")>] Ledger
+
+            module Print =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type DuplexMode =
+                        | [<CompiledName("simplex")>] Simplex
+                        | [<CompiledName("shortEdge")>] ShortEdge
+                        | [<CompiledName("longEdge")>] LongEdge
+
+                    module Margins =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type MarginType =
+                            | [<CompiledName("default")>] Default
+                            | [<CompiledName("none")>] None
+                            | [<CompiledName("printableArea")>] PrintableArea
+                            | [<CompiledName("custom")>] Custom
+
+            module StopFindInPage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Action =
+                    /// <summary>
+                    /// Clear the selection.
+                    /// </summary>
+                    | [<CompiledName("clearSelection")>] ClearSelection
+                    /// <summary>
+                    /// Translate the selection into a normal selection.
+                    /// </summary>
+                    | [<CompiledName("keepSelection")>] KeepSelection
+                    /// <summary>
+                    /// Focus and click the selection node.
+                    /// </summary>
+                    | [<CompiledName("activateSelection")>] ActivateSelection
+
+        module WebFrame =
+            module InsertCSS =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CssOrigin =
+                        | [<CompiledName("user")>] User
+                        | [<CompiledName("author")>] Author
+
+        module UtilityProcess =
+            module Error =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type = | [<CompiledName("FatalError")>] FatalError
+
+        module Shell =
+            module WriteShortcutLink =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Operation =
+                    /// <summary>
+                    /// Creates a new shortcut, overwriting if necessary.
+                    /// </summary>
+                    | [<CompiledName("create")>] Create
+                    /// <summary>
+                    /// Updates specified properties only on an existing shortcut.
+                    /// </summary>
+                    | [<CompiledName("update")>] Update
+                    /// <summary>
+                    /// Overwrites an existing shortcut, fails if the shortcut doesn't exist.
+                    /// </summary>
+                    | [<CompiledName("replace")>] Replace
+
+        module Process =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// The main process
+                /// </summary>
+                | [<CompiledName("browser")>] Browser
+                /// <summary>
+                /// A renderer process
+                /// </summary>
+                | [<CompiledName("renderer")>] Renderer
+                /// <summary>
+                /// In a service worker
+                /// </summary>
+                | [<CompiledName("service-worker")>] ServiceWorker
+                /// <summary>
+                /// In a web worker
+                /// </summary>
+                | [<CompiledName("worker")>] Worker
+                /// <summary>
+                /// In a node process launched as a service
+                /// </summary>
+                | [<CompiledName("utility")>] Utility
+
+        module NativeImage =
+            module Resize =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Quality =
+                        | [<CompiledName("good")>] Good
+                        | [<CompiledName("better")>] Better
+                        | [<CompiledName("best")>] Best
+
+        module Clipboard =
+            module Write =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBuffer =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Has =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module AvailableFormats =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Clear =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBookmark =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
 
     /// <summary>
     /// <para>⚠ Process Availability: Main ❌ | Renderer ✔ | Utility ❌ | Exported ❌</para>
@@ -7586,7 +11078,7 @@ module Renderer =
         /// the error parameter is second.</param>
         [<Erase>]
         static member inline executeJavaScript
-            (code: string, ?userGesture: bool, ?callback: Renderer.WebFrame.ExecuteJavaScript.Callback)
+            (code: string, ?userGesture: bool, ?callback: obj * Error -> unit)
             : Promise<obj> =
             Unchecked.defaultof<_>
 
@@ -7605,12 +11097,8 @@ module Renderer =
         /// method, the error parameter is second.</param>
         [<Erase>]
         static member inline executeJavaScriptInIsolatedWorld
-            (
-                worldId: int,
-                scripts: WebSource[],
-                ?userGesture: bool,
-                ?callback: Renderer.WebFrame.ExecuteJavaScriptInIsolatedWorld.Callback
-            ) : Promise<obj> =
+            (worldId: int, scripts: WebSource[], ?userGesture: bool, ?callback: obj * Error -> unit)
+            : Promise<obj> =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8501,7 +11989,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline on(channel: string, listener: Renderer.IpcRenderer.On.Listener) : unit =
+        static member inline on(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8510,7 +11998,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline off(channel: string, listener: Renderer.IpcRenderer.Off.Listener) : unit =
+        static member inline off(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8520,7 +12008,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline once(channel: string, listener: Renderer.IpcRenderer.Once.Listener) : unit =
+        static member inline once(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8529,7 +12017,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline addListener(channel: string, listener: Renderer.IpcRenderer.AddListener.Listener) : unit =
+        static member inline addListener(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8538,9 +12026,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline removeListener
-            (channel: string, listener: Renderer.IpcRenderer.RemoveListener.Listener)
-            : unit =
+        static member inline removeListener(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8996,6 +12482,165 @@ module Utility =
             [<Literal; Erase>]
             let Login = "login"
 
+    module UtilityProcess =
+        /// <summary>
+        /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
+        /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
+        /// </summary>
+        [<Experimental("Indicated to be Experimental by Electron");
+          System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnError =
+            /// <summary>
+            /// Type of error. One of the following values:
+            /// </summary>
+            [<Emit("$0[0]")>]
+            abstract member ``type``: Utility.Enums.UtilityProcess.Error.Type with get, set
+
+            /// <summary>
+            /// Source location from where the error originated.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member location: string with get, set
+
+            /// <summary>
+            /// <c>Node.js diagnostic report</c>.
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member report: string with get, set
+
+    module ParentPort =
+        module Message =
+            [<JS.Pojo>]
+            type MessageEvent
+                /// <param name="data"></param>
+                /// <param name="ports"></param>
+                (data: obj, ports: Main.MessagePortMain[]) =
+                class
+                end
+
+                [<Erase>]
+                member val data: obj = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val ports: Main.MessagePortMain[] = Unchecked.defaultof<_> with get, set
+
+    module Net =
+        module ResolveHost =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="queryType">Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:</param>
+                /// <param name="source">The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use
+                /// of big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results
+                /// can still come from cache, resolving "localhost" or IP literals, etc. One of the following values:</param>
+                /// <param name="cacheUsage">Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:</param>
+                /// <param name="secureDnsPolicy">Controls the resolver's Secure DNS behavior for this request. One of the following values:</param>
+                (
+                    ?queryType: Utility.Enums.Net.ResolveHost.Options.QueryType,
+                    ?source: Utility.Enums.Net.ResolveHost.Options.Source,
+                    ?cacheUsage: Utility.Enums.Net.ResolveHost.Options.CacheUsage,
+                    ?secureDnsPolicy: Utility.Enums.Net.ResolveHost.Options.SecureDnsPolicy
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:
+                /// </summary>
+                [<Erase>]
+                member val queryType: Utility.Enums.Net.ResolveHost.Options.QueryType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use of
+                /// big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results can
+                /// still come from cache, resolving "localhost" or IP literals, etc. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val source: Utility.Enums.Net.ResolveHost.Options.Source = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val cacheUsage: Utility.Enums.Net.ResolveHost.Options.CacheUsage =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Controls the resolver's Secure DNS behavior for this request. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val secureDnsPolicy: Utility.Enums.Net.ResolveHost.Options.SecureDnsPolicy =
+                    Unchecked.defaultof<_> with get, set
+
+    module SystemPreferences =
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAccentColorChanged =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The new RGBA color the user assigned to be their system accent color.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member newColor: string with get, set
+        #endif
+
+
+        [<JS.Pojo>]
+        type GetAnimationSettings
+            /// <param name="shouldRenderRichAnimation">Returns true if rich animations should be rendered. Looks at session type (e.g. remote desktop) and accessibility settings to
+            /// give guidance for heavy animations.</param>
+            /// <param name="scrollAnimationsEnabledBySystem">Determines on a per-platform basis whether scroll animations (e.g. produced by home/end key) should be enabled.</param>
+            /// <param name="prefersReducedMotion">Determines whether the user desires reduced motion based on platform APIs.</param>
+            (shouldRenderRichAnimation: bool, scrollAnimationsEnabledBySystem: bool, prefersReducedMotion: bool) =
+            class
+            end
+
+            /// <summary>
+            /// Returns true if rich animations should be rendered. Looks at session type (e.g. remote desktop) and accessibility settings to give
+            /// guidance for heavy animations.
+            /// </summary>
+            [<Erase>]
+            member val shouldRenderRichAnimation: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Determines on a per-platform basis whether scroll animations (e.g. produced by home/end key) should be enabled.
+            /// </summary>
+            [<Erase>]
+            member val scrollAnimationsEnabledBySystem: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Determines whether the user desires reduced motion based on platform APIs.
+            /// </summary>
+            [<Erase>]
+            member val prefersReducedMotion: bool = Unchecked.defaultof<_> with get, set
+
+        module SubscribeWorkspaceNotification =
+            /// <param name="event"></param>
+            /// <param name="userInfo"></param>
+            /// <param name="object"></param>
+            type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
+        module SubscribeLocalNotification =
+            /// <param name="event"></param>
+            /// <param name="userInfo"></param>
+            /// <param name="object"></param>
+            type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
+        module SubscribeNotification =
+            /// <param name="event"></param>
+            /// <param name="userInfo"></param>
+            /// <param name="object"></param>
+            type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
     module ClientRequest =
         /// <summary>
         /// Emitted when the server returns a redirect response (e.g. 301 Moved Permanently). Calling <c>request.followRedirect</c> will continue with the redirection.
@@ -9029,55 +12674,652 @@ module Utility =
             abstract member authInfo: Utility.ClientRequest.Login.AuthInfo with get, set
 
             [<Emit("$0[1]")>]
-            abstract member callback: Utility.ClientRequest.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
-    module SystemPreferences =
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAccentColorChanged =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+        [<JS.Pojo>]
+        type GetUploadProgress
+            /// <param name="active">Whether the request is currently active. If this is false no other properties will be set</param>
+            /// <param name="started">Whether the upload has started. If this is false both <c>current</c> and <c>total</c> will be set to 0.</param>
+            /// <param name="current">The number of bytes that have been uploaded so far</param>
+            /// <param name="total">The number of bytes that will be uploaded this request</param>
+            (active: bool, started: bool, current: int, total: int) =
+            class
+            end
 
             /// <summary>
-            /// The new RGBA color the user assigned to be their system accent color.
+            /// Whether the request is currently active. If this is false no other properties will be set
             /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member newColor: string with get, set
-        #endif
-
-
-    module UtilityProcess =
-        /// <summary>
-        /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
-        /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
-        /// </summary>
-        [<Experimental("Indicated to be Experimental by Electron");
-          System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnError =
-            /// <summary>
-            /// Type of error. One of the following values:
-            /// </summary>
-            [<Emit("$0[0]")>]
-            abstract member ``type``: Utility.Enums.UtilityProcess.Error.Type with get, set
+            [<Erase>]
+            member val active: bool = Unchecked.defaultof<_> with get, set
 
             /// <summary>
-            /// Source location from where the error originated.
+            /// Whether the upload has started. If this is false both <c>current</c> and <c>total</c> will be set to 0.
             /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member location: string with get, set
+            [<Erase>]
+            member val started: bool = Unchecked.defaultof<_> with get, set
 
             /// <summary>
-            /// <c>Node.js diagnostic report</c>.
+            /// The number of bytes that have been uploaded so far
             /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member report: string with get, set
+            [<Erase>]
+            member val current: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The number of bytes that will be uploaded this request
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type Options
+            /// <param name="method">The HTTP request method. Defaults to the GET method.</param>
+            /// <param name="url">The request URL. Must be provided in the absolute form with the protocol scheme specified as http or https.</param>
+            /// <param name="headers">Headers to be sent with the request.</param>
+            /// <param name="session">The <c>Session</c> instance with which the request is associated.</param>
+            /// <param name="partition">The name of the <c>partition</c> with which the request is associated. Defaults to the empty string. The <c>session</c> option
+            /// supersedes <c>partition</c>. Thus if a <c>session</c> is explicitly specified, <c>partition</c> is ignored.</param>
+            /// <param name="credentials">Can be <c>include</c>, <c>omit</c> or <c>same-origin</c>. Whether to send credentials with this request. If set to <c>include</c>, credentials from
+            /// the session associated with the request will be used. If set to <c>omit</c>, credentials will not be sent with the
+            /// request (and the <c>'login'</c> event will not be triggered in the event of a 401). If set to <c>same-origin</c>, <c>origin</c>
+            /// must also be specified. This matches the behavior of the fetch option of the same name. If this option is
+            /// not specified, authentication data from the session will be sent, and cookies will not be sent (unless <c>useSessionCookies</c> is set).</param>
+            /// <param name="useSessionCookies">Whether to send cookies with this request from the provided session. If <c>credentials</c> is specified, this option has no
+            /// effect. Default is <c>false</c>.</param>
+            /// <param name="protocol">Can be <c>http:</c> or <c>https:</c>. The protocol scheme in the form 'scheme:'. Defaults to 'http:'.</param>
+            /// <param name="host">The server host provided as a concatenation of the hostname and the port number 'hostname:port'.</param>
+            /// <param name="hostname">The server host name.</param>
+            /// <param name="port">The server's listening port number.</param>
+            /// <param name="path">The path part of the request URL.</param>
+            /// <param name="redirect">Can be <c>follow</c>, <c>error</c> or <c>manual</c>. The redirect mode for this request. When mode is <c>error</c>, any redirection will
+            /// be aborted. When mode is <c>manual</c> the redirection will be cancelled unless <c>request.followRedirect</c> is invoked synchronously during the <c>redirect</c> event.
+            ///  Defaults to <c>follow</c>.</param>
+            /// <param name="origin">The origin URL of the request.</param>
+            /// <param name="referrerPolicy">can be "", <c>no-referrer</c>, <c>no-referrer-when-downgrade</c>, <c>origin</c>, <c>origin-when-cross-origin</c>, <c>unsafe-url</c>, <c>same-origin</c>, <c>strict-origin</c>, or <c>strict-origin-when-cross-origin</c>. Defaults to <c>strict-origin-when-cross-origin</c>.</param>
+            /// <param name="cache">can be <c>default</c>, <c>no-store</c>, <c>reload</c>, <c>no-cache</c>, <c>force-cache</c> or <c>only-if-cached</c>.</param>
+            /// <param name="priority">can be <c>throttled</c>, <c>idle</c>, <c>lowest</c>, <c>low</c>, <c>medium</c>, or <c>highest</c>. Defaults to <c>idle</c>.</param>
+            /// <param name="priorityIncremental">the incremental loading flag as part of HTTP extensible priorities (RFC 9218). Default is <c>true</c>.</param>
+            (
+                ?method: string,
+                ?url: string,
+                ?headers: Record<string, U2<string, string[]>>,
+                ?session: Main.Session,
+                ?partition: string,
+                ?credentials: Utility.Enums.ClientRequest.Options.Credentials,
+                ?useSessionCookies: bool,
+                ?protocol: Utility.Enums.ClientRequest.Options.Protocol,
+                ?host: string,
+                ?hostname: string,
+                ?port: int,
+                ?path: string,
+                ?redirect: Utility.Enums.ClientRequest.Options.Redirect,
+                ?origin: string,
+                ?referrerPolicy: Utility.Enums.ClientRequest.Options.ReferrerPolicy,
+                ?cache: Utility.Enums.ClientRequest.Options.Cache,
+                ?priority: Utility.Enums.ClientRequest.Options.Priority,
+                ?priorityIncremental: bool
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The HTTP request method. Defaults to the GET method.
+            /// </summary>
+            [<Erase>]
+            member val method: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The request URL. Must be provided in the absolute form with the protocol scheme specified as http or https.
+            /// </summary>
+            [<Erase>]
+            member val url: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Headers to be sent with the request.
+            /// </summary>
+            [<Erase>]
+            member val headers: Record<string, U2<string, string[]>> = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The <c>Session</c> instance with which the request is associated.
+            /// </summary>
+            [<Erase>]
+            member val session: Main.Session = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The name of the <c>partition</c> with which the request is associated. Defaults to the empty string. The <c>session</c> option supersedes
+            /// <c>partition</c>. Thus if a <c>session</c> is explicitly specified, <c>partition</c> is ignored.
+            /// </summary>
+            [<Erase>]
+            member val partition: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>include</c>, <c>omit</c> or <c>same-origin</c>. Whether to send credentials with this request. If set to <c>include</c>, credentials from the
+            /// session associated with the request will be used. If set to <c>omit</c>, credentials will not be sent with the request
+            /// (and the <c>'login'</c> event will not be triggered in the event of a 401). If set to <c>same-origin</c>, <c>origin</c> must
+            /// also be specified. This matches the behavior of the fetch option of the same name. If this option is not
+            /// specified, authentication data from the session will be sent, and cookies will not be sent (unless <c>useSessionCookies</c> is set).
+            /// </summary>
+            [<Erase>]
+            member val credentials: Utility.Enums.ClientRequest.Options.Credentials =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Whether to send cookies with this request from the provided session. If <c>credentials</c> is specified, this option has no effect.
+            /// Default is <c>false</c>.
+            /// </summary>
+            [<Erase>]
+            member val useSessionCookies: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>http:</c> or <c>https:</c>. The protocol scheme in the form 'scheme:'. Defaults to 'http:'.
+            /// </summary>
+            [<Erase>]
+            member val protocol: Utility.Enums.ClientRequest.Options.Protocol = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The server host provided as a concatenation of the hostname and the port number 'hostname:port'.
+            /// </summary>
+            [<Erase>]
+            member val host: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The server host name.
+            /// </summary>
+            [<Erase>]
+            member val hostname: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The server's listening port number.
+            /// </summary>
+            [<Erase>]
+            member val port: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The path part of the request URL.
+            /// </summary>
+            [<Erase>]
+            member val path: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>follow</c>, <c>error</c> or <c>manual</c>. The redirect mode for this request. When mode is <c>error</c>, any redirection will be
+            /// aborted. When mode is <c>manual</c> the redirection will be cancelled unless <c>request.followRedirect</c> is invoked synchronously during the <c>redirect</c> event.
+            /// Defaults to <c>follow</c>.
+            /// </summary>
+            [<Erase>]
+            member val redirect: Utility.Enums.ClientRequest.Options.Redirect = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The origin URL of the request.
+            /// </summary>
+            [<Erase>]
+            member val origin: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// can be "", <c>no-referrer</c>, <c>no-referrer-when-downgrade</c>, <c>origin</c>, <c>origin-when-cross-origin</c>, <c>unsafe-url</c>, <c>same-origin</c>, <c>strict-origin</c>, or <c>strict-origin-when-cross-origin</c>. Defaults to <c>strict-origin-when-cross-origin</c>.
+            /// </summary>
+            [<Erase>]
+            member val referrerPolicy: Utility.Enums.ClientRequest.Options.ReferrerPolicy =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// can be <c>default</c>, <c>no-store</c>, <c>reload</c>, <c>no-cache</c>, <c>force-cache</c> or <c>only-if-cached</c>.
+            /// </summary>
+            [<Erase>]
+            member val cache: Utility.Enums.ClientRequest.Options.Cache = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// can be <c>throttled</c>, <c>idle</c>, <c>lowest</c>, <c>low</c>, <c>medium</c>, or <c>highest</c>. Defaults to <c>idle</c>.
+            /// </summary>
+            [<Erase>]
+            member val priority: Utility.Enums.ClientRequest.Options.Priority = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// the incremental loading flag as part of HTTP extensible priorities (RFC 9218). Default is <c>true</c>.
+            /// </summary>
+            [<Erase>]
+            member val priorityIncremental: bool = Unchecked.defaultof<_> with get, set
+
+        module Login =
+            [<JS.Pojo>]
+            type AuthInfo
+                /// <param name="isProxy"></param>
+                /// <param name="scheme"></param>
+                /// <param name="host"></param>
+                /// <param name="port"></param>
+                /// <param name="realm"></param>
+                (isProxy: bool, scheme: string, host: string, port: int, realm: string) =
+                class
+                end
+
+                [<Erase>]
+                member val isProxy: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val scheme: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val host: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val port: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val realm: string = Unchecked.defaultof<_> with get, set
+
+            /// <param name="username"></param>
+            /// <param name="password"></param>
+            type Callback = delegate of ?username: string * ?password: string -> unit
+
+    module Enums =
+        module UtilityProcess =
+            module Error =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type = | [<CompiledName("FatalError")>] FatalError
+
+        module SystemPreferences =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type EffectiveAppearance =
+                | [<CompiledName("dark")>] Dark
+                | [<CompiledName("light")>] Light
+                | [<CompiledName("unknown")>] Unknown
+
+            module AskForMediaAccess =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type MediaType =
+                    | [<CompiledName("microphone")>] Microphone
+                    | [<CompiledName("camera")>] Camera
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetMediaAccessStatus =
+                | [<CompiledName("not-determined")>] NotDetermined
+                | [<CompiledName("granted")>] Granted
+                | [<CompiledName("denied")>] Denied
+                | [<CompiledName("restricted")>] Restricted
+                | [<CompiledName("unknown")>] Unknown
+
+            module GetMediaAccessStatus =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type MediaType =
+                    | [<CompiledName("microphone")>] Microphone
+                    | [<CompiledName("camera")>] Camera
+                    | [<CompiledName("screen")>] Screen
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetEffectiveAppearance =
+                | [<CompiledName("dark")>] Dark
+                | [<CompiledName("light")>] Light
+                | [<CompiledName("unknown")>] Unknown
+
+            module GetSystemColor =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Color =
+                    | [<CompiledName("blue")>] Blue
+                    | [<CompiledName("brown")>] Brown
+                    | [<CompiledName("gray")>] Gray
+                    | [<CompiledName("green")>] Green
+                    | [<CompiledName("orange")>] Orange
+                    | [<CompiledName("pink")>] Pink
+                    | [<CompiledName("purple")>] Purple
+                    | [<CompiledName("red")>] Red
+                    | [<CompiledName("yellow")>] Yellow
+
+            module GetColor =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Color =
+                    /// <summary>
+                    /// Dark shadow for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-dark-shadow")>] ``3dDarkShadow``
+                    /// <summary>
+                    /// Face color for three-dimensional display elements and for dialog box backgrounds.
+                    /// </summary>
+                    | [<CompiledName("3d-face")>] ``3dFace``
+                    /// <summary>
+                    /// Highlight color for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-highlight")>] ``3dHighlight``
+                    /// <summary>
+                    /// Light color for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-light")>] ``3dLight``
+                    /// <summary>
+                    /// Shadow color for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-shadow")>] ``3dShadow``
+                    /// <summary>
+                    /// Active window border.
+                    /// </summary>
+                    | [<CompiledName("active-border")>] ActiveBorder
+                    /// <summary>
+                    /// Active window title bar. Specifies the left side color in the color gradient of an active window's title bar if
+                    /// the gradient effect is enabled.
+                    /// </summary>
+                    | [<CompiledName("active-caption")>] ActiveCaption
+                    /// <summary>
+                    /// Right side color in the color gradient of an active window's title bar.
+                    /// </summary>
+                    | [<CompiledName("active-caption-gradient")>] ActiveCaptionGradient
+                    /// <summary>
+                    /// Background color of multiple document interface (MDI) applications.
+                    /// </summary>
+                    | [<CompiledName("app-workspace")>] AppWorkspace
+                    /// <summary>
+                    /// Text on push buttons.
+                    /// </summary>
+                    | [<CompiledName("button-text")>] ButtonText
+                    /// <summary>
+                    /// Text in caption, size box, and scroll bar arrow box.
+                    /// </summary>
+                    | [<CompiledName("caption-text")>] CaptionText
+                    /// <summary>
+                    /// Desktop background color.
+                    /// </summary>
+                    | [<CompiledName("desktop")>] Desktop
+                    /// <summary>
+                    /// Grayed (disabled) text.
+                    /// </summary>
+                    | [<CompiledName("disabled-text")>] DisabledText
+                    /// <summary>
+                    /// Item(s) selected in a control.
+                    /// </summary>
+                    | [<CompiledName("highlight")>] Highlight
+                    /// <summary>
+                    /// Text of item(s) selected in a control.
+                    /// </summary>
+                    | [<CompiledName("highlight-text")>] HighlightText
+                    /// <summary>
+                    /// Color for a hyperlink or hot-tracked item.
+                    /// </summary>
+                    | [<CompiledName("hotlight")>] Hotlight
+                    /// <summary>
+                    /// Inactive window border.
+                    /// </summary>
+                    | [<CompiledName("inactive-border")>] InactiveBorder
+                    /// <summary>
+                    /// Inactive window caption. Specifies the left side color in the color gradient of an inactive window's title bar if the
+                    /// gradient effect is enabled.
+                    /// </summary>
+                    | [<CompiledName("inactive-caption")>] InactiveCaption
+                    /// <summary>
+                    /// Right side color in the color gradient of an inactive window's title bar.
+                    /// </summary>
+                    | [<CompiledName("inactive-caption-gradient")>] InactiveCaptionGradient
+                    /// <summary>
+                    /// Color of text in an inactive caption.
+                    /// </summary>
+                    | [<CompiledName("inactive-caption-text")>] InactiveCaptionText
+                    /// <summary>
+                    /// Background color for tooltip controls.
+                    /// </summary>
+                    | [<CompiledName("info-background")>] InfoBackground
+                    /// <summary>
+                    /// Text color for tooltip controls.
+                    /// </summary>
+                    | [<CompiledName("info-text")>] InfoText
+                    /// <summary>
+                    /// Menu background.
+                    /// </summary>
+                    | [<CompiledName("menu")>] Menu
+                    /// <summary>
+                    /// The color used to highlight menu items when the menu appears as a flat menu.
+                    /// </summary>
+                    | [<CompiledName("menu-highlight")>] MenuHighlight
+                    /// <summary>
+                    /// The background color for the menu bar when menus appear as flat menus.
+                    /// </summary>
+                    | [<CompiledName("menubar")>] Menubar
+                    /// <summary>
+                    /// Text in menus.
+                    /// </summary>
+                    | [<CompiledName("menu-text")>] MenuText
+                    /// <summary>
+                    /// Scroll bar gray area.
+                    /// </summary>
+                    | [<CompiledName("scrollbar")>] Scrollbar
+                    /// <summary>
+                    /// Window background.
+                    /// </summary>
+                    | [<CompiledName("window")>] Window
+                    /// <summary>
+                    /// Window frame.
+                    /// </summary>
+                    | [<CompiledName("window-frame")>] WindowFrame
+                    /// <summary>
+                    /// Text in windows.
+                    /// </summary>
+                    | [<CompiledName("window-text")>] WindowText
+                    /// <summary>
+                    /// The background of a large interface element, such as a browser or table.
+                    /// </summary>
+                    | [<CompiledName("control-background")>] ControlBackground
+                    /// <summary>
+                    /// The surface of a control.
+                    /// </summary>
+                    | [<CompiledName("control")>] Control
+                    /// <summary>
+                    /// The text of a control that isn’t disabled.
+                    /// </summary>
+                    | [<CompiledName("control-text")>] ControlText
+                    /// <summary>
+                    /// The text of a control that’s disabled.
+                    /// </summary>
+                    | [<CompiledName("disabled-control-text")>] DisabledControlText
+                    /// <summary>
+                    /// The color of a find indicator.
+                    /// </summary>
+                    | [<CompiledName("find-highlight")>] FindHighlight
+                    /// <summary>
+                    /// The gridlines of an interface element such as a table.
+                    /// </summary>
+                    | [<CompiledName("grid")>] Grid
+                    /// <summary>
+                    /// The text of a header cell in a table.
+                    /// </summary>
+                    | [<CompiledName("header-text")>] HeaderText
+                    /// <summary>
+                    /// The ring that appears around the currently focused control when using the keyboard for interface navigation.
+                    /// </summary>
+                    | [<CompiledName("keyboard-focus-indicator")>] KeyboardFocusIndicator
+                    /// <summary>
+                    /// The text of a label containing primary content.
+                    /// </summary>
+                    | [<CompiledName("label")>] Label
+                    /// <summary>
+                    /// A link to other content.
+                    /// </summary>
+                    | [<CompiledName("link")>] Link
+                    /// <summary>
+                    ///  A placeholder string in a control or text view.
+                    /// </summary>
+                    | [<CompiledName("placeholder-text")>] PlaceholderText
+                    /// <summary>
+                    /// The text of a label of lesser importance than a tertiary label such as watermark text.
+                    /// </summary>
+                    | [<CompiledName("quaternary-label")>] QuaternaryLabel
+                    /// <summary>
+                    /// The background of a scrubber in the Touch Bar.
+                    /// </summary>
+                    | [<CompiledName("scrubber-textured-background")>] ScrubberTexturedBackground
+                    /// <summary>
+                    /// The text of a label of lesser importance than a normal label such as a label used to represent a
+                    /// subheading or additional information.
+                    /// </summary>
+                    | [<CompiledName("secondary-label")>] SecondaryLabel
+                    /// <summary>
+                    /// The background for selected content in a key window or view.
+                    /// </summary>
+                    | [<CompiledName("selected-content-background")>] SelectedContentBackground
+                    /// <summary>
+                    /// The surface of a selected control.
+                    /// </summary>
+                    | [<CompiledName("selected-control")>] SelectedControl
+                    /// <summary>
+                    /// The text of a selected control.
+                    /// </summary>
+                    | [<CompiledName("selected-control-text")>] SelectedControlText
+                    /// <summary>
+                    /// The text of a selected menu.
+                    /// </summary>
+                    | [<CompiledName("selected-menu-item-text")>] SelectedMenuItemText
+                    /// <summary>
+                    /// The background of selected text.
+                    /// </summary>
+                    | [<CompiledName("selected-text-background")>] SelectedTextBackground
+                    /// <summary>
+                    /// Selected text.
+                    /// </summary>
+                    | [<CompiledName("selected-text")>] SelectedText
+                    /// <summary>
+                    /// A separator between different sections of content.
+                    /// </summary>
+                    | [<CompiledName("separator")>] Separator
+                    /// <summary>
+                    /// The virtual shadow cast by a raised object onscreen.
+                    /// </summary>
+                    | [<CompiledName("shadow")>] Shadow
+                    /// <summary>
+                    /// The text of a label of lesser importance than a secondary label such as a label used to represent disabled
+                    /// text.
+                    /// </summary>
+                    | [<CompiledName("tertiary-label")>] TertiaryLabel
+                    /// <summary>
+                    /// Text background.
+                    /// </summary>
+                    | [<CompiledName("text-background")>] TextBackground
+                    /// <summary>
+                    ///  The text in a document.
+                    /// </summary>
+                    | [<CompiledName("text")>] Text
+                    /// <summary>
+                    ///  The background behind a document's content.
+                    /// </summary>
+                    | [<CompiledName("under-page-background")>] UnderPageBackground
+                    /// <summary>
+                    /// The selected content in a non-key window or view.
+                    /// </summary>
+                    | [<CompiledName("unemphasized-selected-content-background")>] UnemphasizedSelectedContentBackground
+                    /// <summary>
+                    /// A background for selected text in a non-key window or view.
+                    /// </summary>
+                    | [<CompiledName("unemphasized-selected-text-background")>] UnemphasizedSelectedTextBackground
+                    /// <summary>
+                    /// Selected text in a non-key window or view.
+                    /// </summary>
+                    | [<CompiledName("unemphasized-selected-text")>] UnemphasizedSelectedText
+                    /// <summary>
+                    /// The background of a window.
+                    /// </summary>
+                    | [<CompiledName("window-background")>] WindowBackground
+                    /// <summary>
+                    /// The text in the window's titlebar area.
+                    /// </summary>
+                    | [<CompiledName("window-frame-text")>] WindowFrameText
+
+        module Net =
+            module ResolveHost =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type SecureDnsPolicy =
+                        | [<CompiledName("allow")>] Allow
+                        | [<CompiledName("disable")>] Disable
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CacheUsage =
+                        /// <summary>
+                        /// Results may come from the host cache if non-stale
+                        /// </summary>
+                        | [<CompiledName("allowed")>] Allowed
+                        /// <summary>
+                        /// Results may come from the host cache even if stale (by expiration or network changes)
+                        /// </summary>
+                        | [<CompiledName("staleAllowed")>] StaleAllowed
+                        /// <summary>
+                        /// Results will not come from the host cache.
+                        /// </summary>
+                        | [<CompiledName("disallowed")>] Disallowed
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Source =
+                        /// <summary>
+                        /// Resolver will pick an appropriate source. Results could come from DNS, MulticastDNS, HOSTS file, etc
+                        /// </summary>
+                        | [<CompiledName("any")>] Any
+                        /// <summary>
+                        /// Results will only be retrieved from the system or OS, e.g. via the <c>getaddrinfo()</c> system call
+                        /// </summary>
+                        | [<CompiledName("system")>] System
+                        /// <summary>
+                        /// Results will only come from DNS queries
+                        /// </summary>
+                        | [<CompiledName("dns")>] Dns
+                        /// <summary>
+                        /// Results will only come from Multicast DNS queries
+                        /// </summary>
+                        | [<CompiledName("mdns")>] Mdns
+                        /// <summary>
+                        /// No external sources will be used. Results will only come from fast local sources that are available no matter the
+                        /// source setting, e.g. cache, hosts file, IP literal resolution, etc.
+                        /// </summary>
+                        | [<CompiledName("localOnly")>] LocalOnly
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type QueryType =
+                        /// <summary>
+                        /// Fetch only A records
+                        /// </summary>
+                        | [<CompiledName("A")>] A
+                        /// <summary>
+                        /// Fetch only AAAA records.
+                        /// </summary>
+                        | [<CompiledName("AAAA")>] AAAA
+
+        module ClientRequest =
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Priority =
+                    | [<CompiledName("throttled")>] Throttled
+                    | [<CompiledName("idle")>] Idle
+                    | [<CompiledName("lowest")>] Lowest
+                    | [<CompiledName("low")>] Low
+                    | [<CompiledName("medium")>] Medium
+                    | [<CompiledName("highest")>] Highest
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Cache =
+                    | [<CompiledName("default")>] Default
+                    | [<CompiledName("no-store")>] NoStore
+                    | [<CompiledName("reload")>] Reload
+                    | [<CompiledName("no-cache")>] NoCache
+                    | [<CompiledName("force-cache")>] ForceCache
+                    | [<CompiledName("only-if-cached")>] OnlyIfCached
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type ReferrerPolicy =
+                    | [<CompiledName("no-referrer")>] NoReferrer
+                    | [<CompiledName("no-referrer-when-downgrade")>] NoReferrerWhenDowngrade
+                    | [<CompiledName("origin")>] Origin
+                    | [<CompiledName("origin-when-cross-origin")>] OriginWhenCrossOrigin
+                    | [<CompiledName("unsafe-url")>] UnsafeUrl
+                    | [<CompiledName("same-origin")>] SameOrigin
+                    | [<CompiledName("strict-origin")>] StrictOrigin
+                    | [<CompiledName("strict-origin-when-cross-origin")>] StrictOriginWhenCrossOrigin
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Redirect =
+                    | [<CompiledName("follow")>] Follow
+                    | [<CompiledName("error")>] Error
+                    | [<CompiledName("manual")>] Manual
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Protocol =
+                    | [<CompiledName("http:")>] Http
+                    | [<CompiledName("https:")>] Https
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Credentials =
+                    | [<CompiledName("include")>] Include
+                    | [<CompiledName("omit")>] Omit
+                    | [<CompiledName("same-origin")>] SameOrigin
 
     /// <summary>
     /// <para>⚠ Process Availability: Main ✔ | Renderer ✔ | Utility ✔ | Exported ❌</para>
@@ -9411,7 +13653,7 @@ module Utility =
         /// <param name="callback"></param>
         [<Erase>]
         static member inline subscribeNotification
-            (event: Option<string>, callback: Utility.SystemPreferences.SubscribeNotification.Callback)
+            (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
             : float =
             Unchecked.defaultof<_>
         #endif
@@ -9429,7 +13671,7 @@ module Utility =
         /// <param name="callback"></param>
         [<Erase>]
         static member inline subscribeLocalNotification
-            (event: Option<string>, callback: Utility.SystemPreferences.SubscribeLocalNotification.Callback)
+            (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
             : float =
             Unchecked.defaultof<_>
         #endif
@@ -9446,7 +13688,7 @@ module Utility =
         /// <param name="callback"></param>
         [<Erase>]
         static member inline subscribeWorkspaceNotification
-            (event: Option<string>, callback: Utility.SystemPreferences.SubscribeWorkspaceNotification.Callback)
+            (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
             : float =
             Unchecked.defaultof<_>
         #endif
@@ -9994,7 +14236,7 @@ module Utility =
         /// </summary>
         [<Emit("$0.on('login', $1)")>]
         member inline _.onLogin
-            (handler: Utility.ClientRequest.Login.AuthInfo -> Utility.ClientRequest.Login.Callback -> unit)
+            (handler: Utility.ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
             : unit =
             Unchecked.defaultof<_>
 
@@ -10011,7 +14253,7 @@ module Utility =
         /// </summary>
         [<Emit("$0.once('login', $1)")>]
         member inline _.onceLogin
-            (handler: Utility.ClientRequest.Login.AuthInfo -> Utility.ClientRequest.Login.Callback -> unit)
+            (handler: Utility.ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
             : unit =
             Unchecked.defaultof<_>
 
@@ -10028,7 +14270,7 @@ module Utility =
         /// </summary>
         [<Emit("$0.off('login', $1)")>]
         member inline _.offLogin
-            (handler: Utility.ClientRequest.Login.AuthInfo -> Utility.ClientRequest.Login.Callback -> unit)
+            (handler: Utility.ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
             : unit =
             Unchecked.defaultof<_>
 
@@ -10674,823 +14916,6 @@ module Main =
         | Slider of TouchBarSlider
         | Spacer of TouchBarSpacer
 
-    module App =
-        /// <summary>
-        /// This event will be emitted inside the primary instance of your application when a second instance has been executed and
-        /// calls <c>app.requestSingleInstanceLock()</c>.<br/><br/><c>argv</c> is an Array of the second instance's command line arguments, and <c>workingDirectory</c> is its current working directory. Usually
-        /// applications respond to this by making their primary window focused and non-minimized.<br/><br/>&gt; [!NOTE] <c>argv</c> will not be exactly the same
-        /// list of arguments as those passed to the second instance. The order might change and additional arguments might be appended.
-        /// If you need to maintain the exact same arguments, it's advised to use <c>additionalData</c> instead.<br/><br/>&gt; [!NOTE] If the second instance
-        /// is started by a different user than the first, the <c>argv</c> array will not include the arguments.<br/><br/>This event is guaranteed
-        /// to be emitted after the <c>ready</c> event of <c>app</c> gets emitted.<br/><br/>&gt; [!NOTE] Extra command line arguments might be added by
-        /// Chromium, such as <c>--original-process-start-time</c>.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSecondInstance =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// An array of the second instance's command line arguments
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member argv: string[] with get, set
-
-            /// <summary>
-            /// The second instance's working directory
-            /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member workingDirectory: string with get, set
-
-            /// <summary>
-            /// A JSON object of additional data passed from the second instance
-            /// </summary>
-            [<Emit("$0[3]")>]
-            abstract member additionalData: obj with get, set
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted when Chrome's accessibility support changes. This event fires when assistive technologies, such as screen readers, are enabled or disabled.
-        /// See https://www.chromium.org/developers/design-documents/accessibility for more details.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAccessibilitySupportChanged =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// <c>true</c> when Chrome's accessibility support is enabled, <c>false</c> otherwise.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member accessibilitySupportEnabled: bool with get, set
-        #endif
-
-
-        /// <summary>
-        /// Emitted when the child process unexpectedly disappears. This is normally because it was crashed or killed. It does not include
-        /// renderer processes.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnChildProcessGone =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.App.ChildProcessGone.Details with get, set
-
-        /// <summary>
-        /// Emitted when the renderer process unexpectedly disappears.  This is normally because it was crashed or killed.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnRenderProcessGone =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member details: RenderProcessGoneDetails with get, set
-
-        /// <summary>
-        /// Emitted when <c>webContents</c> or Utility process wants to do basic auth.<br/><br/>The default behavior is to cancel all authentications. To override
-        /// this you should prevent the default behavior with <c>event.preventDefault()</c> and call <c>callback(username, password)</c> with the credentials.<br/><br/>If <c>callback</c> is called without
-        /// a username or password, the authentication request will be cancelled and the authentication error will be returned to the page.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnLogin =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member authenticationResponseDetails: Main.App.Login.AuthenticationResponseDetails with get, set
-
-            [<Emit("$0[3]")>]
-            abstract member authInfo: Main.App.Login.AuthInfo with get, set
-
-            [<Emit("$0[4]")>]
-            abstract member callback: Main.App.Login.Callback with get, set
-
-        /// <summary>
-        /// Emitted when a client certificate is requested.<br/><br/>The <c>url</c> corresponds to the navigation entry requesting the client certificate and <c>callback</c> can
-        /// be called with an entry filtered from the list. Using <c>event.preventDefault()</c> prevents the application from using the first certificate from
-        /// the store.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSelectClientCertificate =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member url: URL with get, set
-
-            [<Emit("$0[3]")>]
-            abstract member certificateList: Certificate[] with get, set
-
-            [<Emit("$0[4]")>]
-            abstract member callback: Option<Certificate> -> unit with get, set
-
-        /// <summary>
-        /// Emitted when failed to verify the <c>certificate</c> for <c>url</c>, to trust the certificate you should prevent the default behavior with
-        /// <c>event.preventDefault()</c> and call <c>callback(true)</c>.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnCertificateError =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member url: string with get, set
-
-            /// <summary>
-            /// The error code
-            /// </summary>
-            [<Emit("$0[3]")>]
-            abstract member error: string with get, set
-
-            [<Emit("$0[4]")>]
-            abstract member certificate: Certificate with get, set
-
-            [<Emit("$0[5]")>]
-            abstract member callback: bool -> unit with get, set
-
-            [<Emit("$0[6]")>]
-            abstract member isMainFrame: bool with get, set
-
-        /// <summary>
-        /// Emitted when a new webContents is created.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnWebContentsCreated =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-        /// <summary>
-        /// Emitted when a new browserWindow is created.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnBrowserWindowCreated =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member window: Main.BrowserWindow with get, set
-
-        /// <summary>
-        /// Emitted when a browserWindow gets focused.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnBrowserWindowFocus =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member window: Main.BrowserWindow with get, set
-
-        /// <summary>
-        /// Emitted when a browserWindow gets blurred.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnBrowserWindowBlur =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member window: Main.BrowserWindow with get, set
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted when Handoff is about to be resumed on another device. If you need to update the state to be
-        /// transferred, you should call <c>event.preventDefault()</c> immediately, construct a new <c>userInfo</c> dictionary and call <c>app.updateCurrentActivity()</c> in a timely manner. Otherwise, the
-        /// operation will fail and <c>continue-activity-error</c> will be called.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnUpdateActivityState =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member ``type``: string with get, set
-
-            /// <summary>
-            /// Contains app-specific state stored by the activity.
-            /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member userInfo: obj with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted during Handoff after an activity from this device was successfully resumed on another one.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnActivityWasContinued =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member ``type``: string with get, set
-
-            /// <summary>
-            /// Contains app-specific state stored by the activity.
-            /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member userInfo: obj with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted during Handoff when an activity from a different device fails to be resumed.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnContinueActivityError =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member ``type``: string with get, set
-
-            /// <summary>
-            /// A string with the error's localized description.
-            /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member error: string with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted during Handoff before an activity from a different device wants to be resumed. You should call <c>event.preventDefault()</c> if you
-        /// want to handle this event.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnWillContinueActivity =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member ``type``: string with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted during Handoff when an activity from a different device wants to be resumed. You should call <c>event.preventDefault()</c> if you
-        /// want to handle this event.<br/><br/>A user activity can be continued only in an app that has the same developer Team
-        /// ID as the activity's source app and that supports the activity's type. Supported activity types are specified in the app's
-        /// <c>Info.plist</c> under the <c>NSUserActivityTypes</c> key.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnContinueActivity =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member ``type``: string with get, set
-
-            /// <summary>
-            /// Contains app-specific state stored by the activity on another device.
-            /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member userInfo: obj with get, set
-
-            [<Emit("$0[3]")>]
-            abstract member details: Main.App.ContinueActivity.Details with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted when the application is activated. Various actions can trigger this event, such as launching the application for the first
-        /// time, attempting to re-launch the application when it's already running, or clicking on the application's dock or taskbar icon.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnActivate =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member hasVisibleWindows: bool with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted when the user wants to open a URL with the application. Your application's <c>Info.plist</c> file must define the URL
-        /// scheme within the <c>CFBundleURLTypes</c> key, and set <c>NSPrincipalClass</c> to <c>AtomApplication</c>.<br/><br/>As with the <c>open-file</c> event, be sure to register a listener
-        /// for the <c>open-url</c> event early in your application startup to detect if the application is being opened to handle a
-        /// URL. If you register the listener in response to a <c>ready</c> event, you'll miss URLs that trigger the launch of
-        /// your application.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnOpenUrl =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member url: string with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted when the user wants to open a file with the application. The <c>open-file</c> event is usually emitted when the
-        /// application is already open and the OS wants to reuse the application to open the file. <c>open-file</c> is also emitted
-        /// when a file is dropped onto the dock and the application is not yet running. Make sure to listen for
-        /// the <c>open-file</c> event very early in your application startup to handle this case (even before the <c>ready</c> event is emitted).<br/><br/>You
-        /// should call <c>event.preventDefault()</c> if you want to handle this event.<br/><br/>On Windows, you have to parse <c>process.argv</c> (in the main process)
-        /// to get the filepath.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnOpenFile =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member path: string with get, set
-        #endif
-
-
-        /// <summary>
-        /// Emitted when the application is quitting.<br/><br/>&gt; [!NOTE] On Windows, this event will not be emitted if the app is closed
-        /// due to a shutdown/restart of the system or a user logout.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnQuit =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member exitCode: int with get, set
-
-        /// <summary>
-        /// Emitted once, when Electron has finished initializing. On macOS, <c>launchInfo</c> holds the <c>userInfo</c> of the <c>NSUserNotification</c> or information from <c>UNNotificationResponse</c>
-        /// that was used to open the application, if it was launched from Notification Center. You can also call <c>app.isReady()</c> to
-        /// check if this event has already fired and <c>app.whenReady()</c> to get a Promise that is fulfilled when Electron is initialized.<br/><br/>&gt;
-        /// [!NOTE] The <c>ready</c> event is only fired after the main process has finished running the first tick of the event
-        /// loop. If an Electron API needs to be called before the <c>ready</c> event, ensure that it is called synchronously in
-        /// the top-level context of the main process.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnReady =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member launchInfo: U2<Record<string, obj>, NotificationResponse> with get, set
-
-    module AutoUpdater =
-        /// <summary>
-        /// Emitted when an update has been downloaded.<br/><br/>On Windows only <c>releaseName</c> is available.<br/><br/>&gt; [!NOTE] It is not strictly necessary to handle
-        /// this event. A successfully downloaded update will still be applied the next time the application starts.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnUpdateDownloaded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member releaseNotes: string with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member releaseName: string with get, set
-
-            [<Emit("$0[3]")>]
-            abstract member releaseDate: System.DateTime with get, set
-
-            [<Emit("$0[4]")>]
-            abstract member updateURL: string with get, set
-
-    module BaseWindow =
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-        /// Emitted when the system context menu is triggered on the window, this is normally only triggered when the user right
-        /// clicks on the non-client area of your window.  This is the window titlebar or any area you have declared
-        /// as <c>-webkit-app-region: drag</c> in a frameless window.<br/><br/>Calling <c>event.preventDefault()</c> will prevent the menu from being displayed.<br/><br/>To convert <c>point</c> to DIP, use
-        /// <c>screen.screenToDipPoint(point)</c>.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSystemContextMenu =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The screen coordinates where the context menu was triggered.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member point: Point with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted on trackpad rotation gesture. Continually emitted until rotation gesture is ended. The <c>rotation</c> value on each emission is the
-        /// angle in degrees rotated since the last emission. The last emitted event upon a rotation gesture will always be of
-        /// value <c>0</c>. Counter-clockwise rotation values are positive, while clockwise ones are negative.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnRotateGesture =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member rotation: float with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted on 3-finger swipe. Possible directions are <c>up</c>, <c>right</c>, <c>down</c>, <c>left</c>.<br/><br/>The method underlying this event is built to handle older
-        /// macOS-style trackpad swiping, where the content on the screen doesn't move with the swipe. Most macOS trackpads are not configured
-        /// to allow this kind of swiping anymore, so in order for it to emit properly the 'Swipe between pages' preference
-        /// in <c>System Preferences &gt; Trackpad &gt; More Gestures</c> must be set to 'Swipe with two or three fingers'.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSwipe =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member direction: string with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-        /// Emitted when an App Command is invoked. These are typically related to keyboard media keys or browser commands, as well
-        /// as the "Back" button built into some mice on Windows.<br/><br/>Commands are lowercased, underscores are replaced with hyphens, and the <c>APPCOMMAND_</c>
-        /// prefix is stripped off. e.g. <c>APPCOMMAND_BROWSER_BACKWARD</c> is emitted as <c>browser-backward</c>.<br/><br/>The following app commands are explicitly supported on Linux:<br/><br/>* <c>browser-backward</c><br/>* <c>browser-forward</c>
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAppCommand =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member command: string with get, set
-        #endif
-
-
-        /// <summary>
-        /// Emitted when the window is set or unset to show always on top of other windows.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAlwaysOnTopChanged =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member isAlwaysOnTop: bool with get, set
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted before the window is moved. On Windows, calling <c>event.preventDefault()</c> will prevent the window from being moved.<br/><br/>Note that this is
-        /// only emitted when the window is being moved manually. Moving the window with <c>setPosition</c>/<c>setBounds</c>/<c>center</c> will not emit this event.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnWillMove =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// Location the window is being moved to.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member newBounds: Rectangle with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted before the window is resized. Calling <c>event.preventDefault()</c> will prevent the window from being resized.<br/><br/>Note that this is only emitted
-        /// when the window is being resized manually. Resizing the window with <c>setBounds</c>/<c>setSize</c> will not emit this event.<br/><br/>The possible values and
-        /// behaviors of the <c>edge</c> option are platform dependent. Possible values are:<br/><br/>* On Windows, possible values are <c>bottom</c>, <c>top</c>, <c>left</c>, <c>right</c>,
-        /// <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c>, <c>bottom-right</c>.<br/>* On macOS, possible values are <c>bottom</c> and <c>right</c>.<br/>  * The value <c>bottom</c> is used to
-        /// denote vertical resizing.<br/>  * The value <c>right</c> is used to denote horizontal resizing.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnWillResize =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// Size the window is being resized to.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member newBounds: Rectangle with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member details: Main.BaseWindow.WillResize.Details with get, set
-        #endif
-
-
-    module BrowserWindow =
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-        /// Emitted when the system context menu is triggered on the window, this is normally only triggered when the user right
-        /// clicks on the non-client area of your window.  This is the window titlebar or any area you have declared
-        /// as <c>-webkit-app-region: drag</c> in a frameless window.<br/><br/>Calling <c>event.preventDefault()</c> will prevent the menu from being displayed.<br/><br/>To convert <c>point</c> to DIP, use
-        /// <c>screen.screenToDipPoint(point)</c>.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSystemContextMenu =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The screen coordinates where the context menu was triggered.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member point: Point with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted on trackpad rotation gesture. Continually emitted until rotation gesture is ended. The <c>rotation</c> value on each emission is the
-        /// angle in degrees rotated since the last emission. The last emitted event upon a rotation gesture will always be of
-        /// value <c>0</c>. Counter-clockwise rotation values are positive, while clockwise ones are negative.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnRotateGesture =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member rotation: float with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted on 3-finger swipe. Possible directions are <c>up</c>, <c>right</c>, <c>down</c>, <c>left</c>.<br/><br/>The method underlying this event is built to handle older
-        /// macOS-style trackpad swiping, where the content on the screen doesn't move with the swipe. Most macOS trackpads are not configured
-        /// to allow this kind of swiping anymore, so in order for it to emit properly the 'Swipe between pages' preference
-        /// in <c>System Preferences &gt; Trackpad &gt; More Gestures</c> must be set to 'Swipe with two or three fingers'.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSwipe =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member direction: string with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-        /// Emitted when an App Command is invoked. These are typically related to keyboard media keys or browser commands, as well
-        /// as the "Back" button built into some mice on Windows.<br/><br/>Commands are lowercased, underscores are replaced with hyphens, and the <c>APPCOMMAND_</c>
-        /// prefix is stripped off. e.g. <c>APPCOMMAND_BROWSER_BACKWARD</c> is emitted as <c>browser-backward</c>.<br/><br/>The following app commands are explicitly supported on Linux:<br/><br/>* <c>browser-backward</c><br/>* <c>browser-forward</c>
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAppCommand =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member command: string with get, set
-        #endif
-
-
-        /// <summary>
-        /// Emitted when the window is set or unset to show always on top of other windows.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAlwaysOnTopChanged =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member isAlwaysOnTop: bool with get, set
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted before the window is moved. On Windows, calling <c>event.preventDefault()</c> will prevent the window from being moved.<br/><br/>Note that this is
-        /// only emitted when the window is being moved manually. Moving the window with <c>setPosition</c>/<c>setBounds</c>/<c>center</c> will not emit this event.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnWillMove =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// Location the window is being moved to.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member newBounds: Rectangle with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted before the window is resized. Calling <c>event.preventDefault()</c> will prevent the window from being resized.<br/><br/>Note that this is only emitted
-        /// when the window is being resized manually. Resizing the window with <c>setBounds</c>/<c>setSize</c> will not emit this event.<br/><br/>The possible values and
-        /// behaviors of the <c>edge</c> option are platform dependent. Possible values are:<br/><br/>* On Windows, possible values are <c>bottom</c>, <c>top</c>, <c>left</c>, <c>right</c>,
-        /// <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c>, <c>bottom-right</c>.<br/>* On macOS, possible values are <c>bottom</c> and <c>right</c>.<br/>  * The value <c>bottom</c> is used to
-        /// denote vertical resizing.<br/>  * The value <c>right</c> is used to denote horizontal resizing.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnWillResize =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// Size the window is being resized to.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member newBounds: Rectangle with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member details: Main.BrowserWindow.WillResize.Details with get, set
-        #endif
-
-
-        /// <summary>
-        /// Emitted when the document changed its title, calling <c>event.preventDefault()</c> will prevent the native window's title from changing. <c>explicitSet</c> is false
-        /// when title is synthesized from file URL.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnPageTitleUpdated =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member title: string with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member explicitSet: bool with get, set
-
-    module ClientRequest =
-        /// <summary>
-        /// Emitted when the server returns a redirect response (e.g. 301 Moved Permanently). Calling <c>request.followRedirect</c> will continue with the redirection.
-        /// If this event is handled, <c>request.followRedirect</c> must be called **synchronously**, otherwise the request will be cancelled.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnRedirect =
-            [<Emit("$0[0]")>]
-            abstract member statusCode: int with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member method: string with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member redirectUrl: string with get, set
-
-            [<Emit("$0[3]")>]
-            abstract member responseHeaders: Record<string, string[]> with get, set
-
-        /// <summary>
-        /// Emitted when an authenticating proxy is asking for user credentials.<br/><br/>The <c>callback</c> function is expected to be called back with user
-        /// credentials:<br/><br/>* <c>username</c> string<br/>* <c>password</c> string<br/><br/>Providing empty credentials will cancel the request and report an authentication error on the response object:
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnLogin =
-            [<Emit("$0[0]")>]
-            abstract member authInfo: Main.ClientRequest.Login.AuthInfo with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member callback: Main.ClientRequest.Login.Callback with get, set
-
-    module Cookies =
-        /// <summary>
-        /// Emitted when a cookie is changed because it was added, edited, removed, or expired.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnChanged =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The cookie that was changed.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member cookie: Cookie with get, set
-
-            /// <summary>
-            /// The cause of the change with one of the following values:
-            /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member cause: Main.Enums.Cookies.Changed.Cause with get, set
-
-            /// <summary>
-            /// <c>true</c> if the cookie was removed, <c>false</c> otherwise.
-            /// </summary>
-            [<Emit("$0[3]")>]
-            abstract member removed: bool with get, set
-
     module Debugger =
         /// <summary>
         /// Emitted whenever the debugging target issues an instrumentation event.
@@ -11573,124 +14998,6 @@ module Main =
             [<Emit("$0[1]")>]
             abstract member state: Main.Enums.DownloadItem.Updated.State with get, set
 
-    module Extensions =
-        /// <summary>
-        /// Emitted after an extension is loaded and all necessary browser state is initialized to support the start of the extension's
-        /// background page.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnExtensionReady =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member extension: Extension with get, set
-
-        /// <summary>
-        /// Emitted after an extension is unloaded. This occurs when <c>Session.removeExtension</c> is called.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnExtensionUnloaded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member extension: Extension with get, set
-
-        /// <summary>
-        /// Emitted after an extension is loaded. This occurs whenever an extension is added to the "enabled" set of extensions. This
-        /// includes:<br/><br/>* Extensions being loaded from <c>Extensions.loadExtension</c>.<br/>* Extensions being reloaded:<br/>  * from a crash.<br/>  * if the extension requested
-        /// it (<c>chrome.runtime.reload()</c>).
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnExtensionLoaded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member extension: Extension with get, set
-
-    module InAppPurchase =
-        /// <summary>
-        /// Emitted when one or more transactions have been updated.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnTransactionsUpdated =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// Array of <c>Transaction</c> objects.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member transactions: Transaction[] with get, set
-
-    module Notification =
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
-        /// Emitted when an error is encountered while creating and showing the native notification.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnFailed =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The error encountered during execution of the <c>show()</c> method.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member error: string with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAction =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The index of the action that was activated.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member index: float with get, set
-        #endif
-
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
-        /// Emitted when the user clicks the "Reply" button on a notification with <c>hasReply: true</c>.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnReply =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The string the user entered into the inline reply field.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member reply: string with get, set
-        #endif
-
-
     module PushNotifications =
         #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
         /// <summary>
@@ -11753,420 +15060,150 @@ module Main =
             [<Emit("$0[1]")>]
             abstract member newDisplay: Display with get, set
 
-    module ServiceWorkers =
-        /// <summary>
-        /// Emitted when a service worker has been registered. Can occur after a call to <c>navigator.serviceWorker.register('/sw.js')</c> successfully resolves or when a
-        /// Chrome extension is loaded.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnRegistrationCompleted =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+    module WebContentsView =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="webPreferences">Settings of web page's features.</param>
+            /// <param name="webContents">If present, the given WebContents will be adopted by the WebContentsView. A WebContents may only be presented in one
+            /// WebContentsView at a time.</param>
+            (?webPreferences: WebPreferences, ?webContents: Main.WebContents) =
+            class
+            end
 
             /// <summary>
-            /// Information about the registered service worker
+            /// Settings of web page's features.
             /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member details: Main.ServiceWorkers.RegistrationCompleted.Details with get, set
-
-        /// <summary>
-        /// Emitted when a service worker logs something to the console.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnConsoleMessage =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+            [<Erase>]
+            member val webPreferences: WebPreferences = Unchecked.defaultof<_> with get, set
 
             /// <summary>
-            /// Information about the console message
+            /// If present, the given WebContents will be adopted by the WebContentsView. A WebContents may only be presented in one WebContentsView
+            /// at a time.
             /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member messageDetails: Main.ServiceWorkers.ConsoleMessage.MessageDetails with get, set
+            [<Erase>]
+            member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
 
-    module Session =
+    module UtilityProcess =
         /// <summary>
-        /// Emitted after <c>USBDevice.forget()</c> has been called.  This event can be used to help maintain persistent storage of permissions when
-        /// <c>setDevicePermissionHandler</c> is used.
+        /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
+        /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
         /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+        [<Experimental("Indicated to be Experimental by Electron");
+          System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
           AllowNullLiteral;
           Interface>]
-        type IOnUsbDeviceRevoked =
+        type IOnError =
+            /// <summary>
+            /// Type of error. One of the following values:
+            /// </summary>
             [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.UsbDeviceRevoked.Details with get, set
-
-        /// <summary>
-        /// Emitted after <c>navigator.usb.requestDevice</c> has been called and <c>select-usb-device</c> has fired if a device has been removed before the callback from
-        /// <c>select-usb-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
-        /// device so that the UI can be updated to remove the specified device.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnUsbDeviceRemoved =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member device: USBDevice with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-        /// <summary>
-        /// Emitted after <c>navigator.usb.requestDevice</c> has been called and <c>select-usb-device</c> has fired if a new device becomes available before the callback from
-        /// <c>select-usb-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
-        /// device so that the UI can be updated with the newly added device.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnUsbDeviceAdded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member device: USBDevice with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-        /// <summary>
-        /// Emitted when a USB device needs to be selected when a call to <c>navigator.usb.requestDevice</c> is made. <c>callback</c> should be called
-        /// with <c>deviceId</c> to be selected; passing no arguments to <c>callback</c> will cancel the request.  Additionally, permissioning on <c>navigator.usb</c> can
-        /// be further managed by using <c>ses.setPermissionCheckHandler(handler)</c> and <c>ses.setDevicePermissionHandler(handler)</c>.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSelectUsbDevice =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.SelectUsbDevice.Details with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member callback: Option<string> -> unit with get, set
-
-        /// <summary>
-        /// Emitted after <c>SerialPort.forget()</c> has been called.  This event can be used to help maintain persistent storage of permissions when
-        /// <c>setDevicePermissionHandler</c> is used.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSerialPortRevoked =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.SerialPortRevoked.Details with get, set
-
-        /// <summary>
-        /// Emitted after <c>navigator.serial.requestPort</c> has been called and <c>select-serial-port</c> has fired if a serial port has been removed before the callback
-        /// from <c>select-serial-port</c> is called.  This event is intended for use when using a UI to ask users to pick
-        /// a port so that the UI can be updated to remove the specified port.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSerialPortRemoved =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member port: SerialPort with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-        /// <summary>
-        /// Emitted after <c>navigator.serial.requestPort</c> has been called and <c>select-serial-port</c> has fired if a new serial port becomes available before the callback
-        /// from <c>select-serial-port</c> is called.  This event is intended for use when using a UI to ask users to pick
-        /// a port so that the UI can be updated with the newly added port.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSerialPortAdded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member port: SerialPort with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-        /// <summary>
-        /// Emitted when a serial port needs to be selected when a call to <c>navigator.serial.requestPort</c> is made. <c>callback</c> should be called
-        /// with <c>portId</c> to be selected, passing an empty string to <c>callback</c> will cancel the request.  Additionally, permissioning on <c>navigator.serial</c>
-        /// can be managed by using ses.setPermissionCheckHandler(handler) with the <c>serial</c> permission.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSelectSerialPort =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member portList: SerialPort[] with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-            [<Emit("$0[3]")>]
-            abstract member callback: string -> unit with get, set
-
-        /// <summary>
-        /// Emitted after <c>HIDDevice.forget()</c> has been called.  This event can be used to help maintain persistent storage of permissions when
-        /// <c>setDevicePermissionHandler</c> is used.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnHidDeviceRevoked =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.HidDeviceRevoked.Details with get, set
-
-        /// <summary>
-        /// Emitted after <c>navigator.hid.requestDevice</c> has been called and <c>select-hid-device</c> has fired if a device has been removed before the callback from
-        /// <c>select-hid-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
-        /// device so that the UI can be updated to remove the specified device.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnHidDeviceRemoved =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.HidDeviceRemoved.Details with get, set
-
-        /// <summary>
-        /// Emitted after <c>navigator.hid.requestDevice</c> has been called and <c>select-hid-device</c> has fired if a new device becomes available before the callback from
-        /// <c>select-hid-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
-        /// device so that the UI can be updated with the newly added device.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnHidDeviceAdded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.HidDeviceAdded.Details with get, set
-
-        /// <summary>
-        /// Emitted when a HID device needs to be selected when a call to <c>navigator.hid.requestDevice</c> is made. <c>callback</c> should be called
-        /// with <c>deviceId</c> to be selected; passing no arguments to <c>callback</c> will cancel the request.  Additionally, permissioning on <c>navigator.hid</c> can
-        /// be further managed by using <c>ses.setPermissionCheckHandler(handler)</c> and <c>ses.setDevicePermissionHandler(handler)</c>.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSelectHidDevice =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.SelectHidDevice.Details with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member callback: Option<Option<string>> -> unit with get, set
-
-        /// <summary>
-        /// Emitted when a hunspell dictionary file download fails.  For details on the failure you should collect a netlog and
-        /// inspect the download request.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSpellcheckDictionaryDownloadFailure =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+            abstract member ``type``: Main.Enums.UtilityProcess.Error.Type with get, set
 
             /// <summary>
-            /// The language code of the dictionary file
+            /// Source location from where the error originated.
             /// </summary>
             [<Emit("$0[1]")>]
-            abstract member languageCode: string with get, set
-
-        /// <summary>
-        /// Emitted when a hunspell dictionary file has been successfully downloaded
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSpellcheckDictionaryDownloadSuccess =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+            abstract member location: string with get, set
 
             /// <summary>
-            /// The language code of the dictionary file
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member languageCode: string with get, set
-
-        /// <summary>
-        /// Emitted when a hunspell dictionary file starts downloading
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSpellcheckDictionaryDownloadBegin =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The language code of the dictionary file
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member languageCode: string with get, set
-
-        /// <summary>
-        /// Emitted when a hunspell dictionary file has been successfully initialized. This occurs after the file has been downloaded.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnSpellcheckDictionaryInitialized =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The language code of the dictionary file
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member languageCode: string with get, set
-
-        /// <summary>
-        /// Emitted when a render process requests preconnection to a URL, generally due to a resource hint.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnPreconnect =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The URL being requested for preconnection by the renderer.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member preconnectUrl: string with get, set
-
-            /// <summary>
-            /// True if the renderer is requesting that the connection include credentials (see the spec for more details.)
+            /// <c>Node.js diagnostic report</c>.
             /// </summary>
             [<Emit("$0[2]")>]
-            abstract member allowCredentials: bool with get, set
+            abstract member report: string with get, set
 
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnFileSystemAccessRestricted =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+        module Fork =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="env">Environment key-value pairs. Default is <c>process.env</c>.</param>
+                /// <param name="execArgv">List of string arguments passed to the executable.</param>
+                /// <param name="cwd">Current working directory of the child process.</param>
+                /// <param name="stdio">Allows configuring the mode for <c>stdout</c> and <c>stderr</c> of the child process. Default is <c>inherit</c>. String value can be
+                /// one of <c>pipe</c>, <c>ignore</c>, <c>inherit</c>, for more details on these values you can refer to stdio documentation from Node.js. Currently
+                /// this option only supports configuring <c>stdout</c> and <c>stderr</c> to either <c>pipe</c>, <c>inherit</c> or <c>ignore</c>. Configuring <c>stdin</c> to any property other
+                /// than <c>ignore</c> is not supported and will result in an error. For example, the supported values will be processed as
+                /// following:</param>
+                /// <param name="serviceName">Name of the process that will appear in <c>name</c> property of <c>ProcessMetric</c> returned by <c>app.getAppMetrics</c> and <c>child-process-gone</c> event of
+                /// <c>app</c>. Default is <c>Node Utility Process</c>.</param>
+                /// <param name="allowLoadingUnsignedLibraries">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || With this flag, the
+                /// utility process will be launched via the <c>Electron Helper (Plugin).app</c> helper executable on macOS, which can be codesigned with <c>com.apple.security.cs.disable-library-validation</c>
+                /// and <c>com.apple.security.cs.allow-unsigned-executable-memory</c> entitlements. This will allow the utility process to load unsigned libraries. Unless you specifically need this capability, it
+                /// is best to leave this disabled. Default is <c>false</c>.</param>
+                /// <param name="respondToAuthRequestsFromMainProcess">With this flag, all HTTP 401 and 407 network requests created via the net module will allow responding to
+                /// them via the <c>app#login</c> event in the main process instead of the default <c>login</c> event on the <c>ClientRequest</c> object. Default
+                /// is <c>false</c>.</param>
+                (
+                    ?env: obj,
+                    ?execArgv: string[],
+                    ?cwd: string,
+                    ?stdio: U2<Main.Enums.UtilityProcess.Fork.Options.Stdio[], string>,
+                    ?serviceName: string
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?allowLoadingUnsignedLibraries: bool
+                    #endif
+                    ,
+                    ?respondToAuthRequestsFromMainProcess: bool
+                ) =
+                class
+                end
 
-            [<Emit("$0[1]")>]
-            abstract member details: Main.Session.FileSystemAccessRestricted.Details with get, set
+                /// <summary>
+                /// Environment key-value pairs. Default is <c>process.env</c>.
+                /// </summary>
+                [<Erase>]
+                member val env: obj = Unchecked.defaultof<_> with get, set
 
-            [<Emit("$0[2]")>]
-            abstract member callback: Main.Enums.Session.FileSystemAccessRestricted.Callback.Action -> unit with get, set
+                /// <summary>
+                /// List of string arguments passed to the executable.
+                /// </summary>
+                [<Erase>]
+                member val execArgv: string[] = Unchecked.defaultof<_> with get, set
 
-        /// <summary>
-        /// Emitted after an extension is loaded and all necessary browser state is initialized to support the start of the extension's
-        /// background page.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnExtensionReady =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+                /// <summary>
+                /// Current working directory of the child process.
+                /// </summary>
+                [<Erase>]
+                member val cwd: string = Unchecked.defaultof<_> with get, set
 
-            [<Emit("$0[1]")>]
-            abstract member extension: Extension with get, set
+                /// <summary>
+                /// Allows configuring the mode for <c>stdout</c> and <c>stderr</c> of the child process. Default is <c>inherit</c>. String value can be one
+                /// of <c>pipe</c>, <c>ignore</c>, <c>inherit</c>, for more details on these values you can refer to stdio documentation from Node.js. Currently this
+                /// option only supports configuring <c>stdout</c> and <c>stderr</c> to either <c>pipe</c>, <c>inherit</c> or <c>ignore</c>. Configuring <c>stdin</c> to any property other than
+                /// <c>ignore</c> is not supported and will result in an error. For example, the supported values will be processed as following:
+                /// </summary>
+                [<Erase>]
+                member val stdio: U2<Main.Enums.UtilityProcess.Fork.Options.Stdio[], string> =
+                    Unchecked.defaultof<_> with get, set
 
-        /// <summary>
-        /// Emitted after an extension is unloaded. This occurs when <c>Session.removeExtension</c> is called.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnExtensionUnloaded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+                /// <summary>
+                /// Name of the process that will appear in <c>name</c> property of <c>ProcessMetric</c> returned by <c>app.getAppMetrics</c> and <c>child-process-gone</c> event of <c>app</c>.
+                /// Default is <c>Node Utility Process</c>.
+                /// </summary>
+                [<Erase>]
+                member val serviceName: string = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// With this flag, the utility process will be launched via the <c>Electron Helper (Plugin).app</c> helper executable on macOS, which can
+                /// be codesigned with <c>com.apple.security.cs.disable-library-validation</c> and <c>com.apple.security.cs.allow-unsigned-executable-memory</c> entitlements. This will allow the utility process to load unsigned libraries. Unless you specifically
+                /// need this capability, it is best to leave this disabled. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val allowLoadingUnsignedLibraries: bool = Unchecked.defaultof<_> with get, set
+                #endif
 
-            [<Emit("$0[1]")>]
-            abstract member extension: Extension with get, set
 
-        /// <summary>
-        /// Emitted after an extension is loaded. This occurs whenever an extension is added to the "enabled" set of extensions. This
-        /// includes:<br/><br/>* Extensions being loaded from <c>Session.loadExtension</c>.<br/>* Extensions being reloaded:<br/>  * from a crash.<br/>  * if the extension requested
-        /// it (<c>chrome.runtime.reload()</c>).
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnExtensionLoaded =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+                /// <summary>
+                /// With this flag, all HTTP 401 and 407 network requests created via the net module will allow responding to them
+                /// via the <c>app#login</c> event in the main process instead of the default <c>login</c> event on the <c>ClientRequest</c> object. Default is
+                /// <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val respondToAuthRequestsFromMainProcess: bool = Unchecked.defaultof<_> with get, set
 
-            [<Emit("$0[1]")>]
-            abstract member extension: Extension with get, set
-
-        /// <summary>
-        /// Emitted when Electron is about to download <c>item</c> in <c>webContents</c>.<br/><br/>Calling <c>event.preventDefault()</c> will cancel the download and <c>item</c> will not be
-        /// available from next tick of the process.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnWillDownload =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            [<Emit("$0[1]")>]
-            abstract member item: Main.DownloadItem with get, set
-
-            [<Emit("$0[2]")>]
-            abstract member webContents: Main.WebContents with get, set
-
-    module SystemPreferences =
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAccentColorChanged =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
-
-            /// <summary>
-            /// The new RGBA color the user assigned to be their system accent color.
-            /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member newColor: string with get, set
-        #endif
-
+            module Options =
+                [<JS.Pojo>]
+                type Env() = class end
 
     module Tray =
         #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
@@ -12384,33 +15421,3403 @@ module Main =
             [<Emit("$0[2]")>]
             abstract member position: Point with get, set
 
-    module UtilityProcess =
+        module DisplayBalloon =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="icon">Icon to use when <c>iconType</c> is <c>custom</c>.</param>
+                /// <param name="iconType">Can be <c>none</c>, <c>info</c>, <c>warning</c>, <c>error</c> or <c>custom</c>. Default is <c>custom</c>.</param>
+                /// <param name="title"></param>
+                /// <param name="content"></param>
+                /// <param name="largeIcon">The large version of the icon should be used. Default is <c>true</c>. Maps to <c>NIIF_LARGE_ICON</c>.</param>
+                /// <param name="noSound">Do not play the associated sound. Default is <c>false</c>. Maps to <c>NIIF_NOSOUND</c>.</param>
+                /// <param name="respectQuietTime">Do not display the balloon notification if the current user is in "quiet time". Default is <c>false</c>. Maps to
+                /// <c>NIIF_RESPECT_QUIET_TIME</c>.</param>
+                (
+                    title: string,
+                    content: string,
+                    ?icon: U2<Main.NativeImage, string>,
+                    ?iconType: Main.Enums.Tray.DisplayBalloon.Options.IconType,
+                    ?largeIcon: bool,
+                    ?noSound: bool,
+                    ?respectQuietTime: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Icon to use when <c>iconType</c> is <c>custom</c>.
+                /// </summary>
+                [<Erase>]
+                member val icon: U2<Main.NativeImage, string> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Can be <c>none</c>, <c>info</c>, <c>warning</c>, <c>error</c> or <c>custom</c>. Default is <c>custom</c>.
+                /// </summary>
+                [<Erase>]
+                member val iconType: Main.Enums.Tray.DisplayBalloon.Options.IconType =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val content: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The large version of the icon should be used. Default is <c>true</c>. Maps to <c>NIIF_LARGE_ICON</c>.
+                /// </summary>
+                [<Erase>]
+                member val largeIcon: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Do not play the associated sound. Default is <c>false</c>. Maps to <c>NIIF_NOSOUND</c>.
+                /// </summary>
+                [<Erase>]
+                member val noSound: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Do not display the balloon notification if the current user is in "quiet time". Default is <c>false</c>. Maps to <c>NIIF_RESPECT_QUIET_TIME</c>.
+                /// </summary>
+                [<Erase>]
+                member val respectQuietTime: bool = Unchecked.defaultof<_> with get, set
+
+        module SetTitle =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="fontType">The font family variant to display, can be <c>monospaced</c> or <c>monospacedDigit</c>. <c>monospaced</c> is available in macOS 10.15+ When left
+                /// blank, the title uses the default system font.</param>
+                (?fontType: Main.Enums.Tray.SetTitle.Options.FontType) =
+                class
+                end
+
+                /// <summary>
+                /// The font family variant to display, can be <c>monospaced</c> or <c>monospacedDigit</c>. <c>monospaced</c> is available in macOS 10.15+ When left blank,
+                /// the title uses the default system font.
+                /// </summary>
+                [<Erase>]
+                member val fontType: Main.Enums.Tray.SetTitle.Options.FontType = Unchecked.defaultof<_> with get, set
+
+    module TouchBar =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="items"></param>
+            /// <param name="escapeItem"></param>
+            (?items: TouchBarItem[], ?escapeItem: Option<TouchBarItem>) =
+            class
+            end
+
+            [<Erase>]
+            member val items: TouchBarItem[] = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val escapeItem: Option<TouchBarItem> = Unchecked.defaultof<_> with get, set
+
+    module TouchBarSpacer =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="size">Size of spacer, possible values are:</param>
+            (?size: Main.Enums.TouchBarSpacer.Options.Size) =
+            class
+            end
+
+            /// <summary>
+            /// Size of spacer, possible values are:
+            /// </summary>
+            [<Erase>]
+            member val size: Main.Enums.TouchBarSpacer.Options.Size = Unchecked.defaultof<_> with get, set
+
+    module TouchBarSlider =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="label">Label text.</param>
+            /// <param name="value">Selected value.</param>
+            /// <param name="minValue">Minimum value.</param>
+            /// <param name="maxValue">Maximum value.</param>
+            /// <param name="change">Function to call when the slider is changed.</param>
+            (?label: string, ?value: int, ?minValue: int, ?maxValue: int, ?change: float -> unit) =
+            class
+            end
+
+            /// <summary>
+            /// Label text.
+            /// </summary>
+            [<Erase>]
+            member val label: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Selected value.
+            /// </summary>
+            [<Erase>]
+            member val value: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Minimum value.
+            /// </summary>
+            [<Erase>]
+            member val minValue: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Maximum value.
+            /// </summary>
+            [<Erase>]
+            member val maxValue: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Function to call when the slider is changed.
+            /// </summary>
+            [<Erase>]
+            member val change: float -> unit = Unchecked.defaultof<_> with get, set
+
+    module TouchBarScrubber =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="items">An array of items to place in this scrubber.</param>
+            /// <param name="select">Called when the user taps an item that was not the last tapped item.</param>
+            /// <param name="highlight">Called when the user taps any item.</param>
+            /// <param name="selectedStyle">Selected item style. Can be <c>background</c>, <c>outline</c> or <c>none</c>. Defaults to <c>none</c>.</param>
+            /// <param name="overlayStyle">Selected overlay item style. Can be <c>background</c>, <c>outline</c> or <c>none</c>. Defaults to <c>none</c>.</param>
+            /// <param name="showArrowButtons">Whether to show arrow buttons. Defaults to <c>false</c> and is only shown if <c>items</c> is non-empty.</param>
+            /// <param name="mode">Can be <c>fixed</c> or <c>free</c>. The default is <c>free</c>.</param>
+            /// <param name="continuous">Defaults to <c>true</c>.</param>
+            (
+                items: ScrubberItem[],
+                ?``select``: int -> unit,
+                ?highlight: int -> unit,
+                ?selectedStyle: Main.Enums.TouchBarScrubber.Options.SelectedStyle,
+                ?overlayStyle: Main.Enums.TouchBarScrubber.Options.OverlayStyle,
+                ?showArrowButtons: bool,
+                ?mode: Main.Enums.TouchBarScrubber.Options.Mode,
+                ?continuous: bool
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// An array of items to place in this scrubber.
+            /// </summary>
+            [<Erase>]
+            member val items: ScrubberItem[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Called when the user taps an item that was not the last tapped item.
+            /// </summary>
+            [<Erase>]
+            member val ``select``: int -> unit = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Called when the user taps any item.
+            /// </summary>
+            [<Erase>]
+            member val highlight: int -> unit = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Selected item style. Can be <c>background</c>, <c>outline</c> or <c>none</c>. Defaults to <c>none</c>.
+            /// </summary>
+            [<Erase>]
+            member val selectedStyle: Main.Enums.TouchBarScrubber.Options.SelectedStyle =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Selected overlay item style. Can be <c>background</c>, <c>outline</c> or <c>none</c>. Defaults to <c>none</c>.
+            /// </summary>
+            [<Erase>]
+            member val overlayStyle: Main.Enums.TouchBarScrubber.Options.OverlayStyle =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Whether to show arrow buttons. Defaults to <c>false</c> and is only shown if <c>items</c> is non-empty.
+            /// </summary>
+            [<Erase>]
+            member val showArrowButtons: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>fixed</c> or <c>free</c>. The default is <c>free</c>.
+            /// </summary>
+            [<Erase>]
+            member val mode: Main.Enums.TouchBarScrubber.Options.Mode = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>true</c>.
+            /// </summary>
+            [<Erase>]
+            member val continuous: bool = Unchecked.defaultof<_> with get, set
+
+    module TouchBarPopover =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="label">Popover button text.</param>
+            /// <param name="icon">Popover button icon.</param>
+            /// <param name="items">Items to display in the popover.</param>
+            /// <param name="showCloseButton"><c>true</c> to display a close button on the left of the popover, <c>false</c> to not show it. Default is
+            /// <c>true</c>.</param>
+            (items: Main.TouchBar, ?label: string, ?icon: Main.NativeImage, ?showCloseButton: bool) =
+            class
+            end
+
+            /// <summary>
+            /// Popover button text.
+            /// </summary>
+            [<Erase>]
+            member val label: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Popover button icon.
+            /// </summary>
+            [<Erase>]
+            member val icon: Main.NativeImage = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Items to display in the popover.
+            /// </summary>
+            [<Erase>]
+            member val items: Main.TouchBar = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// <c>true</c> to display a close button on the left of the popover, <c>false</c> to not show it. Default is <c>true</c>.
+            /// </summary>
+            [<Erase>]
+            member val showCloseButton: bool = Unchecked.defaultof<_> with get, set
+
+    module TouchBarLabel =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="label">Text to display.</param>
+            /// <param name="accessibilityLabel">A short description of the button for use by screenreaders like VoiceOver.</param>
+            /// <param name="textColor">Hex color of text, i.e <c>#ABCDEF</c>.</param>
+            (?label: string, ?accessibilityLabel: string, ?textColor: string) =
+            class
+            end
+
+            /// <summary>
+            /// Text to display.
+            /// </summary>
+            [<Erase>]
+            member val label: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// A short description of the button for use by screenreaders like VoiceOver.
+            /// </summary>
+            [<Erase>]
+            member val accessibilityLabel: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Hex color of text, i.e <c>#ABCDEF</c>.
+            /// </summary>
+            [<Erase>]
+            member val textColor: string = Unchecked.defaultof<_> with get, set
+
+    module TouchBarGroup =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="items">Items to display as a group.</param>
+            (items: Main.TouchBar) =
+            class
+            end
+
+            /// <summary>
+            /// Items to display as a group.
+            /// </summary>
+            [<Erase>]
+            member val items: Main.TouchBar = Unchecked.defaultof<_> with get, set
+
+    module TouchBarColorPicker =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="availableColors">Array of hex color strings to appear as possible colors to select.</param>
+            /// <param name="selectedColor">The selected hex color in the picker, i.e <c>#ABCDEF</c>.</param>
+            /// <param name="change">Function to call when a color is selected.</param>
+            (?availableColors: string[], ?selectedColor: string, ?change: string -> unit) =
+            class
+            end
+
+            /// <summary>
+            /// Array of hex color strings to appear as possible colors to select.
+            /// </summary>
+            [<Erase>]
+            member val availableColors: string[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The selected hex color in the picker, i.e <c>#ABCDEF</c>.
+            /// </summary>
+            [<Erase>]
+            member val selectedColor: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Function to call when a color is selected.
+            /// </summary>
+            [<Erase>]
+            member val change: string -> unit = Unchecked.defaultof<_> with get, set
+
+    module TouchBarButton =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="label">Button text.</param>
+            /// <param name="accessibilityLabel">A short description of the button for use by screenreaders like VoiceOver.</param>
+            /// <param name="backgroundColor">Button background color in hex format, i.e <c>#ABCDEF</c>.</param>
+            /// <param name="icon">Button icon.</param>
+            /// <param name="iconPosition">Can be <c>left</c>, <c>right</c> or <c>overlay</c>. Defaults to <c>overlay</c>.</param>
+            /// <param name="click">Function to call when the button is clicked.</param>
+            /// <param name="enabled">Whether the button is in an enabled state.  Default is <c>true</c>.</param>
+            (
+                ?label: string,
+                ?accessibilityLabel: string,
+                ?backgroundColor: string,
+                ?icon: U2<Main.NativeImage, string>,
+                ?iconPosition: Main.Enums.TouchBarButton.Options.IconPosition,
+                ?click: unit -> unit,
+                ?enabled: bool
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Button text.
+            /// </summary>
+            [<Erase>]
+            member val label: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// A short description of the button for use by screenreaders like VoiceOver.
+            /// </summary>
+            [<Erase>]
+            member val accessibilityLabel: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Button background color in hex format, i.e <c>#ABCDEF</c>.
+            /// </summary>
+            [<Erase>]
+            member val backgroundColor: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Button icon.
+            /// </summary>
+            [<Erase>]
+            member val icon: U2<Main.NativeImage, string> = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>left</c>, <c>right</c> or <c>overlay</c>. Defaults to <c>overlay</c>.
+            /// </summary>
+            [<Erase>]
+            member val iconPosition: Main.Enums.TouchBarButton.Options.IconPosition =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Function to call when the button is clicked.
+            /// </summary>
+            [<Erase>]
+            member val click: unit -> unit = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Whether the button is in an enabled state.  Default is <c>true</c>.
+            /// </summary>
+            [<Erase>]
+            member val enabled: bool = Unchecked.defaultof<_> with get, set
+
+    module Shell =
+        module OpenExternal =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="activate">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> to bring the
+                /// opened application to the foreground. The default is <c>true</c>.</param>
+                /// <param name="workingDirectory">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The working directory.</param>
+                /// <param name="logUsage">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || Indicates a user initiated
+                /// launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ?activate: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?workingDirectory: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?logUsage: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// <c>true</c> to bring the opened application to the foreground. The default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val activate: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The working directory.
+                /// </summary>
+                [<Erase>]
+                member val workingDirectory: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// Indicates a user initiated launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val logUsage: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+    module ServiceWorkers =
         /// <summary>
-        /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
-        /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
+        /// Emitted when a service worker has been registered. Can occur after a call to <c>navigator.serviceWorker.register('/sw.js')</c> successfully resolves or when a
+        /// Chrome extension is loaded.
         /// </summary>
-        [<Experimental("Indicated to be Experimental by Electron");
-          System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
           AllowNullLiteral;
           Interface>]
-        type IOnError =
-            /// <summary>
-            /// Type of error. One of the following values:
-            /// </summary>
+        type IOnRegistrationCompleted =
             [<Emit("$0[0]")>]
-            abstract member ``type``: Main.Enums.UtilityProcess.Error.Type with get, set
+            abstract member event: Event with get, set
 
             /// <summary>
-            /// Source location from where the error originated.
+            /// Information about the registered service worker
             /// </summary>
             [<Emit("$0[1]")>]
-            abstract member location: string with get, set
+            abstract member details: Main.ServiceWorkers.RegistrationCompleted.Details with get, set
+
+        /// <summary>
+        /// Emitted when a service worker logs something to the console.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnConsoleMessage =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
 
             /// <summary>
-            /// <c>Node.js diagnostic report</c>.
+            /// Information about the console message
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member messageDetails: Main.ServiceWorkers.ConsoleMessage.MessageDetails with get, set
+
+        module RegistrationCompleted =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="scope">The base URL that a service worker is registered for</param>
+                (scope: string) =
+                class
+                end
+
+                /// <summary>
+                /// The base URL that a service worker is registered for
+                /// </summary>
+                [<Erase>]
+                member val scope: string = Unchecked.defaultof<_> with get, set
+
+        module ConsoleMessage =
+            [<JS.Pojo>]
+            type MessageDetails
+                /// <param name="message">The actual console message</param>
+                /// <param name="versionId">The version ID of the service worker that sent the log message</param>
+                /// <param name="source">The type of source for this message.  Can be <c>javascript</c>, <c>xml</c>, <c>network</c>, <c>console-api</c>, <c>storage</c>, <c>rendering</c>, <c>security</c>, <c>deprecation</c>, <c>worker</c>,
+                /// <c>violation</c>, <c>intervention</c>, <c>recommendation</c> or <c>other</c>.</param>
+                /// <param name="level">The log level, from 0 to 3. In order it matches <c>verbose</c>, <c>info</c>, <c>warning</c> and <c>error</c>.</param>
+                /// <param name="sourceUrl">The URL the message came from</param>
+                /// <param name="lineNumber">The line number of the source that triggered this console message</param>
+                (
+                    message: string,
+                    versionId: float,
+                    source: Main.Enums.ServiceWorkers.ConsoleMessage.MessageDetails.Source,
+                    level: float,
+                    sourceUrl: string,
+                    lineNumber: float
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// The actual console message
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The version ID of the service worker that sent the log message
+                /// </summary>
+                [<Erase>]
+                member val versionId: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The type of source for this message.  Can be <c>javascript</c>, <c>xml</c>, <c>network</c>, <c>console-api</c>, <c>storage</c>, <c>rendering</c>, <c>security</c>, <c>deprecation</c>, <c>worker</c>, <c>violation</c>,
+                /// <c>intervention</c>, <c>recommendation</c> or <c>other</c>.
+                /// </summary>
+                [<Erase>]
+                member val source: Main.Enums.ServiceWorkers.ConsoleMessage.MessageDetails.Source =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The log level, from 0 to 3. In order it matches <c>verbose</c>, <c>info</c>, <c>warning</c> and <c>error</c>.
+                /// </summary>
+                [<Erase>]
+                member val level: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The URL the message came from
+                /// </summary>
+                [<Erase>]
+                member val sourceUrl: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The line number of the source that triggered this console message
+                /// </summary>
+                [<Erase>]
+                member val lineNumber: float = Unchecked.defaultof<_> with get, set
+
+    module ServiceWorkerMain =
+        [<JS.Pojo>]
+        type StartTask
+            /// <param name="end">Method to call when the task has ended. If never called, the service won't terminate while otherwise idle.</param>
+            (``end``: unit -> unit) =
+            class
+            end
+
+            /// <summary>
+            /// Method to call when the task has ended. If never called, the service won't terminate while otherwise idle.
+            /// </summary>
+            [<Erase>]
+            member val ``end``: unit -> unit = Unchecked.defaultof<_> with get, set
+
+    module Process =
+        [<JS.Pojo>]
+        type GetSystemMemoryInfo
+            /// <param name="total">The total amount of physical memory in Kilobytes available to the system.</param>
+            /// <param name="free">The total amount of memory not being used by applications or disk cache.</param>
+            /// <param name="fileBacked">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that currently has been paged out to storage. Includes memory for file caches, network buffers, and other system services.</param>
+            /// <param name="purgeable">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that is marked as "purgeable". The system can reclaim it if memory pressure increases.</param>
+            /// <param name="swapTotal">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The total amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            /// <param name="swapFree">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The free amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            (
+                total: int,
+                free: int
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                fileBacked: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                purgeable: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapTotal: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapFree: int
+                #endif
+
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The total amount of physical memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The total amount of memory not being used by applications or disk cache.
+            /// </summary>
+            [<Erase>]
+            member val free: int = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that currently has been paged out to storage. Includes memory for file caches, network buffers, and
+            /// other system services.
+            /// </summary>
+            [<Erase>]
+            member val fileBacked: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that is marked as "purgeable". The system can reclaim it if memory pressure increases.
+            /// </summary>
+            [<Erase>]
+            member val purgeable: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The total amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapTotal: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The free amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapFree: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        [<JS.Pojo>]
+        type GetBlinkMemoryInfo
+            /// <param name="allocated">Size of all allocated objects in Kilobytes.</param>
+            /// <param name="total">Total allocated space in Kilobytes.</param>
+            (allocated: int, total: int) =
+            class
+            end
+
+            /// <summary>
+            /// Size of all allocated objects in Kilobytes.
+            /// </summary>
+            [<Erase>]
+            member val allocated: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Total allocated space in Kilobytes.
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type GetHeapStatistics
+            /// <param name="totalHeapSize"></param>
+            /// <param name="totalHeapSizeExecutable"></param>
+            /// <param name="totalPhysicalSize"></param>
+            /// <param name="totalAvailableSize"></param>
+            /// <param name="usedHeapSize"></param>
+            /// <param name="heapSizeLimit"></param>
+            /// <param name="mallocedMemory"></param>
+            /// <param name="peakMallocedMemory"></param>
+            /// <param name="doesZapGarbage"></param>
+            (
+                totalHeapSize: int,
+                totalHeapSizeExecutable: int,
+                totalPhysicalSize: int,
+                totalAvailableSize: int,
+                usedHeapSize: int,
+                heapSizeLimit: int,
+                mallocedMemory: int,
+                peakMallocedMemory: int,
+                doesZapGarbage: bool
+            ) =
+            class
+            end
+
+            [<Erase>]
+            member val totalHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalHeapSizeExecutable: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalPhysicalSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalAvailableSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val usedHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val heapSizeLimit: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val mallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val peakMallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val doesZapGarbage: bool = Unchecked.defaultof<_> with get, set
+
+    module Notification =
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+        /// Emitted when an error is encountered while creating and showing the native notification.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnFailed =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The error encountered during execution of the <c>show()</c> method.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member error: string with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAction =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The index of the action that was activated.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member index: float with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted when the user clicks the "Reply" button on a notification with <c>hasReply: true</c>.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnReply =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The string the user entered into the inline reply field.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member reply: string with get, set
+        #endif
+
+
+        [<JS.Pojo>]
+        type Options
+            /// <param name="title">A title for the notification, which will be displayed at the top of the notification window when it is
+            /// shown.</param>
+            /// <param name="subtitle">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || A subtitle for the
+            /// notification, which will be displayed below the title.</param>
+            /// <param name="body">The body text of the notification, which will be displayed below the title or subtitle.</param>
+            /// <param name="silent">Whether or not to suppress the OS notification noise when showing the notification.</param>
+            /// <param name="icon">An icon to use in the notification. If a string is passed, it must be a valid path to
+            /// a local icon file.</param>
+            /// <param name="hasReply">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Whether or not to
+            /// add an inline reply option to the notification.</param>
+            /// <param name="timeoutType">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The timeout duration of
+            /// the notification. Can be 'default' or 'never'.</param>
+            /// <param name="replyPlaceholder">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The placeholder to write
+            /// in the inline reply input field.</param>
+            /// <param name="sound">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The name of the
+            /// sound file to play when the notification is shown.</param>
+            /// <param name="urgency">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || The urgency level of
+            /// the notification. Can be 'normal', 'critical', or 'low'.</param>
+            /// <param name="actions">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Actions to add to
+            /// the notification. Please read the available actions and limitations in the <c>NotificationAction</c> documentation.</param>
+            /// <param name="closeButtonText">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || A custom title for
+            /// the close button of an alert. An empty string will cause the default localized text to be used.</param>
+            /// <param name="toastXml">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || A custom description of
+            /// the Notification on Windows superseding all properties above. Provides full customization of design and behavior of the notification.</param>
+            (
+                ?title: string
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?subtitle: string
+                #endif
+                ,
+                ?body: string,
+                ?silent: bool,
+                ?icon: U2<string, Main.NativeImage>
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?hasReply: bool
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?timeoutType: Main.Enums.Notification.Options.TimeoutType
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?replyPlaceholder: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?sound: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                ,
+                ?urgency: Main.Enums.Notification.Options.Urgency
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?actions: NotificationAction[]
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?closeButtonText: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                ,
+                ?toastXml: string
+                #endif
+
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// A title for the notification, which will be displayed at the top of the notification window when it is shown.
+            /// </summary>
+            [<Erase>]
+            member val title: string = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// A subtitle for the notification, which will be displayed below the title.
+            /// </summary>
+            [<Erase>]
+            member val subtitle: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// The body text of the notification, which will be displayed below the title or subtitle.
+            /// </summary>
+            [<Erase>]
+            member val body: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Whether or not to suppress the OS notification noise when showing the notification.
+            /// </summary>
+            [<Erase>]
+            member val silent: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An icon to use in the notification. If a string is passed, it must be a valid path to a
+            /// local icon file.
+            /// </summary>
+            [<Erase>]
+            member val icon: U2<string, Main.NativeImage> = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// Whether or not to add an inline reply option to the notification.
+            /// </summary>
+            [<Erase>]
+            member val hasReply: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The timeout duration of the notification. Can be 'default' or 'never'.
+            /// </summary>
+            [<Erase>]
+            member val timeoutType: Main.Enums.Notification.Options.TimeoutType = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The placeholder to write in the inline reply input field.
+            /// </summary>
+            [<Erase>]
+            member val replyPlaceholder: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The name of the sound file to play when the notification is shown.
+            /// </summary>
+            [<Erase>]
+            member val sound: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The urgency level of the notification. Can be 'normal', 'critical', or 'low'.
+            /// </summary>
+            [<Erase>]
+            member val urgency: Main.Enums.Notification.Options.Urgency = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// Actions to add to the notification. Please read the available actions and limitations in the <c>NotificationAction</c> documentation.
+            /// </summary>
+            [<Erase>]
+            member val actions: NotificationAction[] = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// A custom title for the close button of an alert. An empty string will cause the default localized text to
+            /// be used.
+            /// </summary>
+            [<Erase>]
+            member val closeButtonText: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+            /// A custom description of the Notification on Windows superseding all properties above. Provides full customization of design and behavior of
+            /// the notification.
+            /// </summary>
+            [<Erase>]
+            member val toastXml: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+    module Net =
+        module ResolveHost =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="queryType">Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:</param>
+                /// <param name="source">The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use
+                /// of big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results
+                /// can still come from cache, resolving "localhost" or IP literals, etc. One of the following values:</param>
+                /// <param name="cacheUsage">Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:</param>
+                /// <param name="secureDnsPolicy">Controls the resolver's Secure DNS behavior for this request. One of the following values:</param>
+                (
+                    ?queryType: Main.Enums.Net.ResolveHost.Options.QueryType,
+                    ?source: Main.Enums.Net.ResolveHost.Options.Source,
+                    ?cacheUsage: Main.Enums.Net.ResolveHost.Options.CacheUsage,
+                    ?secureDnsPolicy: Main.Enums.Net.ResolveHost.Options.SecureDnsPolicy
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:
+                /// </summary>
+                [<Erase>]
+                member val queryType: Main.Enums.Net.ResolveHost.Options.QueryType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use of
+                /// big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results can
+                /// still come from cache, resolving "localhost" or IP literals, etc. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val source: Main.Enums.Net.ResolveHost.Options.Source = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val cacheUsage: Main.Enums.Net.ResolveHost.Options.CacheUsage =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Controls the resolver's Secure DNS behavior for this request. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val secureDnsPolicy: Main.Enums.Net.ResolveHost.Options.SecureDnsPolicy =
+                    Unchecked.defaultof<_> with get, set
+
+    module NetLog =
+        module StartLogging =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="captureMode">What kinds of data should be captured. By default, only metadata about requests will be captured. Setting this to
+                /// <c>includeSensitive</c> will include cookies and authentication data. Setting it to <c>everything</c> will include all bytes transferred on sockets. Can be
+                /// <c>default</c>, <c>includeSensitive</c> or <c>everything</c>.</param>
+                /// <param name="maxFileSize">When the log grows beyond this size, logging will automatically stop. Defaults to unlimited.</param>
+                (?captureMode: Main.Enums.NetLog.StartLogging.Options.CaptureMode, ?maxFileSize: float) =
+                class
+                end
+
+                /// <summary>
+                /// What kinds of data should be captured. By default, only metadata about requests will be captured. Setting this to <c>includeSensitive</c>
+                /// will include cookies and authentication data. Setting it to <c>everything</c> will include all bytes transferred on sockets. Can be <c>default</c>,
+                /// <c>includeSensitive</c> or <c>everything</c>.
+                /// </summary>
+                [<Erase>]
+                member val captureMode: Main.Enums.NetLog.StartLogging.Options.CaptureMode =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// When the log grows beyond this size, logging will automatically stop. Defaults to unlimited.
+                /// </summary>
+                [<Erase>]
+                member val maxFileSize: float = Unchecked.defaultof<_> with get, set
+
+    module NavigationHistory =
+        module Restore =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="entries">Result of a prior <c>getAllEntries()</c> call</param>
+                /// <param name="index">Index of the stack that should be loaded. If you set it to <c>0</c>, the webContents will load the
+                /// first (oldest) entry. If you leave it undefined, Electron will automatically load the last (newest) entry.</param>
+                (entries: NavigationEntry[], ?index: int) =
+                class
+                end
+
+                /// <summary>
+                /// Result of a prior <c>getAllEntries()</c> call
+                /// </summary>
+                [<Erase>]
+                member val entries: NavigationEntry[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Index of the stack that should be loaded. If you set it to <c>0</c>, the webContents will load the first
+                /// (oldest) entry. If you leave it undefined, Electron will automatically load the last (newest) entry.
+                /// </summary>
+                [<Erase>]
+                member val index: int = Unchecked.defaultof<_> with get, set
+
+    module NativeImage =
+        module AddRepresentation =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">The scale factor to add the image representation for.</param>
+                /// <param name="width">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="height">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="buffer">The buffer containing the raw image data.</param>
+                /// <param name="dataURL">The data URL containing either a base 64 encoded PNG or JPEG image.</param>
+                (?scaleFactor: float, ?width: int, ?height: int, ?buffer: Buffer, ?dataURL: string) =
+                class
+                end
+
+                /// <summary>
+                /// The scale factor to add the image representation for.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The buffer containing the raw image data.
+                /// </summary>
+                [<Erase>]
+                member val buffer: Buffer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The data URL containing either a base 64 encoded PNG or JPEG image.
+                /// </summary>
+                [<Erase>]
+                member val dataURL: string = Unchecked.defaultof<_> with get, set
+
+        module Resize =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Defaults to the image's width.</param>
+                /// <param name="height">Defaults to the image's height.</param>
+                /// <param name="quality">The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These
+                /// values express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU)
+                /// of the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a
+                /// given platform.</param>
+                (?width: int, ?height: int, ?quality: Main.Enums.NativeImage.Resize.Options.Quality) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to the image's width.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to the image's height.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These values
+                /// express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU) of
+                /// the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a given
+                /// platform.
+                /// </summary>
+                [<Erase>]
+                member val quality: Main.Enums.NativeImage.Resize.Options.Quality = Unchecked.defaultof<_> with get, set
+
+        module GetBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToDataURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToPNG =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBuffer =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Required for bitmap buffers.</param>
+                /// <param name="height">Required for bitmap buffers.</param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?width: int, ?height: int, ?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width"></param>
+                /// <param name="height"></param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (width: int, height: int, ?scaleFactor: float) =
+                class
+                end
+
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+    module MessagePortMain =
+        module Message =
+            [<JS.Pojo>]
+            type MessageEvent
+                /// <param name="data"></param>
+                /// <param name="ports"></param>
+                (data: obj, ports: Main.MessagePortMain[]) =
+                class
+                end
+
+                [<Erase>]
+                member val data: obj = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val ports: Main.MessagePortMain[] = Unchecked.defaultof<_> with get, set
+
+    module Menu =
+        module Popup =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="window">Default is the focused window.</param>
+                /// <param name="frame">Provide the relevant frame if you want certain OS-level features such as Writing Tools on macOS to function correctly.
+                /// Typically, this should be <c>params.frame</c> from the <c>context-menu</c> event on a WebContents, or the <c>focusedFrame</c> property of a WebContents.</param>
+                /// <param name="x">Default is the current mouse cursor position. Must be declared if <c>y</c> is declared.</param>
+                /// <param name="y">Default is the current mouse cursor position. Must be declared if <c>x</c> is declared.</param>
+                /// <param name="positioningItem">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The index of the
+                /// menu item to be positioned under the mouse cursor at the specified coordinates. Default is -1.</param>
+                /// <param name="sourceType">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || This should map to
+                /// the <c>menuSourceType</c> provided by the <c>context-menu</c> event. It is not recommended to set this value manually, only provide values you
+                /// receive from other APIs or leave it <c>undefined</c>. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>,
+                /// or <c>adjustSelectionReset</c>.</param>
+                /// <param name="callback">Called when menu is closed.</param>
+                (
+                    ?window: Main.BaseWindow,
+                    ?frame: Main.WebFrameMain,
+                    ?x: float,
+                    ?y: float
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?positioningItem: float
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                    ,
+                    ?sourceType: Main.Enums.Menu.Popup.Options.SourceType
+                    #endif
+                    ,
+                    ?callback: unit -> unit
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Default is the focused window.
+                /// </summary>
+                [<Erase>]
+                member val window: Main.BaseWindow = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Provide the relevant frame if you want certain OS-level features such as Writing Tools on macOS to function correctly. Typically,
+                /// this should be <c>params.frame</c> from the <c>context-menu</c> event on a WebContents, or the <c>focusedFrame</c> property of a WebContents.
+                /// </summary>
+                [<Erase>]
+                member val frame: Main.WebFrameMain = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Default is the current mouse cursor position. Must be declared if <c>y</c> is declared.
+                /// </summary>
+                [<Erase>]
+                member val x: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Default is the current mouse cursor position. Must be declared if <c>x</c> is declared.
+                /// </summary>
+                [<Erase>]
+                member val y: float = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// The index of the menu item to be positioned under the mouse cursor at the specified coordinates. Default is -1.
+                /// </summary>
+                [<Erase>]
+                member val positioningItem: float = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+                /// This should map to the <c>menuSourceType</c> provided by the <c>context-menu</c> event. It is not recommended to set this value manually,
+                /// only provide values you receive from other APIs or leave it <c>undefined</c>. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>,
+                /// <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>, or <c>adjustSelectionReset</c>.
+                /// </summary>
+                [<Erase>]
+                member val sourceType: Main.Enums.Menu.Popup.Options.SourceType = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                /// <summary>
+                /// Called when menu is closed.
+                /// </summary>
+                [<Erase>]
+                member val callback: unit -> unit = Unchecked.defaultof<_> with get, set
+
+    module InAppPurchase =
+        /// <summary>
+        /// Emitted when one or more transactions have been updated.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnTransactionsUpdated =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// Array of <c>Transaction</c> objects.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member transactions: Transaction[] with get, set
+
+        module PurchaseProduct =
+            [<JS.Pojo>]
+            type Opts
+                /// <param name="quantity">The number of items the user wants to purchase.</param>
+                /// <param name="username">The string that associates the transaction with a user account on your service (applicationUsername).</param>
+                (?quantity: int, ?username: string) =
+                class
+                end
+
+                /// <summary>
+                /// The number of items the user wants to purchase.
+                /// </summary>
+                [<Erase>]
+                member val quantity: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The string that associates the transaction with a user account on your service (applicationUsername).
+                /// </summary>
+                [<Erase>]
+                member val username: string = Unchecked.defaultof<_> with get, set
+
+    module Extensions =
+        /// <summary>
+        /// Emitted after an extension is loaded and all necessary browser state is initialized to support the start of the extension's
+        /// background page.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnExtensionReady =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member extension: Extension with get, set
+
+        /// <summary>
+        /// Emitted after an extension is unloaded. This occurs when <c>Session.removeExtension</c> is called.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnExtensionUnloaded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member extension: Extension with get, set
+
+        /// <summary>
+        /// Emitted after an extension is loaded. This occurs whenever an extension is added to the "enabled" set of extensions. This
+        /// includes:<br/><br/>* Extensions being loaded from <c>Extensions.loadExtension</c>.<br/>* Extensions being reloaded:<br/>  * from a crash.<br/>  * if the extension requested
+        /// it (<c>chrome.runtime.reload()</c>).
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnExtensionLoaded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member extension: Extension with get, set
+
+        module LoadExtension =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="allowFileAccess">Whether to allow the extension to read local files over <c>file://</c> protocol and inject content scripts into <c>file://</c> pages.
+                /// This is required e.g. for loading devtools extensions on <c>file://</c> URLs. Defaults to false.</param>
+                (allowFileAccess: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to allow the extension to read local files over <c>file://</c> protocol and inject content scripts into <c>file://</c> pages. This
+                /// is required e.g. for loading devtools extensions on <c>file://</c> URLs. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val allowFileAccess: bool = Unchecked.defaultof<_> with get, set
+
+    module Dialog =
+        module ShowCertificateTrustDialog =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="certificate">The certificate to trust/import.</param>
+                /// <param name="message">The message to display to the user.</param>
+                (certificate: Certificate, message: string) =
+                class
+                end
+
+                /// <summary>
+                /// The certificate to trust/import.
+                /// </summary>
+                [<Erase>]
+                member val certificate: Certificate = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The message to display to the user.
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type ShowMessageBox
+            /// <param name="response">The index of the clicked button.</param>
+            /// <param name="checkboxChecked">The checked state of the checkbox if <c>checkboxLabel</c> was set. Otherwise <c>false</c>.</param>
+            (response: float, checkboxChecked: bool) =
+            class
+            end
+
+            /// <summary>
+            /// The index of the clicked button.
+            /// </summary>
+            [<Erase>]
+            member val response: float = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The checked state of the checkbox if <c>checkboxLabel</c> was set. Otherwise <c>false</c>.
+            /// </summary>
+            [<Erase>]
+            member val checkboxChecked: bool = Unchecked.defaultof<_> with get, set
+
+        module ShowMessageBox =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="message">Content of the message box.</param>
+                /// <param name="type">Can be <c>none</c>, <c>info</c>, <c>error</c>, <c>question</c> or <c>warning</c>. On Windows, <c>question</c> displays the same icon as <c>info</c>, unless you
+                /// set an icon using the <c>icon</c> option. On macOS, both <c>warning</c> and <c>error</c> display the same warning icon.</param>
+                /// <param name="buttons">Array of texts for buttons. On Windows, an empty array will result in one button labeled "OK".</param>
+                /// <param name="defaultId">Index of the button in the buttons array which will be selected by default when the message box opens.</param>
+                /// <param name="signal">Pass an instance of AbortSignal to optionally close the message box, the message box will behave as if it
+                /// was cancelled by the user. On macOS, <c>signal</c> does not work with message boxes that do not have a parent
+                /// window, since those message boxes run synchronously due to platform limitations.</param>
+                /// <param name="title">Title of the message box, some platforms will not show it.</param>
+                /// <param name="detail">Extra information of the message.</param>
+                /// <param name="checkboxLabel">If provided, the message box will include a checkbox with the given label.</param>
+                /// <param name="checkboxChecked">Initial checked state of the checkbox. <c>false</c> by default.</param>
+                /// <param name="icon"></param>
+                /// <param name="textWidth">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Custom width of the
+                /// text in the message box.</param>
+                /// <param name="cancelId">The index of the button to be used to cancel the dialog, via the <c>Esc</c> key. By default this
+                /// is assigned to the first button with "cancel" or "no" as the label. If no such labeled buttons exist and
+                /// this option is not set, <c>0</c> will be used as the return value.</param>
+                /// <param name="noLink">On Windows Electron will try to figure out which one of the <c>buttons</c> are common buttons (like "Cancel" or
+                /// "Yes"), and show the others as command links in the dialog. This can make the dialog appear in the style
+                /// of modern Windows apps. If you don't like this behavior, you can set <c>noLink</c> to <c>true</c>.</param>
+                /// <param name="normalizeAccessKeys">Normalize the keyboard access keys across platforms. Default is <c>false</c>. Enabling this assumes <c>&amp;</c> is used in the button
+                /// labels for the placement of the keyboard shortcut access key and labels will be converted so they work correctly on
+                /// each platform, <c>&amp;</c> characters are removed on macOS, converted to <c>_</c> on Linux, and left untouched on Windows. For example,
+                /// a button label of <c>Vie&amp;w</c> will be converted to <c>Vie_w</c> on Linux and <c>View</c> on macOS and can be selected
+                /// via <c>Alt-W</c> on Windows and Linux.</param>
+                (
+                    message: string,
+                    ?``type``: Main.Enums.Dialog.ShowMessageBox.Options.Type,
+                    ?buttons: string[],
+                    ?defaultId: int,
+                    ?signal: AbortSignal,
+                    ?title: string,
+                    ?detail: string,
+                    ?checkboxLabel: string,
+                    ?checkboxChecked: bool,
+                    ?icon: U2<Main.NativeImage, string>
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?textWidth: int
+                    #endif
+                    ,
+                    ?cancelId: int,
+                    ?noLink: bool,
+                    ?normalizeAccessKeys: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Content of the message box.
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Can be <c>none</c>, <c>info</c>, <c>error</c>, <c>question</c> or <c>warning</c>. On Windows, <c>question</c> displays the same icon as <c>info</c>, unless you set
+                /// an icon using the <c>icon</c> option. On macOS, both <c>warning</c> and <c>error</c> display the same warning icon.
+                /// </summary>
+                [<Erase>]
+                member val ``type``: Main.Enums.Dialog.ShowMessageBox.Options.Type =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Array of texts for buttons. On Windows, an empty array will result in one button labeled "OK".
+                /// </summary>
+                [<Erase>]
+                member val buttons: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Index of the button in the buttons array which will be selected by default when the message box opens.
+                /// </summary>
+                [<Erase>]
+                member val defaultId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Pass an instance of AbortSignal to optionally close the message box, the message box will behave as if it was
+                /// cancelled by the user. On macOS, <c>signal</c> does not work with message boxes that do not have a parent window,
+                /// since those message boxes run synchronously due to platform limitations.
+                /// </summary>
+                [<Erase>]
+                member val signal: AbortSignal = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Title of the message box, some platforms will not show it.
+                /// </summary>
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra information of the message.
+                /// </summary>
+                [<Erase>]
+                member val detail: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If provided, the message box will include a checkbox with the given label.
+                /// </summary>
+                [<Erase>]
+                member val checkboxLabel: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Initial checked state of the checkbox. <c>false</c> by default.
+                /// </summary>
+                [<Erase>]
+                member val checkboxChecked: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val icon: U2<Main.NativeImage, string> = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Custom width of the text in the message box.
+                /// </summary>
+                [<Erase>]
+                member val textWidth: int = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                /// <summary>
+                /// The index of the button to be used to cancel the dialog, via the <c>Esc</c> key. By default this is
+                /// assigned to the first button with "cancel" or "no" as the label. If no such labeled buttons exist and this
+                /// option is not set, <c>0</c> will be used as the return value.
+                /// </summary>
+                [<Erase>]
+                member val cancelId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// On Windows Electron will try to figure out which one of the <c>buttons</c> are common buttons (like "Cancel" or "Yes"),
+                /// and show the others as command links in the dialog. This can make the dialog appear in the style of
+                /// modern Windows apps. If you don't like this behavior, you can set <c>noLink</c> to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val noLink: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Normalize the keyboard access keys across platforms. Default is <c>false</c>. Enabling this assumes <c>&amp;</c> is used in the button labels
+                /// for the placement of the keyboard shortcut access key and labels will be converted so they work correctly on each
+                /// platform, <c>&amp;</c> characters are removed on macOS, converted to <c>_</c> on Linux, and left untouched on Windows. For example, a
+                /// button label of <c>Vie&amp;w</c> will be converted to <c>Vie_w</c> on Linux and <c>View</c> on macOS and can be selected via
+                /// <c>Alt-W</c> on Windows and Linux.
+                /// </summary>
+                [<Erase>]
+                member val normalizeAccessKeys: bool = Unchecked.defaultof<_> with get, set
+
+        module ShowMessageBoxSync =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="message">Content of the message box.</param>
+                /// <param name="type">Can be <c>none</c>, <c>info</c>, <c>error</c>, <c>question</c> or <c>warning</c>. On Windows, <c>question</c> displays the same icon as <c>info</c>, unless you
+                /// set an icon using the <c>icon</c> option. On macOS, both <c>warning</c> and <c>error</c> display the same warning icon.</param>
+                /// <param name="buttons">Array of texts for buttons. On Windows, an empty array will result in one button labeled "OK".</param>
+                /// <param name="defaultId">Index of the button in the buttons array which will be selected by default when the message box opens.</param>
+                /// <param name="title">Title of the message box, some platforms will not show it.</param>
+                /// <param name="detail">Extra information of the message.</param>
+                /// <param name="icon"></param>
+                /// <param name="textWidth">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Custom width of the
+                /// text in the message box.</param>
+                /// <param name="cancelId">The index of the button to be used to cancel the dialog, via the <c>Esc</c> key. By default this
+                /// is assigned to the first button with "cancel" or "no" as the label. If no such labeled buttons exist and
+                /// this option is not set, <c>0</c> will be used as the return value.</param>
+                /// <param name="noLink">On Windows Electron will try to figure out which one of the <c>buttons</c> are common buttons (like "Cancel" or
+                /// "Yes"), and show the others as command links in the dialog. This can make the dialog appear in the style
+                /// of modern Windows apps. If you don't like this behavior, you can set <c>noLink</c> to <c>true</c>.</param>
+                /// <param name="normalizeAccessKeys">Normalize the keyboard access keys across platforms. Default is <c>false</c>. Enabling this assumes <c>&amp;</c> is used in the button
+                /// labels for the placement of the keyboard shortcut access key and labels will be converted so they work correctly on
+                /// each platform, <c>&amp;</c> characters are removed on macOS, converted to <c>_</c> on Linux, and left untouched on Windows. For example,
+                /// a button label of <c>Vie&amp;w</c> will be converted to <c>Vie_w</c> on Linux and <c>View</c> on macOS and can be selected
+                /// via <c>Alt-W</c> on Windows and Linux.</param>
+                (
+                    message: string,
+                    ?``type``: Main.Enums.Dialog.ShowMessageBoxSync.Options.Type,
+                    ?buttons: string[],
+                    ?defaultId: int,
+                    ?title: string,
+                    ?detail: string,
+                    ?icon: U2<Main.NativeImage, string>
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?textWidth: int
+                    #endif
+                    ,
+                    ?cancelId: int,
+                    ?noLink: bool,
+                    ?normalizeAccessKeys: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Content of the message box.
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Can be <c>none</c>, <c>info</c>, <c>error</c>, <c>question</c> or <c>warning</c>. On Windows, <c>question</c> displays the same icon as <c>info</c>, unless you set
+                /// an icon using the <c>icon</c> option. On macOS, both <c>warning</c> and <c>error</c> display the same warning icon.
+                /// </summary>
+                [<Erase>]
+                member val ``type``: Main.Enums.Dialog.ShowMessageBoxSync.Options.Type =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Array of texts for buttons. On Windows, an empty array will result in one button labeled "OK".
+                /// </summary>
+                [<Erase>]
+                member val buttons: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Index of the button in the buttons array which will be selected by default when the message box opens.
+                /// </summary>
+                [<Erase>]
+                member val defaultId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Title of the message box, some platforms will not show it.
+                /// </summary>
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra information of the message.
+                /// </summary>
+                [<Erase>]
+                member val detail: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val icon: U2<Main.NativeImage, string> = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Custom width of the text in the message box.
+                /// </summary>
+                [<Erase>]
+                member val textWidth: int = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                /// <summary>
+                /// The index of the button to be used to cancel the dialog, via the <c>Esc</c> key. By default this is
+                /// assigned to the first button with "cancel" or "no" as the label. If no such labeled buttons exist and this
+                /// option is not set, <c>0</c> will be used as the return value.
+                /// </summary>
+                [<Erase>]
+                member val cancelId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// On Windows Electron will try to figure out which one of the <c>buttons</c> are common buttons (like "Cancel" or "Yes"),
+                /// and show the others as command links in the dialog. This can make the dialog appear in the style of
+                /// modern Windows apps. If you don't like this behavior, you can set <c>noLink</c> to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val noLink: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Normalize the keyboard access keys across platforms. Default is <c>false</c>. Enabling this assumes <c>&amp;</c> is used in the button labels
+                /// for the placement of the keyboard shortcut access key and labels will be converted so they work correctly on each
+                /// platform, <c>&amp;</c> characters are removed on macOS, converted to <c>_</c> on Linux, and left untouched on Windows. For example, a
+                /// button label of <c>Vie&amp;w</c> will be converted to <c>Vie_w</c> on Linux and <c>View</c> on macOS and can be selected via
+                /// <c>Alt-W</c> on Windows and Linux.
+                /// </summary>
+                [<Erase>]
+                member val normalizeAccessKeys: bool = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type ShowSaveDialog
+            /// <param name="canceled">whether or not the dialog was canceled.</param>
+            /// <param name="filePath">If the dialog is canceled, this will be an empty string.</param>
+            /// <param name="bookmark">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔ || Base64 encoded string which
+            /// contains the security scoped bookmark data for the saved file. <c>securityScopedBookmarks</c> must be enabled for this to be present. (For
+            /// return values, see table here.)</param>
+            (
+                canceled: bool,
+                filePath: string
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                ,
+                ?bookmark: string
+                #endif
+
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// whether or not the dialog was canceled.
+            /// </summary>
+            [<Erase>]
+            member val canceled: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// If the dialog is canceled, this will be an empty string.
+            /// </summary>
+            [<Erase>]
+            member val filePath: string = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔</para>
+            /// Base64 encoded string which contains the security scoped bookmark data for the saved file. <c>securityScopedBookmarks</c> must be enabled for this
+            /// to be present. (For return values, see table here.)
+            /// </summary>
+            [<Erase>]
+            member val bookmark: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        module ShowSaveDialog =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="title">The dialog title. Cannot be displayed on some _Linux_ desktop environments.</param>
+                /// <param name="defaultPath">Absolute directory path, absolute file path, or file name to use by default.</param>
+                /// <param name="buttonLabel">Custom label for the confirmation button, when left empty the default label will be used.</param>
+                /// <param name="filters"></param>
+                /// <param name="message">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Message to display above
+                /// text fields.</param>
+                /// <param name="nameFieldLabel">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Custom label for the
+                /// text displayed in front of the filename text field.</param>
+                /// <param name="showsTagField">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Show the tags input
+                /// box, defaults to <c>true</c>.</param>
+                /// <param name="properties"></param>
+                /// <param name="securityScopedBookmarks">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔ || Create a security scoped
+                /// bookmark when packaged for the Mac App Store. If this option is enabled and the file doesn't already exist a
+                /// blank file will be created at the chosen path.</param>
+                (
+                    ?title: string,
+                    ?defaultPath: string,
+                    ?buttonLabel: string,
+                    ?filters: FileFilter[]
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?message: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?nameFieldLabel: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?showsTagField: bool
+                    #endif
+                    ,
+                    ?properties: Main.Enums.Dialog.ShowSaveDialog.Options.Properties[]
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                    ,
+                    ?securityScopedBookmarks: bool
+                    #endif
+
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// The dialog title. Cannot be displayed on some _Linux_ desktop environments.
+                /// </summary>
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Absolute directory path, absolute file path, or file name to use by default.
+                /// </summary>
+                [<Erase>]
+                member val defaultPath: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Custom label for the confirmation button, when left empty the default label will be used.
+                /// </summary>
+                [<Erase>]
+                member val buttonLabel: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val filters: FileFilter[] = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Message to display above text fields.
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Custom label for the text displayed in front of the filename text field.
+                /// </summary>
+                [<Erase>]
+                member val nameFieldLabel: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Show the tags input box, defaults to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val showsTagField: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                [<Erase>]
+                member val properties: Main.Enums.Dialog.ShowSaveDialog.Options.Properties[] =
+                    Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔</para>
+                /// Create a security scoped bookmark when packaged for the Mac App Store. If this option is enabled and the file
+                /// doesn't already exist a blank file will be created at the chosen path.
+                /// </summary>
+                [<Erase>]
+                member val securityScopedBookmarks: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module ShowSaveDialogSync =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="title">The dialog title. Cannot be displayed on some _Linux_ desktop environments.</param>
+                /// <param name="defaultPath">Absolute directory path, absolute file path, or file name to use by default.</param>
+                /// <param name="buttonLabel">Custom label for the confirmation button, when left empty the default label will be used.</param>
+                /// <param name="filters"></param>
+                /// <param name="message">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Message to display above
+                /// text fields.</param>
+                /// <param name="nameFieldLabel">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Custom label for the
+                /// text displayed in front of the filename text field.</param>
+                /// <param name="showsTagField">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Show the tags input
+                /// box, defaults to <c>true</c>.</param>
+                /// <param name="properties"></param>
+                /// <param name="securityScopedBookmarks">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔ || Create a security scoped
+                /// bookmark when packaged for the Mac App Store. If this option is enabled and the file doesn't already exist a
+                /// blank file will be created at the chosen path.</param>
+                (
+                    ?title: string,
+                    ?defaultPath: string,
+                    ?buttonLabel: string,
+                    ?filters: FileFilter[]
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?message: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?nameFieldLabel: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?showsTagField: bool
+                    #endif
+                    ,
+                    ?properties: Main.Enums.Dialog.ShowSaveDialogSync.Options.Properties[]
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                    ,
+                    ?securityScopedBookmarks: bool
+                    #endif
+
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// The dialog title. Cannot be displayed on some _Linux_ desktop environments.
+                /// </summary>
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Absolute directory path, absolute file path, or file name to use by default.
+                /// </summary>
+                [<Erase>]
+                member val defaultPath: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Custom label for the confirmation button, when left empty the default label will be used.
+                /// </summary>
+                [<Erase>]
+                member val buttonLabel: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val filters: FileFilter[] = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Message to display above text fields.
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Custom label for the text displayed in front of the filename text field.
+                /// </summary>
+                [<Erase>]
+                member val nameFieldLabel: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Show the tags input box, defaults to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val showsTagField: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                [<Erase>]
+                member val properties: Main.Enums.Dialog.ShowSaveDialogSync.Options.Properties[] =
+                    Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔</para>
+                /// Create a security scoped bookmark when packaged for the Mac App Store. If this option is enabled and the file
+                /// doesn't already exist a blank file will be created at the chosen path.
+                /// </summary>
+                [<Erase>]
+                member val securityScopedBookmarks: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        [<JS.Pojo>]
+        type ShowOpenDialog
+            /// <param name="canceled">whether or not the dialog was canceled.</param>
+            /// <param name="filePaths">An array of file paths chosen by the user. If the dialog is cancelled this will be an empty
+            /// array.</param>
+            /// <param name="bookmarks">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔ || An array matching the
+            /// <c>filePaths</c> array of base64 encoded strings which contains security scoped bookmark data. <c>securityScopedBookmarks</c> must be enabled for this to be
+            /// populated. (For return values, see table here.)</param>
+            (
+                canceled: bool,
+                filePaths: string[]
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                ,
+                ?bookmarks: string[]
+                #endif
+
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// whether or not the dialog was canceled.
+            /// </summary>
+            [<Erase>]
+            member val canceled: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of file paths chosen by the user. If the dialog is cancelled this will be an empty array.
+            /// </summary>
+            [<Erase>]
+            member val filePaths: string[] = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔</para>
+            /// An array matching the <c>filePaths</c> array of base64 encoded strings which contains security scoped bookmark data. <c>securityScopedBookmarks</c> must be enabled
+            /// for this to be populated. (For return values, see table here.)
+            /// </summary>
+            [<Erase>]
+            member val bookmarks: string[] = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        module ShowOpenDialog =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="title"></param>
+                /// <param name="defaultPath"></param>
+                /// <param name="buttonLabel">Custom label for the confirmation button, when left empty the default label will be used.</param>
+                /// <param name="filters"></param>
+                /// <param name="properties">Contains which features the dialog should use. The following values are supported:</param>
+                /// <param name="message">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Message to display above
+                /// input boxes.</param>
+                /// <param name="securityScopedBookmarks">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔ || Create security scoped bookmarks
+                /// when packaged for the Mac App Store.</param>
+                (
+                    ?title: string,
+                    ?defaultPath: string,
+                    ?buttonLabel: string,
+                    ?filters: FileFilter[],
+                    ?properties: Main.Enums.Dialog.ShowOpenDialog.Options.Properties[]
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?message: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                    ,
+                    ?securityScopedBookmarks: bool
+                    #endif
+
+                ) =
+                class
+                end
+
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val defaultPath: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Custom label for the confirmation button, when left empty the default label will be used.
+                /// </summary>
+                [<Erase>]
+                member val buttonLabel: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val filters: FileFilter[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Contains which features the dialog should use. The following values are supported:
+                /// </summary>
+                [<Erase>]
+                member val properties: Main.Enums.Dialog.ShowOpenDialog.Options.Properties[] =
+                    Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Message to display above input boxes.
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔</para>
+                /// Create security scoped bookmarks when packaged for the Mac App Store.
+                /// </summary>
+                [<Erase>]
+                member val securityScopedBookmarks: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module ShowOpenDialogSync =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="title"></param>
+                /// <param name="defaultPath"></param>
+                /// <param name="buttonLabel">Custom label for the confirmation button, when left empty the default label will be used.</param>
+                /// <param name="filters"></param>
+                /// <param name="properties">Contains which features the dialog should use. The following values are supported:</param>
+                /// <param name="message">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Message to display above
+                /// input boxes.</param>
+                /// <param name="securityScopedBookmarks">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔ || Create security scoped bookmarks
+                /// when packaged for the Mac App Store.</param>
+                (
+                    ?title: string,
+                    ?defaultPath: string,
+                    ?buttonLabel: string,
+                    ?filters: FileFilter[],
+                    ?properties: Main.Enums.Dialog.ShowOpenDialogSync.Options.Properties[]
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?message: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                    ,
+                    ?securityScopedBookmarks: bool
+                    #endif
+
+                ) =
+                class
+                end
+
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val defaultPath: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Custom label for the confirmation button, when left empty the default label will be used.
+                /// </summary>
+                [<Erase>]
+                member val buttonLabel: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val filters: FileFilter[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Contains which features the dialog should use. The following values are supported:
+                /// </summary>
+                [<Erase>]
+                member val properties: Main.Enums.Dialog.ShowOpenDialogSync.Options.Properties[] =
+                    Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Message to display above input boxes.
+                /// </summary>
+                [<Erase>]
+                member val message: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAS || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ✔</para>
+                /// Create security scoped bookmarks when packaged for the Mac App Store.
+                /// </summary>
+                [<Erase>]
+                member val securityScopedBookmarks: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+    module DesktopCapturer =
+        module GetSources =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="types">An array of strings that lists the types of desktop sources to be captured, available types can be <c>screen</c>
+                /// and <c>window</c>.</param>
+                /// <param name="thumbnailSize">The size that the media source thumbnail should be scaled to. Default is <c>150</c> x <c>150</c>. Set width or
+                /// height to 0 when you do not need the thumbnails. This will save the processing time required for capturing the
+                /// content of each window and screen.</param>
+                /// <param name="fetchWindowIcons">Set to true to enable fetching window icons. The default value is false. When false the appIcon property of
+                /// the sources return null. Same if a source has the type screen.</param>
+                (
+                    types: Main.Enums.DesktopCapturer.GetSources.Options.Types[],
+                    ?thumbnailSize: Size,
+                    ?fetchWindowIcons: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// An array of strings that lists the types of desktop sources to be captured, available types can be <c>screen</c> and
+                /// <c>window</c>.
+                /// </summary>
+                [<Erase>]
+                member val types: Main.Enums.DesktopCapturer.GetSources.Options.Types[] =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The size that the media source thumbnail should be scaled to. Default is <c>150</c> x <c>150</c>. Set width or height
+                /// to 0 when you do not need the thumbnails. This will save the processing time required for capturing the content
+                /// of each window and screen.
+                /// </summary>
+                [<Erase>]
+                member val thumbnailSize: Size = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set to true to enable fetching window icons. The default value is false. When false the appIcon property of the
+                /// sources return null. Same if a source has the type screen.
+                /// </summary>
+                [<Erase>]
+                member val fetchWindowIcons: bool = Unchecked.defaultof<_> with get, set
+
+    module CrashReporter =
+        module Start =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="submitURL">URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.</param>
+                /// <param name="productName">Defaults to <c>app.name</c>.</param>
+                /// <param name="companyName">Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.</param>
+                /// <param name="uploadToServer">Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in
+                /// the crashes directory, but not uploaded. Default is <c>true</c>.</param>
+                /// <param name="ignoreSystemCrashHandler">If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is
+                /// <c>false</c>.</param>
+                /// <param name="rateLimit">⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌ || If true, limit the
+                /// number of crashes uploaded to 1/hour. Default is <c>false</c>.</param>
+                /// <param name="compress">If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.</param>
+                /// <param name="extra">Extra string key/value annotations that will be sent along with crash reports that are generated in the main process.
+                /// Only string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters
+                /// to crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.</param>
+                /// <param name="globalExtra">Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations
+                /// cannot be changed once the crash reporter has been started. If a key is present in both the global extra
+                /// parameters and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version
+                /// are included, as well as the Electron version.</param>
+                (
+                    ?submitURL: string,
+                    ?productName: string,
+                    ?companyName: string,
+                    ?uploadToServer: bool,
+                    ?ignoreSystemCrashHandler: bool
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                    ,
+                    ?rateLimit: bool
+                    #endif
+                    ,
+                    ?compress: bool,
+                    ?extra: Record<string, string>,
+                    ?globalExtra: Record<string, string>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val submitURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to <c>app.name</c>.
+                /// </summary>
+                [<Erase>]
+                member val productName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.
+                /// </summary>
+                [<Erase; System.Obsolete>]
+                member val companyName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in the
+                /// crashes directory, but not uploaded. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val uploadToServer: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val ignoreSystemCrashHandler: bool = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// If true, limit the number of crashes uploaded to 1/hour. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val rateLimit: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                /// <summary>
+                /// If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val compress: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with crash reports that are generated in the main process. Only
+                /// string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters to
+                /// crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.
+                /// </summary>
+                [<Erase>]
+                member val extra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations cannot
+                /// be changed once the crash reporter has been started. If a key is present in both the global extra parameters
+                /// and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version are
+                /// included, as well as the Electron version.
+                /// </summary>
+                [<Erase>]
+                member val globalExtra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+    module Cookies =
+        /// <summary>
+        /// Emitted when a cookie is changed because it was added, edited, removed, or expired.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnChanged =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The cookie that was changed.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member cookie: Cookie with get, set
+
+            /// <summary>
+            /// The cause of the change with one of the following values:
             /// </summary>
             [<Emit("$0[2]")>]
-            abstract member report: string with get, set
+            abstract member cause: Main.Enums.Cookies.Changed.Cause with get, set
+
+            /// <summary>
+            /// <c>true</c> if the cookie was removed, <c>false</c> otherwise.
+            /// </summary>
+            [<Emit("$0[3]")>]
+            abstract member removed: bool with get, set
+
+        module Set =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="url">The URL to associate the cookie with. The promise will be rejected if the URL is invalid.</param>
+                /// <param name="name">The name of the cookie. Empty by default if omitted.</param>
+                /// <param name="value">The value of the cookie. Empty by default if omitted.</param>
+                /// <param name="domain">The domain of the cookie; this will be normalized with a preceding dot so that it's also valid for
+                /// subdomains. Empty by default if omitted.</param>
+                /// <param name="path">The path of the cookie. Empty by default if omitted.</param>
+                /// <param name="secure">Whether the cookie should be marked as Secure. Defaults to false unless Same Site=None attribute is used.</param>
+                /// <param name="httpOnly">Whether the cookie should be marked as HTTP only. Defaults to false.</param>
+                /// <param name="expirationDate">The expiration date of the cookie as the number of seconds since the UNIX epoch. If omitted then the
+                /// cookie becomes a session cookie and will not be retained between sessions.</param>
+                /// <param name="sameSite">The Same Site policy to apply to this cookie.  Can be <c>unspecified</c>, <c>no_restriction</c>, <c>lax</c> or <c>strict</c>.  Default
+                /// is <c>lax</c>.</param>
+                (
+                    url: string,
+                    ?name: string,
+                    ?value: string,
+                    ?domain: string,
+                    ?path: string,
+                    ?secure: bool,
+                    ?httpOnly: bool,
+                    ?expirationDate: double,
+                    ?sameSite: Main.Enums.Cookies.Set.Details.SameSite
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// The URL to associate the cookie with. The promise will be rejected if the URL is invalid.
+                /// </summary>
+                [<Erase>]
+                member val url: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The name of the cookie. Empty by default if omitted.
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The value of the cookie. Empty by default if omitted.
+                /// </summary>
+                [<Erase>]
+                member val value: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The domain of the cookie; this will be normalized with a preceding dot so that it's also valid for subdomains.
+                /// Empty by default if omitted.
+                /// </summary>
+                [<Erase>]
+                member val domain: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The path of the cookie. Empty by default if omitted.
+                /// </summary>
+                [<Erase>]
+                member val path: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the cookie should be marked as Secure. Defaults to false unless Same Site=None attribute is used.
+                /// </summary>
+                [<Erase>]
+                member val secure: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the cookie should be marked as HTTP only. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val httpOnly: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The expiration date of the cookie as the number of seconds since the UNIX epoch. If omitted then the cookie
+                /// becomes a session cookie and will not be retained between sessions.
+                /// </summary>
+                [<Erase>]
+                member val expirationDate: double = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The Same Site policy to apply to this cookie.  Can be <c>unspecified</c>, <c>no_restriction</c>, <c>lax</c> or <c>strict</c>.  Default is
+                /// <c>lax</c>.
+                /// </summary>
+                [<Erase>]
+                member val sameSite: Main.Enums.Cookies.Set.Details.SameSite = Unchecked.defaultof<_> with get, set
+
+        module Get =
+            [<JS.Pojo>]
+            type Filter
+                /// <param name="url">Retrieves cookies which are associated with <c>url</c>. Empty implies retrieving cookies of all URLs.</param>
+                /// <param name="name">Filters cookies by name.</param>
+                /// <param name="domain">Retrieves cookies whose domains match or are subdomains of <c>domains</c>.</param>
+                /// <param name="path">Retrieves cookies whose path matches <c>path</c>.</param>
+                /// <param name="secure">Filters cookies by their Secure property.</param>
+                /// <param name="session">Filters out session or persistent cookies.</param>
+                /// <param name="httpOnly">Filters cookies by httpOnly.</param>
+                (
+                    ?url: string,
+                    ?name: string,
+                    ?domain: string,
+                    ?path: string,
+                    ?secure: bool,
+                    ?session: bool,
+                    ?httpOnly: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Retrieves cookies which are associated with <c>url</c>. Empty implies retrieving cookies of all URLs.
+                /// </summary>
+                [<Erase>]
+                member val url: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Filters cookies by name.
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Retrieves cookies whose domains match or are subdomains of <c>domains</c>.
+                /// </summary>
+                [<Erase>]
+                member val domain: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Retrieves cookies whose path matches <c>path</c>.
+                /// </summary>
+                [<Erase>]
+                member val path: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Filters cookies by their Secure property.
+                /// </summary>
+                [<Erase>]
+                member val secure: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Filters out session or persistent cookies.
+                /// </summary>
+                [<Erase>]
+                member val session: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Filters cookies by httpOnly.
+                /// </summary>
+                [<Erase>]
+                member val httpOnly: bool = Unchecked.defaultof<_> with get, set
+
+    module ContentTracing =
+        [<JS.Pojo>]
+        type GetTraceBufferUsage
+            /// <param name="value"></param>
+            /// <param name="percentage"></param>
+            (value: float, percentage: float) =
+            class
+            end
+
+            [<Erase>]
+            member val value: float = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val percentage: float = Unchecked.defaultof<_> with get, set
+
+    module Clipboard =
+        module Write =
+            [<JS.Pojo>]
+            type Data
+                /// <param name="text"></param>
+                /// <param name="html"></param>
+                /// <param name="image"></param>
+                /// <param name="rtf"></param>
+                /// <param name="bookmark">The title of the URL at <c>text</c>.</param>
+                (?text: string, ?html: string, ?image: Main.NativeImage, ?rtf: string, ?bookmark: string) =
+                class
+                end
+
+                [<Erase>]
+                member val text: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val html: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val image: Main.NativeImage = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val rtf: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The title of the URL at <c>text</c>.
+                /// </summary>
+                [<Erase>]
+                member val bookmark: string = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type ReadBookmark
+            /// <param name="title"></param>
+            /// <param name="url"></param>
+            (title: string, url: string) =
+            class
+            end
+
+            [<Erase>]
+            member val title: string = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val url: string = Unchecked.defaultof<_> with get, set
+
+    module BrowserView =
+        module SetAutoResize =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">If <c>true</c>, the view's width will grow and shrink together with the window. <c>false</c> by default.</param>
+                /// <param name="height">If <c>true</c>, the view's height will grow and shrink together with the window. <c>false</c> by default.</param>
+                /// <param name="horizontal">If <c>true</c>, the view's x position and width will grow and shrink proportionally with the window. <c>false</c> by default.</param>
+                /// <param name="vertical">If <c>true</c>, the view's y position and height will grow and shrink proportionally with the window. <c>false</c> by default.</param>
+                (?width: bool, ?height: bool, ?horizontal: bool, ?vertical: bool) =
+                class
+                end
+
+                /// <summary>
+                /// If <c>true</c>, the view's width will grow and shrink together with the window. <c>false</c> by default.
+                /// </summary>
+                [<Erase>]
+                member val width: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If <c>true</c>, the view's height will grow and shrink together with the window. <c>false</c> by default.
+                /// </summary>
+                [<Erase>]
+                member val height: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If <c>true</c>, the view's x position and width will grow and shrink proportionally with the window. <c>false</c> by default.
+                /// </summary>
+                [<Erase>]
+                member val horizontal: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If <c>true</c>, the view's y position and height will grow and shrink proportionally with the window. <c>false</c> by default.
+                /// </summary>
+                [<Erase>]
+                member val vertical: bool = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type Options
+            /// <param name="webPreferences">Settings of web page's features.</param>
+            (?webPreferences: WebPreferences) =
+            class
+            end
+
+            /// <summary>
+            /// Settings of web page's features.
+            /// </summary>
+            [<Erase>]
+            member val webPreferences: WebPreferences = Unchecked.defaultof<_> with get, set
+
+    module AutoUpdater =
+        /// <summary>
+        /// Emitted when an update has been downloaded.<br/><br/>On Windows only <c>releaseName</c> is available.<br/><br/>&gt; [!NOTE] It is not strictly necessary to handle
+        /// this event. A successfully downloaded update will still be applied the next time the application starts.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnUpdateDownloaded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member releaseNotes: string with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member releaseName: string with get, set
+
+            [<Emit("$0[3]")>]
+            abstract member releaseDate: System.DateTime with get, set
+
+            [<Emit("$0[4]")>]
+            abstract member updateURL: string with get, set
+
+        module SetFeedURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="url"></param>
+                /// <param name="headers">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || HTTP request headers.</param>
+                /// <param name="serverType">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Can be <c>json</c> or
+                /// <c>default</c>, see the Squirrel.Mac README for more information.</param>
+                (
+                    url: string
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?headers: Record<string, string>
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?serverType: Main.Enums.AutoUpdater.SetFeedURL.Options.ServerType
+                    #endif
+
+                ) =
+                class
+                end
+
+                [<Erase>]
+                member val url: string = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// HTTP request headers.
+                /// </summary>
+                [<Erase>]
+                member val headers: Record<string, string> = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Can be <c>json</c> or <c>default</c>, see the Squirrel.Mac README for more information.
+                /// </summary>
+                [<Erase>]
+                member val serverType: Main.Enums.AutoUpdater.SetFeedURL.Options.ServerType =
+                    Unchecked.defaultof<_> with get, set
+                #endif
+
+
+    module WebRequest =
+        module OnErrorOccurred =
+            module Listener =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="fromCache"></param>
+                    /// <param name="error">The error description.</param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnErrorOccurred.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        fromCache: bool,
+                        error: string,
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnErrorOccurred.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val fromCache: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The error description.
+                    /// </summary>
+                    [<Erase>]
+                    member val error: string = Unchecked.defaultof<_> with get, set
+
+        module OnCompleted =
+            module Listener =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="responseHeaders"></param>
+                    /// <param name="fromCache"></param>
+                    /// <param name="statusCode"></param>
+                    /// <param name="statusLine"></param>
+                    /// <param name="error"></param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnCompleted.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        fromCache: bool,
+                        statusCode: int,
+                        statusLine: string,
+                        error: string,
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>,
+                        ?responseHeaders: Record<string, string[]>
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnCompleted.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val responseHeaders: Record<string, string[]> = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val fromCache: bool = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusCode: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusLine: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val error: string = Unchecked.defaultof<_> with get, set
+
+        module OnBeforeRedirect =
+            module Listener =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="redirectURL"></param>
+                    /// <param name="statusCode"></param>
+                    /// <param name="statusLine"></param>
+                    /// <param name="ip">The server IP address that the request was actually sent to.</param>
+                    /// <param name="fromCache"></param>
+                    /// <param name="responseHeaders"></param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnBeforeRedirect.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        redirectURL: string,
+                        statusCode: int,
+                        statusLine: string,
+                        fromCache: bool,
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>,
+                        ?ip: string,
+                        ?responseHeaders: Record<string, string[]>
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnBeforeRedirect.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val redirectURL: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusCode: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusLine: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The server IP address that the request was actually sent to.
+                    /// </summary>
+                    [<Erase>]
+                    member val ip: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val fromCache: bool = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val responseHeaders: Record<string, string[]> = Unchecked.defaultof<_> with get, set
+
+        module OnResponseStarted =
+            module Listener =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="responseHeaders"></param>
+                    /// <param name="fromCache">Indicates whether the response was fetched from disk cache.</param>
+                    /// <param name="statusCode"></param>
+                    /// <param name="statusLine"></param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnResponseStarted.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        fromCache: bool,
+                        statusCode: int,
+                        statusLine: string,
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>,
+                        ?responseHeaders: Record<string, string[]>
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnResponseStarted.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val responseHeaders: Record<string, string[]> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Indicates whether the response was fetched from disk cache.
+                    /// </summary>
+                    [<Erase>]
+                    member val fromCache: bool = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusCode: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusLine: string = Unchecked.defaultof<_> with get, set
+
+        module OnSendHeaders =
+            module Listener =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="requestHeaders"></param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnSendHeaders.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        requestHeaders: Record<string, string>,
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnSendHeaders.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val requestHeaders: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+        module OnHeadersReceived =
+            module Listener =
+                module Callback =
+                    [<JS.Pojo>]
+                    type HeadersReceivedResponse
+                        /// <param name="cancel"></param>
+                        /// <param name="responseHeaders">When provided, the server is assumed to have responded with these headers.</param>
+                        /// <param name="statusLine">Should be provided when overriding <c>responseHeaders</c> to change header status otherwise original response header's status will be used.</param>
+                        (?cancel: bool, ?responseHeaders: Record<string, U2<string, string[]>>, ?statusLine: string) =
+                        class
+                        end
+
+                        [<Erase>]
+                        member val cancel: bool = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// When provided, the server is assumed to have responded with these headers.
+                        /// </summary>
+                        [<Erase>]
+                        member val responseHeaders: Record<string, U2<string, string[]>> =
+                            Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// Should be provided when overriding <c>responseHeaders</c> to change header status otherwise original response header's status will be used.
+                        /// </summary>
+                        [<Erase>]
+                        member val statusLine: string = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="statusLine"></param>
+                    /// <param name="statusCode"></param>
+                    /// <param name="responseHeaders"></param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnHeadersReceived.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        statusLine: string,
+                        statusCode: int,
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>,
+                        ?responseHeaders: Record<string, string[]>
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnHeadersReceived.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusLine: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val statusCode: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val responseHeaders: Record<string, string[]> = Unchecked.defaultof<_> with get, set
+
+            /// <param name="details"></param>
+            /// <param name="callback"></param>
+            type Listener =
+                delegate of
+                    details: Main.WebRequest.OnHeadersReceived.Listener.Details *
+                    callback: (Main.WebRequest.OnHeadersReceived.Listener.Callback.HeadersReceivedResponse -> unit) ->
+                        unit
+
+        module OnBeforeSendHeaders =
+            module Listener =
+                module Callback =
+                    [<JS.Pojo>]
+                    type BeforeSendResponse
+                        /// <param name="cancel"></param>
+                        /// <param name="requestHeaders">When provided, request will be made with these headers.</param>
+                        (?cancel: bool, ?requestHeaders: Record<string, U2<string, string[]>>) =
+                        class
+                        end
+
+                        [<Erase>]
+                        member val cancel: bool = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// When provided, request will be made with these headers.
+                        /// </summary>
+                        [<Erase>]
+                        member val requestHeaders: Record<string, U2<string, string[]>> =
+                            Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="uploadData"></param>
+                    /// <param name="requestHeaders"></param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnBeforeSendHeaders.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        requestHeaders: Record<string, string>,
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>,
+                        ?uploadData: UploadData[]
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnBeforeSendHeaders.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val uploadData: UploadData[] = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val requestHeaders: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+            /// <param name="details"></param>
+            /// <param name="callback"></param>
+            type Listener =
+                delegate of
+                    details: Main.WebRequest.OnBeforeSendHeaders.Listener.Details *
+                    callback: (Main.WebRequest.OnBeforeSendHeaders.Listener.Callback.BeforeSendResponse -> unit) ->
+                        unit
+
+        module OnBeforeRequest =
+            module Listener =
+                module Callback =
+                    [<JS.Pojo>]
+                    type Response
+                        /// <param name="cancel"></param>
+                        /// <param name="redirectURL">The original request is prevented from being sent or completed and is instead redirected to the given URL.</param>
+                        (?cancel: bool, ?redirectURL: string) =
+                        class
+                        end
+
+                        [<Erase>]
+                        member val cancel: bool = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// The original request is prevented from being sent or completed and is instead redirected to the given URL.
+                        /// </summary>
+                        [<Erase>]
+                        member val redirectURL: string = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="id"></param>
+                    /// <param name="url"></param>
+                    /// <param name="method"></param>
+                    /// <param name="webContentsId"></param>
+                    /// <param name="webContents"></param>
+                    /// <param name="frame">Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="resourceType">Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.</param>
+                    /// <param name="referrer"></param>
+                    /// <param name="timestamp"></param>
+                    /// <param name="uploadData"></param>
+                    (
+                        id: int,
+                        url: string,
+                        method: string,
+                        resourceType: Main.Enums.WebRequest.OnBeforeRequest.Listener.Details.ResourceType,
+                        referrer: string,
+                        timestamp: double,
+                        uploadData: UploadData[],
+                        ?webContentsId: int,
+                        ?webContents: Main.WebContents,
+                        ?frame: Option<Main.WebFrameMain>
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val id: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val method: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContentsId: int = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val webContents: Main.WebContents = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Requesting frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>mainFrame</c>, <c>subFrame</c>, <c>stylesheet</c>, <c>script</c>, <c>image</c>, <c>font</c>, <c>object</c>, <c>xhr</c>, <c>ping</c>, <c>cspReport</c>, <c>media</c>, <c>webSocket</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val resourceType: Main.Enums.WebRequest.OnBeforeRequest.Listener.Details.ResourceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val referrer: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val timestamp: double = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val uploadData: UploadData[] = Unchecked.defaultof<_> with get, set
+
+            /// <param name="details"></param>
+            /// <param name="callback"></param>
+            type Listener =
+                delegate of
+                    details: Main.WebRequest.OnBeforeRequest.Listener.Details *
+                    callback: (Main.WebRequest.OnBeforeRequest.Listener.Callback.Response -> unit) ->
+                        unit
 
     module WebContents =
         /// <summary>
@@ -12722,7 +19129,7 @@ module Main =
             abstract member authInfo: Main.WebContents.Login.AuthInfo with get, set
 
             [<Emit("$0[3]")>]
-            abstract member callback: Main.WebContents.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
         /// <summary>
         /// Emitted when a client certificate is requested.<br/><br/>The usage is the same with the <c>select-client-certificate</c> event of <c>app</c>.
@@ -13205,6 +19612,8016 @@ module Main =
             [<Emit("$0[6]")>]
             abstract member frameRoutingId: int with get, set
 
+        module FrameCreated =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="frame">The created frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                (frame: Option<Main.WebFrameMain>) =
+                class
+                end
+
+                /// <summary>
+                /// The created frame. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                /// </summary>
+                [<Erase>]
+                member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+        module ContextMenu =
+            [<JS.Pojo>]
+            type Params
+                /// <param name="x">x coordinate.</param>
+                /// <param name="y">y coordinate.</param>
+                /// <param name="frame">Frame from which the context menu was invoked. May be <c>null</c> if accessed after the frame has either navigated
+                /// or been destroyed.</param>
+                /// <param name="linkURL">URL of the link that encloses the node the context menu was invoked on.</param>
+                /// <param name="linkText">Text associated with the link. May be an empty string if the contents of the link are an image.</param>
+                /// <param name="pageURL">URL of the top level page that the context menu was invoked on.</param>
+                /// <param name="frameURL">URL of the subframe that the context menu was invoked on.</param>
+                /// <param name="srcURL">Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio
+                /// and video.</param>
+                /// <param name="mediaType">Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or
+                /// <c>plugin</c>.</param>
+                /// <param name="hasImageContents">Whether the context menu was invoked on an image which has non-empty contents.</param>
+                /// <param name="isEditable">Whether the context is editable.</param>
+                /// <param name="selectionText">Text of the selection that the context menu was invoked on.</param>
+                /// <param name="titleText">Title text of the selection that the context menu was invoked on.</param>
+                /// <param name="altText">Alt text of the selection that the context menu was invoked on.</param>
+                /// <param name="suggestedFilename">Suggested filename to be used when saving file through 'Save Link As' option of context menu.</param>
+                /// <param name="selectionRect">Rect representing the coordinates in the document space of the selection.</param>
+                /// <param name="selectionStartOffset">Start position of the selection text.</param>
+                /// <param name="referrerPolicy">The referrer policy of the frame on which the menu is invoked.</param>
+                /// <param name="misspelledWord">The misspelled word under the cursor, if any.</param>
+                /// <param name="dictionarySuggestions">An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is
+                /// a misspelled word and spellchecker is enabled.</param>
+                /// <param name="frameCharset">The character encoding of the frame on which the menu was invoked.</param>
+                /// <param name="formControlType">The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>,
+                /// <c>input-datetime-local</c>, <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>,
+                /// <c>select-list</c>, <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,</param>
+                /// <param name="spellcheckEnabled">If the context is editable, whether or not spellchecking is enabled.</param>
+                /// <param name="menuSourceType">Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>,
+                /// or <c>adjustSelectionReset</c>.</param>
+                /// <param name="mediaFlags">The flags for the media element the context menu was invoked on.</param>
+                /// <param name="editFlags">These flags indicate whether the renderer believes it is able to perform the corresponding action.</param>
+                (
+                    x: int,
+                    y: int,
+                    frame: Option<Main.WebFrameMain>,
+                    linkURL: string,
+                    linkText: string,
+                    pageURL: string,
+                    frameURL: string,
+                    srcURL: string,
+                    mediaType: Main.Enums.WebContents.ContextMenu.Params.MediaType,
+                    hasImageContents: bool,
+                    isEditable: bool,
+                    selectionText: string,
+                    titleText: string,
+                    altText: string,
+                    suggestedFilename: string,
+                    selectionRect: Rectangle,
+                    selectionStartOffset: float,
+                    referrerPolicy: Referrer,
+                    misspelledWord: string,
+                    dictionarySuggestions: string[],
+                    frameCharset: string,
+                    formControlType: Main.Enums.WebContents.ContextMenu.Params.FormControlType,
+                    spellcheckEnabled: bool,
+                    menuSourceType: Main.Enums.WebContents.ContextMenu.Params.MenuSourceType,
+                    mediaFlags: Main.WebContents.ContextMenu.Params.MediaFlags,
+                    editFlags: Main.WebContents.ContextMenu.Params.EditFlags
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// x coordinate.
+                /// </summary>
+                [<Erase>]
+                member val x: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// y coordinate.
+                /// </summary>
+                [<Erase>]
+                member val y: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Frame from which the context menu was invoked. May be <c>null</c> if accessed after the frame has either navigated or
+                /// been destroyed.
+                /// </summary>
+                [<Erase>]
+                member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the link that encloses the node the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val linkURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Text associated with the link. May be an empty string if the contents of the link are an image.
+                /// </summary>
+                [<Erase>]
+                member val linkText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the top level page that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val pageURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the subframe that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val frameURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio and
+                /// video.
+                /// </summary>
+                [<Erase>]
+                member val srcURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or <c>plugin</c>.
+                /// </summary>
+                [<Erase>]
+                member val mediaType: Main.Enums.WebContents.ContextMenu.Params.MediaType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context menu was invoked on an image which has non-empty contents.
+                /// </summary>
+                [<Erase>]
+                member val hasImageContents: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context is editable.
+                /// </summary>
+                [<Erase>]
+                member val isEditable: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val selectionText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Title text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val titleText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Alt text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val altText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Suggested filename to be used when saving file through 'Save Link As' option of context menu.
+                /// </summary>
+                [<Erase>]
+                member val suggestedFilename: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Rect representing the coordinates in the document space of the selection.
+                /// </summary>
+                [<Erase>]
+                member val selectionRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Start position of the selection text.
+                /// </summary>
+                [<Erase>]
+                member val selectionStartOffset: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The referrer policy of the frame on which the menu is invoked.
+                /// </summary>
+                [<Erase>]
+                member val referrerPolicy: Referrer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The misspelled word under the cursor, if any.
+                /// </summary>
+                [<Erase>]
+                member val misspelledWord: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is a
+                /// misspelled word and spellchecker is enabled.
+                /// </summary>
+                [<Erase>]
+                member val dictionarySuggestions: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The character encoding of the frame on which the menu was invoked.
+                /// </summary>
+                [<Erase>]
+                member val frameCharset: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>, <c>input-datetime-local</c>,
+                /// <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>, <c>select-list</c>,
+                /// <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,
+                /// </summary>
+                [<Erase>]
+                member val formControlType: Main.Enums.WebContents.ContextMenu.Params.FormControlType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If the context is editable, whether or not spellchecking is enabled.
+                /// </summary>
+                [<Erase>]
+                member val spellcheckEnabled: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>, or
+                /// <c>adjustSelectionReset</c>.
+                /// </summary>
+                [<Erase>]
+                member val menuSourceType: Main.Enums.WebContents.ContextMenu.Params.MenuSourceType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The flags for the media element the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val mediaFlags: Main.WebContents.ContextMenu.Params.MediaFlags =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// These flags indicate whether the renderer believes it is able to perform the corresponding action.
+                /// </summary>
+                [<Erase>]
+                member val editFlags: Main.WebContents.ContextMenu.Params.EditFlags =
+                    Unchecked.defaultof<_> with get, set
+
+            module Params =
+                [<JS.Pojo>]
+                type EditFlags
+                    /// <param name="canUndo">Whether the renderer believes it can undo.</param>
+                    /// <param name="canRedo">Whether the renderer believes it can redo.</param>
+                    /// <param name="canCut">Whether the renderer believes it can cut.</param>
+                    /// <param name="canCopy">Whether the renderer believes it can copy.</param>
+                    /// <param name="canPaste">Whether the renderer believes it can paste.</param>
+                    /// <param name="canDelete">Whether the renderer believes it can delete.</param>
+                    /// <param name="canSelectAll">Whether the renderer believes it can select all.</param>
+                    /// <param name="canEditRichly">Whether the renderer believes it can edit text richly.</param>
+                    (
+                        canUndo: bool,
+                        canRedo: bool,
+                        canCut: bool,
+                        canCopy: bool,
+                        canPaste: bool,
+                        canDelete: bool,
+                        canSelectAll: bool,
+                        canEditRichly: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the renderer believes it can undo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canUndo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can redo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRedo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can cut.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCut: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can copy.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCopy: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can paste.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPaste: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can delete.
+                    /// </summary>
+                    [<Erase>]
+                    member val canDelete: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can select all.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSelectAll: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can edit text richly.
+                    /// </summary>
+                    [<Erase>]
+                    member val canEditRichly: bool = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type MediaFlags
+                    /// <param name="inError">Whether the media element has crashed.</param>
+                    /// <param name="isPaused">Whether the media element is paused.</param>
+                    /// <param name="isMuted">Whether the media element is muted.</param>
+                    /// <param name="hasAudio">Whether the media element has audio.</param>
+                    /// <param name="isLooping">Whether the media element is looping.</param>
+                    /// <param name="isControlsVisible">Whether the media element's controls are visible.</param>
+                    /// <param name="canToggleControls">Whether the media element's controls are toggleable.</param>
+                    /// <param name="canPrint">Whether the media element can be printed.</param>
+                    /// <param name="canSave">Whether or not the media element can be downloaded.</param>
+                    /// <param name="canShowPictureInPicture">Whether the media element can show picture-in-picture.</param>
+                    /// <param name="isShowingPictureInPicture">Whether the media element is currently showing picture-in-picture.</param>
+                    /// <param name="canRotate">Whether the media element can be rotated.</param>
+                    /// <param name="canLoop">Whether the media element can be looped.</param>
+                    (
+                        inError: bool,
+                        isPaused: bool,
+                        isMuted: bool,
+                        hasAudio: bool,
+                        isLooping: bool,
+                        isControlsVisible: bool,
+                        canToggleControls: bool,
+                        canPrint: bool,
+                        canSave: bool,
+                        canShowPictureInPicture: bool,
+                        isShowingPictureInPicture: bool,
+                        canRotate: bool,
+                        canLoop: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the media element has crashed.
+                    /// </summary>
+                    [<Erase>]
+                    member val inError: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is paused.
+                    /// </summary>
+                    [<Erase>]
+                    member val isPaused: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is muted.
+                    /// </summary>
+                    [<Erase>]
+                    member val isMuted: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element has audio.
+                    /// </summary>
+                    [<Erase>]
+                    member val hasAudio: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is looping.
+                    /// </summary>
+                    [<Erase>]
+                    member val isLooping: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are visible.
+                    /// </summary>
+                    [<Erase>]
+                    member val isControlsVisible: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are toggleable.
+                    /// </summary>
+                    [<Erase>]
+                    member val canToggleControls: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be printed.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPrint: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether or not the media element can be downloaded.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSave: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can show picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val canShowPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is currently showing picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val isShowingPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be rotated.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRotate: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be looped.
+                    /// </summary>
+                    [<Erase>]
+                    member val canLoop: bool = Unchecked.defaultof<_> with get, set
+
+        module FoundInPage =
+            [<JS.Pojo>]
+            type Result
+                /// <param name="requestId"></param>
+                /// <param name="activeMatchOrdinal">Position of the active match.</param>
+                /// <param name="matches">Number of Matches.</param>
+                /// <param name="selectionArea">Coordinates of first match region.</param>
+                /// <param name="finalUpdate"></param>
+                (requestId: int, activeMatchOrdinal: int, matches: int, selectionArea: Rectangle, finalUpdate: bool) =
+                class
+                end
+
+                [<Erase>]
+                member val requestId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Position of the active match.
+                /// </summary>
+                [<Erase>]
+                member val activeMatchOrdinal: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Number of Matches.
+                /// </summary>
+                [<Erase>]
+                member val matches: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Coordinates of first match region.
+                /// </summary>
+                [<Erase>]
+                member val selectionArea: Rectangle = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val finalUpdate: bool = Unchecked.defaultof<_> with get, set
+
+        module BeforeInputEvent =
+            [<JS.Pojo>]
+            type Input
+                /// <param name="type">Either <c>keyUp</c> or <c>keyDown</c>.</param>
+                /// <param name="key">Equivalent to KeyboardEvent.key.</param>
+                /// <param name="code">Equivalent to KeyboardEvent.code.</param>
+                /// <param name="isAutoRepeat">Equivalent to KeyboardEvent.repeat.</param>
+                /// <param name="isComposing">Equivalent to KeyboardEvent.isComposing.</param>
+                /// <param name="shift">Equivalent to KeyboardEvent.shiftKey.</param>
+                /// <param name="control">Equivalent to KeyboardEvent.controlKey.</param>
+                /// <param name="alt">Equivalent to KeyboardEvent.altKey.</param>
+                /// <param name="meta">Equivalent to KeyboardEvent.metaKey.</param>
+                /// <param name="location">Equivalent to KeyboardEvent.location.</param>
+                /// <param name="modifiers">See InputEvent.modifiers.</param>
+                (
+                    ``type``: string,
+                    key: string,
+                    code: string,
+                    isAutoRepeat: bool,
+                    isComposing: bool,
+                    shift: bool,
+                    control: bool,
+                    alt: bool,
+                    meta: bool,
+                    location: float,
+                    modifiers: string[]
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Either <c>keyUp</c> or <c>keyDown</c>.
+                /// </summary>
+                [<Erase>]
+                member val ``type``: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.key.
+                /// </summary>
+                [<Erase>]
+                member val key: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.code.
+                /// </summary>
+                [<Erase>]
+                member val code: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.repeat.
+                /// </summary>
+                [<Erase>]
+                member val isAutoRepeat: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.isComposing.
+                /// </summary>
+                [<Erase>]
+                member val isComposing: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.shiftKey.
+                /// </summary>
+                [<Erase>]
+                member val shift: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.controlKey.
+                /// </summary>
+                [<Erase>]
+                member val control: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.altKey.
+                /// </summary>
+                [<Erase>]
+                member val alt: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.metaKey.
+                /// </summary>
+                [<Erase>]
+                member val meta: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Equivalent to KeyboardEvent.location.
+                /// </summary>
+                [<Erase>]
+                member val location: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// See InputEvent.modifiers.
+                /// </summary>
+                [<Erase>]
+                member val modifiers: string[] = Unchecked.defaultof<_> with get, set
+
+        module DidCreateWindow =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="url">URL for the created window.</param>
+                /// <param name="frameName">Name given to the created window in the <c>window.open()</c> call.</param>
+                /// <param name="options">The options used to create the BrowserWindow. They are merged in increasing precedence: parsed options from the <c>features</c> string
+                /// from <c>window.open()</c>, security-related webPreferences inherited from the parent, and options given by <c>webContents.setWindowOpenHandler</c>. Unrecognized options are not filtered out.</param>
+                /// <param name="referrer">The referrer that will be passed to the new window. May or may not result in the <c>Referer</c> header
+                /// being sent, depending on the referrer policy.</param>
+                /// <param name="postBody">The post data that will be sent to the new window, along with the appropriate headers that will be
+                /// set. If no post data is to be sent, the value will be <c>null</c>. Only defined when the window is
+                /// being created by a form that set <c>target=_blank</c>.</param>
+                /// <param name="disposition">Can be <c>default</c>, <c>foreground-tab</c>, <c>background-tab</c>, <c>new-window</c> or <c>other</c>.</param>
+                (
+                    url: string,
+                    frameName: string,
+                    options: BrowserWindowConstructorOptions,
+                    referrer: Referrer,
+                    disposition: Main.Enums.WebContents.DidCreateWindow.Details.Disposition,
+                    ?postBody: PostBody
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// URL for the created window.
+                /// </summary>
+                [<Erase>]
+                member val url: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Name given to the created window in the <c>window.open()</c> call.
+                /// </summary>
+                [<Erase>]
+                member val frameName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The options used to create the BrowserWindow. They are merged in increasing precedence: parsed options from the <c>features</c> string from
+                /// <c>window.open()</c>, security-related webPreferences inherited from the parent, and options given by <c>webContents.setWindowOpenHandler</c>. Unrecognized options are not filtered out.
+                /// </summary>
+                [<Erase>]
+                member val options: BrowserWindowConstructorOptions = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The referrer that will be passed to the new window. May or may not result in the <c>Referer</c> header being
+                /// sent, depending on the referrer policy.
+                /// </summary>
+                [<Erase>]
+                member val referrer: Referrer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The post data that will be sent to the new window, along with the appropriate headers that will be set.
+                /// If no post data is to be sent, the value will be <c>null</c>. Only defined when the window is being
+                /// created by a form that set <c>target=_blank</c>.
+                /// </summary>
+                [<Erase>]
+                member val postBody: PostBody = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Can be <c>default</c>, <c>foreground-tab</c>, <c>background-tab</c>, <c>new-window</c> or <c>other</c>.
+                /// </summary>
+                [<Erase>]
+                member val disposition: Main.Enums.WebContents.DidCreateWindow.Details.Disposition =
+                    Unchecked.defaultof<_> with get, set
+
+        module SetWebRTCUDPPortRange =
+            [<JS.Pojo>]
+            type UdpPortRange
+                /// <param name="min">The minimum UDP port number that WebRTC should use.</param>
+                /// <param name="max">The maximum UDP port number that WebRTC should use.</param>
+                (min: int, max: int) =
+                class
+                end
+
+                /// <summary>
+                /// The minimum UDP port number that WebRTC should use.
+                /// </summary>
+                [<Erase>]
+                member val min: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The maximum UDP port number that WebRTC should use.
+                /// </summary>
+                [<Erase>]
+                member val max: int = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type GetWebRTCUDPPortRange
+            /// <param name="min">The minimum UDP port number that WebRTC should use.</param>
+            /// <param name="max">The maximum UDP port number that WebRTC should use.</param>
+            (min: int, max: int) =
+            class
+            end
+
+            /// <summary>
+            /// The minimum UDP port number that WebRTC should use.
+            /// </summary>
+            [<Erase>]
+            member val min: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The maximum UDP port number that WebRTC should use.
+            /// </summary>
+            [<Erase>]
+            member val max: int = Unchecked.defaultof<_> with get, set
+
+        module StartDrag =
+            [<JS.Pojo>]
+            type Item
+                /// <param name="file">The path to the file being dragged.</param>
+                /// <param name="files">The paths to the files being dragged. (<c>files</c> will override <c>file</c> field)</param>
+                /// <param name="icon">The image must be non-empty on macOS.</param>
+                (file: string, icon: U2<Main.NativeImage, string>, ?files: string[]) =
+                class
+                end
+
+                /// <summary>
+                /// The path to the file being dragged.
+                /// </summary>
+                [<Erase>]
+                member val file: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The paths to the files being dragged. (<c>files</c> will override <c>file</c> field)
+                /// </summary>
+                [<Erase>]
+                member val files: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The image must be non-empty on macOS.
+                /// </summary>
+                [<Erase>]
+                member val icon: U2<Main.NativeImage, string> = Unchecked.defaultof<_> with get, set
+
+        module EnableDeviceEmulation =
+            [<JS.Pojo>]
+            type Parameters
+                /// <param name="screenPosition">Specify the screen type to emulate (default: <c>desktop</c>):</param>
+                /// <param name="screenSize">Set the emulated screen size (screenPosition == mobile).</param>
+                /// <param name="viewPosition">Position the view on the screen (screenPosition == mobile) (default: <c>{ x: 0, y: 0 }</c>).</param>
+                /// <param name="deviceScaleFactor">Set the device scale factor (if zero defaults to original device scale factor) (default: <c>0</c>).</param>
+                /// <param name="viewSize">Set the emulated view size (empty means no override)</param>
+                /// <param name="scale">Scale of emulated view inside available space (not in fit to view mode) (default: <c>1</c>).</param>
+                (
+                    screenPosition: Main.Enums.WebContents.EnableDeviceEmulation.Parameters.ScreenPosition,
+                    screenSize: Size,
+                    viewPosition: Point,
+                    deviceScaleFactor: int,
+                    viewSize: Size,
+                    scale: float
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Specify the screen type to emulate (default: <c>desktop</c>):
+                /// </summary>
+                [<Erase>]
+                member val screenPosition: Main.Enums.WebContents.EnableDeviceEmulation.Parameters.ScreenPosition =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the emulated screen size (screenPosition == mobile).
+                /// </summary>
+                [<Erase>]
+                member val screenSize: Size = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Position the view on the screen (screenPosition == mobile) (default: <c>{ x: 0, y: 0 }</c>).
+                /// </summary>
+                [<Erase>]
+                member val viewPosition: Point = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the device scale factor (if zero defaults to original device scale factor) (default: <c>0</c>).
+                /// </summary>
+                [<Erase>]
+                member val deviceScaleFactor: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the emulated view size (empty means no override)
+                /// </summary>
+                [<Erase>]
+                member val viewSize: Size = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Scale of emulated view inside available space (not in fit to view mode) (default: <c>1</c>).
+                /// </summary>
+                [<Erase>]
+                member val scale: float = Unchecked.defaultof<_> with get, set
+
+        module OpenDevTools =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="mode">Opens the devtools with specified dock state, can be <c>left</c>, <c>right</c>, <c>bottom</c>, <c>undocked</c>, <c>detach</c>. Defaults to last used dock
+                /// state. In <c>undocked</c> mode it's possible to dock back. In <c>detach</c> mode it's not.</param>
+                /// <param name="activate">Whether to bring the opened devtools window to the foreground. The default is <c>true</c>.</param>
+                /// <param name="title">A title for the DevTools window (only in <c>undocked</c> or <c>detach</c> mode).</param>
+                (mode: Main.Enums.WebContents.OpenDevTools.Options.Mode, ?activate: bool, ?title: string) =
+                class
+                end
+
+                /// <summary>
+                /// Opens the devtools with specified dock state, can be <c>left</c>, <c>right</c>, <c>bottom</c>, <c>undocked</c>, <c>detach</c>. Defaults to last used dock state.
+                /// In <c>undocked</c> mode it's possible to dock back. In <c>detach</c> mode it's not.
+                /// </summary>
+                [<Erase>]
+                member val mode: Main.Enums.WebContents.OpenDevTools.Options.Mode = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to bring the opened devtools window to the foreground. The default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val activate: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// A title for the DevTools window (only in <c>undocked</c> or <c>detach</c> mode).
+                /// </summary>
+                [<Erase>]
+                member val title: string = Unchecked.defaultof<_> with get, set
+
+        module PrintToPDF =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="landscape">Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.</param>
+                /// <param name="displayHeaderFooter">Whether to display header and footer. Defaults to false.</param>
+                /// <param name="printBackground">Whether to print background graphics. Defaults to false.</param>
+                /// <param name="scale">Scale of the webpage rendering. Defaults to 1.</param>
+                /// <param name="pageSize">Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>,
+                /// <c>Ledger</c>, or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="pageRanges">Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.</param>
+                /// <param name="headerTemplate">HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values
+                /// into them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages
+                /// in the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.</param>
+                /// <param name="footerTemplate">HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.</param>
+                /// <param name="preferCSSPageSize">Whether or not to prefer page size as defined by css. Defaults to false, in which case the content
+                /// will be scaled to fit the paper size.</param>
+                /// <param name="generateTaggedPDF">Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated
+                /// PDF may not adhere fully to PDF/UA and WCAG standards.</param>
+                /// <param name="generateDocumentOutline">Whether or not to generate a PDF document outline from content headers. Defaults to false.</param>
+                (
+                    ?landscape: bool,
+                    ?displayHeaderFooter: bool,
+                    ?printBackground: bool,
+                    ?scale: float,
+                    ?pageSize: U2<Main.Enums.WebContents.PrintToPDF.Options.PageSize, Size>,
+                    ?margins: Main.WebContents.PrintToPDF.Options.Margins,
+                    ?pageRanges: string,
+                    ?headerTemplate: string,
+                    ?footerTemplate: string,
+                    ?preferCSSPageSize: bool,
+                    ?generateTaggedPDF: bool,
+                    ?generateDocumentOutline: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to display header and footer. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val displayHeaderFooter: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to print background graphics. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Scale of the webpage rendering. Defaults to 1.
+                /// </summary>
+                [<Erase>]
+                member val scale: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>, <c>Ledger</c>,
+                /// or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Main.Enums.WebContents.PrintToPDF.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Main.WebContents.PrintToPDF.Options.Margins = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into
+                /// them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages in
+                /// the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.
+                /// </summary>
+                [<Erase>]
+                member val headerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.
+                /// </summary>
+                [<Erase>]
+                member val footerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to prefer page size as defined by css. Defaults to false, in which case the content will
+                /// be scaled to fit the paper size.
+                /// </summary>
+                [<Erase>]
+                member val preferCSSPageSize: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated PDF
+                /// may not adhere fully to PDF/UA and WCAG standards.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateTaggedPDF: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a PDF document outline from content headers. Defaults to false.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateDocumentOutline: bool = Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="top">Top margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="bottom">Bottom margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="left">Left margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="right">Right margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    (?top: float, ?bottom: float, ?left: float, ?right: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Top margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Bottom margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Left margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Right margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+        module CapturePage =
+            [<JS.Pojo>]
+            type Opts
+                /// <param name="stayHidden"> Keep the page hidden instead of visible. Default is <c>false</c>.</param>
+                /// <param name="stayAwake"> Keep the system awake instead of allowing it to sleep. Default is <c>false</c>.</param>
+                (?stayHidden: bool, ?stayAwake: bool) =
+                class
+                end
+
+                /// <summary>
+                ///  Keep the page hidden instead of visible. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val stayHidden: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                ///  Keep the system awake instead of allowing it to sleep. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val stayAwake: bool = Unchecked.defaultof<_> with get, set
+
+        module FindInPage =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="forward">Whether to search forward or backward, defaults to <c>true</c>.</param>
+                /// <param name="findNext">Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c>
+                /// for follow-up requests. Defaults to <c>false</c>.</param>
+                /// <param name="matchCase">Whether search should be case-sensitive, defaults to <c>false</c>.</param>
+                (?forward: bool, ?findNext: bool, ?matchCase: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to search forward or backward, defaults to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val forward: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c> for
+                /// follow-up requests. Defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val findNext: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether search should be case-sensitive, defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val matchCase: bool = Unchecked.defaultof<_> with get, set
+
+        module AdjustSelection =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="start">Amount to shift the start index of the current selection.</param>
+                /// <param name="end">Amount to shift the end index of the current selection.</param>
+                (?start: float, ?``end``: float) =
+                class
+                end
+
+                /// <summary>
+                /// Amount to shift the start index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val start: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Amount to shift the end index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val ``end``: float = Unchecked.defaultof<_> with get, set
+
+        module SetWindowOpenHandler =
+            module Handler =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="url">The _resolved_ version of the URL passed to <c>window.open()</c>. e.g. opening a window with <c>window.open('foo')</c> will yield something like
+                    /// <c>https://the-origin/the/current/path/foo</c>.</param>
+                    /// <param name="frameName">Name of the window provided in <c>window.open()</c></param>
+                    /// <param name="features">Comma separated list of window features provided to <c>window.open()</c>.</param>
+                    /// <param name="disposition">Can be <c>default</c>, <c>foreground-tab</c>, <c>background-tab</c>, <c>new-window</c> or <c>other</c>.</param>
+                    /// <param name="referrer">The referrer that will be passed to the new window. May or may not result in the <c>Referer</c> header
+                    /// being sent, depending on the referrer policy.</param>
+                    /// <param name="postBody">The post data that will be sent to the new window, along with the appropriate headers that will be
+                    /// set. If no post data is to be sent, the value will be <c>null</c>. Only defined when the window is
+                    /// being created by a form that set <c>target=_blank</c>.</param>
+                    (
+                        url: string,
+                        frameName: string,
+                        features: string,
+                        disposition: Main.Enums.WebContents.SetWindowOpenHandler.Handler.Details.Disposition,
+                        referrer: Referrer,
+                        ?postBody: PostBody
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// The _resolved_ version of the URL passed to <c>window.open()</c>. e.g. opening a window with <c>window.open('foo')</c> will yield something like <c>https://the-origin/the/current/path/foo</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val url: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Name of the window provided in <c>window.open()</c>
+                    /// </summary>
+                    [<Erase>]
+                    member val frameName: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Comma separated list of window features provided to <c>window.open()</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val features: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Can be <c>default</c>, <c>foreground-tab</c>, <c>background-tab</c>, <c>new-window</c> or <c>other</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val disposition: Main.Enums.WebContents.SetWindowOpenHandler.Handler.Details.Disposition =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The referrer that will be passed to the new window. May or may not result in the <c>Referer</c> header being
+                    /// sent, depending on the referrer policy.
+                    /// </summary>
+                    [<Erase>]
+                    member val referrer: Referrer = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The post data that will be sent to the new window, along with the appropriate headers that will be set.
+                    /// If no post data is to be sent, the value will be <c>null</c>. Only defined when the window is being
+                    /// created by a form that set <c>target=_blank</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val postBody: PostBody = Unchecked.defaultof<_> with get, set
+
+        module InsertCSS =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="cssOrigin">Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.</param>
+                (?cssOrigin: Main.Enums.WebContents.InsertCSS.Options.CssOrigin) =
+                class
+                end
+
+                /// <summary>
+                /// Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.
+                /// </summary>
+                [<Erase>]
+                member val cssOrigin: Main.Enums.WebContents.InsertCSS.Options.CssOrigin =
+                    Unchecked.defaultof<_> with get, set
+
+        module Close =
+            [<JS.Pojo>]
+            type Opts
+                /// <param name="waitForBeforeUnload">if true, fire the <c>beforeunload</c> event before closing the page. If the page prevents the unload, the WebContents will
+                /// not be closed. The <c>will-prevent-unload</c> will be fired if the page requests prevention of unload.</param>
+                (waitForBeforeUnload: bool) =
+                class
+                end
+
+                /// <summary>
+                /// if true, fire the <c>beforeunload</c> event before closing the page. If the page prevents the unload, the WebContents will not
+                /// be closed. The <c>will-prevent-unload</c> will be fired if the page requests prevention of unload.
+                /// </summary>
+                [<Erase>]
+                member val waitForBeforeUnload: bool = Unchecked.defaultof<_> with get, set
+
+        module DownloadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="headers">HTTP request headers.</param>
+                (?headers: Record<string, string>) =
+                class
+                end
+
+                /// <summary>
+                /// HTTP request headers.
+                /// </summary>
+                [<Erase>]
+                member val headers: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+        module LoadFile =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="query">Passed to <c>url.format()</c>.</param>
+                /// <param name="search">Passed to <c>url.format()</c>.</param>
+                /// <param name="hash">Passed to <c>url.format()</c>.</param>
+                (?query: Record<string, string>, ?search: string, ?hash: string) =
+                class
+                end
+
+                /// <summary>
+                /// Passed to <c>url.format()</c>.
+                /// </summary>
+                [<Erase>]
+                member val query: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Passed to <c>url.format()</c>.
+                /// </summary>
+                [<Erase>]
+                member val search: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Passed to <c>url.format()</c>.
+                /// </summary>
+                [<Erase>]
+                member val hash: string = Unchecked.defaultof<_> with get, set
+
+        module LoadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="httpReferrer">An HTTP Referrer url.</param>
+                /// <param name="userAgent">A user agent originating the request.</param>
+                /// <param name="extraHeaders">Extra headers separated by "\n".</param>
+                /// <param name="postData"></param>
+                /// <param name="baseURLForDataURL">Base url (with trailing path separator) for files to be loaded by the data url. This is needed only
+                /// if the specified <c>url</c> is a data url and needs to load other files.</param>
+                (
+                    ?httpReferrer: U2<string, Referrer>,
+                    ?userAgent: string,
+                    ?extraHeaders: string,
+                    ?postData: U2<UploadRawData, UploadFile>[],
+                    ?baseURLForDataURL: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// An HTTP Referrer url.
+                /// </summary>
+                [<Erase>]
+                member val httpReferrer: U2<string, Referrer> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// A user agent originating the request.
+                /// </summary>
+                [<Erase>]
+                member val userAgent: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra headers separated by "\n".
+                /// </summary>
+                [<Erase>]
+                member val extraHeaders: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val postData: U2<UploadRawData, UploadFile>[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Base url (with trailing path separator) for files to be loaded by the data url. This is needed only if
+                /// the specified <c>url</c> is a data url and needs to load other files.
+                /// </summary>
+                [<Erase>]
+                member val baseURLForDataURL: string = Unchecked.defaultof<_> with get, set
+
+        module Login =
+            [<JS.Pojo>]
+            type AuthInfo
+                /// <param name="isProxy"></param>
+                /// <param name="scheme"></param>
+                /// <param name="host"></param>
+                /// <param name="port"></param>
+                /// <param name="realm"></param>
+                (isProxy: bool, scheme: string, host: string, port: int, realm: string) =
+                class
+                end
+
+                [<Erase>]
+                member val isProxy: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val scheme: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val host: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val port: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val realm: string = Unchecked.defaultof<_> with get, set
+
+            [<JS.Pojo>]
+            type AuthenticationResponseDetails
+                /// <param name="url"></param>
+                (url: URL) =
+                class
+                end
+
+                [<Erase>]
+                member val url: URL = Unchecked.defaultof<_> with get, set
+
+            /// <param name="username"></param>
+            /// <param name="password"></param>
+            type Callback = delegate of ?username: string * ?password: string -> unit
+
+        module BeginFrameSubscription =
+            /// <param name="image"></param>
+            /// <param name="dirtyRect"></param>
+            type Callback = delegate of image: Main.NativeImage * dirtyRect: Rectangle -> unit
+
+        module Print =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="silent">Don't ask user for print settings. Default is <c>false</c>.</param>
+                /// <param name="printBackground">Prints the background color and image of the web page. Default is <c>false</c>.</param>
+                /// <param name="deviceName">Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB'
+                /// and not 'Brother QL-820NWB'.</param>
+                /// <param name="color">Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="landscape">Whether the web page should be printed in landscape mode. Default is <c>false</c>.</param>
+                /// <param name="scaleFactor">The scale factor of the web page.</param>
+                /// <param name="pagesPerSheet">The number of pages to print per page sheet.</param>
+                /// <param name="collate">Whether the web page should be collated.</param>
+                /// <param name="copies">The number of copies of the web page to print.</param>
+                /// <param name="pageRanges">The page range to print. On macOS, only one range is honored.</param>
+                /// <param name="duplexMode">Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.</param>
+                /// <param name="dpi"></param>
+                /// <param name="header">string to be printed as page header.</param>
+                /// <param name="footer">string to be printed as page footer.</param>
+                /// <param name="pageSize">Specify page size of the printed document. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>
+                /// or an Object containing <c>height</c> and <c>width</c>.</param>
+                (
+                    ?silent: bool,
+                    ?printBackground: bool,
+                    ?deviceName: string,
+                    ?color: bool,
+                    ?margins: Main.WebContents.Print.Options.Margins,
+                    ?landscape: bool,
+                    ?scaleFactor: float,
+                    ?pagesPerSheet: float,
+                    ?collate: bool,
+                    ?copies: float,
+                    ?pageRanges: Main.WebContents.Print.Options.PageRanges[],
+                    ?duplexMode: Main.Enums.WebContents.Print.Options.DuplexMode,
+                    ?dpi: Record<string, float>,
+                    ?header: string,
+                    ?footer: string,
+                    ?pageSize: U2<Main.Enums.WebContents.Print.Options.PageSize, Size>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Don't ask user for print settings. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val silent: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Prints the background color and image of the web page. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB' and
+                /// not 'Brother QL-820NWB'.
+                /// </summary>
+                [<Erase>]
+                member val deviceName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val color: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Main.WebContents.Print.Options.Margins = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be printed in landscape mode. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The scale factor of the web page.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of pages to print per page sheet.
+                /// </summary>
+                [<Erase>]
+                member val pagesPerSheet: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be collated.
+                /// </summary>
+                [<Erase>]
+                member val collate: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of copies of the web page to print.
+                /// </summary>
+                [<Erase>]
+                member val copies: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The page range to print. On macOS, only one range is honored.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: Main.WebContents.Print.Options.PageRanges[] =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.
+                /// </summary>
+                [<Erase>]
+                member val duplexMode: Main.Enums.WebContents.Print.Options.DuplexMode =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val dpi: Record<string, float> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page header.
+                /// </summary>
+                [<Erase>]
+                member val header: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page footer.
+                /// </summary>
+                [<Erase>]
+                member val footer: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the printed document. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c> or
+                /// an Object containing <c>height</c> and <c>width</c>.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Main.Enums.WebContents.Print.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type PageRanges
+                    /// <param name="from">Index of the first page to print (0-based).</param>
+                    /// <param name="to">Index of the last page to print (inclusive) (0-based).</param>
+                    (from: float, ``to``: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Index of the first page to print (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val from: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Index of the last page to print (inclusive) (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val ``to``: float = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="marginType">Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>,
+                    /// <c>left</c>, and <c>right</c>.</param>
+                    /// <param name="top">The top margin of the printed web page, in pixels.</param>
+                    /// <param name="bottom">The bottom margin of the printed web page, in pixels.</param>
+                    /// <param name="left">The left margin of the printed web page, in pixels.</param>
+                    /// <param name="right">The right margin of the printed web page, in pixels.</param>
+                    (
+                        ?marginType: Main.Enums.WebContents.Print.Options.Margins.MarginType,
+                        ?top: float,
+                        ?bottom: float,
+                        ?left: float,
+                        ?right: float
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>, <c>left</c>,
+                    /// and <c>right</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val marginType: Main.Enums.WebContents.Print.Options.Margins.MarginType =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The top margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The bottom margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The left margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The right margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+            /// <param name="success">Indicates success of the print call.</param>
+            /// <param name="failureReason">Error description called back if the print fails.</param>
+            type Callback = delegate of success: bool * failureReason: string -> unit
+
+    module TouchBarSegmentedControl =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="segmentStyle">Style of the segments:</param>
+            /// <param name="mode">The selection mode of the control:</param>
+            /// <param name="segments">An array of segments to place in this control.</param>
+            /// <param name="selectedIndex">The index of the currently selected segment, will update automatically with user interaction. When the mode is <c>multiple</c> it
+            /// will be the last selected item.</param>
+            /// <param name="change">Called when the user selects a new segment.</param>
+            (
+                segments: SegmentedControlSegment[],
+                ?segmentStyle: Main.Enums.TouchBarSegmentedControl.Options.SegmentStyle,
+                ?mode: Main.Enums.TouchBarSegmentedControl.Options.Mode,
+                ?selectedIndex: int,
+                ?change: int * bool -> unit
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Style of the segments:
+            /// </summary>
+            [<Erase>]
+            member val segmentStyle: Main.Enums.TouchBarSegmentedControl.Options.SegmentStyle =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The selection mode of the control:
+            /// </summary>
+            [<Erase>]
+            member val mode: Main.Enums.TouchBarSegmentedControl.Options.Mode = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of segments to place in this control.
+            /// </summary>
+            [<Erase>]
+            member val segments: SegmentedControlSegment[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The index of the currently selected segment, will update automatically with user interaction. When the mode is <c>multiple</c> it will
+            /// be the last selected item.
+            /// </summary>
+            [<Erase>]
+            member val selectedIndex: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Called when the user selects a new segment.
+            /// </summary>
+            [<Erase>]
+            member val change: int * bool -> unit = Unchecked.defaultof<_> with get, set
+
+        module Options =
+            /// <param name="selectedIndex">The index of the segment the user selected.</param>
+            /// <param name="isSelected">Whether as a result of user selection the segment is selected or not.</param>
+            type Change = delegate of selectedIndex: int * isSelected: bool -> unit
+
+    module SystemPreferences =
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAccentColorChanged =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The new RGBA color the user assigned to be their system accent color.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member newColor: string with get, set
+        #endif
+
+
+        [<JS.Pojo>]
+        type GetAnimationSettings
+            /// <param name="shouldRenderRichAnimation">Returns true if rich animations should be rendered. Looks at session type (e.g. remote desktop) and accessibility settings to
+            /// give guidance for heavy animations.</param>
+            /// <param name="scrollAnimationsEnabledBySystem">Determines on a per-platform basis whether scroll animations (e.g. produced by home/end key) should be enabled.</param>
+            /// <param name="prefersReducedMotion">Determines whether the user desires reduced motion based on platform APIs.</param>
+            (shouldRenderRichAnimation: bool, scrollAnimationsEnabledBySystem: bool, prefersReducedMotion: bool) =
+            class
+            end
+
+            /// <summary>
+            /// Returns true if rich animations should be rendered. Looks at session type (e.g. remote desktop) and accessibility settings to give
+            /// guidance for heavy animations.
+            /// </summary>
+            [<Erase>]
+            member val shouldRenderRichAnimation: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Determines on a per-platform basis whether scroll animations (e.g. produced by home/end key) should be enabled.
+            /// </summary>
+            [<Erase>]
+            member val scrollAnimationsEnabledBySystem: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Determines whether the user desires reduced motion based on platform APIs.
+            /// </summary>
+            [<Erase>]
+            member val prefersReducedMotion: bool = Unchecked.defaultof<_> with get, set
+
+        module SubscribeWorkspaceNotification =
+            /// <param name="event"></param>
+            /// <param name="userInfo"></param>
+            /// <param name="object"></param>
+            type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
+        module SubscribeLocalNotification =
+            /// <param name="event"></param>
+            /// <param name="userInfo"></param>
+            /// <param name="object"></param>
+            type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
+        module SubscribeNotification =
+            /// <param name="event"></param>
+            /// <param name="userInfo"></param>
+            /// <param name="object"></param>
+            type Callback = delegate of event: string * userInfo: Record<string, obj> * object: string -> unit
+
+    module Session =
+        /// <summary>
+        /// Emitted after <c>USBDevice.forget()</c> has been called.  This event can be used to help maintain persistent storage of permissions when
+        /// <c>setDevicePermissionHandler</c> is used.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnUsbDeviceRevoked =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.UsbDeviceRevoked.Details with get, set
+
+        /// <summary>
+        /// Emitted after <c>navigator.usb.requestDevice</c> has been called and <c>select-usb-device</c> has fired if a device has been removed before the callback from
+        /// <c>select-usb-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
+        /// device so that the UI can be updated to remove the specified device.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnUsbDeviceRemoved =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member device: USBDevice with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+        /// <summary>
+        /// Emitted after <c>navigator.usb.requestDevice</c> has been called and <c>select-usb-device</c> has fired if a new device becomes available before the callback from
+        /// <c>select-usb-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
+        /// device so that the UI can be updated with the newly added device.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnUsbDeviceAdded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member device: USBDevice with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+        /// <summary>
+        /// Emitted when a USB device needs to be selected when a call to <c>navigator.usb.requestDevice</c> is made. <c>callback</c> should be called
+        /// with <c>deviceId</c> to be selected; passing no arguments to <c>callback</c> will cancel the request.  Additionally, permissioning on <c>navigator.usb</c> can
+        /// be further managed by using <c>ses.setPermissionCheckHandler(handler)</c> and <c>ses.setDevicePermissionHandler(handler)</c>.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSelectUsbDevice =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.SelectUsbDevice.Details with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member callback: Option<string> -> unit with get, set
+
+        /// <summary>
+        /// Emitted after <c>SerialPort.forget()</c> has been called.  This event can be used to help maintain persistent storage of permissions when
+        /// <c>setDevicePermissionHandler</c> is used.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSerialPortRevoked =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.SerialPortRevoked.Details with get, set
+
+        /// <summary>
+        /// Emitted after <c>navigator.serial.requestPort</c> has been called and <c>select-serial-port</c> has fired if a serial port has been removed before the callback
+        /// from <c>select-serial-port</c> is called.  This event is intended for use when using a UI to ask users to pick
+        /// a port so that the UI can be updated to remove the specified port.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSerialPortRemoved =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member port: SerialPort with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+        /// <summary>
+        /// Emitted after <c>navigator.serial.requestPort</c> has been called and <c>select-serial-port</c> has fired if a new serial port becomes available before the callback
+        /// from <c>select-serial-port</c> is called.  This event is intended for use when using a UI to ask users to pick
+        /// a port so that the UI can be updated with the newly added port.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSerialPortAdded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member port: SerialPort with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+        /// <summary>
+        /// Emitted when a serial port needs to be selected when a call to <c>navigator.serial.requestPort</c> is made. <c>callback</c> should be called
+        /// with <c>portId</c> to be selected, passing an empty string to <c>callback</c> will cancel the request.  Additionally, permissioning on <c>navigator.serial</c>
+        /// can be managed by using ses.setPermissionCheckHandler(handler) with the <c>serial</c> permission.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSelectSerialPort =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member portList: SerialPort[] with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+            [<Emit("$0[3]")>]
+            abstract member callback: string -> unit with get, set
+
+        /// <summary>
+        /// Emitted after <c>HIDDevice.forget()</c> has been called.  This event can be used to help maintain persistent storage of permissions when
+        /// <c>setDevicePermissionHandler</c> is used.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnHidDeviceRevoked =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.HidDeviceRevoked.Details with get, set
+
+        /// <summary>
+        /// Emitted after <c>navigator.hid.requestDevice</c> has been called and <c>select-hid-device</c> has fired if a device has been removed before the callback from
+        /// <c>select-hid-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
+        /// device so that the UI can be updated to remove the specified device.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnHidDeviceRemoved =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.HidDeviceRemoved.Details with get, set
+
+        /// <summary>
+        /// Emitted after <c>navigator.hid.requestDevice</c> has been called and <c>select-hid-device</c> has fired if a new device becomes available before the callback from
+        /// <c>select-hid-device</c> is called.  This event is intended for use when using a UI to ask users to pick a
+        /// device so that the UI can be updated with the newly added device.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnHidDeviceAdded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.HidDeviceAdded.Details with get, set
+
+        /// <summary>
+        /// Emitted when a HID device needs to be selected when a call to <c>navigator.hid.requestDevice</c> is made. <c>callback</c> should be called
+        /// with <c>deviceId</c> to be selected; passing no arguments to <c>callback</c> will cancel the request.  Additionally, permissioning on <c>navigator.hid</c> can
+        /// be further managed by using <c>ses.setPermissionCheckHandler(handler)</c> and <c>ses.setDevicePermissionHandler(handler)</c>.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSelectHidDevice =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.SelectHidDevice.Details with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member callback: Option<Option<string>> -> unit with get, set
+
+        /// <summary>
+        /// Emitted when a hunspell dictionary file download fails.  For details on the failure you should collect a netlog and
+        /// inspect the download request.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSpellcheckDictionaryDownloadFailure =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The language code of the dictionary file
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member languageCode: string with get, set
+
+        /// <summary>
+        /// Emitted when a hunspell dictionary file has been successfully downloaded
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSpellcheckDictionaryDownloadSuccess =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The language code of the dictionary file
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member languageCode: string with get, set
+
+        /// <summary>
+        /// Emitted when a hunspell dictionary file starts downloading
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSpellcheckDictionaryDownloadBegin =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The language code of the dictionary file
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member languageCode: string with get, set
+
+        /// <summary>
+        /// Emitted when a hunspell dictionary file has been successfully initialized. This occurs after the file has been downloaded.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSpellcheckDictionaryInitialized =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The language code of the dictionary file
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member languageCode: string with get, set
+
+        /// <summary>
+        /// Emitted when a render process requests preconnection to a URL, generally due to a resource hint.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnPreconnect =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The URL being requested for preconnection by the renderer.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member preconnectUrl: string with get, set
+
+            /// <summary>
+            /// True if the renderer is requesting that the connection include credentials (see the spec for more details.)
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member allowCredentials: bool with get, set
+
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnFileSystemAccessRestricted =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.Session.FileSystemAccessRestricted.Details with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member callback: Main.Enums.Session.FileSystemAccessRestricted.Callback.Action -> unit with get, set
+
+        /// <summary>
+        /// Emitted after an extension is loaded and all necessary browser state is initialized to support the start of the extension's
+        /// background page.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnExtensionReady =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member extension: Extension with get, set
+
+        /// <summary>
+        /// Emitted after an extension is unloaded. This occurs when <c>Session.removeExtension</c> is called.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnExtensionUnloaded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member extension: Extension with get, set
+
+        /// <summary>
+        /// Emitted after an extension is loaded. This occurs whenever an extension is added to the "enabled" set of extensions. This
+        /// includes:<br/><br/>* Extensions being loaded from <c>Session.loadExtension</c>.<br/>* Extensions being reloaded:<br/>  * from a crash.<br/>  * if the extension requested
+        /// it (<c>chrome.runtime.reload()</c>).
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnExtensionLoaded =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member extension: Extension with get, set
+
+        /// <summary>
+        /// Emitted when Electron is about to download <c>item</c> in <c>webContents</c>.<br/><br/>Calling <c>event.preventDefault()</c> will cancel the download and <c>item</c> will not be
+        /// available from next tick of the process.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnWillDownload =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member item: Main.DownloadItem with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+        module UsbDeviceRevoked =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="device"></param>
+                /// <param name="origin">The origin that the device has been revoked from.</param>
+                (device: USBDevice, ?origin: string) =
+                class
+                end
+
+                [<Erase>]
+                member val device: USBDevice = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The origin that the device has been revoked from.
+                /// </summary>
+                [<Erase>]
+                member val origin: string = Unchecked.defaultof<_> with get, set
+
+        module SelectUsbDevice =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="deviceList"></param>
+                /// <param name="frame">The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                (deviceList: USBDevice[], frame: Option<Main.WebFrameMain>) =
+                class
+                end
+
+                [<Erase>]
+                member val deviceList: USBDevice[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                /// </summary>
+                [<Erase>]
+                member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+        module SerialPortRevoked =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="port"></param>
+                /// <param name="frame">The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                /// <param name="origin">The origin that the device has been revoked from.</param>
+                (port: SerialPort, frame: Option<Main.WebFrameMain>, origin: string) =
+                class
+                end
+
+                [<Erase>]
+                member val port: SerialPort = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                /// </summary>
+                [<Erase>]
+                member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The origin that the device has been revoked from.
+                /// </summary>
+                [<Erase>]
+                member val origin: string = Unchecked.defaultof<_> with get, set
+
+        module HidDeviceRevoked =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="device"></param>
+                /// <param name="origin">The origin that the device has been revoked from.</param>
+                (device: HIDDevice, ?origin: string) =
+                class
+                end
+
+                [<Erase>]
+                member val device: HIDDevice = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The origin that the device has been revoked from.
+                /// </summary>
+                [<Erase>]
+                member val origin: string = Unchecked.defaultof<_> with get, set
+
+        module HidDeviceRemoved =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="device"></param>
+                /// <param name="frame">The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                (device: HIDDevice, frame: Option<Main.WebFrameMain>) =
+                class
+                end
+
+                [<Erase>]
+                member val device: HIDDevice = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                /// </summary>
+                [<Erase>]
+                member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+        module HidDeviceAdded =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="device"></param>
+                /// <param name="frame">The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                (device: HIDDevice, frame: Option<Main.WebFrameMain>) =
+                class
+                end
+
+                [<Erase>]
+                member val device: HIDDevice = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                /// </summary>
+                [<Erase>]
+                member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+        module SelectHidDevice =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="deviceList"></param>
+                /// <param name="frame">The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                (deviceList: HIDDevice[], frame: Option<Main.WebFrameMain>) =
+                class
+                end
+
+                [<Erase>]
+                member val deviceList: HIDDevice[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The frame initiating this event. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                /// </summary>
+                [<Erase>]
+                member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+        module FileSystemAccessRestricted =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="origin">The origin that initiated access to the blocked path.</param>
+                /// <param name="isDirectory">Whether or not the path is a directory.</param>
+                /// <param name="path">The blocked path attempting to be accessed.</param>
+                (origin: string, isDirectory: bool, path: string) =
+                class
+                end
+
+                /// <summary>
+                /// The origin that initiated access to the blocked path.
+                /// </summary>
+                [<Erase>]
+                member val origin: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not the path is a directory.
+                /// </summary>
+                [<Erase>]
+                member val isDirectory: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The blocked path attempting to be accessed.
+                /// </summary>
+                [<Erase>]
+                member val path: string = Unchecked.defaultof<_> with get, set
+
+        module ClearData =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="dataTypes">The types of data to clear. By default, this will clear all types of data. This can potentially include
+                /// data types not explicitly listed here. (See Chromium's <c>BrowsingDataRemover</c> for the full list.)</param>
+                /// <param name="origins">Clear data for only these origins. Cannot be used with <c>excludeOrigins</c>.</param>
+                /// <param name="excludeOrigins">Clear data for all origins except these ones. Cannot be used with <c>origins</c>.</param>
+                /// <param name="avoidClosingConnections">Skips deleting cookies that would close current network connections. (Default: <c>false</c>)</param>
+                /// <param name="originMatchingMode">The behavior for matching data to origins.</param>
+                (
+                    ?dataTypes: Main.Enums.Session.ClearData.Options.DataTypes[],
+                    ?origins: string[],
+                    ?excludeOrigins: string[],
+                    ?avoidClosingConnections: bool,
+                    ?originMatchingMode: Main.Enums.Session.ClearData.Options.OriginMatchingMode
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// The types of data to clear. By default, this will clear all types of data. This can potentially include data
+                /// types not explicitly listed here. (See Chromium's <c>BrowsingDataRemover</c> for the full list.)
+                /// </summary>
+                [<Erase>]
+                member val dataTypes: Main.Enums.Session.ClearData.Options.DataTypes[] =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Clear data for only these origins. Cannot be used with <c>excludeOrigins</c>.
+                /// </summary>
+                [<Erase>]
+                member val origins: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Clear data for all origins except these ones. Cannot be used with <c>origins</c>.
+                /// </summary>
+                [<Erase>]
+                member val excludeOrigins: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Skips deleting cookies that would close current network connections. (Default: <c>false</c>)
+                /// </summary>
+                [<Erase>]
+                member val avoidClosingConnections: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The behavior for matching data to origins.
+                /// </summary>
+                [<Erase>]
+                member val originMatchingMode: Main.Enums.Session.ClearData.Options.OriginMatchingMode =
+                    Unchecked.defaultof<_> with get, set
+
+        module LoadExtension =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="allowFileAccess">Whether to allow the extension to read local files over <c>file://</c> protocol and inject content scripts into <c>file://</c> pages.
+                /// This is required e.g. for loading devtools extensions on <c>file://</c> URLs. Defaults to false.</param>
+                (allowFileAccess: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to allow the extension to read local files over <c>file://</c> protocol and inject content scripts into <c>file://</c> pages. This
+                /// is required e.g. for loading devtools extensions on <c>file://</c> URLs. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val allowFileAccess: bool = Unchecked.defaultof<_> with get, set
+
+        module ClearSharedDictionaryCacheForIsolationKey =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="frameOrigin">The origin of the frame where the request originates. It’s specific to the individual frame making the request and
+                /// is defined by its scheme, host, and port. In practice, will look like a URL.</param>
+                /// <param name="topFrameSite">The site of the top-level browsing context (the main frame or tab that contains the request). It’s less granular
+                /// than <c>frameOrigin</c> and focuses on the broader "site" scope. In practice, will look like a URL.</param>
+                (frameOrigin: string, topFrameSite: string) =
+                class
+                end
+
+                /// <summary>
+                /// The origin of the frame where the request originates. It’s specific to the individual frame making the request and is
+                /// defined by its scheme, host, and port. In practice, will look like a URL.
+                /// </summary>
+                [<Erase>]
+                member val frameOrigin: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The site of the top-level browsing context (the main frame or tab that contains the request). It’s less granular than
+                /// <c>frameOrigin</c> and focuses on the broader "site" scope. In practice, will look like a URL.
+                /// </summary>
+                [<Erase>]
+                member val topFrameSite: string = Unchecked.defaultof<_> with get, set
+
+        module GetSharedDictionaryInfo =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="frameOrigin">The origin of the frame where the request originates. It’s specific to the individual frame making the request and
+                /// is defined by its scheme, host, and port. In practice, will look like a URL.</param>
+                /// <param name="topFrameSite">The site of the top-level browsing context (the main frame or tab that contains the request). It’s less granular
+                /// than <c>frameOrigin</c> and focuses on the broader "site" scope. In practice, will look like a URL.</param>
+                (frameOrigin: string, topFrameSite: string) =
+                class
+                end
+
+                /// <summary>
+                /// The origin of the frame where the request originates. It’s specific to the individual frame making the request and is
+                /// defined by its scheme, host, and port. In practice, will look like a URL.
+                /// </summary>
+                [<Erase>]
+                member val frameOrigin: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The site of the top-level browsing context (the main frame or tab that contains the request). It’s less granular than
+                /// <c>frameOrigin</c> and focuses on the broader "site" scope. In practice, will look like a URL.
+                /// </summary>
+                [<Erase>]
+                member val topFrameSite: string = Unchecked.defaultof<_> with get, set
+
+        module ClearCodeCaches =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="urls">An array of url corresponding to the resource whose generated code cache needs to be removed. If the list
+                /// is empty then all entries in the cache directory will be removed.</param>
+                (?urls: string[]) =
+                class
+                end
+
+                /// <summary>
+                /// An array of url corresponding to the resource whose generated code cache needs to be removed. If the list is
+                /// empty then all entries in the cache directory will be removed.
+                /// </summary>
+                [<Erase>]
+                member val urls: string[] = Unchecked.defaultof<_> with get, set
+
+        module CreateInterruptedDownload =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="path">Absolute path of the download.</param>
+                /// <param name="urlChain">Complete URL chain for the download.</param>
+                /// <param name="mimeType"></param>
+                /// <param name="offset">Start range for the download.</param>
+                /// <param name="length">Total length of the download.</param>
+                /// <param name="lastModified">Last-Modified header value.</param>
+                /// <param name="eTag">ETag header value.</param>
+                /// <param name="startTime">Time when download was started in number of seconds since UNIX epoch.</param>
+                (
+                    path: string,
+                    urlChain: string[],
+                    offset: int,
+                    length: int,
+                    ?mimeType: string,
+                    ?lastModified: string,
+                    ?eTag: string,
+                    ?startTime: double
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Absolute path of the download.
+                /// </summary>
+                [<Erase>]
+                member val path: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Complete URL chain for the download.
+                /// </summary>
+                [<Erase>]
+                member val urlChain: string[] = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val mimeType: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Start range for the download.
+                /// </summary>
+                [<Erase>]
+                member val offset: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Total length of the download.
+                /// </summary>
+                [<Erase>]
+                member val length: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Last-Modified header value.
+                /// </summary>
+                [<Erase>]
+                member val lastModified: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// ETag header value.
+                /// </summary>
+                [<Erase>]
+                member val eTag: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Time when download was started in number of seconds since UNIX epoch.
+                /// </summary>
+                [<Erase>]
+                member val startTime: double = Unchecked.defaultof<_> with get, set
+
+        module DownloadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="headers">HTTP request headers.</param>
+                (?headers: Record<string, string>) =
+                class
+                end
+
+                /// <summary>
+                /// HTTP request headers.
+                /// </summary>
+                [<Erase>]
+                member val headers: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+        module SetSSLConfig =
+            [<JS.Pojo>]
+            type Config
+                /// <param name="minVersion">Can be <c>tls1</c>, <c>tls1.1</c>, <c>tls1.2</c> or <c>tls1.3</c>. The minimum SSL version to allow when connecting to remote servers. Defaults
+                /// to <c>tls1</c>.</param>
+                /// <param name="maxVersion">Can be <c>tls1.2</c> or <c>tls1.3</c>. The maximum SSL version to allow when connecting to remote servers. Defaults to <c>tls1.3</c>.</param>
+                /// <param name="disabledCipherSuites">List of cipher suites which should be explicitly prevented from being used in addition to those disabled by the
+                /// net built-in policy. Supported literal forms: 0xAABB, where AA is <c>cipher_suite[0]</c> and BB is <c>cipher_suite[1]</c>, as defined in RFC 2246,
+                /// Section 7.4.1.2. Unrecognized but parsable cipher suites in this form will not return an error. Ex: To disable TLS_RSA_WITH_RC4_128_MD5, specify
+                /// 0x0004, while to disable TLS_ECDH_ECDSA_WITH_RC4_128_SHA, specify 0xC002. Note that TLSv1.3 ciphers cannot be disabled using this mechanism.</param>
+                (
+                    ?minVersion: Main.Enums.Session.SetSSLConfig.Config.MinVersion,
+                    ?maxVersion: Main.Enums.Session.SetSSLConfig.Config.MaxVersion,
+                    ?disabledCipherSuites: int[]
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Can be <c>tls1</c>, <c>tls1.1</c>, <c>tls1.2</c> or <c>tls1.3</c>. The minimum SSL version to allow when connecting to remote servers. Defaults to
+                /// <c>tls1</c>.
+                /// </summary>
+                [<Erase>]
+                member val minVersion: Main.Enums.Session.SetSSLConfig.Config.MinVersion =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Can be <c>tls1.2</c> or <c>tls1.3</c>. The maximum SSL version to allow when connecting to remote servers. Defaults to <c>tls1.3</c>.
+                /// </summary>
+                [<Erase>]
+                member val maxVersion: Main.Enums.Session.SetSSLConfig.Config.MaxVersion =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// List of cipher suites which should be explicitly prevented from being used in addition to those disabled by the net
+                /// built-in policy. Supported literal forms: 0xAABB, where AA is <c>cipher_suite[0]</c> and BB is <c>cipher_suite[1]</c>, as defined in RFC 2246, Section
+                /// 7.4.1.2. Unrecognized but parsable cipher suites in this form will not return an error. Ex: To disable TLS_RSA_WITH_RC4_128_MD5, specify 0x0004,
+                /// while to disable TLS_ECDH_ECDSA_WITH_RC4_128_SHA, specify 0xC002. Note that TLSv1.3 ciphers cannot be disabled using this mechanism.
+                /// </summary>
+                [<Erase>]
+                member val disabledCipherSuites: int[] = Unchecked.defaultof<_> with get, set
+
+        module SetUSBProtectedClassesHandler =
+            module Handler =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="protectedClasses">The current list of protected USB classes. Possible class values include:</param>
+                    (
+                        protectedClasses:
+                            Main.Enums.Session.SetUSBProtectedClassesHandler.Handler.Details.ProtectedClasses[]
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// The current list of protected USB classes. Possible class values include:
+                    /// </summary>
+                    [<Erase>]
+                    member val protectedClasses: Main.Enums.Session.SetUSBProtectedClassesHandler.Handler.Details.ProtectedClasses[] =
+                        Unchecked.defaultof<_> with get, set
+
+        module SetDevicePermissionHandler =
+            module Handler =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="deviceType">The type of device that permission is being requested on, can be <c>hid</c>, <c>serial</c>, or <c>usb</c>.</param>
+                    /// <param name="origin">The origin URL of the device permission check.</param>
+                    /// <param name="device">the device that permission is being requested for.</param>
+                    (
+                        deviceType: Main.Enums.Session.SetDevicePermissionHandler.Handler.Details.DeviceType,
+                        origin: string,
+                        device: U3<HIDDevice, SerialPort, USBDevice>
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// The type of device that permission is being requested on, can be <c>hid</c>, <c>serial</c>, or <c>usb</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val deviceType: Main.Enums.Session.SetDevicePermissionHandler.Handler.Details.DeviceType =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The origin URL of the device permission check.
+                    /// </summary>
+                    [<Erase>]
+                    member val origin: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the device that permission is being requested for.
+                    /// </summary>
+                    [<Erase>]
+                    member val device: U3<HIDDevice, SerialPort, USBDevice> = Unchecked.defaultof<_> with get, set
+
+        module Preconnect =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="url">URL for preconnect. Only the origin is relevant for opening the socket.</param>
+                /// <param name="numSockets">number of sockets to preconnect. Must be between 1 and 6. Defaults to 1.</param>
+                (url: string, ?numSockets: float) =
+                class
+                end
+
+                /// <summary>
+                /// URL for preconnect. Only the origin is relevant for opening the socket.
+                /// </summary>
+                [<Erase>]
+                member val url: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// number of sockets to preconnect. Must be between 1 and 6. Defaults to 1.
+                /// </summary>
+                [<Erase>]
+                member val numSockets: float = Unchecked.defaultof<_> with get, set
+
+        module EnableNetworkEmulation =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="offline">Whether to emulate network outage. Defaults to false.</param>
+                /// <param name="latency">RTT in ms. Defaults to 0 which will disable latency throttling.</param>
+                /// <param name="downloadThroughput">Download rate in Bps. Defaults to 0 which will disable download throttling.</param>
+                /// <param name="uploadThroughput">Upload rate in Bps. Defaults to 0 which will disable upload throttling.</param>
+                (?offline: bool, ?latency: double, ?downloadThroughput: double, ?uploadThroughput: double) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to emulate network outage. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val offline: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// RTT in ms. Defaults to 0 which will disable latency throttling.
+                /// </summary>
+                [<Erase>]
+                member val latency: double = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Download rate in Bps. Defaults to 0 which will disable download throttling.
+                /// </summary>
+                [<Erase>]
+                member val downloadThroughput: double = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Upload rate in Bps. Defaults to 0 which will disable upload throttling.
+                /// </summary>
+                [<Erase>]
+                member val uploadThroughput: double = Unchecked.defaultof<_> with get, set
+
+        module ResolveHost =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="queryType">Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:</param>
+                /// <param name="source">The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use
+                /// of big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results
+                /// can still come from cache, resolving "localhost" or IP literals, etc. One of the following values:</param>
+                /// <param name="cacheUsage">Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:</param>
+                /// <param name="secureDnsPolicy">Controls the resolver's Secure DNS behavior for this request. One of the following values:</param>
+                (
+                    ?queryType: Main.Enums.Session.ResolveHost.Options.QueryType,
+                    ?source: Main.Enums.Session.ResolveHost.Options.Source,
+                    ?cacheUsage: Main.Enums.Session.ResolveHost.Options.CacheUsage,
+                    ?secureDnsPolicy: Main.Enums.Session.ResolveHost.Options.SecureDnsPolicy
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Requested DNS query type. If unspecified, resolver will pick A or AAAA (or both) based on IPv4/IPv6 settings:
+                /// </summary>
+                [<Erase>]
+                member val queryType: Main.Enums.Session.ResolveHost.Options.QueryType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The source to use for resolved addresses. Default allows the resolver to pick an appropriate source. Only affects use of
+                /// big external sources (e.g. calling the system for resolution or using DNS). Even if a source is specified, results can
+                /// still come from cache, resolving "localhost" or IP literals, etc. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val source: Main.Enums.Session.ResolveHost.Options.Source = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Indicates what DNS cache entries, if any, can be used to provide a response. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val cacheUsage: Main.Enums.Session.ResolveHost.Options.CacheUsage =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Controls the resolver's Secure DNS behavior for this request. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val secureDnsPolicy: Main.Enums.Session.ResolveHost.Options.SecureDnsPolicy =
+                    Unchecked.defaultof<_> with get, set
+
+        module ClearStorageData =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="origin">Should follow <c>window.location.origin</c>’s representation <c>scheme://host:port</c>.</param>
+                /// <param name="storages">The types of storages to clear, can be <c>cookies</c>, <c>filesystem</c>, <c>indexdb</c>, <c>localstorage</c>, <c>shadercache</c>, <c>websql</c>, <c>serviceworkers</c>, <c>cachestorage</c>. If not specified,
+                /// clear all storage types.</param>
+                /// <param name="quotas">The types of quotas to clear, can be <c>temporary</c>. If not specified, clear all quotas.</param>
+                (
+                    ?origin: string,
+                    ?storages: Main.Enums.Session.ClearStorageData.Options.Storages[],
+                    ?quotas: Main.Enums.Session.ClearStorageData.Options.Quotas[]
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Should follow <c>window.location.origin</c>’s representation <c>scheme://host:port</c>.
+                /// </summary>
+                [<Erase>]
+                member val origin: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The types of storages to clear, can be <c>cookies</c>, <c>filesystem</c>, <c>indexdb</c>, <c>localstorage</c>, <c>shadercache</c>, <c>websql</c>, <c>serviceworkers</c>, <c>cachestorage</c>. If not specified, clear
+                /// all storage types.
+                /// </summary>
+                [<Erase>]
+                member val storages: Main.Enums.Session.ClearStorageData.Options.Storages[] =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The types of quotas to clear, can be <c>temporary</c>. If not specified, clear all quotas.
+                /// </summary>
+                [<Erase>]
+                member val quotas: Main.Enums.Session.ClearStorageData.Options.Quotas[] =
+                    Unchecked.defaultof<_> with get, set
+
+        module FromPath =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="cache">Whether to enable cache. Default is <c>true</c> unless the <c>--disable-http-cache</c> switch is used.</param>
+                (cache: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to enable cache. Default is <c>true</c> unless the <c>--disable-http-cache</c> switch is used.
+                /// </summary>
+                [<Erase>]
+                member val cache: bool = Unchecked.defaultof<_> with get, set
+
+        module FromPartition =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="cache">Whether to enable cache. Default is <c>true</c> unless the <c>--disable-http-cache</c> switch is used.</param>
+                (cache: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to enable cache. Default is <c>true</c> unless the <c>--disable-http-cache</c> switch is used.
+                /// </summary>
+                [<Erase>]
+                member val cache: bool = Unchecked.defaultof<_> with get, set
+
+        module SetBluetoothPairingHandler =
+            module Handler =
+                module Callback =
+                    [<JS.Pojo>]
+                    type Response
+                        /// <param name="confirmed"><c>false</c> should be passed in if the dialog is canceled. If the <c>pairingKind</c> is <c>confirm</c> or <c>confirmPin</c>, this value
+                        /// should indicate if the pairing is confirmed.  If the <c>pairingKind</c> is <c>providePin</c> the value should be <c>true</c> when a
+                        /// value is provided.</param>
+                        /// <param name="pin">When the <c>pairingKind</c> is <c>providePin</c> this value should be the required pin for the Bluetooth device.</param>
+                        (confirmed: bool, ?pin: Option<string>) =
+                        class
+                        end
+
+                        /// <summary>
+                        /// <c>false</c> should be passed in if the dialog is canceled. If the <c>pairingKind</c> is <c>confirm</c> or <c>confirmPin</c>, this value should
+                        /// indicate if the pairing is confirmed.  If the <c>pairingKind</c> is <c>providePin</c> the value should be <c>true</c> when a value
+                        /// is provided.
+                        /// </summary>
+                        [<Erase>]
+                        member val confirmed: bool = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// When the <c>pairingKind</c> is <c>providePin</c> this value should be the required pin for the Bluetooth device.
+                        /// </summary>
+                        [<Erase>]
+                        member val pin: Option<string> = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="deviceId"></param>
+                    /// <param name="pairingKind">The type of pairing prompt being requested. One of the following values:</param>
+                    /// <param name="frame">The frame initiating this handler. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.</param>
+                    /// <param name="pin">The pin value to verify if <c>pairingKind</c> is <c>confirmPin</c>.</param>
+                    (
+                        deviceId: string,
+                        pairingKind: Main.Enums.Session.SetBluetoothPairingHandler.Handler.Details.PairingKind,
+                        frame: Option<Main.WebFrameMain>,
+                        ?pin: string
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val deviceId: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The type of pairing prompt being requested. One of the following values:
+                    /// </summary>
+                    [<Erase>]
+                    member val pairingKind: Main.Enums.Session.SetBluetoothPairingHandler.Handler.Details.PairingKind =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The frame initiating this handler. May be <c>null</c> if accessed after the frame has either navigated or been destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The pin value to verify if <c>pairingKind</c> is <c>confirmPin</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val pin: string = Unchecked.defaultof<_> with get, set
+
+            /// <param name="details"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of
+                    details: Main.Session.SetBluetoothPairingHandler.Handler.Details *
+                    callback: (Main.Session.SetBluetoothPairingHandler.Handler.Callback.Response -> unit) ->
+                        unit
+
+        module SetDisplayMediaRequestHandler =
+            [<JS.Pojo>]
+            type Opts
+                /// <param name="useSystemPicker">true if the available native system picker should be used. Default is <c>false</c>. _macOS_ _Experimental_</param>
+                (useSystemPicker: bool) =
+                class
+                end
+
+                /// <summary>
+                /// true if the available native system picker should be used. Default is <c>false</c>. _macOS_ _Experimental_
+                /// </summary>
+                [<Erase>]
+                member val useSystemPicker: bool = Unchecked.defaultof<_> with get, set
+
+            module Handler =
+                module Callback =
+                    [<JS.Pojo>]
+                    type Streams
+                        /// <param name="video"></param>
+                        /// <param name="audio">If a string is specified, can be <c>loopback</c> or <c>loopbackWithMute</c>. Specifying a loopback device will capture system audio, and
+                        /// is currently only supported on Windows. If a WebFrameMain is specified, will capture audio from that frame.</param>
+                        /// <param name="enableLocalEcho">If <c>audio</c> is a WebFrameMain and this is set to <c>true</c>, then local playback of audio will not be
+                        /// muted (e.g. using <c>MediaRecorder</c> to record <c>WebFrameMain</c> with this flag set to <c>true</c> will allow audio to pass through to
+                        /// the speakers while recording). Default is <c>false</c>.</param>
+                        (
+                            ?video:
+                                U2<
+                                    Main.Session.SetDisplayMediaRequestHandler.Handler.Callback.Streams.Video,
+                                    Main.WebFrameMain
+                                 >,
+                            ?audio:
+                                U2<
+                                    Main.Enums.Session.SetDisplayMediaRequestHandler.Handler.Callback.Streams.Audio,
+                                    Main.WebFrameMain
+                                 >,
+                            ?enableLocalEcho: bool
+                        ) =
+                        class
+                        end
+
+                        [<Erase>]
+                        member val video: U2<
+                            Main.Session.SetDisplayMediaRequestHandler.Handler.Callback.Streams.Video,
+                            Main.WebFrameMain
+                         > = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// If a string is specified, can be <c>loopback</c> or <c>loopbackWithMute</c>. Specifying a loopback device will capture system audio, and is
+                        /// currently only supported on Windows. If a WebFrameMain is specified, will capture audio from that frame.
+                        /// </summary>
+                        [<Erase>]
+                        member val audio: U2<
+                            Main.Enums.Session.SetDisplayMediaRequestHandler.Handler.Callback.Streams.Audio,
+                            Main.WebFrameMain
+                         > = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// If <c>audio</c> is a WebFrameMain and this is set to <c>true</c>, then local playback of audio will not be muted
+                        /// (e.g. using <c>MediaRecorder</c> to record <c>WebFrameMain</c> with this flag set to <c>true</c> will allow audio to pass through to the
+                        /// speakers while recording). Default is <c>false</c>.
+                        /// </summary>
+                        [<Erase>]
+                        member val enableLocalEcho: bool = Unchecked.defaultof<_> with get, set
+
+                    module Streams =
+                        [<JS.Pojo>]
+                        type Video
+                            /// <param name="id">The id of the stream being granted. This will usually come from a DesktopCapturerSource object.</param>
+                            /// <param name="name">The name of the stream being granted. This will usually come from a DesktopCapturerSource object.</param>
+                            (id: string, name: string) =
+                            class
+                            end
+
+                            /// <summary>
+                            /// The id of the stream being granted. This will usually come from a DesktopCapturerSource object.
+                            /// </summary>
+                            [<Erase>]
+                            member val id: string = Unchecked.defaultof<_> with get, set
+
+                            /// <summary>
+                            /// The name of the stream being granted. This will usually come from a DesktopCapturerSource object.
+                            /// </summary>
+                            [<Erase>]
+                            member val name: string = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Request
+                    /// <param name="frame">Frame that is requesting access to media. May be <c>null</c> if accessed after the frame has either navigated or
+                    /// been destroyed.</param>
+                    /// <param name="securityOrigin">Origin of the page making the request.</param>
+                    /// <param name="videoRequested">true if the web content requested a video stream.</param>
+                    /// <param name="audioRequested">true if the web content requested an audio stream.</param>
+                    /// <param name="userGesture">Whether a user gesture was active when this request was triggered.</param>
+                    (
+                        frame: Option<Main.WebFrameMain>,
+                        securityOrigin: string,
+                        videoRequested: bool,
+                        audioRequested: bool,
+                        userGesture: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Frame that is requesting access to media. May be <c>null</c> if accessed after the frame has either navigated or been
+                    /// destroyed.
+                    /// </summary>
+                    [<Erase>]
+                    member val frame: Option<Main.WebFrameMain> = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Origin of the page making the request.
+                    /// </summary>
+                    [<Erase>]
+                    member val securityOrigin: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// true if the web content requested a video stream.
+                    /// </summary>
+                    [<Erase>]
+                    member val videoRequested: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// true if the web content requested an audio stream.
+                    /// </summary>
+                    [<Erase>]
+                    member val audioRequested: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether a user gesture was active when this request was triggered.
+                    /// </summary>
+                    [<Erase>]
+                    member val userGesture: bool = Unchecked.defaultof<_> with get, set
+
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of
+                    request: Main.Session.SetDisplayMediaRequestHandler.Handler.Request *
+                    callback: (Main.Session.SetDisplayMediaRequestHandler.Handler.Callback.Streams -> unit) ->
+                        unit
+
+        module SetPermissionCheckHandler =
+            module Handler =
+                [<JS.Pojo>]
+                type Details
+                    /// <param name="embeddingOrigin">The origin of the frame embedding the frame that made the permission check.  Only set for cross-origin sub
+                    /// frames making permission checks.</param>
+                    /// <param name="securityOrigin">The security origin of the <c>media</c> check.</param>
+                    /// <param name="mediaType">The type of media access being requested, can be <c>video</c>, <c>audio</c> or <c>unknown</c>.</param>
+                    /// <param name="requestingUrl">The last URL the requesting frame loaded.  This is not provided for cross-origin sub frames making permission checks.</param>
+                    /// <param name="isMainFrame">Whether the frame making the request is the main frame.</param>
+                    /// <param name="filePath">The path of a <c>fileSystem</c> request.</param>
+                    /// <param name="isDirectory">Whether a <c>fileSystem</c> request is a directory.</param>
+                    /// <param name="fileAccessType">The access type of a <c>fileSystem</c> request. Can be <c>writable</c> or <c>readable</c>.</param>
+                    (
+                        isMainFrame: bool,
+                        ?embeddingOrigin: string,
+                        ?securityOrigin: string,
+                        ?mediaType: Main.Enums.Session.SetPermissionCheckHandler.Handler.Details.MediaType,
+                        ?requestingUrl: string,
+                        ?filePath: string,
+                        ?isDirectory: bool,
+                        ?fileAccessType: Main.Enums.Session.SetPermissionCheckHandler.Handler.Details.FileAccessType
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// The origin of the frame embedding the frame that made the permission check.  Only set for cross-origin sub frames
+                    /// making permission checks.
+                    /// </summary>
+                    [<Erase>]
+                    member val embeddingOrigin: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The security origin of the <c>media</c> check.
+                    /// </summary>
+                    [<Erase>]
+                    member val securityOrigin: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The type of media access being requested, can be <c>video</c>, <c>audio</c> or <c>unknown</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val mediaType: Main.Enums.Session.SetPermissionCheckHandler.Handler.Details.MediaType =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The last URL the requesting frame loaded.  This is not provided for cross-origin sub frames making permission checks.
+                    /// </summary>
+                    [<Erase>]
+                    member val requestingUrl: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the frame making the request is the main frame.
+                    /// </summary>
+                    [<Erase>]
+                    member val isMainFrame: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The path of a <c>fileSystem</c> request.
+                    /// </summary>
+                    [<Erase>]
+                    member val filePath: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether a <c>fileSystem</c> request is a directory.
+                    /// </summary>
+                    [<Erase>]
+                    member val isDirectory: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The access type of a <c>fileSystem</c> request. Can be <c>writable</c> or <c>readable</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val fileAccessType: Main.Enums.Session.SetPermissionCheckHandler.Handler.Details.FileAccessType =
+                        Unchecked.defaultof<_> with get, set
+
+            /// <param name="webContents">WebContents checking the permission.  Please note that if the request comes from a subframe you should use <c>requestingUrl</c>
+            /// to check the request origin.  All cross origin sub frames making permission checks will pass a <c>null</c> webContents to
+            /// this handler, while certain other permission checks such as <c>notifications</c> checks will always pass <c>null</c>.  You should use <c>embeddingOrigin</c>
+            /// and <c>requestingOrigin</c> to determine what origin the owning frame and the requesting frame are on respectively.</param>
+            /// <param name="permission">Type of permission check.</param>
+            /// <param name="requestingOrigin">The origin URL of the permission check</param>
+            /// <param name="details">Some properties are only available on certain permission types.</param>
+            type Handler =
+                delegate of
+                    webContents: Option<Main.WebContents> *
+                    permission: Main.Enums.Session.SetPermissionCheckHandler.Handler.Permission *
+                    requestingOrigin: string *
+                    details: Main.Session.SetPermissionCheckHandler.Handler.Details ->
+                        bool
+
+        module SetPermissionRequestHandler =
+            /// <param name="webContents">WebContents requesting the permission.  Please note that if the request comes from a subframe you should use <c>requestingUrl</c>
+            /// to check the request origin.</param>
+            /// <param name="permission">The type of requested permission.</param>
+            /// <param name="callback"></param>
+            /// <param name="details">Additional information about the permission being requested.</param>
+            type Handler =
+                delegate of
+                    webContents: Main.WebContents *
+                    permission: Main.Enums.Session.SetPermissionRequestHandler.Handler.Permission *
+                    callback: (bool -> unit) *
+                    details:
+                        U4<
+                            PermissionRequest,
+                            FilesystemPermissionRequest,
+                            MediaAccessPermissionRequest,
+                            OpenExternalPermissionRequest
+                         > ->
+                        unit
+
+        module SetCertificateVerifyProc =
+            module Proc =
+                [<JS.Pojo>]
+                type Request
+                    /// <param name="hostname"></param>
+                    /// <param name="certificate"></param>
+                    /// <param name="validatedCertificate"></param>
+                    /// <param name="isIssuedByKnownRoot"><c>true</c> if Chromium recognises the root CA as a standard root. If it isn't then it's probably the case
+                    /// that this certificate was generated by a MITM proxy whose root has been installed locally (for example, by a corporate
+                    /// proxy). This should not be trusted if the <c>verificationResult</c> is not <c>OK</c>.</param>
+                    /// <param name="verificationResult"><c>OK</c> if the certificate is trusted, otherwise an error like <c>CERT_REVOKED</c>.</param>
+                    /// <param name="errorCode">Error code.</param>
+                    (
+                        hostname: string,
+                        certificate: Certificate,
+                        validatedCertificate: Certificate,
+                        isIssuedByKnownRoot: bool,
+                        verificationResult: string,
+                        errorCode: int
+                    ) =
+                    class
+                    end
+
+                    [<Erase>]
+                    member val hostname: string = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val certificate: Certificate = Unchecked.defaultof<_> with get, set
+
+                    [<Erase>]
+                    member val validatedCertificate: Certificate = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// <c>true</c> if Chromium recognises the root CA as a standard root. If it isn't then it's probably the case that
+                    /// this certificate was generated by a MITM proxy whose root has been installed locally (for example, by a corporate proxy).
+                    /// This should not be trusted if the <c>verificationResult</c> is not <c>OK</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val isIssuedByKnownRoot: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// <c>OK</c> if the certificate is trusted, otherwise an error like <c>CERT_REVOKED</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val verificationResult: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Error code.
+                    /// </summary>
+                    [<Erase>]
+                    member val errorCode: int = Unchecked.defaultof<_> with get, set
+
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Proc =
+                delegate of
+                    request: Main.Session.SetCertificateVerifyProc.Proc.Request * callback: (int -> unit) -> unit
+
+    module Protocol =
+        module InterceptStreamProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<Readable<obj>, ProtocolResponse> -> unit) -> unit
+
+        module InterceptHttpProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler = delegate of request: ProtocolRequest * callback: (ProtocolResponse -> unit) -> unit
+
+        module InterceptBufferProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<Buffer, ProtocolResponse> -> unit) -> unit
+
+        module InterceptStringProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<string, ProtocolResponse> -> unit) -> unit
+
+        module InterceptFileProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<string, ProtocolResponse> -> unit) -> unit
+
+        module RegisterStreamProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<Readable<obj>, ProtocolResponse> -> unit) -> unit
+
+        module RegisterHttpProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler = delegate of request: ProtocolRequest * callback: (ProtocolResponse -> unit) -> unit
+
+        module RegisterStringProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<string, ProtocolResponse> -> unit) -> unit
+
+        module RegisterBufferProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<Buffer, ProtocolResponse> -> unit) -> unit
+
+        module RegisterFileProtocol =
+            /// <param name="request"></param>
+            /// <param name="callback"></param>
+            type Handler =
+                delegate of request: ProtocolRequest * callback: (U2<string, ProtocolResponse> -> unit) -> unit
+
+    module MenuItem =
+        [<JS.Pojo>]
+        type Options
+            /// <param name="click">Will be called with <c>click(menuItem, window, event)</c> when the menu item is clicked.</param>
+            /// <param name="role">Can be <c>undo</c>, <c>redo</c>, <c>cut</c>, <c>copy</c>, <c>paste</c>, <c>pasteAndMatchStyle</c>, <c>delete</c>, <c>selectAll</c>, <c>reload</c>, <c>forceReload</c>, <c>toggleDevTools</c>, <c>resetZoom</c>, <c>zoomIn</c>, <c>zoomOut</c>, <c>toggleSpellChecker</c>, <c>togglefullscreen</c>, <c>window</c>,
+            /// <c>minimize</c>, <c>close</c>, <c>help</c>, <c>about</c>, <c>services</c>, <c>hide</c>, <c>hideOthers</c>, <c>unhide</c>, <c>quit</c>, <c>showSubstitutions</c>, <c>toggleSmartQuotes</c>, <c>toggleSmartDashes</c>, <c>toggleTextReplacement</c>, <c>startSpeaking</c>, <c>stopSpeaking</c>, <c>zoom</c>, <c>front</c>, <c>appMenu</c>, <c>fileMenu</c>, <c>editMenu</c>,
+            /// <c>viewMenu</c>, <c>shareMenu</c>, <c>recentDocuments</c>, <c>toggleTabBar</c>, <c>selectNextTab</c>, <c>selectPreviousTab</c>, <c>showAllTabs</c>, <c>mergeAllWindows</c>, <c>clearRecentDocuments</c>, <c>moveTabToNewWindow</c> or <c>windowMenu</c> - Define the action of the menu item,
+            /// when specified the <c>click</c> property will be ignored. See roles.</param>
+            /// <param name="type"></param>
+            /// <param name="label"></param>
+            /// <param name="sublabel">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Available in macOS &gt;=
+            /// 14.4</param>
+            /// <param name="toolTip">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Hover text for this
+            /// menu item.</param>
+            /// <param name="accelerator">An Accelerator string.</param>
+            /// <param name="icon"></param>
+            /// <param name="enabled">If false, the menu item will be greyed out and unclickable.</param>
+            /// <param name="acceleratorWorksWhenHidden">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || default is <c>true</c>, and
+            /// when <c>false</c> will prevent the accelerator from triggering the item if the item is not visible.</param>
+            /// <param name="visible">If false, the menu item will be entirely hidden.</param>
+            /// <param name="checked">Should only be specified for <c>checkbox</c> or <c>radio</c> type menu items.</param>
+            /// <param name="registerAccelerator">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || If false, the accelerator
+            /// won't be registered with the system, but it will still be displayed. Defaults to true.</param>
+            /// <param name="sharingItem">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The item to share
+            /// when the <c>role</c> is <c>shareMenu</c>.</param>
+            /// <param name="submenu">Should be specified for <c>submenu</c> type menu items. If <c>submenu</c> is specified, the <c>type: 'submenu'</c> can be omitted. If
+            /// the value is not a <c>Menu</c> then it will be automatically converted to one using <c>Menu.buildFromTemplate</c>.</param>
+            /// <param name="id">Unique within a single menu. If defined then it can be used as a reference to this item by
+            /// the position attribute.</param>
+            /// <param name="before">Inserts this item before the item with the specified id. If the referenced item doesn't exist the item will
+            /// be inserted at the end of  the menu. Also implies that the menu item in question should be placed
+            /// in the same “group” as the item.</param>
+            /// <param name="after">Inserts this item after the item with the specified id. If the referenced item doesn't exist the item will
+            /// be inserted at the end of the menu.</param>
+            /// <param name="beforeGroupContaining">Provides a means for a single context menu to declare the placement of their containing group before the containing
+            /// group of the item with the specified id.</param>
+            /// <param name="afterGroupContaining">Provides a means for a single context menu to declare the placement of their containing group after the containing
+            /// group of the item with the specified id.</param>
+            (
+                ?click: Main.MenuItem * Option<Main.BaseWindow> * KeyboardEvent -> unit,
+                ?role: Main.Enums.MenuItem.Options.Role,
+                ?``type``: Main.Enums.MenuItem.Options.Type,
+                ?label: string
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?sublabel: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?toolTip: string
+                #endif
+                ,
+                ?accelerator: string,
+                ?icon: U2<Main.NativeImage, string>,
+                ?enabled: bool
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?acceleratorWorksWhenHidden: bool
+                #endif
+                ,
+                ?visible: bool,
+                ?``checked``: bool
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?registerAccelerator: bool
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                ?sharingItem: SharingItem
+                #endif
+                ,
+                ?submenu: U2<MenuItem.Options[], Main.Menu>,
+                ?id: string,
+                ?before: string[],
+                ?after: string[],
+                ?beforeGroupContaining: string[],
+                ?afterGroupContaining: string[]
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Will be called with <c>click(menuItem, window, event)</c> when the menu item is clicked.
+            /// </summary>
+            [<Erase>]
+            member val click: Main.MenuItem * Option<Main.BaseWindow> * KeyboardEvent -> unit =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>undo</c>, <c>redo</c>, <c>cut</c>, <c>copy</c>, <c>paste</c>, <c>pasteAndMatchStyle</c>, <c>delete</c>, <c>selectAll</c>, <c>reload</c>, <c>forceReload</c>, <c>toggleDevTools</c>, <c>resetZoom</c>, <c>zoomIn</c>, <c>zoomOut</c>, <c>toggleSpellChecker</c>, <c>togglefullscreen</c>, <c>window</c>, <c>minimize</c>,
+            /// <c>close</c>, <c>help</c>, <c>about</c>, <c>services</c>, <c>hide</c>, <c>hideOthers</c>, <c>unhide</c>, <c>quit</c>, <c>showSubstitutions</c>, <c>toggleSmartQuotes</c>, <c>toggleSmartDashes</c>, <c>toggleTextReplacement</c>, <c>startSpeaking</c>, <c>stopSpeaking</c>, <c>zoom</c>, <c>front</c>, <c>appMenu</c>, <c>fileMenu</c>, <c>editMenu</c>, <c>viewMenu</c>,
+            /// <c>shareMenu</c>, <c>recentDocuments</c>, <c>toggleTabBar</c>, <c>selectNextTab</c>, <c>selectPreviousTab</c>, <c>showAllTabs</c>, <c>mergeAllWindows</c>, <c>clearRecentDocuments</c>, <c>moveTabToNewWindow</c> or <c>windowMenu</c> - Define the action of the menu item, when
+            /// specified the <c>click</c> property will be ignored. See roles.
+            /// </summary>
+            [<Erase>]
+            member val role: Main.Enums.MenuItem.Options.Role = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val ``type``: Main.Enums.MenuItem.Options.Type = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val label: string = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// Available in macOS &gt;= 14.4
+            /// </summary>
+            [<Erase>]
+            member val sublabel: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// Hover text for this menu item.
+            /// </summary>
+            [<Erase>]
+            member val toolTip: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// An Accelerator string.
+            /// </summary>
+            [<Erase>]
+            member val accelerator: string = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val icon: U2<Main.NativeImage, string> = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// If false, the menu item will be greyed out and unclickable.
+            /// </summary>
+            [<Erase>]
+            member val enabled: bool = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// default is <c>true</c>, and when <c>false</c> will prevent the accelerator from triggering the item if the item is not visible.
+            /// </summary>
+            [<Erase>]
+            member val acceleratorWorksWhenHidden: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// If false, the menu item will be entirely hidden.
+            /// </summary>
+            [<Erase>]
+            member val visible: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Should only be specified for <c>checkbox</c> or <c>radio</c> type menu items.
+            /// </summary>
+            [<Erase>]
+            member val ``checked``: bool = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// If false, the accelerator won't be registered with the system, but it will still be displayed. Defaults to true.
+            /// </summary>
+            [<Erase>]
+            member val registerAccelerator: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The item to share when the <c>role</c> is <c>shareMenu</c>.
+            /// </summary>
+            [<Erase>]
+            member val sharingItem: SharingItem = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// Should be specified for <c>submenu</c> type menu items. If <c>submenu</c> is specified, the <c>type: 'submenu'</c> can be omitted. If the
+            /// value is not a <c>Menu</c> then it will be automatically converted to one using <c>Menu.buildFromTemplate</c>.
+            /// </summary>
+            [<Erase>]
+            member val submenu: U2<MenuItem.Options[], Main.Menu> = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Unique within a single menu. If defined then it can be used as a reference to this item by the
+            /// position attribute.
+            /// </summary>
+            [<Erase>]
+            member val id: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Inserts this item before the item with the specified id. If the referenced item doesn't exist the item will be
+            /// inserted at the end of  the menu. Also implies that the menu item in question should be placed in
+            /// the same “group” as the item.
+            /// </summary>
+            [<Erase>]
+            member val before: string[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Inserts this item after the item with the specified id. If the referenced item doesn't exist the item will be
+            /// inserted at the end of the menu.
+            /// </summary>
+            [<Erase>]
+            member val after: string[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Provides a means for a single context menu to declare the placement of their containing group before the containing group
+            /// of the item with the specified id.
+            /// </summary>
+            [<Erase>]
+            member val beforeGroupContaining: string[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Provides a means for a single context menu to declare the placement of their containing group after the containing group
+            /// of the item with the specified id.
+            /// </summary>
+            [<Erase>]
+            member val afterGroupContaining: string[] = Unchecked.defaultof<_> with get, set
+
+        /// <param name="event"></param>
+        /// <param name="focusedWindow"></param>
+        /// <param name="focusedWebContents"></param>
+        type Click =
+            delegate of
+                event: KeyboardEvent * focusedWindow: Main.BaseWindow * focusedWebContents: Main.WebContents -> unit
+
+        module Options =
+            /// <param name="menuItem"></param>
+            /// <param name="window">This will not be defined if no window is open.</param>
+            /// <param name="event"></param>
+            type Click =
+                delegate of menuItem: Main.MenuItem * window: Option<Main.BaseWindow> * event: KeyboardEvent -> unit
+
+    module IpcMain =
+        module HandleOnce =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener =
+                delegate of event: IpcMainInvokeEvent * [<System.ParamArray>] args: obj[] -> U2<Promise<obj>, obj>
+
+        module Handle =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener =
+                delegate of event: IpcMainInvokeEvent * [<System.ParamArray>] args: obj[] -> U2<Promise<obj>, obj>
+
+        module AddListener =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcMainEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Once =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcMainEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Off =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcMainEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module On =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcMainEvent * [<System.ParamArray>] args: obj[] -> unit
+
+    module IpcMainServiceWorker =
+        module HandleOnce =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener =
+                delegate of
+                    event: IpcMainServiceWorkerInvokeEvent * [<System.ParamArray>] args: obj[] -> U2<Promise<obj>, obj>
+
+        module Handle =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener =
+                delegate of
+                    event: IpcMainServiceWorkerInvokeEvent * [<System.ParamArray>] args: obj[] -> U2<Promise<obj>, obj>
+
+        module Once =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcMainServiceWorkerEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module On =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcMainServiceWorkerEvent * [<System.ParamArray>] args: obj[] -> unit
+
+    module ClientRequest =
+        /// <summary>
+        /// Emitted when the server returns a redirect response (e.g. 301 Moved Permanently). Calling <c>request.followRedirect</c> will continue with the redirection.
+        /// If this event is handled, <c>request.followRedirect</c> must be called **synchronously**, otherwise the request will be cancelled.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnRedirect =
+            [<Emit("$0[0]")>]
+            abstract member statusCode: int with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member method: string with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member redirectUrl: string with get, set
+
+            [<Emit("$0[3]")>]
+            abstract member responseHeaders: Record<string, string[]> with get, set
+
+        /// <summary>
+        /// Emitted when an authenticating proxy is asking for user credentials.<br/><br/>The <c>callback</c> function is expected to be called back with user
+        /// credentials:<br/><br/>* <c>username</c> string<br/>* <c>password</c> string<br/><br/>Providing empty credentials will cancel the request and report an authentication error on the response object:
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnLogin =
+            [<Emit("$0[0]")>]
+            abstract member authInfo: Main.ClientRequest.Login.AuthInfo with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
+
+        [<JS.Pojo>]
+        type GetUploadProgress
+            /// <param name="active">Whether the request is currently active. If this is false no other properties will be set</param>
+            /// <param name="started">Whether the upload has started. If this is false both <c>current</c> and <c>total</c> will be set to 0.</param>
+            /// <param name="current">The number of bytes that have been uploaded so far</param>
+            /// <param name="total">The number of bytes that will be uploaded this request</param>
+            (active: bool, started: bool, current: int, total: int) =
+            class
+            end
+
+            /// <summary>
+            /// Whether the request is currently active. If this is false no other properties will be set
+            /// </summary>
+            [<Erase>]
+            member val active: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Whether the upload has started. If this is false both <c>current</c> and <c>total</c> will be set to 0.
+            /// </summary>
+            [<Erase>]
+            member val started: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The number of bytes that have been uploaded so far
+            /// </summary>
+            [<Erase>]
+            member val current: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The number of bytes that will be uploaded this request
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type Options
+            /// <param name="method">The HTTP request method. Defaults to the GET method.</param>
+            /// <param name="url">The request URL. Must be provided in the absolute form with the protocol scheme specified as http or https.</param>
+            /// <param name="headers">Headers to be sent with the request.</param>
+            /// <param name="session">The <c>Session</c> instance with which the request is associated.</param>
+            /// <param name="partition">The name of the <c>partition</c> with which the request is associated. Defaults to the empty string. The <c>session</c> option
+            /// supersedes <c>partition</c>. Thus if a <c>session</c> is explicitly specified, <c>partition</c> is ignored.</param>
+            /// <param name="credentials">Can be <c>include</c>, <c>omit</c> or <c>same-origin</c>. Whether to send credentials with this request. If set to <c>include</c>, credentials from
+            /// the session associated with the request will be used. If set to <c>omit</c>, credentials will not be sent with the
+            /// request (and the <c>'login'</c> event will not be triggered in the event of a 401). If set to <c>same-origin</c>, <c>origin</c>
+            /// must also be specified. This matches the behavior of the fetch option of the same name. If this option is
+            /// not specified, authentication data from the session will be sent, and cookies will not be sent (unless <c>useSessionCookies</c> is set).</param>
+            /// <param name="useSessionCookies">Whether to send cookies with this request from the provided session. If <c>credentials</c> is specified, this option has no
+            /// effect. Default is <c>false</c>.</param>
+            /// <param name="protocol">Can be <c>http:</c> or <c>https:</c>. The protocol scheme in the form 'scheme:'. Defaults to 'http:'.</param>
+            /// <param name="host">The server host provided as a concatenation of the hostname and the port number 'hostname:port'.</param>
+            /// <param name="hostname">The server host name.</param>
+            /// <param name="port">The server's listening port number.</param>
+            /// <param name="path">The path part of the request URL.</param>
+            /// <param name="redirect">Can be <c>follow</c>, <c>error</c> or <c>manual</c>. The redirect mode for this request. When mode is <c>error</c>, any redirection will
+            /// be aborted. When mode is <c>manual</c> the redirection will be cancelled unless <c>request.followRedirect</c> is invoked synchronously during the <c>redirect</c> event.
+            ///  Defaults to <c>follow</c>.</param>
+            /// <param name="origin">The origin URL of the request.</param>
+            /// <param name="referrerPolicy">can be "", <c>no-referrer</c>, <c>no-referrer-when-downgrade</c>, <c>origin</c>, <c>origin-when-cross-origin</c>, <c>unsafe-url</c>, <c>same-origin</c>, <c>strict-origin</c>, or <c>strict-origin-when-cross-origin</c>. Defaults to <c>strict-origin-when-cross-origin</c>.</param>
+            /// <param name="cache">can be <c>default</c>, <c>no-store</c>, <c>reload</c>, <c>no-cache</c>, <c>force-cache</c> or <c>only-if-cached</c>.</param>
+            /// <param name="priority">can be <c>throttled</c>, <c>idle</c>, <c>lowest</c>, <c>low</c>, <c>medium</c>, or <c>highest</c>. Defaults to <c>idle</c>.</param>
+            /// <param name="priorityIncremental">the incremental loading flag as part of HTTP extensible priorities (RFC 9218). Default is <c>true</c>.</param>
+            (
+                ?method: string,
+                ?url: string,
+                ?headers: Record<string, U2<string, string[]>>,
+                ?session: Main.Session,
+                ?partition: string,
+                ?credentials: Main.Enums.ClientRequest.Options.Credentials,
+                ?useSessionCookies: bool,
+                ?protocol: Main.Enums.ClientRequest.Options.Protocol,
+                ?host: string,
+                ?hostname: string,
+                ?port: int,
+                ?path: string,
+                ?redirect: Main.Enums.ClientRequest.Options.Redirect,
+                ?origin: string,
+                ?referrerPolicy: Main.Enums.ClientRequest.Options.ReferrerPolicy,
+                ?cache: Main.Enums.ClientRequest.Options.Cache,
+                ?priority: Main.Enums.ClientRequest.Options.Priority,
+                ?priorityIncremental: bool
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The HTTP request method. Defaults to the GET method.
+            /// </summary>
+            [<Erase>]
+            member val method: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The request URL. Must be provided in the absolute form with the protocol scheme specified as http or https.
+            /// </summary>
+            [<Erase>]
+            member val url: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Headers to be sent with the request.
+            /// </summary>
+            [<Erase>]
+            member val headers: Record<string, U2<string, string[]>> = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The <c>Session</c> instance with which the request is associated.
+            /// </summary>
+            [<Erase>]
+            member val session: Main.Session = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The name of the <c>partition</c> with which the request is associated. Defaults to the empty string. The <c>session</c> option supersedes
+            /// <c>partition</c>. Thus if a <c>session</c> is explicitly specified, <c>partition</c> is ignored.
+            /// </summary>
+            [<Erase>]
+            member val partition: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>include</c>, <c>omit</c> or <c>same-origin</c>. Whether to send credentials with this request. If set to <c>include</c>, credentials from the
+            /// session associated with the request will be used. If set to <c>omit</c>, credentials will not be sent with the request
+            /// (and the <c>'login'</c> event will not be triggered in the event of a 401). If set to <c>same-origin</c>, <c>origin</c> must
+            /// also be specified. This matches the behavior of the fetch option of the same name. If this option is not
+            /// specified, authentication data from the session will be sent, and cookies will not be sent (unless <c>useSessionCookies</c> is set).
+            /// </summary>
+            [<Erase>]
+            member val credentials: Main.Enums.ClientRequest.Options.Credentials = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Whether to send cookies with this request from the provided session. If <c>credentials</c> is specified, this option has no effect.
+            /// Default is <c>false</c>.
+            /// </summary>
+            [<Erase>]
+            member val useSessionCookies: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>http:</c> or <c>https:</c>. The protocol scheme in the form 'scheme:'. Defaults to 'http:'.
+            /// </summary>
+            [<Erase>]
+            member val protocol: Main.Enums.ClientRequest.Options.Protocol = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The server host provided as a concatenation of the hostname and the port number 'hostname:port'.
+            /// </summary>
+            [<Erase>]
+            member val host: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The server host name.
+            /// </summary>
+            [<Erase>]
+            member val hostname: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The server's listening port number.
+            /// </summary>
+            [<Erase>]
+            member val port: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The path part of the request URL.
+            /// </summary>
+            [<Erase>]
+            member val path: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Can be <c>follow</c>, <c>error</c> or <c>manual</c>. The redirect mode for this request. When mode is <c>error</c>, any redirection will be
+            /// aborted. When mode is <c>manual</c> the redirection will be cancelled unless <c>request.followRedirect</c> is invoked synchronously during the <c>redirect</c> event.
+            /// Defaults to <c>follow</c>.
+            /// </summary>
+            [<Erase>]
+            member val redirect: Main.Enums.ClientRequest.Options.Redirect = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The origin URL of the request.
+            /// </summary>
+            [<Erase>]
+            member val origin: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// can be "", <c>no-referrer</c>, <c>no-referrer-when-downgrade</c>, <c>origin</c>, <c>origin-when-cross-origin</c>, <c>unsafe-url</c>, <c>same-origin</c>, <c>strict-origin</c>, or <c>strict-origin-when-cross-origin</c>. Defaults to <c>strict-origin-when-cross-origin</c>.
+            /// </summary>
+            [<Erase>]
+            member val referrerPolicy: Main.Enums.ClientRequest.Options.ReferrerPolicy =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// can be <c>default</c>, <c>no-store</c>, <c>reload</c>, <c>no-cache</c>, <c>force-cache</c> or <c>only-if-cached</c>.
+            /// </summary>
+            [<Erase>]
+            member val cache: Main.Enums.ClientRequest.Options.Cache = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// can be <c>throttled</c>, <c>idle</c>, <c>lowest</c>, <c>low</c>, <c>medium</c>, or <c>highest</c>. Defaults to <c>idle</c>.
+            /// </summary>
+            [<Erase>]
+            member val priority: Main.Enums.ClientRequest.Options.Priority = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// the incremental loading flag as part of HTTP extensible priorities (RFC 9218). Default is <c>true</c>.
+            /// </summary>
+            [<Erase>]
+            member val priorityIncremental: bool = Unchecked.defaultof<_> with get, set
+
+        module Login =
+            [<JS.Pojo>]
+            type AuthInfo
+                /// <param name="isProxy"></param>
+                /// <param name="scheme"></param>
+                /// <param name="host"></param>
+                /// <param name="port"></param>
+                /// <param name="realm"></param>
+                (isProxy: bool, scheme: string, host: string, port: int, realm: string) =
+                class
+                end
+
+                [<Erase>]
+                member val isProxy: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val scheme: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val host: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val port: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val realm: string = Unchecked.defaultof<_> with get, set
+
+            /// <param name="username"></param>
+            /// <param name="password"></param>
+            type Callback = delegate of ?username: string * ?password: string -> unit
+
+    module BrowserWindow =
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+        /// Emitted when the system context menu is triggered on the window, this is normally only triggered when the user right
+        /// clicks on the non-client area of your window.  This is the window titlebar or any area you have declared
+        /// as <c>-webkit-app-region: drag</c> in a frameless window.<br/><br/>Calling <c>event.preventDefault()</c> will prevent the menu from being displayed.<br/><br/>To convert <c>point</c> to DIP, use
+        /// <c>screen.screenToDipPoint(point)</c>.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSystemContextMenu =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The screen coordinates where the context menu was triggered.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member point: Point with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted on trackpad rotation gesture. Continually emitted until rotation gesture is ended. The <c>rotation</c> value on each emission is the
+        /// angle in degrees rotated since the last emission. The last emitted event upon a rotation gesture will always be of
+        /// value <c>0</c>. Counter-clockwise rotation values are positive, while clockwise ones are negative.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnRotateGesture =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member rotation: float with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted on 3-finger swipe. Possible directions are <c>up</c>, <c>right</c>, <c>down</c>, <c>left</c>.<br/><br/>The method underlying this event is built to handle older
+        /// macOS-style trackpad swiping, where the content on the screen doesn't move with the swipe. Most macOS trackpads are not configured
+        /// to allow this kind of swiping anymore, so in order for it to emit properly the 'Swipe between pages' preference
+        /// in <c>System Preferences &gt; Trackpad &gt; More Gestures</c> must be set to 'Swipe with two or three fingers'.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSwipe =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member direction: string with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+        /// Emitted when an App Command is invoked. These are typically related to keyboard media keys or browser commands, as well
+        /// as the "Back" button built into some mice on Windows.<br/><br/>Commands are lowercased, underscores are replaced with hyphens, and the <c>APPCOMMAND_</c>
+        /// prefix is stripped off. e.g. <c>APPCOMMAND_BROWSER_BACKWARD</c> is emitted as <c>browser-backward</c>.<br/><br/>The following app commands are explicitly supported on Linux:<br/><br/>* <c>browser-backward</c><br/>* <c>browser-forward</c>
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAppCommand =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member command: string with get, set
+        #endif
+
+
+        /// <summary>
+        /// Emitted when the window is set or unset to show always on top of other windows.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAlwaysOnTopChanged =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member isAlwaysOnTop: bool with get, set
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted before the window is moved. On Windows, calling <c>event.preventDefault()</c> will prevent the window from being moved.<br/><br/>Note that this is
+        /// only emitted when the window is being moved manually. Moving the window with <c>setPosition</c>/<c>setBounds</c>/<c>center</c> will not emit this event.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnWillMove =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// Location the window is being moved to.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member newBounds: Rectangle with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted before the window is resized. Calling <c>event.preventDefault()</c> will prevent the window from being resized.<br/><br/>Note that this is only emitted
+        /// when the window is being resized manually. Resizing the window with <c>setBounds</c>/<c>setSize</c> will not emit this event.<br/><br/>The possible values and
+        /// behaviors of the <c>edge</c> option are platform dependent. Possible values are:<br/><br/>* On Windows, possible values are <c>bottom</c>, <c>top</c>, <c>left</c>, <c>right</c>,
+        /// <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c>, <c>bottom-right</c>.<br/>* On macOS, possible values are <c>bottom</c> and <c>right</c>.<br/>  * The value <c>bottom</c> is used to
+        /// denote vertical resizing.<br/>  * The value <c>right</c> is used to denote horizontal resizing.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnWillResize =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// Size the window is being resized to.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member newBounds: Rectangle with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member details: Main.BrowserWindow.WillResize.Details with get, set
+        #endif
+
+
+        /// <summary>
+        /// Emitted when the document changed its title, calling <c>event.preventDefault()</c> will prevent the native window's title from changing. <c>explicitSet</c> is false
+        /// when title is synthesized from file URL.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnPageTitleUpdated =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member title: string with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member explicitSet: bool with get, set
+
+        module WillResize =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="edge">The edge of the window being dragged for resizing. Can be <c>bottom</c>, <c>left</c>, <c>right</c>, <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c> or <c>bottom-right</c>.</param>
+                (edge: Main.Enums.BrowserWindow.WillResize.Details.Edge) =
+                class
+                end
+
+                /// <summary>
+                /// The edge of the window being dragged for resizing. Can be <c>bottom</c>, <c>left</c>, <c>right</c>, <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c> or <c>bottom-right</c>.
+                /// </summary>
+                [<Erase>]
+                member val edge: Main.Enums.BrowserWindow.WillResize.Details.Edge = Unchecked.defaultof<_> with get, set
+
+        module SetTitleBarOverlay =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="color">The CSS color of the Window Controls Overlay when enabled.</param>
+                /// <param name="symbolColor">The CSS color of the symbols on the Window Controls Overlay when enabled.</param>
+                /// <param name="height">The height of the title bar and Window Controls Overlay in pixels.</param>
+                (?color: string, ?symbolColor: string, ?height: int) =
+                class
+                end
+
+                /// <summary>
+                /// The CSS color of the Window Controls Overlay when enabled.
+                /// </summary>
+                [<Erase>]
+                member val color: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The CSS color of the symbols on the Window Controls Overlay when enabled.
+                /// </summary>
+                [<Erase>]
+                member val symbolColor: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The height of the title bar and Window Controls Overlay in pixels.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+        module SetVibrancy =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="animationDuration">if greater than zero, the change to vibrancy will be animated over the given duration (in milliseconds).</param>
+                (?animationDuration: float) =
+                class
+                end
+
+                /// <summary>
+                /// if greater than zero, the change to vibrancy will be animated over the given duration (in milliseconds).
+                /// </summary>
+                [<Erase>]
+                member val animationDuration: float = Unchecked.defaultof<_> with get, set
+
+        module SetIgnoreMouseEvents =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="forward">⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌ || If true, forwards mouse
+                /// move messages to Chromium, enabling mouse related events such as <c>mouseleave</c>. Only used when <c>ignore</c> is true. If <c>ignore</c> is
+                /// false, forwarding is always disabled regardless of this value.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                    ?forward: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// If true, forwards mouse move messages to Chromium, enabling mouse related events such as <c>mouseleave</c>. Only used when <c>ignore</c> is
+                /// true. If <c>ignore</c> is false, forwarding is always disabled regardless of this value.
+                /// </summary>
+                [<Erase>]
+                member val forward: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module SetVisibleOnAllWorkspaces =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="visibleOnFullScreen">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Sets whether the window
+                /// should be visible above fullscreen windows.</param>
+                /// <param name="skipTransformProcessType">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Calling setVisibleOnAllWorkspaces will by
+                /// default transform the process type between UIElementApplication and ForegroundApplication to ensure the correct behavior. However, this will hide the window
+                /// and dock for a short time every time it is called. If your window is already of type UIElementApplication, you
+                /// can bypass this transformation by passing true to skipTransformProcessType.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ?visibleOnFullScreen: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?skipTransformProcessType: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Sets whether the window should be visible above fullscreen windows.
+                /// </summary>
+                [<Erase>]
+                member val visibleOnFullScreen: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Calling setVisibleOnAllWorkspaces will by default transform the process type between UIElementApplication and ForegroundApplication to ensure the correct behavior. However, this
+                /// will hide the window and dock for a short time every time it is called. If your window is already
+                /// of type UIElementApplication, you can bypass this transformation by passing true to skipTransformProcessType.
+                /// </summary>
+                [<Erase>]
+                member val skipTransformProcessType: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module SetAppDetails =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="appId">Window's App User Model ID. It has to be set, otherwise the other options will have no effect.</param>
+                /// <param name="appIconPath">Window's Relaunch Icon.</param>
+                /// <param name="appIconIndex">Index of the icon in <c>appIconPath</c>. Ignored when <c>appIconPath</c> is not set. Default is <c>0</c>.</param>
+                /// <param name="relaunchCommand">Window's Relaunch Command.</param>
+                /// <param name="relaunchDisplayName">Window's Relaunch Display Name.</param>
+                (
+                    ?appId: string,
+                    ?appIconPath: string,
+                    ?appIconIndex: int,
+                    ?relaunchCommand: string,
+                    ?relaunchDisplayName: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Window's App User Model ID. It has to be set, otherwise the other options will have no effect.
+                /// </summary>
+                [<Erase>]
+                member val appId: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Window's Relaunch Icon.
+                /// </summary>
+                [<Erase>]
+                member val appIconPath: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Index of the icon in <c>appIconPath</c>. Ignored when <c>appIconPath</c> is not set. Default is <c>0</c>.
+                /// </summary>
+                [<Erase>]
+                member val appIconIndex: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Window's Relaunch Command.
+                /// </summary>
+                [<Erase>]
+                member val relaunchCommand: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Window's Relaunch Display Name.
+                /// </summary>
+                [<Erase>]
+                member val relaunchDisplayName: string = Unchecked.defaultof<_> with get, set
+
+        module SetProgressBar =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="mode">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || Mode for the progress
+                /// bar. Can be <c>none</c>, <c>normal</c>, <c>indeterminate</c>, <c>error</c> or <c>paused</c>.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    mode: Main.Enums.BrowserWindow.SetProgressBar.Options.Mode
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// Mode for the progress bar. Can be <c>none</c>, <c>normal</c>, <c>indeterminate</c>, <c>error</c> or <c>paused</c>.
+                /// </summary>
+                [<Erase>]
+                member val mode: Main.Enums.BrowserWindow.SetProgressBar.Options.Mode =
+                    Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module LoadFile =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="query">Passed to <c>url.format()</c>.</param>
+                /// <param name="search">Passed to <c>url.format()</c>.</param>
+                /// <param name="hash">Passed to <c>url.format()</c>.</param>
+                (?query: Record<string, string>, ?search: string, ?hash: string) =
+                class
+                end
+
+                /// <summary>
+                /// Passed to <c>url.format()</c>.
+                /// </summary>
+                [<Erase>]
+                member val query: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Passed to <c>url.format()</c>.
+                /// </summary>
+                [<Erase>]
+                member val search: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Passed to <c>url.format()</c>.
+                /// </summary>
+                [<Erase>]
+                member val hash: string = Unchecked.defaultof<_> with get, set
+
+        module LoadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="httpReferrer">An HTTP Referrer URL.</param>
+                /// <param name="userAgent">A user agent originating the request.</param>
+                /// <param name="extraHeaders">Extra headers separated by "\n"</param>
+                /// <param name="postData"></param>
+                /// <param name="baseURLForDataURL">Base URL (with trailing path separator) for files to be loaded by the data URL. This is needed only
+                /// if the specified <c>url</c> is a data URL and needs to load other files.</param>
+                (
+                    ?httpReferrer: U2<string, Referrer>,
+                    ?userAgent: string,
+                    ?extraHeaders: string,
+                    ?postData: U2<UploadRawData, UploadFile>[],
+                    ?baseURLForDataURL: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// An HTTP Referrer URL.
+                /// </summary>
+                [<Erase>]
+                member val httpReferrer: U2<string, Referrer> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// A user agent originating the request.
+                /// </summary>
+                [<Erase>]
+                member val userAgent: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra headers separated by "\n"
+                /// </summary>
+                [<Erase>]
+                member val extraHeaders: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val postData: U2<UploadRawData, UploadFile>[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Base URL (with trailing path separator) for files to be loaded by the data URL. This is needed only if
+                /// the specified <c>url</c> is a data URL and needs to load other files.
+                /// </summary>
+                [<Erase>]
+                member val baseURLForDataURL: string = Unchecked.defaultof<_> with get, set
+
+        module CapturePage =
+            [<JS.Pojo>]
+            type Opts
+                /// <param name="stayHidden"> Keep the page hidden instead of visible. Default is <c>false</c>.</param>
+                /// <param name="stayAwake"> Keep the system awake instead of allowing it to sleep. Default is <c>false</c>.</param>
+                (?stayHidden: bool, ?stayAwake: bool) =
+                class
+                end
+
+                /// <summary>
+                ///  Keep the page hidden instead of visible. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val stayHidden: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                ///  Keep the system awake instead of allowing it to sleep. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val stayAwake: bool = Unchecked.defaultof<_> with get, set
+
+        module HookWindowMessage =
+            /// <param name="wParam">The <c>wParam</c> provided to the WndProc</param>
+            /// <param name="lParam">The <c>lParam</c> provided to the WndProc</param>
+            type Callback = delegate of wParam: Buffer * lParam: Buffer -> unit
+
+    module BaseWindow =
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+        /// Emitted when the system context menu is triggered on the window, this is normally only triggered when the user right
+        /// clicks on the non-client area of your window.  This is the window titlebar or any area you have declared
+        /// as <c>-webkit-app-region: drag</c> in a frameless window.<br/><br/>Calling <c>event.preventDefault()</c> will prevent the menu from being displayed.<br/><br/>To convert <c>point</c> to DIP, use
+        /// <c>screen.screenToDipPoint(point)</c>.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSystemContextMenu =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The screen coordinates where the context menu was triggered.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member point: Point with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted on trackpad rotation gesture. Continually emitted until rotation gesture is ended. The <c>rotation</c> value on each emission is the
+        /// angle in degrees rotated since the last emission. The last emitted event upon a rotation gesture will always be of
+        /// value <c>0</c>. Counter-clockwise rotation values are positive, while clockwise ones are negative.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnRotateGesture =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member rotation: float with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted on 3-finger swipe. Possible directions are <c>up</c>, <c>right</c>, <c>down</c>, <c>left</c>.<br/><br/>The method underlying this event is built to handle older
+        /// macOS-style trackpad swiping, where the content on the screen doesn't move with the swipe. Most macOS trackpads are not configured
+        /// to allow this kind of swiping anymore, so in order for it to emit properly the 'Swipe between pages' preference
+        /// in <c>System Preferences &gt; Trackpad &gt; More Gestures</c> must be set to 'Swipe with two or three fingers'.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSwipe =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member direction: string with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+        /// Emitted when an App Command is invoked. These are typically related to keyboard media keys or browser commands, as well
+        /// as the "Back" button built into some mice on Windows.<br/><br/>Commands are lowercased, underscores are replaced with hyphens, and the <c>APPCOMMAND_</c>
+        /// prefix is stripped off. e.g. <c>APPCOMMAND_BROWSER_BACKWARD</c> is emitted as <c>browser-backward</c>.<br/><br/>The following app commands are explicitly supported on Linux:<br/><br/>* <c>browser-backward</c><br/>* <c>browser-forward</c>
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAppCommand =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member command: string with get, set
+        #endif
+
+
+        /// <summary>
+        /// Emitted when the window is set or unset to show always on top of other windows.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAlwaysOnTopChanged =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member isAlwaysOnTop: bool with get, set
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted before the window is moved. On Windows, calling <c>event.preventDefault()</c> will prevent the window from being moved.<br/><br/>Note that this is
+        /// only emitted when the window is being moved manually. Moving the window with <c>setPosition</c>/<c>setBounds</c>/<c>center</c> will not emit this event.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnWillMove =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// Location the window is being moved to.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member newBounds: Rectangle with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted before the window is resized. Calling <c>event.preventDefault()</c> will prevent the window from being resized.<br/><br/>Note that this is only emitted
+        /// when the window is being resized manually. Resizing the window with <c>setBounds</c>/<c>setSize</c> will not emit this event.<br/><br/>The possible values and
+        /// behaviors of the <c>edge</c> option are platform dependent. Possible values are:<br/><br/>* On Windows, possible values are <c>bottom</c>, <c>top</c>, <c>left</c>, <c>right</c>,
+        /// <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c>, <c>bottom-right</c>.<br/>* On macOS, possible values are <c>bottom</c> and <c>right</c>.<br/>  * The value <c>bottom</c> is used to
+        /// denote vertical resizing.<br/>  * The value <c>right</c> is used to denote horizontal resizing.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnWillResize =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// Size the window is being resized to.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member newBounds: Rectangle with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member details: Main.BaseWindow.WillResize.Details with get, set
+        #endif
+
+
+        module WillResize =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="edge">The edge of the window being dragged for resizing. Can be <c>bottom</c>, <c>left</c>, <c>right</c>, <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c> or <c>bottom-right</c>.</param>
+                (edge: Main.Enums.BaseWindow.WillResize.Details.Edge) =
+                class
+                end
+
+                /// <summary>
+                /// The edge of the window being dragged for resizing. Can be <c>bottom</c>, <c>left</c>, <c>right</c>, <c>top-left</c>, <c>top-right</c>, <c>bottom-left</c> or <c>bottom-right</c>.
+                /// </summary>
+                [<Erase>]
+                member val edge: Main.Enums.BaseWindow.WillResize.Details.Edge = Unchecked.defaultof<_> with get, set
+
+        module SetTitleBarOverlay =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="color">The CSS color of the Window Controls Overlay when enabled.</param>
+                /// <param name="symbolColor">The CSS color of the symbols on the Window Controls Overlay when enabled.</param>
+                /// <param name="height">The height of the title bar and Window Controls Overlay in pixels.</param>
+                (?color: string, ?symbolColor: string, ?height: int) =
+                class
+                end
+
+                /// <summary>
+                /// The CSS color of the Window Controls Overlay when enabled.
+                /// </summary>
+                [<Erase>]
+                member val color: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The CSS color of the symbols on the Window Controls Overlay when enabled.
+                /// </summary>
+                [<Erase>]
+                member val symbolColor: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The height of the title bar and Window Controls Overlay in pixels.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+        module SetIgnoreMouseEvents =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="forward">⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌ || If true, forwards mouse
+                /// move messages to Chromium, enabling mouse related events such as <c>mouseleave</c>. Only used when <c>ignore</c> is true. If <c>ignore</c> is
+                /// false, forwarding is always disabled regardless of this value.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                    ?forward: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// If true, forwards mouse move messages to Chromium, enabling mouse related events such as <c>mouseleave</c>. Only used when <c>ignore</c> is
+                /// true. If <c>ignore</c> is false, forwarding is always disabled regardless of this value.
+                /// </summary>
+                [<Erase>]
+                member val forward: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module SetVisibleOnAllWorkspaces =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="visibleOnFullScreen">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Sets whether the window
+                /// should be visible above fullscreen windows.</param>
+                /// <param name="skipTransformProcessType">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Calling setVisibleOnAllWorkspaces will by
+                /// default transform the process type between UIElementApplication and ForegroundApplication to ensure the correct behavior. However, this will hide the window
+                /// and dock for a short time every time it is called. If your window is already of type UIElementApplication, you
+                /// can bypass this transformation by passing true to skipTransformProcessType.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ?visibleOnFullScreen: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?skipTransformProcessType: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Sets whether the window should be visible above fullscreen windows.
+                /// </summary>
+                [<Erase>]
+                member val visibleOnFullScreen: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Calling setVisibleOnAllWorkspaces will by default transform the process type between UIElementApplication and ForegroundApplication to ensure the correct behavior. However, this
+                /// will hide the window and dock for a short time every time it is called. If your window is already
+                /// of type UIElementApplication, you can bypass this transformation by passing true to skipTransformProcessType.
+                /// </summary>
+                [<Erase>]
+                member val skipTransformProcessType: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module SetAppDetails =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="appId">Window's App User Model ID. It has to be set, otherwise the other options will have no effect.</param>
+                /// <param name="appIconPath">Window's Relaunch Icon.</param>
+                /// <param name="appIconIndex">Index of the icon in <c>appIconPath</c>. Ignored when <c>appIconPath</c> is not set. Default is <c>0</c>.</param>
+                /// <param name="relaunchCommand">Window's Relaunch Command.</param>
+                /// <param name="relaunchDisplayName">Window's Relaunch Display Name.</param>
+                (
+                    ?appId: string,
+                    ?appIconPath: string,
+                    ?appIconIndex: int,
+                    ?relaunchCommand: string,
+                    ?relaunchDisplayName: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Window's App User Model ID. It has to be set, otherwise the other options will have no effect.
+                /// </summary>
+                [<Erase>]
+                member val appId: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Window's Relaunch Icon.
+                /// </summary>
+                [<Erase>]
+                member val appIconPath: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Index of the icon in <c>appIconPath</c>. Ignored when <c>appIconPath</c> is not set. Default is <c>0</c>.
+                /// </summary>
+                [<Erase>]
+                member val appIconIndex: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Window's Relaunch Command.
+                /// </summary>
+                [<Erase>]
+                member val relaunchCommand: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Window's Relaunch Display Name.
+                /// </summary>
+                [<Erase>]
+                member val relaunchDisplayName: string = Unchecked.defaultof<_> with get, set
+
+        module SetProgressBar =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="mode">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || Mode for the progress
+                /// bar. Can be <c>none</c>, <c>normal</c>, <c>indeterminate</c>, <c>error</c> or <c>paused</c>.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    mode: Main.Enums.BaseWindow.SetProgressBar.Options.Mode
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// Mode for the progress bar. Can be <c>none</c>, <c>normal</c>, <c>indeterminate</c>, <c>error</c> or <c>paused</c>.
+                /// </summary>
+                [<Erase>]
+                member val mode: Main.Enums.BaseWindow.SetProgressBar.Options.Mode =
+                    Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module HookWindowMessage =
+            /// <param name="wParam">The <c>wParam</c> provided to the WndProc</param>
+            /// <param name="lParam">The <c>lParam</c> provided to the WndProc</param>
+            type Callback = delegate of wParam: Buffer * lParam: Buffer -> unit
+
+    module App =
+        /// <summary>
+        /// This event will be emitted inside the primary instance of your application when a second instance has been executed and
+        /// calls <c>app.requestSingleInstanceLock()</c>.<br/><br/><c>argv</c> is an Array of the second instance's command line arguments, and <c>workingDirectory</c> is its current working directory. Usually
+        /// applications respond to this by making their primary window focused and non-minimized.<br/><br/>&gt; [!NOTE] <c>argv</c> will not be exactly the same
+        /// list of arguments as those passed to the second instance. The order might change and additional arguments might be appended.
+        /// If you need to maintain the exact same arguments, it's advised to use <c>additionalData</c> instead.<br/><br/>&gt; [!NOTE] If the second instance
+        /// is started by a different user than the first, the <c>argv</c> array will not include the arguments.<br/><br/>This event is guaranteed
+        /// to be emitted after the <c>ready</c> event of <c>app</c> gets emitted.<br/><br/>&gt; [!NOTE] Extra command line arguments might be added by
+        /// Chromium, such as <c>--original-process-start-time</c>.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSecondInstance =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// An array of the second instance's command line arguments
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member argv: string[] with get, set
+
+            /// <summary>
+            /// The second instance's working directory
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member workingDirectory: string with get, set
+
+            /// <summary>
+            /// A JSON object of additional data passed from the second instance
+            /// </summary>
+            [<Emit("$0[3]")>]
+            abstract member additionalData: obj with get, set
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted when Chrome's accessibility support changes. This event fires when assistive technologies, such as screen readers, are enabled or disabled.
+        /// See https://www.chromium.org/developers/design-documents/accessibility for more details.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAccessibilitySupportChanged =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// <c>true</c> when Chrome's accessibility support is enabled, <c>false</c> otherwise.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member accessibilitySupportEnabled: bool with get, set
+        #endif
+
+
+        /// <summary>
+        /// Emitted when the child process unexpectedly disappears. This is normally because it was crashed or killed. It does not include
+        /// renderer processes.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnChildProcessGone =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member details: Main.App.ChildProcessGone.Details with get, set
+
+        /// <summary>
+        /// Emitted when the renderer process unexpectedly disappears.  This is normally because it was crashed or killed.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnRenderProcessGone =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member details: RenderProcessGoneDetails with get, set
+
+        /// <summary>
+        /// Emitted when <c>webContents</c> or Utility process wants to do basic auth.<br/><br/>The default behavior is to cancel all authentications. To override
+        /// this you should prevent the default behavior with <c>event.preventDefault()</c> and call <c>callback(username, password)</c> with the credentials.<br/><br/>If <c>callback</c> is called without
+        /// a username or password, the authentication request will be cancelled and the authentication error will be returned to the page.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnLogin =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member authenticationResponseDetails: Main.App.Login.AuthenticationResponseDetails with get, set
+
+            [<Emit("$0[3]")>]
+            abstract member authInfo: Main.App.Login.AuthInfo with get, set
+
+            [<Emit("$0[4]")>]
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
+
+        /// <summary>
+        /// Emitted when a client certificate is requested.<br/><br/>The <c>url</c> corresponds to the navigation entry requesting the client certificate and <c>callback</c> can
+        /// be called with an entry filtered from the list. Using <c>event.preventDefault()</c> prevents the application from using the first certificate from
+        /// the store.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnSelectClientCertificate =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member url: URL with get, set
+
+            [<Emit("$0[3]")>]
+            abstract member certificateList: Certificate[] with get, set
+
+            [<Emit("$0[4]")>]
+            abstract member callback: Option<Certificate> -> unit with get, set
+
+        /// <summary>
+        /// Emitted when failed to verify the <c>certificate</c> for <c>url</c>, to trust the certificate you should prevent the default behavior with
+        /// <c>event.preventDefault()</c> and call <c>callback(true)</c>.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnCertificateError =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member url: string with get, set
+
+            /// <summary>
+            /// The error code
+            /// </summary>
+            [<Emit("$0[3]")>]
+            abstract member error: string with get, set
+
+            [<Emit("$0[4]")>]
+            abstract member certificate: Certificate with get, set
+
+            [<Emit("$0[5]")>]
+            abstract member callback: bool -> unit with get, set
+
+            [<Emit("$0[6]")>]
+            abstract member isMainFrame: bool with get, set
+
+        /// <summary>
+        /// Emitted when a new webContents is created.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnWebContentsCreated =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member webContents: Main.WebContents with get, set
+
+        /// <summary>
+        /// Emitted when a new browserWindow is created.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnBrowserWindowCreated =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member window: Main.BrowserWindow with get, set
+
+        /// <summary>
+        /// Emitted when a browserWindow gets focused.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnBrowserWindowFocus =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member window: Main.BrowserWindow with get, set
+
+        /// <summary>
+        /// Emitted when a browserWindow gets blurred.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnBrowserWindowBlur =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member window: Main.BrowserWindow with get, set
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted when Handoff is about to be resumed on another device. If you need to update the state to be
+        /// transferred, you should call <c>event.preventDefault()</c> immediately, construct a new <c>userInfo</c> dictionary and call <c>app.updateCurrentActivity()</c> in a timely manner. Otherwise, the
+        /// operation will fail and <c>continue-activity-error</c> will be called.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnUpdateActivityState =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member ``type``: string with get, set
+
+            /// <summary>
+            /// Contains app-specific state stored by the activity.
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member userInfo: obj with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted during Handoff after an activity from this device was successfully resumed on another one.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnActivityWasContinued =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member ``type``: string with get, set
+
+            /// <summary>
+            /// Contains app-specific state stored by the activity.
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member userInfo: obj with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted during Handoff when an activity from a different device fails to be resumed.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnContinueActivityError =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member ``type``: string with get, set
+
+            /// <summary>
+            /// A string with the error's localized description.
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member error: string with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted during Handoff before an activity from a different device wants to be resumed. You should call <c>event.preventDefault()</c> if you
+        /// want to handle this event.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnWillContinueActivity =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member ``type``: string with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted during Handoff when an activity from a different device wants to be resumed. You should call <c>event.preventDefault()</c> if you
+        /// want to handle this event.<br/><br/>A user activity can be continued only in an app that has the same developer Team
+        /// ID as the activity's source app and that supports the activity's type. Supported activity types are specified in the app's
+        /// <c>Info.plist</c> under the <c>NSUserActivityTypes</c> key.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnContinueActivity =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// A string identifying the activity. Maps to <c>NSUserActivity.activityType</c>.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member ``type``: string with get, set
+
+            /// <summary>
+            /// Contains app-specific state stored by the activity on another device.
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member userInfo: obj with get, set
+
+            [<Emit("$0[3]")>]
+            abstract member details: Main.App.ContinueActivity.Details with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted when the application is activated. Various actions can trigger this event, such as launching the application for the first
+        /// time, attempting to re-launch the application when it's already running, or clicking on the application's dock or taskbar icon.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnActivate =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member hasVisibleWindows: bool with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted when the user wants to open a URL with the application. Your application's <c>Info.plist</c> file must define the URL
+        /// scheme within the <c>CFBundleURLTypes</c> key, and set <c>NSPrincipalClass</c> to <c>AtomApplication</c>.<br/><br/>As with the <c>open-file</c> event, be sure to register a listener
+        /// for the <c>open-url</c> event early in your application startup to detect if the application is being opened to handle a
+        /// URL. If you register the listener in response to a <c>ready</c> event, you'll miss URLs that trigger the launch of
+        /// your application.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnOpenUrl =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member url: string with get, set
+        #endif
+
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+        /// Emitted when the user wants to open a file with the application. The <c>open-file</c> event is usually emitted when the
+        /// application is already open and the OS wants to reuse the application to open the file. <c>open-file</c> is also emitted
+        /// when a file is dropped onto the dock and the application is not yet running. Make sure to listen for
+        /// the <c>open-file</c> event very early in your application startup to handle this case (even before the <c>ready</c> event is emitted).<br/><br/>You
+        /// should call <c>event.preventDefault()</c> if you want to handle this event.<br/><br/>On Windows, you have to parse <c>process.argv</c> (in the main process)
+        /// to get the filepath.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnOpenFile =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member path: string with get, set
+        #endif
+
+
+        /// <summary>
+        /// Emitted when the application is quitting.<br/><br/>&gt; [!NOTE] On Windows, this event will not be emitted if the app is closed
+        /// due to a shutdown/restart of the system or a user logout.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnQuit =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member exitCode: int with get, set
+
+        /// <summary>
+        /// Emitted once, when Electron has finished initializing. On macOS, <c>launchInfo</c> holds the <c>userInfo</c> of the <c>NSUserNotification</c> or information from <c>UNNotificationResponse</c>
+        /// that was used to open the application, if it was launched from Notification Center. You can also call <c>app.isReady()</c> to
+        /// check if this event has already fired and <c>app.whenReady()</c> to get a Promise that is fulfilled when Electron is initialized.<br/><br/>&gt;
+        /// [!NOTE] The <c>ready</c> event is only fired after the main process has finished running the first tick of the event
+        /// loop. If an Electron API needs to be called before the <c>ready</c> event, ensure that it is called synchronously in
+        /// the top-level context of the main process.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnReady =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member launchInfo: U2<Record<string, obj>, NotificationResponse> with get, set
+
+        module ChildProcessGone =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="type">Process type. One of the following values:</param>
+                /// <param name="reason">The reason the child process is gone. Possible values:</param>
+                /// <param name="exitCode">The exit code for the process (e.g. status from waitpid if on POSIX, from GetExitCodeProcess on Windows).</param>
+                /// <param name="serviceName">The non-localized name of the process.</param>
+                /// <param name="name">The name of the process. Examples for utility: <c>Audio Service</c>, <c>Content Decryption Module Service</c>, <c>Network Service</c>, <c>Video Capture</c>, etc.</param>
+                (
+                    ``type``: Main.Enums.App.ChildProcessGone.Details.Type,
+                    reason: Main.Enums.App.ChildProcessGone.Details.Reason,
+                    exitCode: float,
+                    ?serviceName: string,
+                    ?name: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Process type. One of the following values:
+                /// </summary>
+                [<Erase>]
+                member val ``type``: Main.Enums.App.ChildProcessGone.Details.Type = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The reason the child process is gone. Possible values:
+                /// </summary>
+                [<Erase>]
+                member val reason: Main.Enums.App.ChildProcessGone.Details.Reason = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The exit code for the process (e.g. status from waitpid if on POSIX, from GetExitCodeProcess on Windows).
+                /// </summary>
+                [<Erase>]
+                member val exitCode: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The non-localized name of the process.
+                /// </summary>
+                [<Erase>]
+                member val serviceName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The name of the process. Examples for utility: <c>Audio Service</c>, <c>Content Decryption Module Service</c>, <c>Network Service</c>, <c>Video Capture</c>, etc.
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+
+        module ContinueActivity =
+            [<JS.Pojo>]
+            type Details
+                /// <param name="webpageURL">A string identifying the URL of the webpage accessed by the activity on another device, if available.</param>
+                (?webpageURL: string) =
+                class
+                end
+
+                /// <summary>
+                /// A string identifying the URL of the webpage accessed by the activity on another device, if available.
+                /// </summary>
+                [<Erase>]
+                member val webpageURL: string = Unchecked.defaultof<_> with get, set
+
+        module SetClientCertRequestPasswordHandler =
+            module Handler =
+                [<JS.Pojo>]
+                type ClientCertRequestParams
+                    /// <param name="hostname">the hostname of the site requiring a client certificate</param>
+                    /// <param name="tokenName">the token (or slot) name of the cryptographic device</param>
+                    /// <param name="isRetry">whether there have been previous failed attempts at prompting the password</param>
+                    (hostname: string, tokenName: string, isRetry: bool) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// the hostname of the site requiring a client certificate
+                    /// </summary>
+                    [<Erase>]
+                    member val hostname: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the token (or slot) name of the cryptographic device
+                    /// </summary>
+                    [<Erase>]
+                    member val tokenName: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// whether there have been previous failed attempts at prompting the password
+                    /// </summary>
+                    [<Erase>]
+                    member val isRetry: bool = Unchecked.defaultof<_> with get, set
+
+        module MoveToApplicationsFolder =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="conflictHandler">A handler for potential conflict in move failure.</param>
+                (?conflictHandler: Main.Enums.App.MoveToApplicationsFolder.Options.ConflictHandler.ConflictType -> bool)
+                =
+                class
+                end
+
+                /// <summary>
+                /// A handler for potential conflict in move failure.
+                /// </summary>
+                [<Erase>]
+                member val conflictHandler: Main.Enums.App.MoveToApplicationsFolder.Options.ConflictHandler.ConflictType
+                    -> bool = Unchecked.defaultof<_> with get, set
+
+        module SetAboutPanelOptions =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="applicationName">The app's name.</param>
+                /// <param name="applicationVersion">The app's version.</param>
+                /// <param name="copyright">Copyright information.</param>
+                /// <param name="version">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The app's build version
+                /// number.</param>
+                /// <param name="credits">⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌ || Credit information.</param>
+                /// <param name="authors">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || List of app authors.</param>
+                /// <param name="website">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || The app's website.</param>
+                /// <param name="iconPath">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || Path to the app's
+                /// icon in a JPEG or PNG file format. On Linux, will be shown as 64x64 pixels while retaining aspect ratio.
+                /// On Windows, a 48x48 PNG will result in the best visual quality.</param>
+                (
+                    ?applicationName: string,
+                    ?applicationVersion: string,
+                    ?copyright: string
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?version: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                    ,
+                    ?credits: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                    ,
+                    ?authors: string[]
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                    ,
+                    ?website: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                    ,
+                    ?iconPath: string
+                    #endif
+
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// The app's name.
+                /// </summary>
+                [<Erase>]
+                member val applicationName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The app's version.
+                /// </summary>
+                [<Erase>]
+                member val applicationVersion: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Copyright information.
+                /// </summary>
+                [<Erase>]
+                member val copyright: string = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// The app's build version number.
+                /// </summary>
+                [<Erase>]
+                member val version: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Credit information.
+                /// </summary>
+                [<Erase>]
+                member val credits: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+                /// List of app authors.
+                /// </summary>
+                [<Erase>]
+                member val authors: string[] = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+                /// The app's website.
+                /// </summary>
+                [<Erase>]
+                member val website: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+                /// Path to the app's icon in a JPEG or PNG file format. On Linux, will be shown as 64x64 pixels
+                /// while retaining aspect ratio. On Windows, a 48x48 PNG will result in the best visual quality.
+                /// </summary>
+                [<Erase>]
+                member val iconPath: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module SetLoginItemSettings =
+            [<JS.Pojo>]
+            type Settings
+                /// <param name="openAtLogin"><c>true</c> to open the app at login, <c>false</c> to remove the app as a login item. Defaults to <c>false</c>.</param>
+                /// <param name="openAsHidden">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> to open the
+                /// app as hidden. Defaults to <c>false</c>. The user can edit this setting from the System Preferences so <c>app.getLoginItemSettings().wasOpenedAsHidden</c> should be
+                /// checked when the app is opened to know the current value. This setting is not available on MAS builds or
+                /// on macOS 13 and up.</param>
+                /// <param name="type">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The type of service
+                /// to add as a login item. Defaults to <c>mainAppService</c>. Only available on macOS 13 and up.</param>
+                /// <param name="serviceName">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The name of the
+                /// service. Required if <c>type</c> is non-default. Only available on macOS 13 and up.</param>
+                /// <param name="path">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The executable to launch
+                /// at login. Defaults to <c>process.execPath</c>.</param>
+                /// <param name="args">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The command-line arguments to
+                /// pass to the executable. Defaults to an empty array. Take care to wrap paths in quotes.</param>
+                /// <param name="enabled">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || <c>true</c> will change the
+                /// startup approved registry key and <c>enable / disable</c> the App in Task Manager and Windows Settings. Defaults to <c>true</c>.</param>
+                /// <param name="name">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || value name to write
+                /// into registry. Defaults to the app's AppUserModelId().</param>
+                (
+                    ?openAtLogin: bool
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?openAsHidden: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?``type``: Main.Enums.App.SetLoginItemSettings.Settings.Type
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?serviceName: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?path: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?args: string[]
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?enabled: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?name: string
+                    #endif
+
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// <c>true</c> to open the app at login, <c>false</c> to remove the app as a login item. Defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val openAtLogin: bool = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// <c>true</c> to open the app as hidden. Defaults to <c>false</c>. The user can edit this setting from the System Preferences
+                /// so <c>app.getLoginItemSettings().wasOpenedAsHidden</c> should be checked when the app is opened to know the current value. This setting is not available
+                /// on MAS builds or on macOS 13 and up.
+                /// </summary>
+                [<Erase; System.Obsolete>]
+                member val openAsHidden: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// The type of service to add as a login item. Defaults to <c>mainAppService</c>. Only available on macOS 13 and up.
+                /// </summary>
+                [<Erase>]
+                member val ``type``: Main.Enums.App.SetLoginItemSettings.Settings.Type =
+                    Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// The name of the service. Required if <c>type</c> is non-default. Only available on macOS 13 and up.
+                /// </summary>
+                [<Erase>]
+                member val serviceName: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The executable to launch at login. Defaults to <c>process.execPath</c>.
+                /// </summary>
+                [<Erase>]
+                member val path: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The command-line arguments to pass to the executable. Defaults to an empty array. Take care to wrap paths in quotes.
+                /// </summary>
+                [<Erase>]
+                member val args: string[] = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// <c>true</c> will change the startup approved registry key and <c>enable / disable</c> the App in Task Manager and Windows Settings.
+                /// Defaults to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val enabled: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// value name to write into registry. Defaults to the app's AppUserModelId().
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        [<JS.Pojo>]
+        type GetLoginItemSettings
+            /// <param name="openAtLogin"><c>true</c> if the app is set to open at login.</param>
+            /// <param name="openAsHidden">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> if the app
+            /// is set to open as hidden at login. This does not work on macOS 13 and up.</param>
+            /// <param name="wasOpenedAtLogin">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> if the app
+            /// was opened at login automatically.</param>
+            /// <param name="wasOpenedAsHidden">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> if the app
+            /// was opened as a hidden login item. This indicates that the app should not open any windows at startup. This
+            /// setting is not available on MAS builds or on macOS 13 and up.</param>
+            /// <param name="restoreState">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> if the app
+            /// was opened as a login item that should restore the state from the previous session. This indicates that the app
+            /// should restore the windows that were open the last time the app was closed. This setting is not available on
+            /// MAS builds or on macOS 13 and up.</param>
+            /// <param name="status">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || can be one of
+            /// <c>not-registered</c>, <c>enabled</c>, <c>requires-approval</c>, or <c>not-found</c>.</param>
+            /// <param name="executableWillLaunchAtLogin">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || <c>true</c> if app is
+            /// set to open at login and its run key is not deactivated. This differs from <c>openAtLogin</c> as it ignores the
+            /// <c>args</c> option, this property will be true if the given executable would be launched at login with **any** arguments.</param>
+            /// <param name="launchItems">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</param>
+            (
+                openAtLogin: bool
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                openAsHidden: bool
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                wasOpenedAtLogin: bool
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                wasOpenedAsHidden: bool
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                restoreState: bool
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                status: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                ,
+                executableWillLaunchAtLogin: bool
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                ,
+                launchItems: Main.App.GetLoginItemSettings.LaunchItems[]
+                #endif
+
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// <c>true</c> if the app is set to open at login.
+            /// </summary>
+            [<Erase>]
+            member val openAtLogin: bool = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// <c>true</c> if the app is set to open as hidden at login. This does not work on macOS 13 and
+            /// up.
+            /// </summary>
+            [<Erase; System.Obsolete>]
+            member val openAsHidden: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// <c>true</c> if the app was opened at login automatically.
+            /// </summary>
+            [<Erase>]
+            member val wasOpenedAtLogin: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// <c>true</c> if the app was opened as a hidden login item. This indicates that the app should not open any
+            /// windows at startup. This setting is not available on MAS builds or on macOS 13 and up.
+            /// </summary>
+            [<Erase; System.Obsolete>]
+            member val wasOpenedAsHidden: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// <c>true</c> if the app was opened as a login item that should restore the state from the previous session. This
+            /// indicates that the app should restore the windows that were open the last time the app was closed. This setting
+            /// is not available on MAS builds or on macOS 13 and up.
+            /// </summary>
+            [<Erase; System.Obsolete>]
+            member val restoreState: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// can be one of <c>not-registered</c>, <c>enabled</c>, <c>requires-approval</c>, or <c>not-found</c>.
+            /// </summary>
+            [<Erase>]
+            member val status: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+            /// <c>true</c> if app is set to open at login and its run key is not deactivated. This differs from <c>openAtLogin</c>
+            /// as it ignores the <c>args</c> option, this property will be true if the given executable would be launched at login
+            /// with **any** arguments.
+            /// </summary>
+            [<Erase>]
+            member val executableWillLaunchAtLogin: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+            /// </summary>
+            [<Erase>]
+            member val launchItems: Main.App.GetLoginItemSettings.LaunchItems[] = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        module GetLoginItemSettings =
+            [<JS.Pojo>]
+            type LaunchItems
+                /// <param name="name">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || name value of a
+                /// registry entry.</param>
+                /// <param name="path">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The executable to an
+                /// app that corresponds to a registry entry.</param>
+                /// <param name="args">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || the command-line arguments to
+                /// pass to the executable.</param>
+                /// <param name="scope">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || one of <c>user</c> or
+                /// <c>machine</c>. Indicates whether the registry entry is under <c>HKEY_CURRENT USER</c> or <c>HKEY_LOCAL_MACHINE</c>.</param>
+                /// <param name="enabled">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || <c>true</c> if the app
+                /// registry key is startup approved and therefore shows as <c>enabled</c> in Task Manager and Windows settings.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    name: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    path: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    args: string[]
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    scope: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    enabled: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// name value of a registry entry.
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The executable to an app that corresponds to a registry entry.
+                /// </summary>
+                [<Erase>]
+                member val path: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// the command-line arguments to pass to the executable.
+                /// </summary>
+                [<Erase>]
+                member val args: string[] = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// one of <c>user</c> or <c>machine</c>. Indicates whether the registry entry is under <c>HKEY_CURRENT USER</c> or <c>HKEY_LOCAL_MACHINE</c>.
+                /// </summary>
+                [<Erase>]
+                member val scope: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// <c>true</c> if the app registry key is startup approved and therefore shows as <c>enabled</c> in Task Manager and Windows settings.
+                /// </summary>
+                [<Erase>]
+                member val enabled: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+            [<JS.Pojo>]
+            type Options
+                /// <param name="type">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Can be one of
+                /// <c>mainAppService</c>, <c>agentService</c>, <c>daemonService</c>, or <c>loginItemService</c>. Defaults to <c>mainAppService</c>. Only available on macOS 13 and up. See app.setLoginItemSettings for more information
+                /// about each type.</param>
+                /// <param name="serviceName">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The name of the
+                /// service. Required if <c>type</c> is non-default. Only available on macOS 13 and up.</param>
+                /// <param name="path">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The executable path to
+                /// compare against. Defaults to <c>process.execPath</c>.</param>
+                /// <param name="args">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The command-line arguments to
+                /// compare against. Defaults to an empty array.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ?``type``: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ,
+                    ?serviceName: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?path: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?args: string[]
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Can be one of <c>mainAppService</c>, <c>agentService</c>, <c>daemonService</c>, or <c>loginItemService</c>. Defaults to <c>mainAppService</c>. Only available on macOS 13 and up. See
+                /// app.setLoginItemSettings for more information about each type.
+                /// </summary>
+                [<Erase>]
+                member val ``type``: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// The name of the service. Required if <c>type</c> is non-default. Only available on macOS 13 and up.
+                /// </summary>
+                [<Erase>]
+                member val serviceName: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The executable path to compare against. Defaults to <c>process.execPath</c>.
+                /// </summary>
+                [<Erase>]
+                member val path: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The command-line arguments to compare against. Defaults to an empty array.
+                /// </summary>
+                [<Erase>]
+                member val args: string[] = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module ConfigureHostResolver =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="enableBuiltInResolver">Whether the built-in host resolver is used in preference to getaddrinfo. When enabled, the built-in resolver will attempt to
+                /// use the system's DNS settings to do DNS lookups itself. Enabled by default on macOS, disabled by default on Windows
+                /// and Linux.</param>
+                /// <param name="enableHappyEyeballs">Whether the Happy Eyeballs V3 algorithm should be used in creating network connections. When enabled, hostnames resolving to multiple
+                /// IP addresses will be attempted in parallel to have a chance at establishing a connection more quickly.</param>
+                /// <param name="secureDnsMode">Can be 'off', 'automatic' or 'secure'. Configures the DNS-over-HTTP mode. When 'off', no DoH lookups will be performed. When
+                /// 'automatic', DoH lookups will be performed first if DoH is available, and insecure DNS lookups will be performed as a
+                /// fallback. When 'secure', only DoH lookups will be performed. Defaults to 'automatic'.</param>
+                /// <param name="secureDnsServers">A list of DNS-over-HTTP server templates. See RFC8484 § 3 for details on the template format. Most servers support
+                /// the POST method; the template for such servers is simply a URI. Note that for some DNS providers, the resolver
+                /// will automatically upgrade to DoH unless DoH is explicitly disabled, even if there are no DoH servers provided in this
+                /// list.</param>
+                /// <param name="enableAdditionalDnsQueryTypes">Controls whether additional DNS query types, e.g. HTTPS (DNS type 65) will be allowed besides the traditional A and
+                /// AAAA queries when a request is being made via insecure DNS. Has no effect on Secure DNS which always allows
+                /// additional types. Defaults to true.</param>
+                (
+                    ?enableBuiltInResolver: bool,
+                    ?enableHappyEyeballs: bool,
+                    ?secureDnsMode: Main.Enums.App.ConfigureHostResolver.Options.SecureDnsMode,
+                    ?secureDnsServers: string[],
+                    ?enableAdditionalDnsQueryTypes: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Whether the built-in host resolver is used in preference to getaddrinfo. When enabled, the built-in resolver will attempt to use
+                /// the system's DNS settings to do DNS lookups itself. Enabled by default on macOS, disabled by default on Windows and
+                /// Linux.
+                /// </summary>
+                [<Erase>]
+                member val enableBuiltInResolver: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the Happy Eyeballs V3 algorithm should be used in creating network connections. When enabled, hostnames resolving to multiple IP
+                /// addresses will be attempted in parallel to have a chance at establishing a connection more quickly.
+                /// </summary>
+                [<Erase>]
+                member val enableHappyEyeballs: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Can be 'off', 'automatic' or 'secure'. Configures the DNS-over-HTTP mode. When 'off', no DoH lookups will be performed. When 'automatic',
+                /// DoH lookups will be performed first if DoH is available, and insecure DNS lookups will be performed as a fallback.
+                /// When 'secure', only DoH lookups will be performed. Defaults to 'automatic'.
+                /// </summary>
+                [<Erase>]
+                member val secureDnsMode: Main.Enums.App.ConfigureHostResolver.Options.SecureDnsMode =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// A list of DNS-over-HTTP server templates. See RFC8484 § 3 for details on the template format. Most servers support the
+                /// POST method; the template for such servers is simply a URI. Note that for some DNS providers, the resolver will
+                /// automatically upgrade to DoH unless DoH is explicitly disabled, even if there are no DoH servers provided in this list.
+                /// </summary>
+                [<Erase>]
+                member val secureDnsServers: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Controls whether additional DNS query types, e.g. HTTPS (DNS type 65) will be allowed besides the traditional A and AAAA
+                /// queries when a request is being made via insecure DNS. Has no effect on Secure DNS which always allows additional
+                /// types. Defaults to true.
+                /// </summary>
+                [<Erase>]
+                member val enableAdditionalDnsQueryTypes: bool = Unchecked.defaultof<_> with get, set
+
+        module ImportCertificate =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="certificate">Path for the pkcs12 file.</param>
+                /// <param name="password">Passphrase for the certificate.</param>
+                (certificate: string, password: string) =
+                class
+                end
+
+                /// <summary>
+                /// Path for the pkcs12 file.
+                /// </summary>
+                [<Erase>]
+                member val certificate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Passphrase for the certificate.
+                /// </summary>
+                [<Erase>]
+                member val password: string = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type GetJumpListSettings
+            /// <param name="minItems">The minimum number of items that will be shown in the Jump List (for a more detailed description of
+            /// this value see the MSDN docs).</param>
+            /// <param name="removedItems">Array of <c>JumpListItem</c> objects that correspond to items that the user has explicitly removed from custom categories in the
+            /// Jump List. These items must not be re-added to the Jump List in the **next** call to <c>app.setJumpList()</c>, Windows will
+            /// not display any custom category that contains any of the removed items.</param>
+            (minItems: int, removedItems: JumpListItem[]) =
+            class
+            end
+
+            /// <summary>
+            /// The minimum number of items that will be shown in the Jump List (for a more detailed description of this
+            /// value see the MSDN docs).
+            /// </summary>
+            [<Erase>]
+            member val minItems: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Array of <c>JumpListItem</c> objects that correspond to items that the user has explicitly removed from custom categories in the Jump
+            /// List. These items must not be re-added to the Jump List in the **next** call to <c>app.setJumpList()</c>, Windows will not
+            /// display any custom category that contains any of the removed items.
+            /// </summary>
+            [<Erase>]
+            member val removedItems: JumpListItem[] = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type GetApplicationInfoForProtocol
+            /// <param name="icon">the display icon of the app handling the protocol.</param>
+            /// <param name="path">installation path of the app handling the protocol.</param>
+            /// <param name="name">display name of the app handling the protocol.</param>
+            (icon: Main.NativeImage, path: string, name: string) =
+            class
+            end
+
+            /// <summary>
+            /// the display icon of the app handling the protocol.
+            /// </summary>
+            [<Erase>]
+            member val icon: Main.NativeImage = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// installation path of the app handling the protocol.
+            /// </summary>
+            [<Erase>]
+            member val path: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// display name of the app handling the protocol.
+            /// </summary>
+            [<Erase>]
+            member val name: string = Unchecked.defaultof<_> with get, set
+
+        module GetFileIcon =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="size"></param>
+                (size: Main.Enums.App.GetFileIcon.Options.Size) =
+                class
+                end
+
+                [<Erase>]
+                member val size: Main.Enums.App.GetFileIcon.Options.Size = Unchecked.defaultof<_> with get, set
+
+        module Focus =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="steal">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || Make the receiver the
+                /// active app even if another app is currently active.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    steal: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// Make the receiver the active app even if another app is currently active.
+                /// </summary>
+                [<Erase>]
+                member val steal: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+        module Relaunch =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="args"></param>
+                /// <param name="execPath"></param>
+                (?args: string[], ?execPath: string) =
+                class
+                end
+
+                [<Erase>]
+                member val args: string[] = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val execPath: string = Unchecked.defaultof<_> with get, set
+
+        module Login =
+            [<JS.Pojo>]
+            type AuthInfo
+                /// <param name="isProxy"></param>
+                /// <param name="scheme"></param>
+                /// <param name="host"></param>
+                /// <param name="port"></param>
+                /// <param name="realm"></param>
+                (isProxy: bool, scheme: string, host: string, port: int, realm: string) =
+                class
+                end
+
+                [<Erase>]
+                member val isProxy: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val scheme: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val host: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val port: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val realm: string = Unchecked.defaultof<_> with get, set
+
+            [<JS.Pojo>]
+            type AuthenticationResponseDetails
+                /// <param name="url"></param>
+                /// <param name="pid"></param>
+                (url: URL, pid: float) =
+                class
+                end
+
+                [<Erase>]
+                member val url: URL = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val pid: float = Unchecked.defaultof<_> with get, set
+
+            /// <param name="username"></param>
+            /// <param name="password"></param>
+            type Callback = delegate of ?username: string * ?password: string -> unit
+
+    module Enums =
+        module WebRequest =
+            module OnErrorOccurred =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+            module OnCompleted =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+            module OnBeforeRedirect =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+            module OnResponseStarted =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+            module OnHeadersReceived =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+            module OnSendHeaders =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+            module OnBeforeSendHeaders =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+            module OnBeforeRequest =
+                module Listener =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ResourceType =
+                            | [<CompiledName("mainFrame")>] MainFrame
+                            | [<CompiledName("subFrame")>] SubFrame
+                            | [<CompiledName("stylesheet")>] Stylesheet
+                            | [<CompiledName("script")>] Script
+                            | [<CompiledName("image")>] Image
+                            | [<CompiledName("font")>] Font
+                            | [<CompiledName("object")>] Object
+                            | [<CompiledName("xhr")>] Xhr
+                            | [<CompiledName("ping")>] Ping
+                            | [<CompiledName("cspReport")>] CspReport
+                            | [<CompiledName("media")>] Media
+                            | [<CompiledName("webSocket")>] WebSocket
+                            | [<CompiledName("other")>] Other
+
+        module WebContents =
+            module ContextMenu =
+                module Params =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MenuSourceType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("mouse")>] Mouse
+                        | [<CompiledName("keyboard")>] Keyboard
+                        | [<CompiledName("touch")>] Touch
+                        | [<CompiledName("touchMenu")>] TouchMenu
+                        | [<CompiledName("longPress")>] LongPress
+                        | [<CompiledName("longTap")>] LongTap
+                        | [<CompiledName("touchHandle")>] TouchHandle
+                        | [<CompiledName("stylus")>] Stylus
+                        | [<CompiledName("adjustSelection")>] AdjustSelection
+                        | [<CompiledName("adjustSelectionReset")>] AdjustSelectionReset
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type FormControlType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("button-button")>] ButtonButton
+                        | [<CompiledName("field-set")>] FieldSet
+                        | [<CompiledName("input-button")>] InputButton
+                        | [<CompiledName("input-checkbox")>] InputCheckbox
+                        | [<CompiledName("input-color")>] InputColor
+                        | [<CompiledName("input-date")>] InputDate
+                        | [<CompiledName("input-datetime-local")>] InputDatetimeLocal
+                        | [<CompiledName("input-email")>] InputEmail
+                        | [<CompiledName("input-file")>] InputFile
+                        | [<CompiledName("input-hidden")>] InputHidden
+                        | [<CompiledName("input-image")>] InputImage
+                        | [<CompiledName("input-month")>] InputMonth
+                        | [<CompiledName("input-number")>] InputNumber
+                        | [<CompiledName("input-password")>] InputPassword
+                        | [<CompiledName("input-radio")>] InputRadio
+                        | [<CompiledName("input-range")>] InputRange
+                        | [<CompiledName("input-reset")>] InputReset
+                        | [<CompiledName("input-search")>] InputSearch
+                        | [<CompiledName("input-submit")>] InputSubmit
+                        | [<CompiledName("input-telephone")>] InputTelephone
+                        | [<CompiledName("input-text")>] InputText
+                        | [<CompiledName("input-time")>] InputTime
+                        | [<CompiledName("input-url")>] InputUrl
+                        | [<CompiledName("input-week")>] InputWeek
+                        | [<CompiledName("output")>] Output
+                        | [<CompiledName("reset-button")>] ResetButton
+                        | [<CompiledName("select-list")>] SelectList
+                        | [<CompiledName("select-multiple")>] SelectMultiple
+                        | [<CompiledName("select-one")>] SelectOne
+                        | [<CompiledName("submit-button")>] SubmitButton
+                        | [<CompiledName("text-area")>] TextArea
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MediaType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("image")>] Image
+                        | [<CompiledName("audio")>] Audio
+                        | [<CompiledName("video")>] Video
+                        | [<CompiledName("canvas")>] Canvas
+                        | [<CompiledName("file")>] File
+                        | [<CompiledName("plugin")>] Plugin
+
+            module ZoomChanged =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type ZoomDirection =
+                    | [<CompiledName("in")>] In
+                    | [<CompiledName("out")>] Out
+
+            module DidCreateWindow =
+                module Details =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Disposition =
+                        | [<CompiledName("default")>] Default
+                        | [<CompiledName("foreground-tab")>] ForegroundTab
+                        | [<CompiledName("background-tab")>] BackgroundTab
+                        | [<CompiledName("new-window")>] NewWindow
+                        | [<CompiledName("other")>] Other
+
+            module SetImageAnimationPolicy =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Policy =
+                    | [<CompiledName("animate")>] Animate
+                    | [<CompiledName("animateOnce")>] AnimateOnce
+                    | [<CompiledName("noAnimation")>] NoAnimation
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetType =
+                | [<CompiledName("backgroundPage")>] BackgroundPage
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("browserView")>] BrowserView
+                | [<CompiledName("remote")>] Remote
+                | [<CompiledName("webview")>] Webview
+                | [<CompiledName("offscreen")>] Offscreen
+
+            module SetWebRTCIPHandlingPolicy =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Policy =
+                    /// <summary>
+                    /// Exposes user's public and local IPs. This is the default behavior. When this policy is used, WebRTC has the right
+                    /// to enumerate all interfaces and bind them to discover public interfaces.
+                    /// </summary>
+                    | [<CompiledName("default")>] Default
+                    /// <summary>
+                    /// Exposes user's public IP, but does not expose user's local IP. When this policy is used, WebRTC should only use
+                    /// the default route used by http. This doesn't expose any local addresses.
+                    /// </summary>
+                    | [<CompiledName("default_public_interface_only")>] DefaultPublicInterfaceOnly
+                    /// <summary>
+                    /// Exposes user's public and local IPs. When this policy is used, WebRTC should only use the default route used by
+                    /// http. This also exposes the associated default private address. Default route is the route chosen by the OS on a
+                    /// multi-homed endpoint.
+                    /// </summary>
+                    | [<CompiledName("default_public_and_private_interfaces")>] DefaultPublicAndPrivateInterfaces
+                    /// <summary>
+                    /// Does not expose public or local IPs. When this policy is used, WebRTC should only use TCP to contact peers
+                    /// or servers unless the proxy server supports UDP.
+                    /// </summary>
+                    | [<CompiledName("disable_non_proxied_udp")>] DisableNonProxiedUdp
+
+            module SavePage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type SaveType =
+                    /// <summary>
+                    /// Save only the HTML of the page.
+                    /// </summary>
+                    | [<CompiledName("HTMLOnly")>] HTMLOnly
+                    /// <summary>
+                    /// Save complete-html page.
+                    /// </summary>
+                    | [<CompiledName("HTMLComplete")>] HTMLComplete
+                    /// <summary>
+                    /// Save complete-html page as MHTML.
+                    /// </summary>
+                    | [<CompiledName("MHTML")>] MHTML
+
+            module EnableDeviceEmulation =
+                module Parameters =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type ScreenPosition =
+                        /// <summary>
+                        /// Desktop screen type.
+                        /// </summary>
+                        | [<CompiledName("desktop")>] Desktop
+                        /// <summary>
+                        /// Mobile screen type.
+                        /// </summary>
+                        | [<CompiledName("mobile")>] Mobile
+
+            module OpenDevTools =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Mode =
+                        | [<CompiledName("left")>] Left
+                        | [<CompiledName("right")>] Right
+                        | [<CompiledName("bottom")>] Bottom
+                        | [<CompiledName("undocked")>] Undocked
+                        | [<CompiledName("detach")>] Detach
+
+            module PrintToPDF =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A0")>] A0
+                        | [<CompiledName("A1")>] A1
+                        | [<CompiledName("A2")>] A2
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("A6")>] A6
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+                        | [<CompiledName("Ledger")>] Ledger
+
+            module Print =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A0")>] A0
+                        | [<CompiledName("A1")>] A1
+                        | [<CompiledName("A2")>] A2
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("A6")>] A6
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type DuplexMode =
+                        | [<CompiledName("simplex")>] Simplex
+                        | [<CompiledName("shortEdge")>] ShortEdge
+                        | [<CompiledName("longEdge")>] LongEdge
+
+                    module Margins =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type MarginType =
+                            | [<CompiledName("default")>] Default
+                            | [<CompiledName("none")>] None
+                            | [<CompiledName("printableArea")>] PrintableArea
+                            | [<CompiledName("custom")>] Custom
+
+            module StopFindInPage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Action =
+                    /// <summary>
+                    /// Clear the selection.
+                    /// </summary>
+                    | [<CompiledName("clearSelection")>] ClearSelection
+                    /// <summary>
+                    /// Translate the selection into a normal selection.
+                    /// </summary>
+                    | [<CompiledName("keepSelection")>] KeepSelection
+                    /// <summary>
+                    /// Focus and click the selection node.
+                    /// </summary>
+                    | [<CompiledName("activateSelection")>] ActivateSelection
+
+            module SetWindowOpenHandler =
+                module Handler =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type Disposition =
+                            | [<CompiledName("default")>] Default
+                            | [<CompiledName("foreground-tab")>] ForegroundTab
+                            | [<CompiledName("background-tab")>] BackgroundTab
+                            | [<CompiledName("new-window")>] NewWindow
+                            | [<CompiledName("other")>] Other
+
+            module InsertCSS =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CssOrigin =
+                        | [<CompiledName("user")>] User
+                        | [<CompiledName("author")>] Author
+
+        module UtilityProcess =
+            module Error =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type = | [<CompiledName("FatalError")>] FatalError
+
+            module Fork =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Stdio =
+                        | [<CompiledName("pipe")>] Pipe
+                        | [<CompiledName("ignore")>] Ignore
+                        | [<CompiledName("inherit")>] Inherit
+
+        module Tray =
+            module DisplayBalloon =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type IconType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("info")>] Info
+                        | [<CompiledName("warning")>] Warning
+                        | [<CompiledName("error")>] Error
+                        | [<CompiledName("custom")>] Custom
+
+            module SetTitle =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type FontType =
+                        | [<CompiledName("monospaced")>] Monospaced
+                        | [<CompiledName("monospacedDigit")>] MonospacedDigit
+
+        module TouchBarSpacer =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Size =
+                | [<CompiledName("small")>] Small
+                | [<CompiledName("large")>] Large
+                | [<CompiledName("flexible")>] Flexible
+
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Size =
+                    /// <summary>
+                    /// Small space between items. Maps to <c>NSTouchBarItemIdentifierFixedSpaceSmall</c>. This is the default.
+                    /// </summary>
+                    | [<CompiledName("small")>] Small
+                    /// <summary>
+                    /// Large space between items. Maps to <c>NSTouchBarItemIdentifierFixedSpaceLarge</c>.
+                    /// </summary>
+                    | [<CompiledName("large")>] Large
+                    /// <summary>
+                    /// Take up all available space. Maps to <c>NSTouchBarItemIdentifierFlexibleSpace</c>.
+                    /// </summary>
+                    | [<CompiledName("flexible")>] Flexible
+
+        module TouchBarSegmentedControl =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Mode =
+                | [<CompiledName("single")>] Single
+                | [<CompiledName("multiple")>] Multiple
+                | [<CompiledName("buttons")>] Buttons
+
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Mode =
+                    /// <summary>
+                    /// Default. One item selected at a time, selecting one deselects the previously selected item. Maps to <c>NSSegmentSwitchTrackingSelectOne</c>.
+                    /// </summary>
+                    | [<CompiledName("single")>] Single
+                    /// <summary>
+                    /// Multiple items can be selected at a time. Maps to <c>NSSegmentSwitchTrackingSelectAny</c>.
+                    /// </summary>
+                    | [<CompiledName("multiple")>] Multiple
+                    /// <summary>
+                    /// Make the segments act as buttons, each segment can be pressed and released but never marked as active. Maps to
+                    /// <c>NSSegmentSwitchTrackingMomentary</c>.
+                    /// </summary>
+                    | [<CompiledName("buttons")>] Buttons
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type SegmentStyle =
+                    /// <summary>
+                    /// Default. The appearance of the segmented control is automatically determined based on the type of window in which the control
+                    /// is displayed and the position within the window. Maps to <c>NSSegmentStyleAutomatic</c>.
+                    /// </summary>
+                    | [<CompiledName("automatic")>] Automatic
+                    /// <summary>
+                    /// The control is displayed using the rounded style. Maps to <c>NSSegmentStyleRounded</c>.
+                    /// </summary>
+                    | [<CompiledName("rounded")>] Rounded
+                    /// <summary>
+                    /// The control is displayed using the textured rounded style. Maps to <c>NSSegmentStyleTexturedRounded</c>.
+                    /// </summary>
+                    | [<CompiledName("textured-rounded")>] TexturedRounded
+                    /// <summary>
+                    /// The control is displayed using the round rect style. Maps to <c>NSSegmentStyleRoundRect</c>.
+                    /// </summary>
+                    | [<CompiledName("round-rect")>] RoundRect
+                    /// <summary>
+                    /// The control is displayed using the textured square style. Maps to <c>NSSegmentStyleTexturedSquare</c>.
+                    /// </summary>
+                    | [<CompiledName("textured-square")>] TexturedSquare
+                    /// <summary>
+                    /// The control is displayed using the capsule style. Maps to <c>NSSegmentStyleCapsule</c>.
+                    /// </summary>
+                    | [<CompiledName("capsule")>] Capsule
+                    /// <summary>
+                    /// The control is displayed using the small square style. Maps to <c>NSSegmentStyleSmallSquare</c>.
+                    /// </summary>
+                    | [<CompiledName("small-square")>] SmallSquare
+                    /// <summary>
+                    /// The segments in the control are displayed very close to each other but not touching. Maps to <c>NSSegmentStyleSeparated</c>.
+                    /// </summary>
+                    | [<CompiledName("separated")>] Separated
+
+        module TouchBarScrubber =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Mode =
+                /// <summary>
+                /// Maps to <c>NSScrubberModeFixed</c>.
+                /// </summary>
+                | [<CompiledName("fixed")>] Fixed
+                /// <summary>
+                /// Maps to <c>NSScrubberModeFree</c>.
+                /// </summary>
+                | [<CompiledName("free")>] Free
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type OverlayStyle =
+                /// <summary>
+                /// Maps to <c>[NSScrubberSelectionStyle roundedBackgroundStyle]</c>.
+                /// </summary>
+                | [<CompiledName("background")>] Background
+                /// <summary>
+                /// Maps to <c>[NSScrubberSelectionStyle outlineOverlayStyle]</c>.
+                /// </summary>
+                | [<CompiledName("outline")>] Outline
+                /// <summary>
+                /// Removes all styles.
+                /// </summary>
+                | [<CompiledName("none")>] None
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type SelectedStyle =
+                /// <summary>
+                /// Maps to <c>[NSScrubberSelectionStyle roundedBackgroundStyle]</c>.
+                /// </summary>
+                | [<CompiledName("background")>] Background
+                /// <summary>
+                /// Maps to <c>[NSScrubberSelectionStyle outlineOverlayStyle]</c>.
+                /// </summary>
+                | [<CompiledName("outline")>] Outline
+                /// <summary>
+                /// Removes all styles.
+                /// </summary>
+                | [<CompiledName("none")>] None
+
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Mode =
+                    | [<CompiledName("fixed")>] Fixed
+                    | [<CompiledName("free")>] Free
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type OverlayStyle =
+                    | [<CompiledName("background")>] Background
+                    | [<CompiledName("outline")>] Outline
+                    | [<CompiledName("none")>] None
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type SelectedStyle =
+                    | [<CompiledName("background")>] Background
+                    | [<CompiledName("outline")>] Outline
+                    | [<CompiledName("none")>] None
+
+        module TouchBarButton =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type IconPosition =
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+                | [<CompiledName("overlay")>] Overlay
+
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type IconPosition =
+                    | [<CompiledName("left")>] Left
+                    | [<CompiledName("right")>] Right
+                    | [<CompiledName("overlay")>] Overlay
+
+        module SystemPreferences =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type EffectiveAppearance =
+                | [<CompiledName("dark")>] Dark
+                | [<CompiledName("light")>] Light
+                | [<CompiledName("unknown")>] Unknown
+
+            module AskForMediaAccess =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type MediaType =
+                    | [<CompiledName("microphone")>] Microphone
+                    | [<CompiledName("camera")>] Camera
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetMediaAccessStatus =
+                | [<CompiledName("not-determined")>] NotDetermined
+                | [<CompiledName("granted")>] Granted
+                | [<CompiledName("denied")>] Denied
+                | [<CompiledName("restricted")>] Restricted
+                | [<CompiledName("unknown")>] Unknown
+
+            module GetMediaAccessStatus =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type MediaType =
+                    | [<CompiledName("microphone")>] Microphone
+                    | [<CompiledName("camera")>] Camera
+                    | [<CompiledName("screen")>] Screen
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetEffectiveAppearance =
+                | [<CompiledName("dark")>] Dark
+                | [<CompiledName("light")>] Light
+                | [<CompiledName("unknown")>] Unknown
+
+            module GetSystemColor =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Color =
+                    | [<CompiledName("blue")>] Blue
+                    | [<CompiledName("brown")>] Brown
+                    | [<CompiledName("gray")>] Gray
+                    | [<CompiledName("green")>] Green
+                    | [<CompiledName("orange")>] Orange
+                    | [<CompiledName("pink")>] Pink
+                    | [<CompiledName("purple")>] Purple
+                    | [<CompiledName("red")>] Red
+                    | [<CompiledName("yellow")>] Yellow
+
+            module GetColor =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Color =
+                    /// <summary>
+                    /// Dark shadow for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-dark-shadow")>] ``3dDarkShadow``
+                    /// <summary>
+                    /// Face color for three-dimensional display elements and for dialog box backgrounds.
+                    /// </summary>
+                    | [<CompiledName("3d-face")>] ``3dFace``
+                    /// <summary>
+                    /// Highlight color for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-highlight")>] ``3dHighlight``
+                    /// <summary>
+                    /// Light color for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-light")>] ``3dLight``
+                    /// <summary>
+                    /// Shadow color for three-dimensional display elements.
+                    /// </summary>
+                    | [<CompiledName("3d-shadow")>] ``3dShadow``
+                    /// <summary>
+                    /// Active window border.
+                    /// </summary>
+                    | [<CompiledName("active-border")>] ActiveBorder
+                    /// <summary>
+                    /// Active window title bar. Specifies the left side color in the color gradient of an active window's title bar if
+                    /// the gradient effect is enabled.
+                    /// </summary>
+                    | [<CompiledName("active-caption")>] ActiveCaption
+                    /// <summary>
+                    /// Right side color in the color gradient of an active window's title bar.
+                    /// </summary>
+                    | [<CompiledName("active-caption-gradient")>] ActiveCaptionGradient
+                    /// <summary>
+                    /// Background color of multiple document interface (MDI) applications.
+                    /// </summary>
+                    | [<CompiledName("app-workspace")>] AppWorkspace
+                    /// <summary>
+                    /// Text on push buttons.
+                    /// </summary>
+                    | [<CompiledName("button-text")>] ButtonText
+                    /// <summary>
+                    /// Text in caption, size box, and scroll bar arrow box.
+                    /// </summary>
+                    | [<CompiledName("caption-text")>] CaptionText
+                    /// <summary>
+                    /// Desktop background color.
+                    /// </summary>
+                    | [<CompiledName("desktop")>] Desktop
+                    /// <summary>
+                    /// Grayed (disabled) text.
+                    /// </summary>
+                    | [<CompiledName("disabled-text")>] DisabledText
+                    /// <summary>
+                    /// Item(s) selected in a control.
+                    /// </summary>
+                    | [<CompiledName("highlight")>] Highlight
+                    /// <summary>
+                    /// Text of item(s) selected in a control.
+                    /// </summary>
+                    | [<CompiledName("highlight-text")>] HighlightText
+                    /// <summary>
+                    /// Color for a hyperlink or hot-tracked item.
+                    /// </summary>
+                    | [<CompiledName("hotlight")>] Hotlight
+                    /// <summary>
+                    /// Inactive window border.
+                    /// </summary>
+                    | [<CompiledName("inactive-border")>] InactiveBorder
+                    /// <summary>
+                    /// Inactive window caption. Specifies the left side color in the color gradient of an inactive window's title bar if the
+                    /// gradient effect is enabled.
+                    /// </summary>
+                    | [<CompiledName("inactive-caption")>] InactiveCaption
+                    /// <summary>
+                    /// Right side color in the color gradient of an inactive window's title bar.
+                    /// </summary>
+                    | [<CompiledName("inactive-caption-gradient")>] InactiveCaptionGradient
+                    /// <summary>
+                    /// Color of text in an inactive caption.
+                    /// </summary>
+                    | [<CompiledName("inactive-caption-text")>] InactiveCaptionText
+                    /// <summary>
+                    /// Background color for tooltip controls.
+                    /// </summary>
+                    | [<CompiledName("info-background")>] InfoBackground
+                    /// <summary>
+                    /// Text color for tooltip controls.
+                    /// </summary>
+                    | [<CompiledName("info-text")>] InfoText
+                    /// <summary>
+                    /// Menu background.
+                    /// </summary>
+                    | [<CompiledName("menu")>] Menu
+                    /// <summary>
+                    /// The color used to highlight menu items when the menu appears as a flat menu.
+                    /// </summary>
+                    | [<CompiledName("menu-highlight")>] MenuHighlight
+                    /// <summary>
+                    /// The background color for the menu bar when menus appear as flat menus.
+                    /// </summary>
+                    | [<CompiledName("menubar")>] Menubar
+                    /// <summary>
+                    /// Text in menus.
+                    /// </summary>
+                    | [<CompiledName("menu-text")>] MenuText
+                    /// <summary>
+                    /// Scroll bar gray area.
+                    /// </summary>
+                    | [<CompiledName("scrollbar")>] Scrollbar
+                    /// <summary>
+                    /// Window background.
+                    /// </summary>
+                    | [<CompiledName("window")>] Window
+                    /// <summary>
+                    /// Window frame.
+                    /// </summary>
+                    | [<CompiledName("window-frame")>] WindowFrame
+                    /// <summary>
+                    /// Text in windows.
+                    /// </summary>
+                    | [<CompiledName("window-text")>] WindowText
+                    /// <summary>
+                    /// The background of a large interface element, such as a browser or table.
+                    /// </summary>
+                    | [<CompiledName("control-background")>] ControlBackground
+                    /// <summary>
+                    /// The surface of a control.
+                    /// </summary>
+                    | [<CompiledName("control")>] Control
+                    /// <summary>
+                    /// The text of a control that isn’t disabled.
+                    /// </summary>
+                    | [<CompiledName("control-text")>] ControlText
+                    /// <summary>
+                    /// The text of a control that’s disabled.
+                    /// </summary>
+                    | [<CompiledName("disabled-control-text")>] DisabledControlText
+                    /// <summary>
+                    /// The color of a find indicator.
+                    /// </summary>
+                    | [<CompiledName("find-highlight")>] FindHighlight
+                    /// <summary>
+                    /// The gridlines of an interface element such as a table.
+                    /// </summary>
+                    | [<CompiledName("grid")>] Grid
+                    /// <summary>
+                    /// The text of a header cell in a table.
+                    /// </summary>
+                    | [<CompiledName("header-text")>] HeaderText
+                    /// <summary>
+                    /// The ring that appears around the currently focused control when using the keyboard for interface navigation.
+                    /// </summary>
+                    | [<CompiledName("keyboard-focus-indicator")>] KeyboardFocusIndicator
+                    /// <summary>
+                    /// The text of a label containing primary content.
+                    /// </summary>
+                    | [<CompiledName("label")>] Label
+                    /// <summary>
+                    /// A link to other content.
+                    /// </summary>
+                    | [<CompiledName("link")>] Link
+                    /// <summary>
+                    ///  A placeholder string in a control or text view.
+                    /// </summary>
+                    | [<CompiledName("placeholder-text")>] PlaceholderText
+                    /// <summary>
+                    /// The text of a label of lesser importance than a tertiary label such as watermark text.
+                    /// </summary>
+                    | [<CompiledName("quaternary-label")>] QuaternaryLabel
+                    /// <summary>
+                    /// The background of a scrubber in the Touch Bar.
+                    /// </summary>
+                    | [<CompiledName("scrubber-textured-background")>] ScrubberTexturedBackground
+                    /// <summary>
+                    /// The text of a label of lesser importance than a normal label such as a label used to represent a
+                    /// subheading or additional information.
+                    /// </summary>
+                    | [<CompiledName("secondary-label")>] SecondaryLabel
+                    /// <summary>
+                    /// The background for selected content in a key window or view.
+                    /// </summary>
+                    | [<CompiledName("selected-content-background")>] SelectedContentBackground
+                    /// <summary>
+                    /// The surface of a selected control.
+                    /// </summary>
+                    | [<CompiledName("selected-control")>] SelectedControl
+                    /// <summary>
+                    /// The text of a selected control.
+                    /// </summary>
+                    | [<CompiledName("selected-control-text")>] SelectedControlText
+                    /// <summary>
+                    /// The text of a selected menu.
+                    /// </summary>
+                    | [<CompiledName("selected-menu-item-text")>] SelectedMenuItemText
+                    /// <summary>
+                    /// The background of selected text.
+                    /// </summary>
+                    | [<CompiledName("selected-text-background")>] SelectedTextBackground
+                    /// <summary>
+                    /// Selected text.
+                    /// </summary>
+                    | [<CompiledName("selected-text")>] SelectedText
+                    /// <summary>
+                    /// A separator between different sections of content.
+                    /// </summary>
+                    | [<CompiledName("separator")>] Separator
+                    /// <summary>
+                    /// The virtual shadow cast by a raised object onscreen.
+                    /// </summary>
+                    | [<CompiledName("shadow")>] Shadow
+                    /// <summary>
+                    /// The text of a label of lesser importance than a secondary label such as a label used to represent disabled
+                    /// text.
+                    /// </summary>
+                    | [<CompiledName("tertiary-label")>] TertiaryLabel
+                    /// <summary>
+                    /// Text background.
+                    /// </summary>
+                    | [<CompiledName("text-background")>] TextBackground
+                    /// <summary>
+                    ///  The text in a document.
+                    /// </summary>
+                    | [<CompiledName("text")>] Text
+                    /// <summary>
+                    ///  The background behind a document's content.
+                    /// </summary>
+                    | [<CompiledName("under-page-background")>] UnderPageBackground
+                    /// <summary>
+                    /// The selected content in a non-key window or view.
+                    /// </summary>
+                    | [<CompiledName("unemphasized-selected-content-background")>] UnemphasizedSelectedContentBackground
+                    /// <summary>
+                    /// A background for selected text in a non-key window or view.
+                    /// </summary>
+                    | [<CompiledName("unemphasized-selected-text-background")>] UnemphasizedSelectedTextBackground
+                    /// <summary>
+                    /// Selected text in a non-key window or view.
+                    /// </summary>
+                    | [<CompiledName("unemphasized-selected-text")>] UnemphasizedSelectedText
+                    /// <summary>
+                    /// The background of a window.
+                    /// </summary>
+                    | [<CompiledName("window-background")>] WindowBackground
+                    /// <summary>
+                    /// The text in the window's titlebar area.
+                    /// </summary>
+                    | [<CompiledName("window-frame-text")>] WindowFrameText
+
+        module Shell =
+            module WriteShortcutLink =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Operation =
+                    /// <summary>
+                    /// Creates a new shortcut, overwriting if necessary.
+                    /// </summary>
+                    | [<CompiledName("create")>] Create
+                    /// <summary>
+                    /// Updates specified properties only on an existing shortcut.
+                    /// </summary>
+                    | [<CompiledName("update")>] Update
+                    /// <summary>
+                    /// Overwrites an existing shortcut, fails if the shortcut doesn't exist.
+                    /// </summary>
+                    | [<CompiledName("replace")>] Replace
+
+        module Session =
+            module FileSystemAccessRestricted =
+                module Callback =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Action =
+                        /// <summary>
+                        /// This will allow <c>path</c> to be accessed despite restricted status.
+                        /// </summary>
+                        | [<CompiledName("allow")>] Allow
+                        /// <summary>
+                        /// This will block the access request and trigger an <c>AbortError</c>.
+                        /// </summary>
+                        | [<CompiledName("deny")>] Deny
+                        /// <summary>
+                        /// This will open a new file picker and allow the user to choose another path.
+                        /// </summary>
+                        | [<CompiledName("tryAgain")>] TryAgain
+
+            module ClearData =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type OriginMatchingMode =
+                        /// <summary>
+                        /// Storage is matched on origin in first-party contexts and top-level-site in third-party contexts.
+                        /// </summary>
+                        | [<CompiledName("third-parties-included")>] ThirdPartiesIncluded
+                        /// <summary>
+                        /// Storage is matched on origin only in all contexts.
+                        /// </summary>
+                        | [<CompiledName("origin-in-all-contexts")>] OriginInAllContexts
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type DataTypes =
+                        /// <summary>
+                        /// Background Fetch
+                        /// </summary>
+                        | [<CompiledName("backgroundFetch")>] BackgroundFetch
+                        /// <summary>
+                        /// Cache (includes <c>cachestorage</c> and <c>shadercache</c>)
+                        /// </summary>
+                        | [<CompiledName("cache")>] Cache
+                        /// <summary>
+                        /// Cookies
+                        /// </summary>
+                        | [<CompiledName("cookies")>] Cookies
+                        /// <summary>
+                        /// Downloads
+                        /// </summary>
+                        | [<CompiledName("downloads")>] Downloads
+                        /// <summary>
+                        /// File Systems
+                        /// </summary>
+                        | [<CompiledName("fileSystems")>] FileSystems
+                        /// <summary>
+                        /// IndexedDB
+                        /// </summary>
+                        | [<CompiledName("indexedDB")>] IndexedDB
+                        /// <summary>
+                        /// Local Storage
+                        /// </summary>
+                        | [<CompiledName("localStorage")>] LocalStorage
+                        /// <summary>
+                        /// Service Workers
+                        /// </summary>
+                        | [<CompiledName("serviceWorkers")>] ServiceWorkers
+                        /// <summary>
+                        /// WebSQL
+                        /// </summary>
+                        | [<CompiledName("webSQL")>] WebSQL
+
+            module SetSSLConfig =
+                module Config =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MaxVersion =
+                        | [<CompiledName("tls1.2")>] Tls12
+                        | [<CompiledName("tls1.3")>] Tls13
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MinVersion =
+                        | [<CompiledName("tls1")>] Tls1
+                        | [<CompiledName("tls1.1")>] Tls11
+                        | [<CompiledName("tls1.2")>] Tls12
+                        | [<CompiledName("tls1.3")>] Tls13
+
+            module SetBluetoothPairingHandler =
+                module Handler =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type PairingKind =
+                            | [<CompiledName("confirm")>] Confirm
+                            | [<CompiledName("confirmPin")>] ConfirmPin
+                            | [<CompiledName("providePin")>] ProvidePin
+
+            module SetUSBProtectedClassesHandler =
+                module Handler =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ProtectedClasses =
+                            | [<CompiledName("audio")>] Audio
+                            | [<CompiledName("audio-video")>] AudioVideo
+                            | [<CompiledName("hid")>] Hid
+                            | [<CompiledName("mass-storage")>] MassStorage
+                            | [<CompiledName("smart-card")>] SmartCard
+                            | [<CompiledName("video")>] Video
+                            | [<CompiledName("wireless")>] Wireless
+
+            module SetDevicePermissionHandler =
+                module Handler =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type DeviceType =
+                            | [<CompiledName("hid")>] Hid
+                            | [<CompiledName("serial")>] Serial
+                            | [<CompiledName("usb")>] Usb
+
+            module SetDisplayMediaRequestHandler =
+                module Handler =
+                    module Callback =
+                        module Streams =
+                            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                            type Audio =
+                                | [<CompiledName("loopback")>] Loopback
+                                | [<CompiledName("loopbackWithMute")>] LoopbackWithMute
+
+            module SetPermissionCheckHandler =
+                module Handler =
+                    module Details =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type FileAccessType =
+                            | [<CompiledName("writable")>] Writable
+                            | [<CompiledName("readable")>] Readable
+
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type MediaType =
+                            | [<CompiledName("video")>] Video
+                            | [<CompiledName("audio")>] Audio
+                            | [<CompiledName("unknown")>] Unknown
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Permission =
+                        /// <summary>
+                        /// Request access to read from the clipboard.
+                        /// </summary>
+                        | [<CompiledName("clipboard-read")>] ClipboardRead
+                        /// <summary>
+                        /// Request access to write to the clipboard.
+                        /// </summary>
+                        | [<CompiledName("clipboard-sanitized-write")>] ClipboardSanitizedWrite
+                        /// <summary>
+                        /// Access the user's geolocation data via the Geolocation API
+                        /// </summary>
+                        | [<CompiledName("geolocation")>] Geolocation
+                        /// <summary>
+                        /// Control of the app's fullscreen state via the Fullscreen API.
+                        /// </summary>
+                        | [<CompiledName("fullscreen")>] Fullscreen
+                        /// <summary>
+                        /// Access the HID protocol to manipulate HID devices via the WebHID API.
+                        /// </summary>
+                        | [<CompiledName("hid")>] Hid
+                        /// <summary>
+                        /// Access the user's idle state via the IdleDetector API.
+                        /// </summary>
+                        | [<CompiledName("idle-detection")>] IdleDetection
+                        /// <summary>
+                        /// Access to media devices such as camera, microphone and speakers.
+                        /// </summary>
+                        | [<CompiledName("media")>] Media
+                        /// <summary>
+                        /// Access to DRM protected content.
+                        /// </summary>
+                        | [<CompiledName("mediaKeySystem")>] MediaKeySystem
+                        /// <summary>
+                        /// Enable MIDI access in the Web MIDI API.
+                        /// </summary>
+                        | [<CompiledName("midi")>] Midi
+                        /// <summary>
+                        /// Use system exclusive messages in the Web MIDI API.
+                        /// </summary>
+                        | [<CompiledName("midiSysex")>] MidiSysex
+                        /// <summary>
+                        /// Configure and display desktop notifications to the user with the Notifications API.
+                        /// </summary>
+                        | [<CompiledName("notifications")>] Notifications
+                        /// <summary>
+                        /// Open links in external applications.
+                        /// </summary>
+                        | [<CompiledName("openExternal")>] OpenExternal
+                        /// <summary>
+                        /// Directly interpret mouse movements as an input method via the Pointer Lock API. These requests always appear to originate from
+                        /// the main frame.
+                        /// </summary>
+                        | [<CompiledName("pointerLock")>] PointerLock
+                        /// <summary>
+                        /// Read from and write to serial devices with the Web Serial API.
+                        /// </summary>
+                        | [<CompiledName("serial")>] Serial
+                        /// <summary>
+                        /// Allows content loaded in a third-party context to request access to third-party cookies using the Storage Access API.
+                        /// </summary>
+                        | [<CompiledName("storage-access")>] StorageAccess
+                        /// <summary>
+                        ///  Allow top-level sites to request third-party cookie access on behalf of embedded content originating from another site in the
+                        /// same related website set using the Storage Access API.
+                        /// </summary>
+                        | [<CompiledName("top-level-storage-access")>] TopLevelStorageAccess
+                        /// <summary>
+                        /// Expose non-standard Universal Serial Bus (USB) compatible devices services to the web with the WebUSB API.
+                        /// </summary>
+                        | [<CompiledName("usb")>] Usb
+                        /// <summary>
+                        /// Request access to run <c>document.execCommand("paste")</c>
+                        /// </summary>
+                        | [<CompiledName("deprecated-sync-clipboard-read")>] DeprecatedSyncClipboardRead
+                        /// <summary>
+                        /// Access to read, write, and file management capabilities using the File System API.
+                        /// </summary>
+                        | [<CompiledName("fileSystem")>] FileSystem
+
+            module SetPermissionRequestHandler =
+                module Handler =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Permission =
+                        /// <summary>
+                        /// Request access to read from the clipboard.
+                        /// </summary>
+                        | [<CompiledName("clipboard-read")>] ClipboardRead
+                        /// <summary>
+                        /// Request access to write to the clipboard.
+                        /// </summary>
+                        | [<CompiledName("clipboard-sanitized-write")>] ClipboardSanitizedWrite
+                        /// <summary>
+                        /// Request access to capture the screen via the Screen Capture API.
+                        /// </summary>
+                        | [<CompiledName("display-capture")>] DisplayCapture
+                        /// <summary>
+                        /// Request control of the app's fullscreen state via the Fullscreen API.
+                        /// </summary>
+                        | [<CompiledName("fullscreen")>] Fullscreen
+                        /// <summary>
+                        /// Request access to the user's location via the Geolocation API
+                        /// </summary>
+                        | [<CompiledName("geolocation")>] Geolocation
+                        /// <summary>
+                        /// Request access to the user's idle state via the IdleDetector API.
+                        /// </summary>
+                        | [<CompiledName("idle-detection")>] IdleDetection
+                        /// <summary>
+                        ///  Request access to media devices such as camera, microphone and speakers.
+                        /// </summary>
+                        | [<CompiledName("media")>] Media
+                        /// <summary>
+                        /// Request access to DRM protected content.
+                        /// </summary>
+                        | [<CompiledName("mediaKeySystem")>] MediaKeySystem
+                        /// <summary>
+                        /// Request MIDI access in the Web MIDI API.
+                        /// </summary>
+                        | [<CompiledName("midi")>] Midi
+                        /// <summary>
+                        /// Request the use of system exclusive messages in the Web MIDI API.
+                        /// </summary>
+                        | [<CompiledName("midiSysex")>] MidiSysex
+                        /// <summary>
+                        /// Request notification creation and the ability to display them in the user's system tray using the Notifications API
+                        /// </summary>
+                        | [<CompiledName("notifications")>] Notifications
+                        /// <summary>
+                        /// Request to directly interpret mouse movements as an input method via the Pointer Lock API. These requests always appear to
+                        /// originate from the main frame.
+                        /// </summary>
+                        | [<CompiledName("pointerLock")>] PointerLock
+                        /// <summary>
+                        /// Request capture of keypresses for any or all of the keys on the physical keyboard via the Keyboard Lock API.
+                        /// These requests always appear to originate from the main frame.
+                        /// </summary>
+                        | [<CompiledName("keyboardLock")>] KeyboardLock
+                        /// <summary>
+                        /// Request to open links in external applications.
+                        /// </summary>
+                        | [<CompiledName("openExternal")>] OpenExternal
+                        /// <summary>
+                        /// Request to enumerate and select audio output devices via the speaker-selection permissions policy.
+                        /// </summary>
+                        | [<CompiledName("speaker-selection")>] SpeakerSelection
+                        /// <summary>
+                        /// Allows content loaded in a third-party context to request access to third-party cookies using the Storage Access API.
+                        /// </summary>
+                        | [<CompiledName("storage-access")>] StorageAccess
+                        /// <summary>
+                        ///  Allow top-level sites to request third-party cookie access on behalf of embedded content originating from another site in the
+                        /// same related website set using the Storage Access API.
+                        /// </summary>
+                        | [<CompiledName("top-level-storage-access")>] TopLevelStorageAccess
+                        /// <summary>
+                        /// Request access to enumerate screens using the <c>getScreenDetails</c> API.
+                        /// </summary>
+                        | [<CompiledName("window-management")>] WindowManagement
+                        /// <summary>
+                        /// An unrecognized permission request.
+                        /// </summary>
+                        | [<CompiledName("unknown")>] Unknown
+                        /// <summary>
+                        /// Request access to read, write, and file management capabilities using the File System API.
+                        /// </summary>
+                        | [<CompiledName("fileSystem")>] FileSystem
+
+            module ResolveHost =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type SecureDnsPolicy =
+                        | [<CompiledName("allow")>] Allow
+                        | [<CompiledName("disable")>] Disable
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CacheUsage =
+                        /// <summary>
+                        /// Results may come from the host cache if non-stale
+                        /// </summary>
+                        | [<CompiledName("allowed")>] Allowed
+                        /// <summary>
+                        /// Results may come from the host cache even if stale (by expiration or network changes)
+                        /// </summary>
+                        | [<CompiledName("staleAllowed")>] StaleAllowed
+                        /// <summary>
+                        /// Results will not come from the host cache.
+                        /// </summary>
+                        | [<CompiledName("disallowed")>] Disallowed
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Source =
+                        /// <summary>
+                        /// Resolver will pick an appropriate source. Results could come from DNS, MulticastDNS, HOSTS file, etc
+                        /// </summary>
+                        | [<CompiledName("any")>] Any
+                        /// <summary>
+                        /// Results will only be retrieved from the system or OS, e.g. via the <c>getaddrinfo()</c> system call
+                        /// </summary>
+                        | [<CompiledName("system")>] System
+                        /// <summary>
+                        /// Results will only come from DNS queries
+                        /// </summary>
+                        | [<CompiledName("dns")>] Dns
+                        /// <summary>
+                        /// Results will only come from Multicast DNS queries
+                        /// </summary>
+                        | [<CompiledName("mdns")>] Mdns
+                        /// <summary>
+                        /// No external sources will be used. Results will only come from fast local sources that are available no matter the
+                        /// source setting, e.g. cache, hosts file, IP literal resolution, etc.
+                        /// </summary>
+                        | [<CompiledName("localOnly")>] LocalOnly
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type QueryType =
+                        /// <summary>
+                        /// Fetch only A records
+                        /// </summary>
+                        | [<CompiledName("A")>] A
+                        /// <summary>
+                        /// Fetch only AAAA records.
+                        /// </summary>
+                        | [<CompiledName("AAAA")>] AAAA
+
+            module ClearStorageData =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Quotas = | [<CompiledName("temporary")>] Temporary
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Storages =
+                        | [<CompiledName("cookies")>] Cookies
+                        | [<CompiledName("filesystem")>] Filesystem
+                        | [<CompiledName("indexdb")>] Indexdb
+                        | [<CompiledName("localstorage")>] Localstorage
+                        | [<CompiledName("shadercache")>] Shadercache
+                        | [<CompiledName("websql")>] Websql
+                        | [<CompiledName("serviceworkers")>] Serviceworkers
+                        | [<CompiledName("cachestorage")>] Cachestorage
+
+        module Details =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Level =
+                | [<CompiledName("info")>] Info
+                | [<CompiledName("warning")>] Warning
+                | [<CompiledName("error")>] Error
+                | [<CompiledName("debug")>] Debug
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type RunningStatus =
+                | [<CompiledName("starting")>] Starting
+                | [<CompiledName("running")>] Running
+                | [<CompiledName("stopping")>] Stopping
+                | [<CompiledName("stopped")>] Stopped
+
+        module ServiceWorkers =
+            module ConsoleMessage =
+                module MessageDetails =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Source =
+                        | [<CompiledName("javascript")>] Javascript
+                        | [<CompiledName("xml")>] Xml
+                        | [<CompiledName("network")>] Network
+                        | [<CompiledName("console-api")>] ConsoleApi
+                        | [<CompiledName("storage")>] Storage
+                        | [<CompiledName("rendering")>] Rendering
+                        | [<CompiledName("security")>] Security
+                        | [<CompiledName("deprecation")>] Deprecation
+                        | [<CompiledName("worker")>] Worker
+                        | [<CompiledName("violation")>] Violation
+                        | [<CompiledName("intervention")>] Intervention
+                        | [<CompiledName("recommendation")>] Recommendation
+                        | [<CompiledName("other")>] Other
+
+        module SafeStorage =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetSelectedStorageBackend =
+                /// <summary>
+                /// When the desktop environment is not recognised or if the following command line flag is provided <c>--password-store="basic"</c>.
+                /// </summary>
+                | [<CompiledName("basic_text")>] BasicText
+                /// <summary>
+                /// When the desktop environment is <c>X-Cinnamon</c>, <c>Deepin</c>, <c>GNOME</c>, <c>Pantheon</c>, <c>XFCE</c>, <c>UKUI</c>, <c>unity</c> or if the following command line flag is
+                /// provided <c>--password-store="gnome-libsecret"</c>.
+                /// </summary>
+                | [<CompiledName("gnome_libsecret")>] GnomeLibsecret
+                /// <summary>
+                /// When the desktop session is <c>kde4</c> or if the following command line flag is provided <c>--password-store="kwallet"</c>.
+                /// </summary>
+                | [<CompiledName("kwallet")>] Kwallet
+                /// <summary>
+                /// When the desktop session is <c>kde5</c> or if the following command line flag is provided <c>--password-store="kwallet5"</c>.
+                /// </summary>
+                | [<CompiledName("kwallet5")>] Kwallet5
+                /// <summary>
+                /// When the desktop session is <c>kde6</c> or if the following command line flag is provided <c>--password-store="kwallet6"</c>.
+                /// </summary>
+                | [<CompiledName("kwallet6")>] Kwallet6
+                /// <summary>
+                /// When the function is called before app has emitted the <c>ready</c> event.
+                /// </summary>
+                | [<CompiledName("unknown")>] Unknown
+
+        module Process =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// The main process
+                /// </summary>
+                | [<CompiledName("browser")>] Browser
+                /// <summary>
+                /// A renderer process
+                /// </summary>
+                | [<CompiledName("renderer")>] Renderer
+                /// <summary>
+                /// In a service worker
+                /// </summary>
+                | [<CompiledName("service-worker")>] ServiceWorker
+                /// <summary>
+                /// In a web worker
+                /// </summary>
+                | [<CompiledName("worker")>] Worker
+                /// <summary>
+                /// In a node process launched as a service
+                /// </summary>
+                | [<CompiledName("utility")>] Utility
+
+        module PowerSaveBlocker =
+            module Start =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    /// <summary>
+                    /// Prevent the application from being suspended. Keeps system active but allows screen to be turned off. Example use cases: downloading
+                    /// a file or playing audio.
+                    /// </summary>
+                    | [<CompiledName("prevent-app-suspension")>] PreventAppSuspension
+                    /// <summary>
+                    /// Prevent the display from going to sleep. Keeps system and screen active. Example use case: playing video.
+                    /// </summary>
+                    | [<CompiledName("prevent-display-sleep")>] PreventDisplaySleep
+
+        module PowerMonitor =
+            module Details =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type State =
+                    | [<CompiledName("unknown")>] Unknown
+                    | [<CompiledName("nominal")>] Nominal
+                    | [<CompiledName("fair")>] Fair
+                    | [<CompiledName("serious")>] Serious
+                    | [<CompiledName("critical")>] Critical
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetCurrentThermalState =
+                | [<CompiledName("unknown")>] Unknown
+                | [<CompiledName("nominal")>] Nominal
+                | [<CompiledName("fair")>] Fair
+                | [<CompiledName("serious")>] Serious
+                | [<CompiledName("critical")>] Critical
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetSystemIdleState =
+                | [<CompiledName("active")>] Active
+                | [<CompiledName("idle")>] Idle
+                | [<CompiledName("locked")>] Locked
+                | [<CompiledName("unknown")>] Unknown
+
+        module Notification =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TimeoutType =
+                | [<CompiledName("default")>] Default
+                | [<CompiledName("never")>] Never
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Urgency =
+                | [<CompiledName("normal")>] Normal
+                | [<CompiledName("critical")>] Critical
+                | [<CompiledName("low")>] Low
+
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Urgency =
+                    | [<CompiledName("normal")>] Normal
+                    | [<CompiledName("critical")>] Critical
+                    | [<CompiledName("low")>] Low
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type TimeoutType =
+                    | [<CompiledName("default")>] Default
+                    | [<CompiledName("never")>] Never
+
+        module Net =
+            module ResolveHost =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type SecureDnsPolicy =
+                        | [<CompiledName("allow")>] Allow
+                        | [<CompiledName("disable")>] Disable
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CacheUsage =
+                        /// <summary>
+                        /// Results may come from the host cache if non-stale
+                        /// </summary>
+                        | [<CompiledName("allowed")>] Allowed
+                        /// <summary>
+                        /// Results may come from the host cache even if stale (by expiration or network changes)
+                        /// </summary>
+                        | [<CompiledName("staleAllowed")>] StaleAllowed
+                        /// <summary>
+                        /// Results will not come from the host cache.
+                        /// </summary>
+                        | [<CompiledName("disallowed")>] Disallowed
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Source =
+                        /// <summary>
+                        /// Resolver will pick an appropriate source. Results could come from DNS, MulticastDNS, HOSTS file, etc
+                        /// </summary>
+                        | [<CompiledName("any")>] Any
+                        /// <summary>
+                        /// Results will only be retrieved from the system or OS, e.g. via the <c>getaddrinfo()</c> system call
+                        /// </summary>
+                        | [<CompiledName("system")>] System
+                        /// <summary>
+                        /// Results will only come from DNS queries
+                        /// </summary>
+                        | [<CompiledName("dns")>] Dns
+                        /// <summary>
+                        /// Results will only come from Multicast DNS queries
+                        /// </summary>
+                        | [<CompiledName("mdns")>] Mdns
+                        /// <summary>
+                        /// No external sources will be used. Results will only come from fast local sources that are available no matter the
+                        /// source setting, e.g. cache, hosts file, IP literal resolution, etc.
+                        /// </summary>
+                        | [<CompiledName("localOnly")>] LocalOnly
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type QueryType =
+                        /// <summary>
+                        /// Fetch only A records
+                        /// </summary>
+                        | [<CompiledName("A")>] A
+                        /// <summary>
+                        /// Fetch only AAAA records.
+                        /// </summary>
+                        | [<CompiledName("AAAA")>] AAAA
+
+        module NetLog =
+            module StartLogging =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CaptureMode =
+                        | [<CompiledName("default")>] Default
+                        | [<CompiledName("includeSensitive")>] IncludeSensitive
+                        | [<CompiledName("everything")>] Everything
+
+        module NativeTheme =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type ThemeSource =
+                | [<CompiledName("system")>] System
+                | [<CompiledName("light")>] Light
+                | [<CompiledName("dark")>] Dark
+
+        module NativeImage =
+            module Resize =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Quality =
+                        | [<CompiledName("good")>] Good
+                        | [<CompiledName("better")>] Better
+                        | [<CompiledName("best")>] Best
+
+        module Menu =
+            module Popup =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type SourceType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("mouse")>] Mouse
+                        | [<CompiledName("keyboard")>] Keyboard
+                        | [<CompiledName("touch")>] Touch
+                        | [<CompiledName("touchMenu")>] TouchMenu
+                        | [<CompiledName("longPress")>] LongPress
+                        | [<CompiledName("longTap")>] LongTap
+                        | [<CompiledName("touchHandle")>] TouchHandle
+                        | [<CompiledName("stylus")>] Stylus
+                        | [<CompiledName("adjustSelection")>] AdjustSelection
+                        | [<CompiledName("adjustSelectionReset")>] AdjustSelectionReset
+
+        module MenuItem =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Role =
+                | [<CompiledName("undo")>] Undo
+                | [<CompiledName("redo")>] Redo
+                | [<CompiledName("cut")>] Cut
+                | [<CompiledName("copy")>] Copy
+                | [<CompiledName("paste")>] Paste
+                | [<CompiledName("pasteAndMatchStyle")>] PasteAndMatchStyle
+                | [<CompiledName("delete")>] Delete
+                | [<CompiledName("selectAll")>] SelectAll
+                | [<CompiledName("reload")>] Reload
+                | [<CompiledName("forceReload")>] ForceReload
+                | [<CompiledName("toggleDevTools")>] ToggleDevTools
+                | [<CompiledName("resetZoom")>] ResetZoom
+                | [<CompiledName("zoomIn")>] ZoomIn
+                | [<CompiledName("zoomOut")>] ZoomOut
+                | [<CompiledName("toggleSpellChecker")>] ToggleSpellChecker
+                | [<CompiledName("togglefullscreen")>] Togglefullscreen
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("minimize")>] Minimize
+                | [<CompiledName("close")>] Close
+                | [<CompiledName("help")>] Help
+                | [<CompiledName("about")>] About
+                | [<CompiledName("services")>] Services
+                | [<CompiledName("hide")>] Hide
+                | [<CompiledName("hideOthers")>] HideOthers
+                | [<CompiledName("unhide")>] Unhide
+                | [<CompiledName("quit")>] Quit
+                | [<CompiledName("startSpeaking")>] StartSpeaking
+                | [<CompiledName("stopSpeaking")>] StopSpeaking
+                | [<CompiledName("zoom")>] Zoom
+                | [<CompiledName("front")>] Front
+                | [<CompiledName("appMenu")>] AppMenu
+                | [<CompiledName("fileMenu")>] FileMenu
+                | [<CompiledName("editMenu")>] EditMenu
+                | [<CompiledName("viewMenu")>] ViewMenu
+                | [<CompiledName("shareMenu")>] ShareMenu
+                | [<CompiledName("recentDocuments")>] RecentDocuments
+                | [<CompiledName("toggleTabBar")>] ToggleTabBar
+                | [<CompiledName("selectNextTab")>] SelectNextTab
+                | [<CompiledName("selectPreviousTab")>] SelectPreviousTab
+                | [<CompiledName("showAllTabs")>] ShowAllTabs
+                | [<CompiledName("mergeAllWindows")>] MergeAllWindows
+                | [<CompiledName("clearRecentDocuments")>] ClearRecentDocuments
+                | [<CompiledName("moveTabToNewWindow")>] MoveTabToNewWindow
+                | [<CompiledName("windowMenu")>] WindowMenu
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("normal")>] Normal
+                | [<CompiledName("separator")>] Separator
+                | [<CompiledName("submenu")>] Submenu
+                | [<CompiledName("checkbox")>] Checkbox
+                | [<CompiledName("radio")>] Radio
+                | [<CompiledName("header")>] Header
+                | [<CompiledName("palette")>] Palette
+
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("normal")>] Normal
+                    | [<CompiledName("separator")>] Separator
+                    | [<CompiledName("submenu")>] Submenu
+                    | [<CompiledName("checkbox")>] Checkbox
+                    | [<CompiledName("radio")>] Radio
+                    /// <summary>
+                    /// Only available on macOS 14 and up.
+                    /// </summary>
+                    | [<CompiledName("header")>] Header
+                    /// <summary>
+                    /// Only available on macOS 14 and up.
+                    /// </summary>
+                    | [<CompiledName("palette")>] Palette
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Role =
+                    | [<CompiledName("undo")>] Undo
+                    | [<CompiledName("redo")>] Redo
+                    | [<CompiledName("cut")>] Cut
+                    | [<CompiledName("copy")>] Copy
+                    | [<CompiledName("paste")>] Paste
+                    | [<CompiledName("pasteAndMatchStyle")>] PasteAndMatchStyle
+                    | [<CompiledName("delete")>] Delete
+                    | [<CompiledName("selectAll")>] SelectAll
+                    | [<CompiledName("reload")>] Reload
+                    | [<CompiledName("forceReload")>] ForceReload
+                    | [<CompiledName("toggleDevTools")>] ToggleDevTools
+                    | [<CompiledName("resetZoom")>] ResetZoom
+                    | [<CompiledName("zoomIn")>] ZoomIn
+                    | [<CompiledName("zoomOut")>] ZoomOut
+                    | [<CompiledName("toggleSpellChecker")>] ToggleSpellChecker
+                    | [<CompiledName("togglefullscreen")>] Togglefullscreen
+                    | [<CompiledName("window")>] Window
+                    | [<CompiledName("minimize")>] Minimize
+                    | [<CompiledName("close")>] Close
+                    | [<CompiledName("help")>] Help
+                    | [<CompiledName("about")>] About
+                    | [<CompiledName("services")>] Services
+                    | [<CompiledName("hide")>] Hide
+                    | [<CompiledName("hideOthers")>] HideOthers
+                    | [<CompiledName("unhide")>] Unhide
+                    | [<CompiledName("quit")>] Quit
+                    | [<CompiledName("showSubstitutions")>] ShowSubstitutions
+                    | [<CompiledName("toggleSmartQuotes")>] ToggleSmartQuotes
+                    | [<CompiledName("toggleSmartDashes")>] ToggleSmartDashes
+                    | [<CompiledName("toggleTextReplacement")>] ToggleTextReplacement
+                    | [<CompiledName("startSpeaking")>] StartSpeaking
+                    | [<CompiledName("stopSpeaking")>] StopSpeaking
+                    | [<CompiledName("zoom")>] Zoom
+                    | [<CompiledName("front")>] Front
+                    | [<CompiledName("appMenu")>] AppMenu
+                    | [<CompiledName("fileMenu")>] FileMenu
+                    | [<CompiledName("editMenu")>] EditMenu
+                    | [<CompiledName("viewMenu")>] ViewMenu
+                    | [<CompiledName("shareMenu")>] ShareMenu
+                    | [<CompiledName("recentDocuments")>] RecentDocuments
+                    | [<CompiledName("toggleTabBar")>] ToggleTabBar
+                    | [<CompiledName("selectNextTab")>] SelectNextTab
+                    | [<CompiledName("selectPreviousTab")>] SelectPreviousTab
+                    | [<CompiledName("showAllTabs")>] ShowAllTabs
+                    | [<CompiledName("mergeAllWindows")>] MergeAllWindows
+                    | [<CompiledName("clearRecentDocuments")>] ClearRecentDocuments
+                    | [<CompiledName("moveTabToNewWindow")>] MoveTabToNewWindow
+                    | [<CompiledName("windowMenu")>] WindowMenu
+
+        module DownloadItem =
+            module Done =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type State =
+                    | [<CompiledName("completed")>] Completed
+                    | [<CompiledName("cancelled")>] Cancelled
+                    | [<CompiledName("interrupted")>] Interrupted
+
+            module Updated =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type State =
+                    | [<CompiledName("progressing")>] Progressing
+                    | [<CompiledName("interrupted")>] Interrupted
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type GetState =
+                | [<CompiledName("progressing")>] Progressing
+                | [<CompiledName("completed")>] Completed
+                | [<CompiledName("cancelled")>] Cancelled
+                | [<CompiledName("interrupted")>] Interrupted
+
+        module Dock =
+            module Bounce =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("critical")>] Critical
+                    | [<CompiledName("informational")>] Informational
+
+        module Dialog =
+            module ShowMessageBox =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Type =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("info")>] Info
+                        | [<CompiledName("error")>] Error
+                        | [<CompiledName("question")>] Question
+                        | [<CompiledName("warning")>] Warning
+
+            module ShowMessageBoxSync =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Type =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("info")>] Info
+                        | [<CompiledName("error")>] Error
+                        | [<CompiledName("question")>] Question
+                        | [<CompiledName("warning")>] Warning
+
+            module ShowSaveDialog =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Properties =
+                        /// <summary>
+                        /// Show hidden files in dialog.
+                        /// </summary>
+                        | [<CompiledName("showHiddenFiles")>] ShowHiddenFiles
+                        /// <summary>
+                        /// Allow creating new directories from dialog.
+                        /// </summary>
+                        | [<CompiledName("createDirectory")>] CreateDirectory
+                        /// <summary>
+                        /// Treat packages, such as <c>.app</c> folders, as a directory instead of a file.
+                        /// </summary>
+                        | [<CompiledName("treatPackageAsDirectory")>] TreatPackageAsDirectory
+                        /// <summary>
+                        /// Sets whether the user will be presented a confirmation dialog if the user types a file name that already exists.
+                        /// </summary>
+                        | [<CompiledName("showOverwriteConfirmation")>] ShowOverwriteConfirmation
+                        /// <summary>
+                        /// Do not add the item being saved to the recent documents list.
+                        /// </summary>
+                        | [<CompiledName("dontAddToRecent")>] DontAddToRecent
+
+            module ShowSaveDialogSync =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Properties =
+                        /// <summary>
+                        /// Show hidden files in dialog.
+                        /// </summary>
+                        | [<CompiledName("showHiddenFiles")>] ShowHiddenFiles
+                        /// <summary>
+                        /// Allow creating new directories from dialog.
+                        /// </summary>
+                        | [<CompiledName("createDirectory")>] CreateDirectory
+                        /// <summary>
+                        /// Treat packages, such as <c>.app</c> folders, as a directory instead of a file.
+                        /// </summary>
+                        | [<CompiledName("treatPackageAsDirectory")>] TreatPackageAsDirectory
+                        /// <summary>
+                        /// Sets whether the user will be presented a confirmation dialog if the user types a file name that already exists.
+                        /// </summary>
+                        | [<CompiledName("showOverwriteConfirmation")>] ShowOverwriteConfirmation
+                        /// <summary>
+                        /// Do not add the item being saved to the recent documents list.
+                        /// </summary>
+                        | [<CompiledName("dontAddToRecent")>] DontAddToRecent
+
+            module ShowOpenDialog =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Properties =
+                        /// <summary>
+                        /// Allow files to be selected.
+                        /// </summary>
+                        | [<CompiledName("openFile")>] OpenFile
+                        /// <summary>
+                        /// Allow directories to be selected.
+                        /// </summary>
+                        | [<CompiledName("openDirectory")>] OpenDirectory
+                        /// <summary>
+                        /// Allow multiple paths to be selected.
+                        /// </summary>
+                        | [<CompiledName("multiSelections")>] MultiSelections
+                        /// <summary>
+                        /// Show hidden files in dialog.
+                        /// </summary>
+                        | [<CompiledName("showHiddenFiles")>] ShowHiddenFiles
+                        /// <summary>
+                        /// Allow creating new directories from dialog.
+                        /// </summary>
+                        | [<CompiledName("createDirectory")>] CreateDirectory
+                        /// <summary>
+                        /// Prompt for creation if the file path entered in the dialog does not exist. This does not actually create the
+                        /// file at the path but allows non-existent paths to be returned that should be created by the application.
+                        /// </summary>
+                        | [<CompiledName("promptToCreate")>] PromptToCreate
+                        /// <summary>
+                        /// Disable the automatic alias (symlink) path resolution. Selected aliases will now return the alias path instead of their target path.
+                        /// </summary>
+                        | [<CompiledName("noResolveAliases")>] NoResolveAliases
+                        /// <summary>
+                        /// Treat packages, such as <c>.app</c> folders, as a directory instead of a file.
+                        /// </summary>
+                        | [<CompiledName("treatPackageAsDirectory")>] TreatPackageAsDirectory
+                        /// <summary>
+                        /// Do not add the item being opened to the recent documents list.
+                        /// </summary>
+                        | [<CompiledName("dontAddToRecent")>] DontAddToRecent
+
+            module ShowOpenDialogSync =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Properties =
+                        /// <summary>
+                        /// Allow files to be selected.
+                        /// </summary>
+                        | [<CompiledName("openFile")>] OpenFile
+                        /// <summary>
+                        /// Allow directories to be selected.
+                        /// </summary>
+                        | [<CompiledName("openDirectory")>] OpenDirectory
+                        /// <summary>
+                        /// Allow multiple paths to be selected.
+                        /// </summary>
+                        | [<CompiledName("multiSelections")>] MultiSelections
+                        /// <summary>
+                        /// Show hidden files in dialog.
+                        /// </summary>
+                        | [<CompiledName("showHiddenFiles")>] ShowHiddenFiles
+                        /// <summary>
+                        /// Allow creating new directories from dialog.
+                        /// </summary>
+                        | [<CompiledName("createDirectory")>] CreateDirectory
+                        /// <summary>
+                        /// Prompt for creation if the file path entered in the dialog does not exist. This does not actually create the
+                        /// file at the path but allows non-existent paths to be returned that should be created by the application.
+                        /// </summary>
+                        | [<CompiledName("promptToCreate")>] PromptToCreate
+                        /// <summary>
+                        /// Disable the automatic alias (symlink) path resolution. Selected aliases will now return the alias path instead of their target path.
+                        /// </summary>
+                        | [<CompiledName("noResolveAliases")>] NoResolveAliases
+                        /// <summary>
+                        /// Treat packages, such as <c>.app</c> folders, as a directory instead of a file.
+                        /// </summary>
+                        | [<CompiledName("treatPackageAsDirectory")>] TreatPackageAsDirectory
+                        /// <summary>
+                        /// Do not add the item being opened to the recent documents list.
+                        /// </summary>
+                        | [<CompiledName("dontAddToRecent")>] DontAddToRecent
+
+        module DesktopCapturer =
+            module GetSources =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Types =
+                        | [<CompiledName("screen")>] Screen
+                        | [<CompiledName("window")>] Window
+
+        module Cookies =
+            module Changed =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Cause =
+                    /// <summary>
+                    /// The cookie was changed directly by a consumer's action.
+                    /// </summary>
+                    | [<CompiledName("explicit")>] Explicit
+                    /// <summary>
+                    /// The cookie was automatically removed due to an insert operation that overwrote it.
+                    /// </summary>
+                    | [<CompiledName("overwrite")>] Overwrite
+                    /// <summary>
+                    /// The cookie was automatically removed as it expired.
+                    /// </summary>
+                    | [<CompiledName("expired")>] Expired
+                    /// <summary>
+                    /// The cookie was automatically evicted during garbage collection.
+                    /// </summary>
+                    | [<CompiledName("evicted")>] Evicted
+                    /// <summary>
+                    /// The cookie was overwritten with an already-expired expiration date.
+                    /// </summary>
+                    | [<CompiledName("expired-overwrite")>] ExpiredOverwrite
+
+            module Set =
+                module Details =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type SameSite =
+                        | [<CompiledName("unspecified")>] Unspecified
+                        | [<CompiledName("no_restriction")>] NoRestriction
+                        | [<CompiledName("lax")>] Lax
+                        | [<CompiledName("strict")>] Strict
+
+        module Clipboard =
+            module Write =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBuffer =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Has =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module AvailableFormats =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Clear =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBookmark =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+        module ClientRequest =
+            module Options =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Priority =
+                    | [<CompiledName("throttled")>] Throttled
+                    | [<CompiledName("idle")>] Idle
+                    | [<CompiledName("lowest")>] Lowest
+                    | [<CompiledName("low")>] Low
+                    | [<CompiledName("medium")>] Medium
+                    | [<CompiledName("highest")>] Highest
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Cache =
+                    | [<CompiledName("default")>] Default
+                    | [<CompiledName("no-store")>] NoStore
+                    | [<CompiledName("reload")>] Reload
+                    | [<CompiledName("no-cache")>] NoCache
+                    | [<CompiledName("force-cache")>] ForceCache
+                    | [<CompiledName("only-if-cached")>] OnlyIfCached
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type ReferrerPolicy =
+                    | [<CompiledName("no-referrer")>] NoReferrer
+                    | [<CompiledName("no-referrer-when-downgrade")>] NoReferrerWhenDowngrade
+                    | [<CompiledName("origin")>] Origin
+                    | [<CompiledName("origin-when-cross-origin")>] OriginWhenCrossOrigin
+                    | [<CompiledName("unsafe-url")>] UnsafeUrl
+                    | [<CompiledName("same-origin")>] SameOrigin
+                    | [<CompiledName("strict-origin")>] StrictOrigin
+                    | [<CompiledName("strict-origin-when-cross-origin")>] StrictOriginWhenCrossOrigin
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Redirect =
+                    | [<CompiledName("follow")>] Follow
+                    | [<CompiledName("error")>] Error
+                    | [<CompiledName("manual")>] Manual
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Protocol =
+                    | [<CompiledName("http:")>] Http
+                    | [<CompiledName("https:")>] Https
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Credentials =
+                    | [<CompiledName("include")>] Include
+                    | [<CompiledName("omit")>] Omit
+                    | [<CompiledName("same-origin")>] SameOrigin
+
+        module BrowserWindow =
+            module WillResize =
+                module Details =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Edge =
+                        | [<CompiledName("bottom")>] Bottom
+                        | [<CompiledName("left")>] Left
+                        | [<CompiledName("right")>] Right
+                        | [<CompiledName("top-left")>] TopLeft
+                        | [<CompiledName("top-right")>] TopRight
+                        | [<CompiledName("bottom-left")>] BottomLeft
+                        | [<CompiledName("bottom-right")>] BottomRight
+
+            module SetBackgroundMaterial =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Material =
+                    /// <summary>
+                    /// Let the Desktop Window Manager (DWM) automatically decide the system-drawn backdrop material for this window. This is the default.
+                    /// </summary>
+                    | [<CompiledName("auto")>] Auto
+                    /// <summary>
+                    /// Don't draw any system backdrop.
+                    /// </summary>
+                    | [<CompiledName("none")>] None
+                    /// <summary>
+                    /// Draw the backdrop material effect corresponding to a long-lived window.
+                    /// </summary>
+                    | [<CompiledName("mica")>] Mica
+                    /// <summary>
+                    /// Draw the backdrop material effect corresponding to a transient window.
+                    /// </summary>
+                    | [<CompiledName("acrylic")>] Acrylic
+                    /// <summary>
+                    /// Draw the backdrop material effect corresponding to a window with a tabbed title bar.
+                    /// </summary>
+                    | [<CompiledName("tabbed")>] Tabbed
+
+            module SetVibrancy =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("titlebar")>] Titlebar
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("menu")>] Menu
+                    | [<CompiledName("popover")>] Popover
+                    | [<CompiledName("sidebar")>] Sidebar
+                    | [<CompiledName("header")>] Header
+                    | [<CompiledName("sheet")>] Sheet
+                    | [<CompiledName("window")>] Window
+                    | [<CompiledName("hud")>] Hud
+                    | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                    | [<CompiledName("tooltip")>] Tooltip
+                    | [<CompiledName("content")>] Content
+                    | [<CompiledName("under-window")>] UnderWindow
+                    | [<CompiledName("under-page")>] UnderPage
+
+            module SetProgressBar =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Mode =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("normal")>] Normal
+                        | [<CompiledName("indeterminate")>] Indeterminate
+                        | [<CompiledName("error")>] Error
+                        | [<CompiledName("paused")>] Paused
+
+            module SetAlwaysOnTop =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Level =
+                    | [<CompiledName("normal")>] Normal
+                    | [<CompiledName("floating")>] Floating
+                    | [<CompiledName("torn-off-menu")>] TornOffMenu
+                    | [<CompiledName("modal-panel")>] ModalPanel
+                    | [<CompiledName("main-menu")>] MainMenu
+                    | [<CompiledName("status")>] Status
+                    | [<CompiledName("pop-up-menu")>] PopUpMenu
+                    | [<CompiledName("screen-saver")>] ScreenSaver
+                    | [<CompiledName("dock")>] Dock
+
+        module BaseWindow =
+            module WillResize =
+                module Details =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Edge =
+                        | [<CompiledName("bottom")>] Bottom
+                        | [<CompiledName("left")>] Left
+                        | [<CompiledName("right")>] Right
+                        | [<CompiledName("top-left")>] TopLeft
+                        | [<CompiledName("top-right")>] TopRight
+                        | [<CompiledName("bottom-left")>] BottomLeft
+                        | [<CompiledName("bottom-right")>] BottomRight
+
+            module SetBackgroundMaterial =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Material =
+                    /// <summary>
+                    /// Let the Desktop Window Manager (DWM) automatically decide the system-drawn backdrop material for this window. This is the default.
+                    /// </summary>
+                    | [<CompiledName("auto")>] Auto
+                    /// <summary>
+                    /// Don't draw any system backdrop.
+                    /// </summary>
+                    | [<CompiledName("none")>] None
+                    /// <summary>
+                    /// Draw the backdrop material effect corresponding to a long-lived window.
+                    /// </summary>
+                    | [<CompiledName("mica")>] Mica
+                    /// <summary>
+                    /// Draw the backdrop material effect corresponding to a transient window.
+                    /// </summary>
+                    | [<CompiledName("acrylic")>] Acrylic
+                    /// <summary>
+                    /// Draw the backdrop material effect corresponding to a window with a tabbed title bar.
+                    /// </summary>
+                    | [<CompiledName("tabbed")>] Tabbed
+
+            module SetVibrancy =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("titlebar")>] Titlebar
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("menu")>] Menu
+                    | [<CompiledName("popover")>] Popover
+                    | [<CompiledName("sidebar")>] Sidebar
+                    | [<CompiledName("header")>] Header
+                    | [<CompiledName("sheet")>] Sheet
+                    | [<CompiledName("window")>] Window
+                    | [<CompiledName("hud")>] Hud
+                    | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                    | [<CompiledName("tooltip")>] Tooltip
+                    | [<CompiledName("content")>] Content
+                    | [<CompiledName("under-window")>] UnderWindow
+                    | [<CompiledName("under-page")>] UnderPage
+
+            module SetProgressBar =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Mode =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("normal")>] Normal
+                        | [<CompiledName("indeterminate")>] Indeterminate
+                        | [<CompiledName("error")>] Error
+                        | [<CompiledName("paused")>] Paused
+
+            module SetAlwaysOnTop =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Level =
+                    | [<CompiledName("normal")>] Normal
+                    | [<CompiledName("floating")>] Floating
+                    | [<CompiledName("torn-off-menu")>] TornOffMenu
+                    | [<CompiledName("modal-panel")>] ModalPanel
+                    | [<CompiledName("main-menu")>] MainMenu
+                    | [<CompiledName("status")>] Status
+                    | [<CompiledName("pop-up-menu")>] PopUpMenu
+                    | [<CompiledName("screen-saver")>] ScreenSaver
+                    | [<CompiledName("dock")>] Dock
+
+        module AutoUpdater =
+            module SetFeedURL =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type ServerType =
+                        | [<CompiledName("json")>] Json
+                        | [<CompiledName("default")>] Default
+
+        module App =
+            module ChildProcessGone =
+                module Details =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Reason =
+                        /// <summary>
+                        /// Process exited with an exit code of zero
+                        /// </summary>
+                        | [<CompiledName("clean-exit")>] CleanExit
+                        /// <summary>
+                        /// Process exited with a non-zero exit code
+                        /// </summary>
+                        | [<CompiledName("abnormal-exit")>] AbnormalExit
+                        /// <summary>
+                        /// Process was sent a SIGTERM or otherwise killed externally
+                        /// </summary>
+                        | [<CompiledName("killed")>] Killed
+                        /// <summary>
+                        /// Process crashed
+                        /// </summary>
+                        | [<CompiledName("crashed")>] Crashed
+                        /// <summary>
+                        /// Process ran out of memory
+                        /// </summary>
+                        | [<CompiledName("oom")>] Oom
+                        /// <summary>
+                        /// Process never successfully launched
+                        /// </summary>
+                        | [<CompiledName("launch-failed")>] LaunchFailed
+                        /// <summary>
+                        /// Windows code integrity checks failed
+                        /// </summary>
+                        | [<CompiledName("integrity-failure")>] IntegrityFailure
+                        /// <summary>
+                        /// Process proactively terminated to prevent a future out-of-memory (OOM) situation
+                        /// </summary>
+                        | [<CompiledName("memory-eviction")>] MemoryEviction
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Type =
+                        | [<CompiledName("Utility")>] Utility
+                        | [<CompiledName("Zygote")>] Zygote
+                        | [<CompiledName("Sandbox helper")>] SandboxHelper
+                        | [<CompiledName("GPU")>] GPU
+                        | [<CompiledName("Pepper Plugin")>] PepperPlugin
+                        | [<CompiledName("Pepper Plugin Broker")>] PepperPluginBroker
+                        | [<CompiledName("Unknown")>] Unknown
+
+            module MoveToApplicationsFolder =
+                module Options =
+                    module ConflictHandler =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type ConflictType =
+                            | [<CompiledName("exists")>] Exists
+                            | [<CompiledName("existsAndRunning")>] ExistsAndRunning
+
+            module SetLoginItemSettings =
+                module Settings =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Type =
+                        /// <summary>
+                        /// The primary application.
+                        /// </summary>
+                        | [<CompiledName("mainAppService")>] MainAppService
+                        /// <summary>
+                        /// The property list name for a launch agent. The property list name must correspond to a property list in the
+                        /// app’s <c>Contents/Library/LaunchAgents</c> directory.
+                        /// </summary>
+                        | [<CompiledName("agentService")>] AgentService
+                        /// <summary>
+                        /// The property list name for a launch agent. The property list name must correspond to a property list in the
+                        /// app’s <c>Contents/Library/LaunchDaemons</c> directory.
+                        /// </summary>
+                        | [<CompiledName("daemonService")>] DaemonService
+                        /// <summary>
+                        /// The property list name for a login item service. The property list name must correspond to a property list in
+                        /// the app’s <c>Contents/Library/LoginItems</c> directory.
+                        /// </summary>
+                        | [<CompiledName("loginItemService")>] LoginItemService
+
+            module GetGPUInfo =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type InfoType =
+                    | [<CompiledName("basic")>] Basic
+                    | [<CompiledName("complete")>] Complete
+
+            module ConfigureHostResolver =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type SecureDnsMode =
+                        | [<CompiledName("off")>] Off
+                        | [<CompiledName("automatic")>] Automatic
+                        | [<CompiledName("secure")>] Secure
+
+            module SetActivationPolicy =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Policy =
+                    | [<CompiledName("regular")>] Regular
+                    | [<CompiledName("accessory")>] Accessory
+                    | [<CompiledName("prohibited")>] Prohibited
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type SetJumpList =
+                /// <summary>
+                /// Nothing went wrong.
+                /// </summary>
+                | [<CompiledName("ok")>] Ok
+                /// <summary>
+                /// One or more errors occurred, enable runtime logging to figure out the likely cause.
+                /// </summary>
+                | [<CompiledName("error")>] Error
+                /// <summary>
+                /// An attempt was made to add a separator to a custom category in the Jump List. Separators are only allowed
+                /// in the standard <c>Tasks</c> category.
+                /// </summary>
+                | [<CompiledName("invalidSeparatorError")>] InvalidSeparatorError
+                /// <summary>
+                /// An attempt was made to add a file link to the Jump List for a file type the app isn't
+                /// registered to handle.
+                /// </summary>
+                | [<CompiledName("fileTypeRegistrationError")>] FileTypeRegistrationError
+                /// <summary>
+                /// Custom categories can't be added to the Jump List due to user privacy or group policy settings.
+                /// </summary>
+                | [<CompiledName("customCategoryAccessDeniedError")>] CustomCategoryAccessDeniedError
+
+            module GetFileIcon =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Size =
+                        /// <summary>
+                        /// 16x16
+                        /// </summary>
+                        | [<CompiledName("small")>] Small
+                        /// <summary>
+                        /// 32x32
+                        /// </summary>
+                        | [<CompiledName("normal")>] Normal
+                        /// <summary>
+                        /// 48x48 on _Linux_, 32x32 on _Windows_, unsupported on _macOS_.
+                        /// </summary>
+                        | [<CompiledName("large")>] Large
+
+            module GetPath =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Name =
+                    | [<CompiledName("home")>] Home
+                    /// <summary>
+                    /// user application data directory, which by default points to:
+                    /// </summary>
+                    | [<CompiledName("appData")>] AppData
+                    | [<CompiledName("assets")>] Assets
+                    | [<CompiledName("userData")>] UserData
+                    | [<CompiledName("sessionData")>] SessionData
+                    | [<CompiledName("temp")>] Temp
+                    | [<CompiledName("exe")>] Exe
+                    | [<CompiledName("module")>] Module
+                    | [<CompiledName("desktop")>] Desktop
+                    | [<CompiledName("documents")>] Documents
+                    | [<CompiledName("downloads")>] Downloads
+                    | [<CompiledName("music")>] Music
+                    | [<CompiledName("pictures")>] Pictures
+                    | [<CompiledName("videos")>] Videos
+                    | [<CompiledName("recent")>] Recent
+                    | [<CompiledName("logs")>] Logs
+                    | [<CompiledName("crashDumps")>] CrashDumps
+
+    [<AllowNullLiteral; Interface>]
+    type EventInfo =
+        inherit Event
+        /// <summary>
+        /// True if one or more frames or child <c>webContents</c> are emitting audio.
+        /// </summary>
+        abstract member audible: bool with get, set
+
+    [<AllowNullLiteral; Interface>]
+    type Details =
+        inherit Event
+        /// <summary>
+        /// ID of the updated service worker version
+        /// </summary>
+        abstract member versionId: float with get, set
+        /// <summary>
+        /// Running status. Possible values include <c>starting</c>, <c>running</c>, <c>stopping</c>, or <c>stopped</c>.
+        /// </summary>
+        abstract member runningStatus: Main.Enums.Details.RunningStatus with get, set
+
+    module PowerMonitor =
+        [<AllowNullLiteral; Interface>]
+        type Details =
+            inherit Event
+            /// <summary>
+            /// The system's new thermal state. Can be <c>unknown</c>, <c>nominal</c>, <c>fair</c>, <c>serious</c>, <c>critical</c>.
+            /// </summary>
+            abstract member state: Main.Enums.PowerMonitor.Details.State with get, set
+
     /// <summary>
     /// <para>⚠ Process Availability: Main ✔ | Renderer ❌ | Utility ❌ | Exported ❌</para>
     /// </summary>
@@ -13221,8 +27638,15 @@ module Main =
         /// <param name="listener"></param>
         [<Erase>]
         member inline _.onBeforeRequest
-            (?filter: WebRequestFilter, ?listener: Option<Main.WebRequest.OnBeforeRequest.Listener>)
-            : unit =
+            (
+                ?filter: WebRequestFilter,
+                ?listener:
+                    Option<
+                        Main.WebRequest.OnBeforeRequest.Listener.Details
+                            * Main.WebRequest.OnBeforeRequest.Listener.Callback.Response -> unit
+                            -> unit
+                     >
+            ) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -13234,8 +27658,15 @@ module Main =
         /// <param name="listener"></param>
         [<Erase>]
         member inline _.onBeforeSendHeaders
-            (?filter: WebRequestFilter, ?listener: Option<Main.WebRequest.OnBeforeSendHeaders.Listener>)
-            : unit =
+            (
+                ?filter: WebRequestFilter,
+                ?listener:
+                    Option<
+                        Main.WebRequest.OnBeforeSendHeaders.Listener.Details
+                            * Main.WebRequest.OnBeforeSendHeaders.Listener.Callback.BeforeSendResponse -> unit
+                            -> unit
+                     >
+            ) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -13258,8 +27689,15 @@ module Main =
         /// <param name="listener"></param>
         [<Erase>]
         member inline _.onHeadersReceived
-            (?filter: WebRequestFilter, ?listener: Option<Main.WebRequest.OnHeadersReceived.Listener>)
-            : unit =
+            (
+                ?filter: WebRequestFilter,
+                ?listener:
+                    Option<
+                        Main.WebRequest.OnHeadersReceived.Listener.Details
+                            * Main.WebRequest.OnHeadersReceived.Listener.Callback.HeadersReceivedResponse -> unit
+                            -> unit
+                     >
+            ) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -14945,7 +29383,7 @@ module Main =
                     Event
                         -> Main.WebContents.Login.AuthenticationResponseDetails
                         -> Main.WebContents.Login.AuthInfo
-                        -> Main.WebContents.Login.Callback
+                        -> Option<string> * Option<string> -> unit
                         -> unit
             ) : unit =
             Unchecked.defaultof<_>
@@ -14966,7 +29404,7 @@ module Main =
                     Event
                         -> Main.WebContents.Login.AuthenticationResponseDetails
                         -> Main.WebContents.Login.AuthInfo
-                        -> Main.WebContents.Login.Callback
+                        -> Option<string> * Option<string> -> unit
                         -> unit
             ) : unit =
             Unchecked.defaultof<_>
@@ -14987,7 +29425,7 @@ module Main =
                     Event
                         -> Main.WebContents.Login.AuthenticationResponseDetails
                         -> Main.WebContents.Login.AuthInfo
-                        -> Main.WebContents.Login.Callback
+                        -> Option<string> * Option<string> -> unit
                         -> unit
             ) : unit =
             Unchecked.defaultof<_>
@@ -16299,9 +30737,7 @@ module Main =
         /// <param name="options"></param>
         /// <param name="callback"></param>
         [<Erase>]
-        member inline _.print
-            (?options: Main.WebContents.Print.Options, ?callback: Main.WebContents.Print.Callback)
-            : unit =
+        member inline _.print(?options: Main.WebContents.Print.Options, ?callback: bool * string -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -16543,7 +30979,7 @@ module Main =
         /// <param name="callback"></param>
         [<Erase>]
         member inline _.beginFrameSubscription
-            (?onlyDirty: bool, ?callback: Main.WebContents.BeginFrameSubscription.Callback)
+            (?onlyDirty: bool, ?callback: Main.NativeImage * Rectangle -> unit)
             : unit =
             Unchecked.defaultof<_>
 
@@ -18568,7 +33004,7 @@ module Main =
             ?segmentStyle: Main.Enums.TouchBarSegmentedControl.Options.SegmentStyle,
             ?mode: Main.Enums.TouchBarSegmentedControl.Options.Mode,
             ?selectedIndex: int,
-            ?change: Main.TouchBarSegmentedControl.Options.Change
+            ?change: int * bool -> unit
         ) =
         class
         end
@@ -19035,7 +33471,7 @@ module Main =
         /// <param name="callback"></param>
         [<Erase>]
         static member inline subscribeNotification
-            (event: Option<string>, callback: Main.SystemPreferences.SubscribeNotification.Callback)
+            (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
             : float =
             Unchecked.defaultof<_>
         #endif
@@ -19053,7 +33489,7 @@ module Main =
         /// <param name="callback"></param>
         [<Erase>]
         static member inline subscribeLocalNotification
-            (event: Option<string>, callback: Main.SystemPreferences.SubscribeLocalNotification.Callback)
+            (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
             : float =
             Unchecked.defaultof<_>
         #endif
@@ -19070,7 +33506,7 @@ module Main =
         /// <param name="callback"></param>
         [<Erase>]
         static member inline subscribeWorkspaceNotification
-            (event: Option<string>, callback: Main.SystemPreferences.SubscribeWorkspaceNotification.Callback)
+            (event: Option<string>, callback: string * Record<string, obj> * string -> unit)
             : float =
             Unchecked.defaultof<_>
         #endif
@@ -20700,7 +35136,9 @@ module Main =
         /// </summary>
         /// <param name="proc"></param>
         [<Erase>]
-        member inline _.setCertificateVerifyProc(proc: Option<Main.Session.SetCertificateVerifyProc.Proc>) : unit =
+        member inline _.setCertificateVerifyProc
+            (proc: Option<Main.Session.SetCertificateVerifyProc.Proc.Request * int -> unit -> unit>)
+            : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -20712,8 +35150,21 @@ module Main =
         /// <param name="handler"></param>
         [<Erase>]
         member inline _.setPermissionRequestHandler
-            (handler: Option<Main.Session.SetPermissionRequestHandler.Handler>)
-            : unit =
+            (
+                handler:
+                    Option<
+                        Main.WebContents
+                            * Main.Enums.Session.SetPermissionRequestHandler.Handler.Permission
+                            * bool -> unit
+                            * U4<
+                                PermissionRequest,
+                                FilesystemPermissionRequest,
+                                MediaAccessPermissionRequest,
+                                OpenExternalPermissionRequest
+                             >
+                            -> unit
+                     >
+            ) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -20725,8 +35176,16 @@ module Main =
         /// <param name="handler"></param>
         [<Erase>]
         member inline _.setPermissionCheckHandler
-            (handler: Option<Main.Session.SetPermissionCheckHandler.Handler>)
-            : unit =
+            (
+                handler:
+                    Option<
+                        Option<Main.WebContents>
+                            * Main.Enums.Session.SetPermissionCheckHandler.Handler.Permission
+                            * string
+                            * Main.Session.SetPermissionCheckHandler.Handler.Details
+                            -> bool
+                     >
+            ) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -20742,7 +35201,12 @@ module Main =
         [<Erase>]
         member inline _.setDisplayMediaRequestHandler
             (
-                handler: Option<Main.Session.SetDisplayMediaRequestHandler.Handler>,
+                handler:
+                    Option<
+                        Main.Session.SetDisplayMediaRequestHandler.Handler.Request
+                            * Main.Session.SetDisplayMediaRequestHandler.Handler.Callback.Streams -> unit
+                            -> unit
+                     >,
                 ?opts: Main.Session.SetDisplayMediaRequestHandler.Opts
             ) : unit =
             Unchecked.defaultof<_>
@@ -20788,8 +35252,14 @@ module Main =
         /// <param name="handler"></param>
         [<Erase>]
         member inline _.setBluetoothPairingHandler
-            (handler: Option<Main.Session.SetBluetoothPairingHandler.Handler>)
-            : unit =
+            (
+                handler:
+                    Option<
+                        Main.Session.SetBluetoothPairingHandler.Handler.Details
+                            * Main.Session.SetBluetoothPairingHandler.Handler.Callback.Response -> unit
+                            -> unit
+                     >
+            ) : unit =
             Unchecked.defaultof<_>
         #endif
 
@@ -21965,7 +36435,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline registerFileProtocol
-            (scheme: string, handler: Main.Protocol.RegisterFileProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<string, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -21978,7 +36448,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline registerBufferProtocol
-            (scheme: string, handler: Main.Protocol.RegisterBufferProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<Buffer, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -21991,7 +36461,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline registerStringProtocol
-            (scheme: string, handler: Main.Protocol.RegisterStringProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<string, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -22003,7 +36473,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline registerHttpProtocol
-            (scheme: string, handler: Main.Protocol.RegisterHttpProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * ProtocolResponse -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -22017,7 +36487,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline registerStreamProtocol
-            (scheme: string, handler: Main.Protocol.RegisterStreamProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<Readable<obj>, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -22043,7 +36513,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline interceptFileProtocol
-            (scheme: string, handler: Main.Protocol.InterceptFileProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<string, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -22055,7 +36525,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline interceptStringProtocol
-            (scheme: string, handler: Main.Protocol.InterceptStringProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<string, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -22067,7 +36537,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline interceptBufferProtocol
-            (scheme: string, handler: Main.Protocol.InterceptBufferProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<Buffer, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -22079,7 +36549,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline interceptHttpProtocol
-            (scheme: string, handler: Main.Protocol.InterceptHttpProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * ProtocolResponse -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -22090,7 +36560,7 @@ module Main =
         /// <param name="handler"></param>
         [<Erase; System.Obsolete>]
         static member inline interceptStreamProtocol
-            (scheme: string, handler: Main.Protocol.InterceptStreamProtocol.Handler)
+            (scheme: string, handler: ProtocolRequest * U2<Readable<obj>, ProtocolResponse> -> unit -> unit)
             : bool =
             Unchecked.defaultof<_>
 
@@ -24119,7 +38589,7 @@ module Main =
         /// group of the item with the specified id.</param>
         [<ParamObject(0)>]
         (
-            ?click: Main.MenuItem.Options.Click,
+            ?click: Main.MenuItem * Option<Main.BaseWindow> * KeyboardEvent -> unit,
             ?role: Main.Enums.MenuItem.Options.Role,
             ?``type``: Main.Enums.MenuItem.Options.Type,
             ?label: string
@@ -24178,7 +38648,8 @@ module Main =
         /// <c>event</c> KeyboardEvent<br/>* <c>focusedWindow</c> BaseWindow<br/>* <c>focusedWebContents</c> WebContents
         /// </summary>
         [<Erase>]
-        member val click: Main.MenuItem.Click = Unchecked.defaultof<_> with get, set
+        member val click: KeyboardEvent * Main.BaseWindow * Main.WebContents -> unit =
+            Unchecked.defaultof<_> with get, set
 
         /// <summary>
         /// A <c>Menu</c> (optional) containing the menu item's submenu, if present.
@@ -24307,7 +38778,7 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline on(channel: string, listener: Main.IpcMain.On.Listener) : unit = Unchecked.defaultof<_>
+        static member inline on(channel: string, listener: IpcMainEvent * obj[] -> unit) : unit = Unchecked.defaultof<_>
 
         /// <summary>
         /// Removes the specified <c>listener</c> from the listener array for the specified <c>channel</c>.
@@ -24315,7 +38786,8 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline off(channel: string, listener: Main.IpcMain.Off.Listener) : unit = Unchecked.defaultof<_>
+        static member inline off(channel: string, listener: IpcMainEvent * obj[] -> unit) : unit =
+            Unchecked.defaultof<_>
 
         /// <summary>
         /// Adds a one time <c>listener</c> function for the event. This <c>listener</c> is invoked only the next time a message is
@@ -24324,7 +38796,8 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline once(channel: string, listener: Main.IpcMain.Once.Listener) : unit = Unchecked.defaultof<_>
+        static member inline once(channel: string, listener: IpcMainEvent * obj[] -> unit) : unit =
+            Unchecked.defaultof<_>
 
         /// <summary>
         /// Alias for <c>ipcMain.on</c>.
@@ -24332,7 +38805,7 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline addListener(channel: string, listener: Main.IpcMain.AddListener.Listener) : unit =
+        static member inline addListener(channel: string, listener: IpcMainEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -24362,7 +38835,9 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline handle(channel: string, listener: Main.IpcMain.Handle.Listener) : unit =
+        static member inline handle
+            (channel: string, listener: IpcMainInvokeEvent * obj[] -> U2<Promise<obj>, obj>)
+            : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -24371,7 +38846,9 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline handleOnce(channel: string, listener: Main.IpcMain.HandleOnce.Listener) : unit =
+        static member inline handleOnce
+            (channel: string, listener: IpcMainInvokeEvent * obj[] -> U2<Promise<obj>, obj>)
+            : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -24395,7 +38872,7 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        member inline _.on(channel: string, listener: Main.IpcMainServiceWorker.On.Listener) : unit =
+        member inline _.on(channel: string, listener: IpcMainServiceWorkerEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -24405,7 +38882,7 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        member inline _.once(channel: string, listener: Main.IpcMainServiceWorker.Once.Listener) : unit =
+        member inline _.once(channel: string, listener: IpcMainServiceWorkerEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -24428,7 +38905,9 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        member inline _.handle(channel: string, listener: Main.IpcMainServiceWorker.Handle.Listener) : unit =
+        member inline _.handle
+            (channel: string, listener: IpcMainServiceWorkerInvokeEvent * obj[] -> U2<Promise<obj>, obj>)
+            : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -24437,7 +38916,9 @@ module Main =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        member inline _.handleOnce(channel: string, listener: Main.IpcMainServiceWorker.HandleOnce.Listener) : unit =
+        member inline _.handleOnce
+            (channel: string, listener: IpcMainServiceWorkerInvokeEvent * obj[] -> U2<Promise<obj>, obj>)
+            : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -26391,7 +40872,7 @@ module Main =
         /// </summary>
         [<Emit("$0.on('login', $1)")>]
         member inline _.onLogin
-            (handler: Main.ClientRequest.Login.AuthInfo -> Main.ClientRequest.Login.Callback -> unit)
+            (handler: Main.ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
             : unit =
             Unchecked.defaultof<_>
 
@@ -26408,7 +40889,7 @@ module Main =
         /// </summary>
         [<Emit("$0.once('login', $1)")>]
         member inline _.onceLogin
-            (handler: Main.ClientRequest.Login.AuthInfo -> Main.ClientRequest.Login.Callback -> unit)
+            (handler: Main.ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
             : unit =
             Unchecked.defaultof<_>
 
@@ -26425,7 +40906,7 @@ module Main =
         /// </summary>
         [<Emit("$0.off('login', $1)")>]
         member inline _.offLogin
-            (handler: Main.ClientRequest.Login.AuthInfo -> Main.ClientRequest.Login.Callback -> unit)
+            (handler: Main.ClientRequest.Login.AuthInfo -> Option<string> * Option<string> -> unit -> unit)
             : unit =
             Unchecked.defaultof<_>
 
@@ -28518,9 +42999,7 @@ module Main =
         /// <param name="message"></param>
         /// <param name="callback"></param>
         [<Erase>]
-        member inline _.hookWindowMessage
-            (message: int, callback: Main.BrowserWindow.HookWindowMessage.Callback)
-            : unit =
+        member inline _.hookWindowMessage(message: int, callback: Buffer * Buffer -> unit) : unit =
             Unchecked.defaultof<_>
         #endif
 
@@ -31350,7 +45829,7 @@ module Main =
         /// <param name="message"></param>
         /// <param name="callback"></param>
         [<Erase>]
-        member inline _.hookWindowMessage(message: int, callback: Main.BaseWindow.HookWindowMessage.Callback) : unit =
+        member inline _.hookWindowMessage(message: int, callback: Buffer * Buffer -> unit) : unit =
             Unchecked.defaultof<_>
         #endif
 
@@ -33738,7 +48217,7 @@ module Main =
                         -> Main.WebContents
                         -> Main.App.Login.AuthenticationResponseDetails
                         -> Main.App.Login.AuthInfo
-                        -> Main.App.Login.Callback
+                        -> Option<string> * Option<string> -> unit
                         -> unit
             ) : unit =
             Unchecked.defaultof<_>
@@ -33764,7 +48243,7 @@ module Main =
                         -> Main.WebContents
                         -> Main.App.Login.AuthenticationResponseDetails
                         -> Main.App.Login.AuthInfo
-                        -> Main.App.Login.Callback
+                        -> Option<string> * Option<string> -> unit
                         -> unit
             ) : unit =
             Unchecked.defaultof<_>
@@ -33790,7 +48269,7 @@ module Main =
                         -> Main.WebContents
                         -> Main.App.Login.AuthenticationResponseDetails
                         -> Main.App.Login.AuthInfo
-                        -> Main.App.Login.Callback
+                        -> Option<string> * Option<string> -> unit
                         -> unit
             ) : unit =
             Unchecked.defaultof<_>

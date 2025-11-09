@@ -11,6 +11,764 @@ open Fetch
 
 [<Fable.Core.Erase; AutoOpen>]
 module Types =
+    module WebPreferences =
+        [<JS.Pojo>]
+        type Offscreen
+            /// <param name="useSharedTexture">Whether to use GPU shared texture for accelerated paint event. Defaults to <c>false</c>. See the offscreen rendering tutorial for
+            /// more details.</param>
+            /// <param name="sharedTexturePixelFormat">The requested output format of the shared texture. Defaults to <c>argb</c>. The name is originated from Chromium <c>media::VideoPixelFormat</c> enum
+            /// suffix and only subset of them are supported. The actual output pixel format and color space of the texture should
+            /// refer to <c>OffscreenSharedTexture</c> object in the <c>paint</c> event.</param>
+            (
+                ?useSharedTexture: bool,
+                ?sharedTexturePixelFormat: Enums.Types.WebPreferences.Offscreen.SharedTexturePixelFormat
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Whether to use GPU shared texture for accelerated paint event. Defaults to <c>false</c>. See the offscreen rendering tutorial for more
+            /// details.
+            /// </summary>
+            [<Erase; Experimental("Experimental according to Electron")>]
+            member val useSharedTexture: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The requested output format of the shared texture. Defaults to <c>argb</c>. The name is originated from Chromium <c>media::VideoPixelFormat</c> enum suffix
+            /// and only subset of them are supported. The actual output pixel format and color space of the texture should refer
+            /// to <c>OffscreenSharedTexture</c> object in the <c>paint</c> event.
+            /// </summary>
+            [<Erase; Experimental("Experimental according to Electron")>]
+            member val sharedTexturePixelFormat: Enums.Types.WebPreferences.Offscreen.SharedTexturePixelFormat =
+                Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type DefaultFontFamily
+            /// <param name="standard">Defaults to <c>Times New Roman</c>.</param>
+            /// <param name="serif">Defaults to <c>Times New Roman</c>.</param>
+            /// <param name="sansSerif">Defaults to <c>Arial</c>.</param>
+            /// <param name="monospace">Defaults to <c>Courier New</c>.</param>
+            /// <param name="cursive">Defaults to <c>Script</c>.</param>
+            /// <param name="fantasy">Defaults to <c>Impact</c>.</param>
+            /// <param name="math">Defaults to <c>Latin Modern Math</c>.</param>
+            (
+                ?standard: string,
+                ?serif: string,
+                ?sansSerif: string,
+                ?monospace: string,
+                ?cursive: string,
+                ?fantasy: string,
+                ?math: string
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Defaults to <c>Times New Roman</c>.
+            /// </summary>
+            [<Erase>]
+            member val standard: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Times New Roman</c>.
+            /// </summary>
+            [<Erase>]
+            member val serif: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Arial</c>.
+            /// </summary>
+            [<Erase>]
+            member val sansSerif: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Courier New</c>.
+            /// </summary>
+            [<Erase>]
+            member val monospace: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Script</c>.
+            /// </summary>
+            [<Erase>]
+            member val cursive: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Impact</c>.
+            /// </summary>
+            [<Erase>]
+            member val fantasy: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Defaults to <c>Latin Modern Math</c>.
+            /// </summary>
+            [<Erase>]
+            member val math: string = Unchecked.defaultof<_> with get, set
+
+    module USBDevice =
+        [<JS.Pojo>]
+        type Configurations() = class end
+
+        [<JS.Pojo>]
+        type Configuration
+            /// <param name="configurationValue">the configuration value of this configuration.</param>
+            /// <param name="configurationName">the name provided by the device to describe this configuration.</param>
+            /// <param name="interfaces">An array of USBInterface objects containing information about an interface provided by the USB device.</param>
+            (configurationValue: int, configurationName: string, interfaces: Types.USBDevice.Configuration.Interfaces[])
+            =
+            class
+            end
+
+            /// <summary>
+            /// the configuration value of this configuration.
+            /// </summary>
+            [<Erase>]
+            member val configurationValue: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// the name provided by the device to describe this configuration.
+            /// </summary>
+            [<Erase>]
+            member val configurationName: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of USBInterface objects containing information about an interface provided by the USB device.
+            /// </summary>
+            [<Erase>]
+            member val interfaces: Types.USBDevice.Configuration.Interfaces[] = Unchecked.defaultof<_> with get, set
+
+        module Configuration =
+            [<JS.Pojo>]
+            type Interfaces
+                /// <param name="interfaceNumber">the interface number of this interface.</param>
+                /// <param name="alternate">the currently selected alternative configuration of this interface.</param>
+                /// <param name="alternates">an array containing instances of the USBAlternateInterface interface describing each of the alternative configurations possible for this interface.</param>
+                (interfaceNumber: int, alternate: Types.USBDevice.Configuration.Interfaces.Alternate, alternates: obj[])
+                =
+                class
+                end
+
+                /// <summary>
+                /// the interface number of this interface.
+                /// </summary>
+                [<Erase>]
+                member val interfaceNumber: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// the currently selected alternative configuration of this interface.
+                /// </summary>
+                [<Erase>]
+                member val alternate: Types.USBDevice.Configuration.Interfaces.Alternate =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// an array containing instances of the USBAlternateInterface interface describing each of the alternative configurations possible for this interface.
+                /// </summary>
+                [<Erase>]
+                member val alternates: obj[] = Unchecked.defaultof<_> with get, set
+
+            module Interfaces =
+                [<JS.Pojo>]
+                type Alternates() = class end
+
+                [<JS.Pojo>]
+                type Alternate
+                    /// <param name="alternateSetting">the alternate setting number of this interface.</param>
+                    /// <param name="interfaceClass">the class of this interface. See USB.org for class code descriptions.</param>
+                    /// <param name="interfaceSubclass">the subclass of this interface.</param>
+                    /// <param name="interfaceProtocol">the protocol supported by this interface.</param>
+                    /// <param name="interfaceName">the name of the interface, if one is provided by the device.</param>
+                    /// <param name="endpoints">an array containing instances of the USBEndpoint interface describing each of the endpoints that are part of this interface.</param>
+                    (
+                        alternateSetting: int,
+                        interfaceClass: int,
+                        interfaceSubclass: int,
+                        interfaceProtocol: int,
+                        endpoints: Types.USBDevice.Configuration.Interfaces.Alternate.Endpoints[],
+                        ?interfaceName: string
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// the alternate setting number of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val alternateSetting: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the class of this interface. See USB.org for class code descriptions.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceClass: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the subclass of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceSubclass: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the protocol supported by this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceProtocol: int = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// the name of the interface, if one is provided by the device.
+                    /// </summary>
+                    [<Erase>]
+                    member val interfaceName: string = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// an array containing instances of the USBEndpoint interface describing each of the endpoints that are part of this interface.
+                    /// </summary>
+                    [<Erase>]
+                    member val endpoints: Types.USBDevice.Configuration.Interfaces.Alternate.Endpoints[] =
+                        Unchecked.defaultof<_> with get, set
+
+                module Alternate =
+                    [<JS.Pojo>]
+                    type Endpoints
+                        /// <param name="endpointNumber">this endpoint's "endpoint number" which is a value from 1 to 15.</param>
+                        /// <param name="direction">the direction in which this endpoint transfers data - can be either 'in' or 'out'.</param>
+                        /// <param name="type">the type of this endpoint - can be either 'bulk', 'interrupt', or 'isochronous'.</param>
+                        /// <param name="packetSize">the size of the packets that data sent through this endpoint will be divided into.</param>
+                        (endpointNumber: int, direction: string, ``type``: string, packetSize: int) =
+                        class
+                        end
+
+                        /// <summary>
+                        /// this endpoint's "endpoint number" which is a value from 1 to 15.
+                        /// </summary>
+                        [<Erase>]
+                        member val endpointNumber: int = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the direction in which this endpoint transfers data - can be either 'in' or 'out'.
+                        /// </summary>
+                        [<Erase>]
+                        member val direction: string = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the type of this endpoint - can be either 'bulk', 'interrupt', or 'isochronous'.
+                        /// </summary>
+                        [<Erase>]
+                        member val ``type``: string = Unchecked.defaultof<_> with get, set
+
+                        /// <summary>
+                        /// the size of the packets that data sent through this endpoint will be divided into.
+                        /// </summary>
+                        [<Erase>]
+                        member val packetSize: int = Unchecked.defaultof<_> with get, set
+
+    module Transaction =
+        [<JS.Pojo>]
+        type Payment
+            /// <param name="productIdentifier">The identifier of the purchased product.</param>
+            /// <param name="quantity">The quantity purchased.</param>
+            /// <param name="applicationUsername">An opaque identifier for the user’s account on your system.</param>
+            /// <param name="paymentDiscount">The details of the discount offer to apply to the payment.</param>
+            (productIdentifier: string, quantity: int, applicationUsername: string, ?paymentDiscount: PaymentDiscount) =
+            class
+            end
+
+            /// <summary>
+            /// The identifier of the purchased product.
+            /// </summary>
+            [<Erase>]
+            member val productIdentifier: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The quantity purchased.
+            /// </summary>
+            [<Erase>]
+            member val quantity: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An opaque identifier for the user’s account on your system.
+            /// </summary>
+            [<Erase>]
+            member val applicationUsername: string = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The details of the discount offer to apply to the payment.
+            /// </summary>
+            [<Erase>]
+            member val paymentDiscount: PaymentDiscount = Unchecked.defaultof<_> with get, set
+
+    module SharedTextureHandle =
+        [<JS.Pojo>]
+        type NativePixmap
+            /// <param name="planes">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || Each plane's info of
+            /// the shared texture.</param>
+            /// <param name="modifier">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || The modifier is retrieved
+            /// from GBM library and passed to EGL driver.</param>
+            /// <param name="supportsZeroCopyWebGpuImport">⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌ || Indicates whether supports zero
+            /// copy import to WebGPU.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                planes: Types.SharedTextureHandle.NativePixmap.Planes[]
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                ,
+                modifier: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+                ,
+                supportsZeroCopyWebGpuImport: bool
+                #endif
+
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// Each plane's info of the shared texture.
+            /// </summary>
+            [<Erase>]
+            member val planes: Types.SharedTextureHandle.NativePixmap.Planes[] = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The modifier is retrieved from GBM library and passed to EGL driver.
+            /// </summary>
+            [<Erase>]
+            member val modifier: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// Indicates whether supports zero copy import to WebGPU.
+            /// </summary>
+            [<Erase>]
+            member val supportsZeroCopyWebGpuImport: bool = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        module NativePixmap =
+            [<JS.Pojo>]
+            type Planes
+                /// <param name="stride">The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per
+                /// plane per entry.</param>
+                /// <param name="offset">The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per
+                /// plane per entry.</param>
+                /// <param name="size">Size in bytes of the plane. This is necessary to map the buffers.</param>
+                /// <param name="fd">File descriptor for the underlying memory object (usually dmabuf).</param>
+                (stride: float, offset: float, size: float, fd: float) =
+                class
+                end
+
+                /// <summary>
+                /// The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per plane
+                /// per entry.
+                /// </summary>
+                [<Erase>]
+                member val stride: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The strides and offsets in bytes to be used when accessing the buffers via a memory mapping. One per plane
+                /// per entry.
+                /// </summary>
+                [<Erase>]
+                member val offset: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Size in bytes of the plane. This is necessary to map the buffers.
+                /// </summary>
+                [<Erase>]
+                member val size: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// File descriptor for the underlying memory object (usually dmabuf).
+                /// </summary>
+                [<Erase>]
+                member val fd: float = Unchecked.defaultof<_> with get, set
+
+    module PrinterInfo =
+        [<JS.Pojo>]
+        type Options() = class end
+
+    module OffscreenSharedTexture =
+        [<JS.Pojo>]
+        type TextureInfo
+            /// <param name="widgetType">The widget type of the texture. Can be <c>popup</c> or <c>frame</c>.</param>
+            /// <param name="pixelFormat">The pixel format of the texture.</param>
+            /// <param name="codedSize">The full dimensions of the video frame.</param>
+            /// <param name="colorSpace">The color space of the video frame.</param>
+            /// <param name="visibleRect">A subsection of [0, 0, codedSize.width, codedSize.height]. In OSR case, it is expected to have the full section area.</param>
+            /// <param name="contentRect">The region of the video frame that capturer would like to populate. In OSR case, it is the same
+            /// with <c>dirtyRect</c> that needs to be painted.</param>
+            /// <param name="timestamp">The time in microseconds since the capture start.</param>
+            /// <param name="metadata">Extra metadata. See comments in src\media\base\video_frame_metadata.h for accurate details.</param>
+            /// <param name="handle">The shared texture handle data.</param>
+            (
+                widgetType: Enums.Types.OffscreenSharedTexture.TextureInfo.WidgetType,
+                pixelFormat: Enums.Types.OffscreenSharedTexture.TextureInfo.PixelFormat,
+                codedSize: Size,
+                colorSpace: ColorSpace,
+                visibleRect: Rectangle,
+                contentRect: Rectangle,
+                timestamp: float,
+                metadata: Types.OffscreenSharedTexture.TextureInfo.Metadata,
+                handle: SharedTextureHandle
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The widget type of the texture. Can be <c>popup</c> or <c>frame</c>.
+            /// </summary>
+            [<Erase>]
+            member val widgetType: Enums.Types.OffscreenSharedTexture.TextureInfo.WidgetType =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The pixel format of the texture.
+            /// </summary>
+            [<Erase>]
+            member val pixelFormat: Enums.Types.OffscreenSharedTexture.TextureInfo.PixelFormat =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The full dimensions of the video frame.
+            /// </summary>
+            [<Erase>]
+            member val codedSize: Size = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The color space of the video frame.
+            /// </summary>
+            [<Erase>]
+            member val colorSpace: ColorSpace = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// A subsection of [0, 0, codedSize.width, codedSize.height]. In OSR case, it is expected to have the full section area.
+            /// </summary>
+            [<Erase>]
+            member val visibleRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The region of the video frame that capturer would like to populate. In OSR case, it is the same with
+            /// <c>dirtyRect</c> that needs to be painted.
+            /// </summary>
+            [<Erase>]
+            member val contentRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The time in microseconds since the capture start.
+            /// </summary>
+            [<Erase>]
+            member val timestamp: float = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Extra metadata. See comments in src\media\base\video_frame_metadata.h for accurate details.
+            /// </summary>
+            [<Erase>]
+            member val metadata: Types.OffscreenSharedTexture.TextureInfo.Metadata =
+                Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The shared texture handle data.
+            /// </summary>
+            [<Erase>]
+            member val handle: SharedTextureHandle = Unchecked.defaultof<_> with get, set
+
+        module TextureInfo =
+            [<JS.Pojo>]
+            type Metadata
+                /// <param name="captureUpdateRect">Updated area of frame, can be considered as the <c>dirty</c> area.</param>
+                /// <param name="regionCaptureRect">May reflect the frame's contents origin if region capture is used internally.</param>
+                /// <param name="sourceSize">Full size of the source frame.</param>
+                /// <param name="frameCount">The increasing count of captured frame. May contain gaps if frames are dropped between two consecutively received frames.</param>
+                (
+                    ?captureUpdateRect: Rectangle,
+                    ?regionCaptureRect: Rectangle,
+                    ?sourceSize: Rectangle,
+                    ?frameCount: float
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Updated area of frame, can be considered as the <c>dirty</c> area.
+                /// </summary>
+                [<Erase>]
+                member val captureUpdateRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// May reflect the frame's contents origin if region capture is used internally.
+                /// </summary>
+                [<Erase>]
+                member val regionCaptureRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Full size of the source frame.
+                /// </summary>
+                [<Erase>]
+                member val sourceSize: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The increasing count of captured frame. May contain gaps if frames are dropped between two consecutively received frames.
+                /// </summary>
+                [<Erase>]
+                member val frameCount: float = Unchecked.defaultof<_> with get, set
+
+    module HIDDevice =
+        [<JS.Pojo>]
+        type Collections
+            /// <param name="usage">An integer representing the usage ID component of the HID usage associated with this collection.</param>
+            /// <param name="usagePage">An integer representing the usage page component of the HID usage associated with this collection.</param>
+            /// <param name="type">An 8-bit value representing the collection type, which describes a different relationship between the grouped items.</param>
+            /// <param name="children">An array of sub-collections which takes the same format as a top-level collection.</param>
+            /// <param name="inputReports">An array of inputReport items which represent individual input reports described in this collection.</param>
+            /// <param name="outputReports">An array of outputReport items which represent individual output reports described in this collection.</param>
+            /// <param name="featureReports">An array of featureReport items which represent individual feature reports described in this collection.</param>
+            (
+                usage: int,
+                usagePage: int,
+                ``type``: int,
+                children: obj[],
+                inputReports: obj[],
+                outputReports: obj[],
+                featureReports: obj[]
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// An integer representing the usage ID component of the HID usage associated with this collection.
+            /// </summary>
+            [<Erase>]
+            member val usage: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An integer representing the usage page component of the HID usage associated with this collection.
+            /// </summary>
+            [<Erase>]
+            member val usagePage: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An 8-bit value representing the collection type, which describes a different relationship between the grouped items.
+            /// </summary>
+            [<Erase>]
+            member val ``type``: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of sub-collections which takes the same format as a top-level collection.
+            /// </summary>
+            [<Erase>]
+            member val children: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of inputReport items which represent individual input reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val inputReports: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of outputReport items which represent individual output reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val outputReports: obj[] = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// An array of featureReport items which represent individual feature reports described in this collection.
+            /// </summary>
+            [<Erase>]
+            member val featureReports: obj[] = Unchecked.defaultof<_> with get, set
+
+        module Collections =
+            [<JS.Pojo>]
+            type FeatureReports() = class end
+
+            [<JS.Pojo>]
+            type OutputReports() = class end
+
+            [<JS.Pojo>]
+            type InputReports() = class end
+
+            [<JS.Pojo>]
+            type Children() = class end
+
+    module CustomScheme =
+        [<JS.Pojo>]
+        type Privileges
+            /// <param name="standard">Default false.</param>
+            /// <param name="secure">Default false.</param>
+            /// <param name="bypassCSP">Default false.</param>
+            /// <param name="allowServiceWorkers">Default false.</param>
+            /// <param name="supportFetchAPI">Default false.</param>
+            /// <param name="corsEnabled">Default false.</param>
+            /// <param name="stream">Default false.</param>
+            /// <param name="codeCache">Enable V8 code cache for the scheme, only works when <c>standard</c> is also set to true. Default false.</param>
+            (
+                ?standard: bool,
+                ?secure: bool,
+                ?bypassCSP: bool,
+                ?allowServiceWorkers: bool,
+                ?supportFetchAPI: bool,
+                ?corsEnabled: bool,
+                ?stream: bool,
+                ?codeCache: bool
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val standard: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val secure: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val bypassCSP: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val allowServiceWorkers: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val supportFetchAPI: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val corsEnabled: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Default false.
+            /// </summary>
+            [<Erase>]
+            member val stream: bool = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Enable V8 code cache for the scheme, only works when <c>standard</c> is also set to true. Default false.
+            /// </summary>
+            [<Erase>]
+            member val codeCache: bool = Unchecked.defaultof<_> with get, set
+
+    module BrowserWindowConstructorOptions =
+        [<JS.Pojo>]
+        type TitleBarOverlay
+            /// <param name="color">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="symbolColor">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the symbols on the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="height">The height of the title bar and Window Controls Overlay in pixels. Default is system height.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ?color: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?symbolColor: string
+                #endif
+                ,
+                ?height: int
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val color: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the symbols on the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val symbolColor: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// The height of the title bar and Window Controls Overlay in pixels. Default is system height.
+            /// </summary>
+            [<Erase>]
+            member val height: int = Unchecked.defaultof<_> with get, set
+
+    module BaseWindowConstructorOptions =
+        [<JS.Pojo>]
+        type TitleBarOverlay
+            /// <param name="color">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="symbolColor">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The CSS color of
+            /// the symbols on the Window Controls Overlay when enabled. Default is the system color.</param>
+            /// <param name="height">The height of the title bar and Window Controls Overlay in pixels. Default is system height.</param>
+            (
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ?color: string
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                ?symbolColor: string
+                #endif
+                ,
+                ?height: int
+            ) =
+            class
+            end
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val color: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The CSS color of the symbols on the Window Controls Overlay when enabled. Default is the system color.
+            /// </summary>
+            [<Erase>]
+            member val symbolColor: string = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+            /// <summary>
+            /// The height of the title bar and Window Controls Overlay in pixels. Default is system height.
+            /// </summary>
+            [<Erase>]
+            member val height: int = Unchecked.defaultof<_> with get, set
+
+    module IpcMainServiceWorkerEvent =
+        /// <param name="channel"></param>
+        /// <param name="...args"></param>
+        type Reply = delegate of channel: string * [<System.ParamArray>] args: obj[] -> unit
+
+    module IpcMainEvent =
+        /// <param name="channel"></param>
+        /// <param name="...args"></param>
+        type Reply = delegate of channel: string * [<System.ParamArray>] args: obj[] -> unit
+
     /// <summary>
     /// Unfortunately, Windows does not offer a way to differentiate between a shutdown and a reboot, meaning the 'shutdown' reason is
     /// triggered in both scenarios. For more details on the <c>WM_ENDSESSION</c> message and its associated reasons, refer to the MSDN documentation.
@@ -3166,7 +3924,7 @@ module Types =
             session: Session,
             returnValue: obj,
             ports: MessagePortMain[],
-            reply: Types.IpcMainServiceWorkerEvent.Reply
+            reply: string * obj[] -> unit
         ) =
         class
         end
@@ -3213,7 +3971,7 @@ module Types =
         /// will go to the correct process and frame.
         /// </summary>
         [<Erase>]
-        member val reply: Types.IpcMainServiceWorkerEvent.Reply = Unchecked.defaultof<_> with get, set
+        member val reply: string * obj[] -> unit = Unchecked.defaultof<_> with get, set
 
     [<JS.Pojo>]
     type IpcMainInvokeEvent
@@ -3284,7 +4042,7 @@ module Types =
             sender: WebContents,
             senderFrame: Option<WebFrameMain>,
             ports: MessagePortMain[],
-            reply: Types.IpcMainEvent.Reply
+            reply: string * obj[] -> unit
         ) =
         class
         end
@@ -3337,7 +4095,7 @@ module Types =
         /// will go to the correct process and frame.
         /// </summary>
         [<Erase>]
-        member val reply: Types.IpcMainEvent.Reply = Unchecked.defaultof<_> with get, set
+        member val reply: string * obj[] -> unit = Unchecked.defaultof<_> with get, set
 
     [<JS.Pojo>]
     type InputEvent
@@ -5508,7 +6266,861 @@ module Types =
 
 [<Fable.Core.Erase; AutoOpen>]
 module Enums =
-    begin end
+    module Types =
+        module WindowSessionEndEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Reasons =
+                | [<CompiledName("shutdown")>] Shutdown
+                | [<CompiledName("close-app")>] CloseApp
+                | [<CompiledName("critical")>] Critical
+                | [<CompiledName("logoff")>] Logoff
+
+        module WindowOpenHandlerResponse =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Action =
+                | [<CompiledName("allow")>] Allow
+                | [<CompiledName("deny")>] Deny
+
+        module WebRequestFilter =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Types =
+                | [<CompiledName("mainFrame")>] MainFrame
+                | [<CompiledName("subFrame")>] SubFrame
+                | [<CompiledName("stylesheet")>] Stylesheet
+                | [<CompiledName("script")>] Script
+                | [<CompiledName("image")>] Image
+                | [<CompiledName("font")>] Font
+                | [<CompiledName("object")>] Object
+                | [<CompiledName("xhr")>] Xhr
+                | [<CompiledName("ping")>] Ping
+                | [<CompiledName("cspReport")>] CspReport
+                | [<CompiledName("media")>] Media
+                | [<CompiledName("webSocket")>] WebSocket
+
+        module WebPreferences =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type V8CacheOptions =
+                /// <summary>
+                /// Disables code caching
+                /// </summary>
+                | [<CompiledName("none")>] None
+                /// <summary>
+                /// Heuristic based code caching
+                /// </summary>
+                | [<CompiledName("code")>] Code
+                /// <summary>
+                /// Bypass code caching heuristics but with lazy compilation
+                /// </summary>
+                | [<CompiledName("bypassHeatCheck")>] BypassHeatCheck
+                /// <summary>
+                /// Same as above except compilation is eager. Default policy is <c>code</c>.
+                /// </summary>
+                | [<CompiledName("bypassHeatCheckAndEagerCompile")>] BypassHeatCheckAndEagerCompile
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type AutoplayPolicy =
+                | [<CompiledName("no-user-gesture-required")>] NoUserGestureRequired
+                | [<CompiledName("user-gesture-required")>] UserGestureRequired
+                | [<CompiledName("document-user-activation-required")>] DocumentUserActivationRequired
+
+            module Offscreen =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type SharedTexturePixelFormat =
+                    /// <summary>
+                    /// The requested output texture format is 8-bit unorm RGBA, with SRGB SDR color space.
+                    /// </summary>
+                    | [<CompiledName("argb")>] Argb
+                    /// <summary>
+                    /// The requested output texture format is 16-bit float RGBA, with scRGB HDR color space.
+                    /// </summary>
+                    | [<CompiledName("rgbaf16")>] Rgbaf16
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type ImageAnimationPolicy =
+                | [<CompiledName("animate")>] Animate
+                | [<CompiledName("animateOnce")>] AnimateOnce
+                | [<CompiledName("noAnimation")>] NoAnimation
+
+        module Transaction =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TransactionState =
+                | [<CompiledName("purchasing")>] Purchasing
+                | [<CompiledName("purchased")>] Purchased
+                | [<CompiledName("failed")>] Failed
+                | [<CompiledName("restored")>] Restored
+                | [<CompiledName("deferred")>] Deferred
+
+        module TraceConfig =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type RecordingMode =
+                | [<CompiledName("record-until-full")>] RecordUntilFull
+                | [<CompiledName("record-continuously")>] RecordContinuously
+                | [<CompiledName("record-as-much-as-possible")>] RecordAsMuchAsPossible
+                | [<CompiledName("trace-to-console")>] TraceToConsole
+
+        module ResolvedEndpoint =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Family =
+                /// <summary>
+                /// Corresponds to <c>AF_INET</c>
+                /// </summary>
+                | [<CompiledName("ipv4")>] Ipv4
+                /// <summary>
+                /// Corresponds to <c>AF_INET6</c>
+                /// </summary>
+                | [<CompiledName("ipv6")>] Ipv6
+                /// <summary>
+                /// Corresponds to <c>AF_UNSPEC</c>
+                /// </summary>
+                | [<CompiledName("unspec")>] Unspec
+
+        module RenderProcessGoneDetails =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Reason =
+                /// <summary>
+                /// Process exited with an exit code of zero
+                /// </summary>
+                | [<CompiledName("clean-exit")>] CleanExit
+                /// <summary>
+                /// Process exited with a non-zero exit code
+                /// </summary>
+                | [<CompiledName("abnormal-exit")>] AbnormalExit
+                /// <summary>
+                /// Process was sent a SIGTERM or otherwise killed externally
+                /// </summary>
+                | [<CompiledName("killed")>] Killed
+                /// <summary>
+                /// Process crashed
+                /// </summary>
+                | [<CompiledName("crashed")>] Crashed
+                /// <summary>
+                /// Process ran out of memory
+                /// </summary>
+                | [<CompiledName("oom")>] Oom
+                /// <summary>
+                /// Process never successfully launched
+                /// </summary>
+                | [<CompiledName("launch-failed")>] LaunchFailed
+                /// <summary>
+                /// Windows code integrity checks failed
+                /// </summary>
+                | [<CompiledName("integrity-failure")>] IntegrityFailure
+                /// <summary>
+                /// Process proactively terminated to prevent a future out-of-memory (OOM) situation
+                /// </summary>
+                | [<CompiledName("memory-eviction")>] MemoryEviction
+
+        module Referrer =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Policy =
+                | [<CompiledName("default")>] Default
+                | [<CompiledName("unsafe-url")>] UnsafeUrl
+                | [<CompiledName("no-referrer-when-downgrade")>] NoReferrerWhenDowngrade
+                | [<CompiledName("no-referrer")>] NoReferrer
+                | [<CompiledName("origin")>] Origin
+                | [<CompiledName("strict-origin-when-cross-origin")>] StrictOriginWhenCrossOrigin
+                | [<CompiledName("same-origin")>] SameOrigin
+                | [<CompiledName("strict-origin")>] StrictOrigin
+
+        module ProxyConfig =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Mode =
+                /// <summary>
+                /// In direct mode all connections are created directly, without any proxy involved.
+                /// </summary>
+                | [<CompiledName("direct")>] Direct
+                /// <summary>
+                /// In auto_detect mode the proxy configuration is determined by a PAC script that can be downloaded at http://wpad/wpad.dat.
+                /// </summary>
+                | [<CompiledName("auto_detect")>] AutoDetect
+                /// <summary>
+                /// In pac_script mode the proxy configuration is determined by a PAC script that is retrieved from the URL specified in
+                /// the <c>pacScript</c>. This is the default mode if <c>pacScript</c> is specified.
+                /// </summary>
+                | [<CompiledName("pac_script")>] PacScript
+                /// <summary>
+                /// In fixed_servers mode the proxy configuration is specified in <c>proxyRules</c>. This is the default mode if <c>proxyRules</c> is specified.
+                /// </summary>
+                | [<CompiledName("fixed_servers")>] FixedServers
+                /// <summary>
+                /// In system mode the proxy configuration is taken from the operating system. Note that the system mode is different from
+                /// setting no proxy configuration. In the latter case, Electron falls back to the system settings only if no command-line options
+                /// influence the proxy configuration.
+                /// </summary>
+                | [<CompiledName("system")>] System
+
+        module ProductSubscriptionPeriod =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Unit =
+                | [<CompiledName("day")>] Day
+                | [<CompiledName("week")>] Week
+                | [<CompiledName("month")>] Month
+                | [<CompiledName("year")>] Year
+
+        module ProductDiscount =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type PaymentMode =
+                | [<CompiledName("payAsYouGo")>] PayAsYouGo
+                | [<CompiledName("payUpFront")>] PayUpFront
+                | [<CompiledName("freeTrial")>] FreeTrial
+
+        module ProcessMetric =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type IntegrityLevel =
+                | [<CompiledName("untrusted")>] Untrusted
+                | [<CompiledName("low")>] Low
+                | [<CompiledName("medium")>] Medium
+                | [<CompiledName("high")>] High
+                | [<CompiledName("unknown")>] Unknown
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("Browser")>] Browser
+                | [<CompiledName("Tab")>] Tab
+                | [<CompiledName("Utility")>] Utility
+                | [<CompiledName("Zygote")>] Zygote
+                | [<CompiledName("Sandbox helper")>] SandboxHelper
+                | [<CompiledName("GPU")>] GPU
+                | [<CompiledName("Pepper Plugin")>] PepperPlugin
+                | [<CompiledName("Pepper Plugin Broker")>] PepperPluginBroker
+                | [<CompiledName("Unknown")>] Unknown
+
+        module PreloadScript =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("frame")>] Frame
+                | [<CompiledName("service-worker")>] ServiceWorker
+
+        module PreloadScriptRegistration =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("frame")>] Frame
+                | [<CompiledName("service-worker")>] ServiceWorker
+
+        module OffscreenSharedTexture =
+            module TextureInfo =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type PixelFormat =
+                    /// <summary>
+                    /// The texture format is 8-bit unorm RGBA.
+                    /// </summary>
+                    | [<CompiledName("rgba")>] Rgba
+                    /// <summary>
+                    /// The texture format is 8-bit unorm BGRA.
+                    /// </summary>
+                    | [<CompiledName("bgra")>] Bgra
+                    /// <summary>
+                    /// The texture format is 16-bit float RGBA.
+                    /// </summary>
+                    | [<CompiledName("rgbaf16")>] Rgbaf16
+
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type WidgetType =
+                    | [<CompiledName("popup")>] Popup
+                    | [<CompiledName("frame")>] Frame
+
+        module NotificationAction =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("button")>] Button
+
+        module MouseWheelInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Button =
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("middle")>] Middle
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("mouseWheel")>] MouseWheel
+
+        module MouseInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Button =
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("middle")>] Middle
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("mouseDown")>] MouseDown
+                | [<CompiledName("mouseUp")>] MouseUp
+                | [<CompiledName("mouseEnter")>] MouseEnter
+                | [<CompiledName("mouseLeave")>] MouseLeave
+                | [<CompiledName("contextMenu")>] ContextMenu
+                | [<CompiledName("mouseWheel")>] MouseWheel
+                | [<CompiledName("mouseMove")>] MouseMove
+
+        module MediaAccessPermissionRequest =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type MediaTypes =
+                | [<CompiledName("video")>] Video
+                | [<CompiledName("audio")>] Audio
+
+        module KeyboardInputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("rawKeyDown")>] RawKeyDown
+                | [<CompiledName("keyDown")>] KeyDown
+                | [<CompiledName("keyUp")>] KeyUp
+                | [<CompiledName("char")>] Char
+
+        module JumpListItem =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// A task will launch an app with specific arguments.
+                /// </summary>
+                | [<CompiledName("task")>] Task
+                /// <summary>
+                /// Can be used to separate items in the standard <c>Tasks</c> category.
+                /// </summary>
+                | [<CompiledName("separator")>] Separator
+                /// <summary>
+                /// A file link will open a file using the app that created the Jump List, for this to work the
+                /// app must be registered as a handler for the file type (though it doesn't have to be the default handler).
+                /// </summary>
+                | [<CompiledName("file")>] File
+
+        module JumpListCategory =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// Items in this category will be placed into the standard <c>Tasks</c> category. There can be only one such category, and
+                /// it will always be displayed at the bottom of the Jump List.
+                /// </summary>
+                | [<CompiledName("tasks")>] Tasks
+                /// <summary>
+                /// Displays a list of files frequently opened by the app, the name of the category and its items are set
+                /// by Windows.
+                /// </summary>
+                | [<CompiledName("frequent")>] Frequent
+                /// <summary>
+                /// Displays a list of files recently opened by the app, the name of the category and its items are set
+                /// by Windows. Items may be added to this category indirectly using <c>app.addRecentDocument(path)</c>.
+                /// </summary>
+                | [<CompiledName("recent")>] Recent
+                /// <summary>
+                /// Displays tasks or file links, <c>name</c> must be set by the app.
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+
+        module IpcMainServiceWorkerInvokeEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("service-worker")>] ServiceWorker
+
+        module IpcMainServiceWorkerEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("service-worker")>] ServiceWorker
+
+        module IpcMainInvokeEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("frame")>] Frame
+
+        module IpcMainEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type = | [<CompiledName("frame")>] Frame
+
+        module InputEvent =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Modifiers =
+                | [<CompiledName("shift")>] Shift
+                | [<CompiledName("control")>] Control
+                | [<CompiledName("ctrl")>] Ctrl
+                | [<CompiledName("alt")>] Alt
+                | [<CompiledName("meta")>] Meta
+                | [<CompiledName("command")>] Command
+                | [<CompiledName("cmd")>] Cmd
+                | [<CompiledName("iskeypad")>] IsKeypad
+                | [<CompiledName("isautorepeat")>] IsAutoRepeat
+                | [<CompiledName("leftbuttondown")>] LeftButtonDown
+                | [<CompiledName("middlebuttondown")>] MiddleButtonDown
+                | [<CompiledName("rightbuttondown")>] RightButtonDown
+                | [<CompiledName("capslock")>] CapsLock
+                | [<CompiledName("numlock")>] NumLock
+                | [<CompiledName("left")>] Left
+                | [<CompiledName("right")>] Right
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                | [<CompiledName("undefined")>] Undefined
+                | [<CompiledName("mouseDown")>] MouseDown
+                | [<CompiledName("mouseUp")>] MouseUp
+                | [<CompiledName("mouseMove")>] MouseMove
+                | [<CompiledName("mouseEnter")>] MouseEnter
+                | [<CompiledName("mouseLeave")>] MouseLeave
+                | [<CompiledName("contextMenu")>] ContextMenu
+                | [<CompiledName("mouseWheel")>] MouseWheel
+                | [<CompiledName("rawKeyDown")>] RawKeyDown
+                | [<CompiledName("keyDown")>] KeyDown
+                | [<CompiledName("keyUp")>] KeyUp
+                | [<CompiledName("char")>] Char
+                | [<CompiledName("gestureScrollBegin")>] GestureScrollBegin
+                | [<CompiledName("gestureScrollEnd")>] GestureScrollEnd
+                | [<CompiledName("gestureScrollUpdate")>] GestureScrollUpdate
+                | [<CompiledName("gestureFlingStart")>] GestureFlingStart
+                | [<CompiledName("gestureFlingCancel")>] GestureFlingCancel
+                | [<CompiledName("gesturePinchBegin")>] GesturePinchBegin
+                | [<CompiledName("gesturePinchEnd")>] GesturePinchEnd
+                | [<CompiledName("gesturePinchUpdate")>] GesturePinchUpdate
+                | [<CompiledName("gestureTapDown")>] GestureTapDown
+                | [<CompiledName("gestureShowPress")>] GestureShowPress
+                | [<CompiledName("gestureTap")>] GestureTap
+                | [<CompiledName("gestureTapCancel")>] GestureTapCancel
+                | [<CompiledName("gestureShortPress")>] GestureShortPress
+                | [<CompiledName("gestureLongPress")>] GestureLongPress
+                | [<CompiledName("gestureLongTap")>] GestureLongTap
+                | [<CompiledName("gestureTwoFingerTap")>] GestureTwoFingerTap
+                | [<CompiledName("gestureTapUnconfirmed")>] GestureTapUnconfirmed
+                | [<CompiledName("gestureDoubleTap")>] GestureDoubleTap
+                | [<CompiledName("touchStart")>] TouchStart
+                | [<CompiledName("touchMove")>] TouchMove
+                | [<CompiledName("touchEnd")>] TouchEnd
+                | [<CompiledName("touchCancel")>] TouchCancel
+                | [<CompiledName("touchScrollStarted")>] TouchScrollStarted
+                | [<CompiledName("pointerDown")>] PointerDown
+                | [<CompiledName("pointerUp")>] PointerUp
+                | [<CompiledName("pointerMove")>] PointerMove
+                | [<CompiledName("pointerRawUpdate")>] PointerRawUpdate
+                | [<CompiledName("pointerCancel")>] PointerCancel
+                | [<CompiledName("pointerCausedUaAction")>] PointerCausedUaAction
+
+        module FilesystemPermissionRequest =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type FileAccessType =
+                | [<CompiledName("writable")>] Writable
+                | [<CompiledName("readable")>] Readable
+
+        module Display =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TouchSupport =
+                | [<CompiledName("available")>] Available
+                | [<CompiledName("unavailable")>] Unavailable
+                | [<CompiledName("unknown")>] Unknown
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type AccelerometerSupport =
+                | [<CompiledName("available")>] Available
+                | [<CompiledName("unavailable")>] Unavailable
+                | [<CompiledName("unknown")>] Unknown
+
+        module Cookie =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type SameSite =
+                | [<CompiledName("unspecified")>] Unspecified
+                | [<CompiledName("no_restriction")>] NoRestriction
+                | [<CompiledName("lax")>] Lax
+                | [<CompiledName("strict")>] Strict
+
+        module ColorSpace =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Range =
+                /// <summary>
+                /// Limited color range (RGB values ranging from 16 to 235)
+                /// </summary>
+                | [<CompiledName("limited")>] Limited
+                /// <summary>
+                /// Full color range (RGB values from 0 to 255)
+                /// </summary>
+                | [<CompiledName("full")>] Full
+                /// <summary>
+                /// Range defined by the transfer function and matrix
+                /// </summary>
+                | [<CompiledName("derived")>] Derived
+                /// <summary>
+                /// Invalid range
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Matrix =
+                /// <summary>
+                /// RGB matrix
+                /// </summary>
+                | [<CompiledName("rgb")>] Rgb
+                /// <summary>
+                /// BT709 matrix
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// FCC matrix
+                /// </summary>
+                | [<CompiledName("fcc")>] Fcc
+                /// <summary>
+                /// BT470BG matrix
+                /// </summary>
+                | [<CompiledName("bt470bg")>] Bt470bg
+                /// <summary>
+                /// SMPTE170M matrix
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M matrix
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// YCoCg matrix
+                /// </summary>
+                | [<CompiledName("ycocg")>] Ycocg
+                /// <summary>
+                /// BT2020 NCL matrix
+                /// </summary>
+                | [<CompiledName("bt2020-ncl")>] Bt2020Ncl
+                /// <summary>
+                /// YDzDx matrix
+                /// </summary>
+                | [<CompiledName("ydzdx")>] Ydzdx
+                /// <summary>
+                /// GBR matrix
+                /// </summary>
+                | [<CompiledName("gbr")>] Gbr
+                /// <summary>
+                /// Invalid matrix
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Transfer =
+                /// <summary>
+                /// BT709 transfer function
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// BT709 Apple transfer function
+                /// </summary>
+                | [<CompiledName("bt709-apple")>] Bt709Apple
+                /// <summary>
+                /// Gamma 1.8 transfer function
+                /// </summary>
+                | [<CompiledName("gamma18")>] Gamma18
+                /// <summary>
+                /// Gamma 2.2 transfer function
+                /// </summary>
+                | [<CompiledName("gamma22")>] Gamma22
+                /// <summary>
+                /// Gamma 2.4 transfer function
+                /// </summary>
+                | [<CompiledName("gamma24")>] Gamma24
+                /// <summary>
+                /// Gamma 2.8 transfer function
+                /// </summary>
+                | [<CompiledName("gamma28")>] Gamma28
+                /// <summary>
+                /// SMPTE170M transfer function
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M transfer function
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// Linear transfer function
+                /// </summary>
+                | [<CompiledName("linear")>] Linear
+                /// <summary>
+                /// Log transfer function
+                /// </summary>
+                | [<CompiledName("log")>] Log
+                /// <summary>
+                /// Log Square Root transfer function
+                /// </summary>
+                | [<CompiledName("log-sqrt")>] LogSqrt
+                /// <summary>
+                /// IEC61966-2-4 transfer function
+                /// </summary>
+                | [<CompiledName("iec61966-2-4")>] Iec6196624
+                /// <summary>
+                /// BT1361 ECG transfer function
+                /// </summary>
+                | [<CompiledName("bt1361-ecg")>] Bt1361Ecg
+                /// <summary>
+                /// sRGB transfer function
+                /// </summary>
+                | [<CompiledName("srgb")>] Srgb
+                /// <summary>
+                /// BT2020-10 transfer function
+                /// </summary>
+                | [<CompiledName("bt2020-10")>] Bt202010
+                /// <summary>
+                /// BT2020-12 transfer function
+                /// </summary>
+                | [<CompiledName("bt2020-12")>] Bt202012
+                /// <summary>
+                /// PQ (Perceptual Quantizer) transfer function
+                /// </summary>
+                | [<CompiledName("pq")>] Pq
+                /// <summary>
+                /// SMPTEST428-1 transfer function
+                /// </summary>
+                | [<CompiledName("smptest428-1")>] Smptest4281
+                /// <summary>
+                /// HLG (Hybrid Log-Gamma) transfer function
+                /// </summary>
+                | [<CompiledName("hlg")>] Hlg
+                /// <summary>
+                /// sRGB HDR transfer function
+                /// </summary>
+                | [<CompiledName("srgb-hdr")>] SrgbHdr
+                /// <summary>
+                /// Linear HDR transfer function
+                /// </summary>
+                | [<CompiledName("linear-hdr")>] LinearHdr
+                /// <summary>
+                /// Custom transfer function
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+                /// <summary>
+                /// Custom HDR transfer function
+                /// </summary>
+                | [<CompiledName("custom-hdr")>] CustomHdr
+                /// <summary>
+                /// scRGB Linear 80 nits transfer function
+                /// </summary>
+                | [<CompiledName("scrgb-linear-80-nits")>] ScrgbLinear80Nits
+                /// <summary>
+                /// Invalid transfer function
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Primaries =
+                /// <summary>
+                /// BT709 primaries (also used for sRGB)
+                /// </summary>
+                | [<CompiledName("bt709")>] Bt709
+                /// <summary>
+                /// BT470M primaries
+                /// </summary>
+                | [<CompiledName("bt470m")>] Bt470m
+                /// <summary>
+                /// BT470BG primaries
+                /// </summary>
+                | [<CompiledName("bt470bg")>] Bt470bg
+                /// <summary>
+                /// SMPTE170M primaries
+                /// </summary>
+                | [<CompiledName("smpte170m")>] Smpte170m
+                /// <summary>
+                /// SMPTE240M primaries
+                /// </summary>
+                | [<CompiledName("smpte240m")>] Smpte240m
+                /// <summary>
+                /// Film primaries
+                /// </summary>
+                | [<CompiledName("film")>] Film
+                /// <summary>
+                /// BT2020 primaries
+                /// </summary>
+                | [<CompiledName("bt2020")>] Bt2020
+                /// <summary>
+                /// SMPTEST428-1 primaries
+                /// </summary>
+                | [<CompiledName("smptest428-1")>] Smptest4281
+                /// <summary>
+                /// SMPTEST431-2 primaries
+                /// </summary>
+                | [<CompiledName("smptest431-2")>] Smptest4312
+                /// <summary>
+                /// P3 primaries
+                /// </summary>
+                | [<CompiledName("p3")>] P3
+                /// <summary>
+                /// XYZ D50 primaries
+                /// </summary>
+                | [<CompiledName("xyz-d50")>] XyzD50
+                /// <summary>
+                /// Adobe RGB primaries
+                /// </summary>
+                | [<CompiledName("adobe-rgb")>] AdobeRgb
+                /// <summary>
+                /// Apple Generic RGB primaries
+                /// </summary>
+                | [<CompiledName("apple-generic-rgb")>] AppleGenericRgb
+                /// <summary>
+                /// Wide Gamut Color Spin primaries
+                /// </summary>
+                | [<CompiledName("wide-gamut-color-spin")>] WideGamutColorSpin
+                /// <summary>
+                /// EBU 3213-E primaries
+                /// </summary>
+                | [<CompiledName("ebu-3213-e")>] Ebu3213E
+                /// <summary>
+                /// Custom primaries
+                /// </summary>
+                | [<CompiledName("custom")>] Custom
+                /// <summary>
+                /// Invalid primaries
+                /// </summary>
+                | [<CompiledName("invalid")>] Invalid
+
+        module BrowserWindowConstructorOptions =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type BackgroundMaterial =
+                | [<CompiledName("auto")>] Auto
+                | [<CompiledName("none")>] None
+                | [<CompiledName("mica")>] Mica
+                | [<CompiledName("acrylic")>] Acrylic
+                | [<CompiledName("tabbed")>] Tabbed
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Vibrancy =
+                | [<CompiledName("appearance-based")>] AppearanceBased
+                | [<CompiledName("titlebar")>] Titlebar
+                | [<CompiledName("selection")>] Selection
+                | [<CompiledName("menu")>] Menu
+                | [<CompiledName("popover")>] Popover
+                | [<CompiledName("sidebar")>] Sidebar
+                | [<CompiledName("header")>] Header
+                | [<CompiledName("sheet")>] Sheet
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("hud")>] Hud
+                | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                | [<CompiledName("tooltip")>] Tooltip
+                | [<CompiledName("content")>] Content
+                | [<CompiledName("under-window")>] UnderWindow
+                | [<CompiledName("under-page")>] UnderPage
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TitleBarStyle =
+                /// <summary>
+                /// Results in the standard title bar for macOS or Windows respectively.
+                /// </summary>
+                | [<CompiledName("default")>] Default
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window. On macOS, the window still has the standard
+                /// window controls (“traffic lights”) in the top left. On Windows and Linux, when combined with <c>titleBarOverlay: true</c> it will activate
+                /// the Window Controls Overlay (see <c>titleBarOverlay</c> for more information), otherwise no window controls will be shown.
+                /// </summary>
+                | [<CompiledName("hidden")>] Hidden
+                /// <summary>
+                /// Results in a hidden title bar with an alternative look where the traffic light buttons are slightly more inset from
+                /// the window edge.
+                /// </summary>
+                | [<CompiledName("hiddenInset")>] HiddenInset
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window, the traffic light buttons will display when being
+                /// hovered over in the top left of the window. **Note:** This option is currently experimental.
+                /// </summary>
+                | [<CompiledName("customButtonsOnHover")>] CustomButtonsOnHover
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type VisualEffectState =
+                /// <summary>
+                /// The backdrop should automatically appear active when the window is active, and inactive when it is not. This is the
+                /// default.
+                /// </summary>
+                | [<CompiledName("followWindow")>] FollowWindow
+                /// <summary>
+                /// The backdrop should always appear active.
+                /// </summary>
+                | [<CompiledName("active")>] Active
+                /// <summary>
+                /// The backdrop should always appear inactive.
+                /// </summary>
+                | [<CompiledName("inactive")>] Inactive
+
+        module BaseWindowConstructorOptions =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type BackgroundMaterial =
+                | [<CompiledName("auto")>] Auto
+                | [<CompiledName("none")>] None
+                | [<CompiledName("mica")>] Mica
+                | [<CompiledName("acrylic")>] Acrylic
+                | [<CompiledName("tabbed")>] Tabbed
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Vibrancy =
+                | [<CompiledName("appearance-based")>] AppearanceBased
+                | [<CompiledName("titlebar")>] Titlebar
+                | [<CompiledName("selection")>] Selection
+                | [<CompiledName("menu")>] Menu
+                | [<CompiledName("popover")>] Popover
+                | [<CompiledName("sidebar")>] Sidebar
+                | [<CompiledName("header")>] Header
+                | [<CompiledName("sheet")>] Sheet
+                | [<CompiledName("window")>] Window
+                | [<CompiledName("hud")>] Hud
+                | [<CompiledName("fullscreen-ui")>] FullscreenUi
+                | [<CompiledName("tooltip")>] Tooltip
+                | [<CompiledName("content")>] Content
+                | [<CompiledName("under-window")>] UnderWindow
+                | [<CompiledName("under-page")>] UnderPage
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type TitleBarStyle =
+                /// <summary>
+                /// Results in the standard title bar for macOS or Windows respectively.
+                /// </summary>
+                | [<CompiledName("default")>] Default
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window. On macOS, the window still has the standard
+                /// window controls (“traffic lights”) in the top left. On Windows and Linux, when combined with <c>titleBarOverlay: true</c> it will activate
+                /// the Window Controls Overlay (see <c>titleBarOverlay</c> for more information), otherwise no window controls will be shown.
+                /// </summary>
+                | [<CompiledName("hidden")>] Hidden
+                /// <summary>
+                /// Results in a hidden title bar with an alternative look where the traffic light buttons are slightly more inset from
+                /// the window edge.
+                /// </summary>
+                | [<CompiledName("hiddenInset")>] HiddenInset
+                /// <summary>
+                /// Results in a hidden title bar and a full size content window, the traffic light buttons will display when being
+                /// hovered over in the top left of the window. **Note:** This option is currently experimental.
+                /// </summary>
+                | [<CompiledName("customButtonsOnHover")>] CustomButtonsOnHover
+
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type VisualEffectState =
+                /// <summary>
+                /// The backdrop should automatically appear active when the window is active, and inactive when it is not. This is the
+                /// default.
+                /// </summary>
+                | [<CompiledName("followWindow")>] FollowWindow
+                /// <summary>
+                /// The backdrop should always appear active.
+                /// </summary>
+                | [<CompiledName("active")>] Active
+                /// <summary>
+                /// The backdrop should always appear inactive.
+                /// </summary>
+                | [<CompiledName("inactive")>] Inactive
 
 module Renderer =
     module Constants =
@@ -5802,6 +7414,1886 @@ module Renderer =
 
             [<Emit("$0[1]")>]
             abstract member isMainFrame: bool with get, set
+
+        module ContextMenu =
+            [<JS.Pojo>]
+            type Params
+                /// <param name="x">x coordinate.</param>
+                /// <param name="y">y coordinate.</param>
+                /// <param name="linkURL">URL of the link that encloses the node the context menu was invoked on.</param>
+                /// <param name="linkText">Text associated with the link. May be an empty string if the contents of the link are an image.</param>
+                /// <param name="pageURL">URL of the top level page that the context menu was invoked on.</param>
+                /// <param name="frameURL">URL of the subframe that the context menu was invoked on.</param>
+                /// <param name="srcURL">Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio
+                /// and video.</param>
+                /// <param name="mediaType">Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or
+                /// <c>plugin</c>.</param>
+                /// <param name="hasImageContents">Whether the context menu was invoked on an image which has non-empty contents.</param>
+                /// <param name="isEditable">Whether the context is editable.</param>
+                /// <param name="selectionText">Text of the selection that the context menu was invoked on.</param>
+                /// <param name="titleText">Title text of the selection that the context menu was invoked on.</param>
+                /// <param name="altText">Alt text of the selection that the context menu was invoked on.</param>
+                /// <param name="suggestedFilename">Suggested filename to be used when saving file through 'Save Link As' option of context menu.</param>
+                /// <param name="selectionRect">Rect representing the coordinates in the document space of the selection.</param>
+                /// <param name="selectionStartOffset">Start position of the selection text.</param>
+                /// <param name="referrerPolicy">The referrer policy of the frame on which the menu is invoked.</param>
+                /// <param name="misspelledWord">The misspelled word under the cursor, if any.</param>
+                /// <param name="dictionarySuggestions">An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is
+                /// a misspelled word and spellchecker is enabled.</param>
+                /// <param name="frameCharset">The character encoding of the frame on which the menu was invoked.</param>
+                /// <param name="formControlType">The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>,
+                /// <c>input-datetime-local</c>, <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>,
+                /// <c>select-list</c>, <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,</param>
+                /// <param name="spellcheckEnabled">If the context is editable, whether or not spellchecking is enabled.</param>
+                /// <param name="menuSourceType">Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>,
+                /// or <c>adjustSelectionReset</c>.</param>
+                /// <param name="mediaFlags">The flags for the media element the context menu was invoked on.</param>
+                /// <param name="editFlags">These flags indicate whether the renderer believes it is able to perform the corresponding action.</param>
+                (
+                    x: int,
+                    y: int,
+                    linkURL: string,
+                    linkText: string,
+                    pageURL: string,
+                    frameURL: string,
+                    srcURL: string,
+                    mediaType: Renderer.Enums.WebviewTag.ContextMenu.Params.MediaType,
+                    hasImageContents: bool,
+                    isEditable: bool,
+                    selectionText: string,
+                    titleText: string,
+                    altText: string,
+                    suggestedFilename: string,
+                    selectionRect: Rectangle,
+                    selectionStartOffset: float,
+                    referrerPolicy: Referrer,
+                    misspelledWord: string,
+                    dictionarySuggestions: string[],
+                    frameCharset: string,
+                    formControlType: Renderer.Enums.WebviewTag.ContextMenu.Params.FormControlType,
+                    spellcheckEnabled: bool,
+                    menuSourceType: Renderer.Enums.WebviewTag.ContextMenu.Params.MenuSourceType,
+                    mediaFlags: Renderer.WebviewTag.ContextMenu.Params.MediaFlags,
+                    editFlags: Renderer.WebviewTag.ContextMenu.Params.EditFlags
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// x coordinate.
+                /// </summary>
+                [<Erase>]
+                member val x: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// y coordinate.
+                /// </summary>
+                [<Erase>]
+                member val y: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the link that encloses the node the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val linkURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Text associated with the link. May be an empty string if the contents of the link are an image.
+                /// </summary>
+                [<Erase>]
+                member val linkText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the top level page that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val pageURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// URL of the subframe that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val frameURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio and
+                /// video.
+                /// </summary>
+                [<Erase>]
+                member val srcURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or <c>plugin</c>.
+                /// </summary>
+                [<Erase>]
+                member val mediaType: Renderer.Enums.WebviewTag.ContextMenu.Params.MediaType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context menu was invoked on an image which has non-empty contents.
+                /// </summary>
+                [<Erase>]
+                member val hasImageContents: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context is editable.
+                /// </summary>
+                [<Erase>]
+                member val isEditable: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val selectionText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Title text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val titleText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Alt text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val altText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Suggested filename to be used when saving file through 'Save Link As' option of context menu.
+                /// </summary>
+                [<Erase>]
+                member val suggestedFilename: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Rect representing the coordinates in the document space of the selection.
+                /// </summary>
+                [<Erase>]
+                member val selectionRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Start position of the selection text.
+                /// </summary>
+                [<Erase>]
+                member val selectionStartOffset: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The referrer policy of the frame on which the menu is invoked.
+                /// </summary>
+                [<Erase>]
+                member val referrerPolicy: Referrer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The misspelled word under the cursor, if any.
+                /// </summary>
+                [<Erase>]
+                member val misspelledWord: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is a
+                /// misspelled word and spellchecker is enabled.
+                /// </summary>
+                [<Erase>]
+                member val dictionarySuggestions: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The character encoding of the frame on which the menu was invoked.
+                /// </summary>
+                [<Erase>]
+                member val frameCharset: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>, <c>input-datetime-local</c>,
+                /// <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>, <c>select-list</c>,
+                /// <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,
+                /// </summary>
+                [<Erase>]
+                member val formControlType: Renderer.Enums.WebviewTag.ContextMenu.Params.FormControlType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If the context is editable, whether or not spellchecking is enabled.
+                /// </summary>
+                [<Erase>]
+                member val spellcheckEnabled: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>, or
+                /// <c>adjustSelectionReset</c>.
+                /// </summary>
+                [<Erase>]
+                member val menuSourceType: Renderer.Enums.WebviewTag.ContextMenu.Params.MenuSourceType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The flags for the media element the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val mediaFlags: Renderer.WebviewTag.ContextMenu.Params.MediaFlags =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// These flags indicate whether the renderer believes it is able to perform the corresponding action.
+                /// </summary>
+                [<Erase>]
+                member val editFlags: Renderer.WebviewTag.ContextMenu.Params.EditFlags =
+                    Unchecked.defaultof<_> with get, set
+
+            module Params =
+                [<JS.Pojo>]
+                type EditFlags
+                    /// <param name="canUndo">Whether the renderer believes it can undo.</param>
+                    /// <param name="canRedo">Whether the renderer believes it can redo.</param>
+                    /// <param name="canCut">Whether the renderer believes it can cut.</param>
+                    /// <param name="canCopy">Whether the renderer believes it can copy.</param>
+                    /// <param name="canPaste">Whether the renderer believes it can paste.</param>
+                    /// <param name="canDelete">Whether the renderer believes it can delete.</param>
+                    /// <param name="canSelectAll">Whether the renderer believes it can select all.</param>
+                    /// <param name="canEditRichly">Whether the renderer believes it can edit text richly.</param>
+                    (
+                        canUndo: bool,
+                        canRedo: bool,
+                        canCut: bool,
+                        canCopy: bool,
+                        canPaste: bool,
+                        canDelete: bool,
+                        canSelectAll: bool,
+                        canEditRichly: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the renderer believes it can undo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canUndo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can redo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRedo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can cut.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCut: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can copy.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCopy: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can paste.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPaste: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can delete.
+                    /// </summary>
+                    [<Erase>]
+                    member val canDelete: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can select all.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSelectAll: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can edit text richly.
+                    /// </summary>
+                    [<Erase>]
+                    member val canEditRichly: bool = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type MediaFlags
+                    /// <param name="inError">Whether the media element has crashed.</param>
+                    /// <param name="isPaused">Whether the media element is paused.</param>
+                    /// <param name="isMuted">Whether the media element is muted.</param>
+                    /// <param name="hasAudio">Whether the media element has audio.</param>
+                    /// <param name="isLooping">Whether the media element is looping.</param>
+                    /// <param name="isControlsVisible">Whether the media element's controls are visible.</param>
+                    /// <param name="canToggleControls">Whether the media element's controls are toggleable.</param>
+                    /// <param name="canPrint">Whether the media element can be printed.</param>
+                    /// <param name="canSave">Whether or not the media element can be downloaded.</param>
+                    /// <param name="canShowPictureInPicture">Whether the media element can show picture-in-picture.</param>
+                    /// <param name="isShowingPictureInPicture">Whether the media element is currently showing picture-in-picture.</param>
+                    /// <param name="canRotate">Whether the media element can be rotated.</param>
+                    /// <param name="canLoop">Whether the media element can be looped.</param>
+                    (
+                        inError: bool,
+                        isPaused: bool,
+                        isMuted: bool,
+                        hasAudio: bool,
+                        isLooping: bool,
+                        isControlsVisible: bool,
+                        canToggleControls: bool,
+                        canPrint: bool,
+                        canSave: bool,
+                        canShowPictureInPicture: bool,
+                        isShowingPictureInPicture: bool,
+                        canRotate: bool,
+                        canLoop: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the media element has crashed.
+                    /// </summary>
+                    [<Erase>]
+                    member val inError: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is paused.
+                    /// </summary>
+                    [<Erase>]
+                    member val isPaused: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is muted.
+                    /// </summary>
+                    [<Erase>]
+                    member val isMuted: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element has audio.
+                    /// </summary>
+                    [<Erase>]
+                    member val hasAudio: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is looping.
+                    /// </summary>
+                    [<Erase>]
+                    member val isLooping: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are visible.
+                    /// </summary>
+                    [<Erase>]
+                    member val isControlsVisible: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are toggleable.
+                    /// </summary>
+                    [<Erase>]
+                    member val canToggleControls: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be printed.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPrint: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether or not the media element can be downloaded.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSave: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can show picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val canShowPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is currently showing picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val isShowingPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be rotated.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRotate: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be looped.
+                    /// </summary>
+                    [<Erase>]
+                    member val canLoop: bool = Unchecked.defaultof<_> with get, set
+
+        module FoundInPage =
+            [<JS.Pojo>]
+            type Result
+                /// <param name="requestId"></param>
+                /// <param name="activeMatchOrdinal">Position of the active match.</param>
+                /// <param name="matches">Number of Matches.</param>
+                /// <param name="selectionArea">Coordinates of first match region.</param>
+                /// <param name="finalUpdate"></param>
+                (requestId: int, activeMatchOrdinal: int, matches: int, selectionArea: Rectangle, finalUpdate: bool) =
+                class
+                end
+
+                [<Erase>]
+                member val requestId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Position of the active match.
+                /// </summary>
+                [<Erase>]
+                member val activeMatchOrdinal: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Number of Matches.
+                /// </summary>
+                [<Erase>]
+                member val matches: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Coordinates of first match region.
+                /// </summary>
+                [<Erase>]
+                member val selectionArea: Rectangle = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val finalUpdate: bool = Unchecked.defaultof<_> with get, set
+
+        module PrintToPDF =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="landscape">Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.</param>
+                /// <param name="displayHeaderFooter">Whether to display header and footer. Defaults to false.</param>
+                /// <param name="printBackground">Whether to print background graphics. Defaults to false.</param>
+                /// <param name="scale">Scale of the webpage rendering. Defaults to 1.</param>
+                /// <param name="pageSize">Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>,
+                /// <c>Ledger</c>, or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="pageRanges">Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.</param>
+                /// <param name="headerTemplate">HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values
+                /// into them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages
+                /// in the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.</param>
+                /// <param name="footerTemplate">HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.</param>
+                /// <param name="preferCSSPageSize">Whether or not to prefer page size as defined by css. Defaults to false, in which case the content
+                /// will be scaled to fit the paper size.</param>
+                /// <param name="generateTaggedPDF">Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated
+                /// PDF may not adhere fully to PDF/UA and WCAG standards.</param>
+                /// <param name="generateDocumentOutline">Whether or not to generate a PDF document outline from content headers. Defaults to false.</param>
+                (
+                    ?landscape: bool,
+                    ?displayHeaderFooter: bool,
+                    ?printBackground: bool,
+                    ?scale: float,
+                    ?pageSize: U2<Renderer.Enums.WebviewTag.PrintToPDF.Options.PageSize, Size>,
+                    ?margins: Renderer.WebviewTag.PrintToPDF.Options.Margins,
+                    ?pageRanges: string,
+                    ?headerTemplate: string,
+                    ?footerTemplate: string,
+                    ?preferCSSPageSize: bool,
+                    ?generateTaggedPDF: bool,
+                    ?generateDocumentOutline: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to display header and footer. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val displayHeaderFooter: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to print background graphics. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Scale of the webpage rendering. Defaults to 1.
+                /// </summary>
+                [<Erase>]
+                member val scale: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>, <c>Ledger</c>,
+                /// or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Renderer.Enums.WebviewTag.PrintToPDF.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Renderer.WebviewTag.PrintToPDF.Options.Margins =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into
+                /// them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages in
+                /// the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.
+                /// </summary>
+                [<Erase>]
+                member val headerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.
+                /// </summary>
+                [<Erase>]
+                member val footerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to prefer page size as defined by css. Defaults to false, in which case the content will
+                /// be scaled to fit the paper size.
+                /// </summary>
+                [<Erase>]
+                member val preferCSSPageSize: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated PDF
+                /// may not adhere fully to PDF/UA and WCAG standards.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateTaggedPDF: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a PDF document outline from content headers. Defaults to false.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateDocumentOutline: bool = Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="top">Top margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="bottom">Bottom margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="left">Left margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="right">Right margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    (?top: float, ?bottom: float, ?left: float, ?right: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Top margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Bottom margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Left margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Right margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+        module Print =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="silent">Don't ask user for print settings. Default is <c>false</c>.</param>
+                /// <param name="printBackground">Prints the background color and image of the web page. Default is <c>false</c>.</param>
+                /// <param name="deviceName">Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB'
+                /// and not 'Brother QL-820NWB'.</param>
+                /// <param name="color">Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="landscape">Whether the web page should be printed in landscape mode. Default is <c>false</c>.</param>
+                /// <param name="scaleFactor">The scale factor of the web page.</param>
+                /// <param name="pagesPerSheet">The number of pages to print per page sheet.</param>
+                /// <param name="collate">Whether the web page should be collated.</param>
+                /// <param name="copies">The number of copies of the web page to print.</param>
+                /// <param name="pageRanges">The page range to print.</param>
+                /// <param name="duplexMode">Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.</param>
+                /// <param name="dpi"></param>
+                /// <param name="header">string to be printed as page header.</param>
+                /// <param name="footer">string to be printed as page footer.</param>
+                /// <param name="pageSize">Specify page size of the printed document. Can be <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c> or an Object containing
+                /// <c>height</c> in microns.</param>
+                (
+                    ?silent: bool,
+                    ?printBackground: bool,
+                    ?deviceName: string,
+                    ?color: bool,
+                    ?margins: Renderer.WebviewTag.Print.Options.Margins,
+                    ?landscape: bool,
+                    ?scaleFactor: float,
+                    ?pagesPerSheet: float,
+                    ?collate: bool,
+                    ?copies: float,
+                    ?pageRanges: Renderer.WebviewTag.Print.Options.PageRanges[],
+                    ?duplexMode: Renderer.Enums.WebviewTag.Print.Options.DuplexMode,
+                    ?dpi: Record<string, float>,
+                    ?header: string,
+                    ?footer: string,
+                    ?pageSize: U2<Renderer.Enums.WebviewTag.Print.Options.PageSize, Size>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Don't ask user for print settings. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val silent: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Prints the background color and image of the web page. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB' and
+                /// not 'Brother QL-820NWB'.
+                /// </summary>
+                [<Erase>]
+                member val deviceName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val color: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Renderer.WebviewTag.Print.Options.Margins = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be printed in landscape mode. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The scale factor of the web page.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of pages to print per page sheet.
+                /// </summary>
+                [<Erase>]
+                member val pagesPerSheet: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be collated.
+                /// </summary>
+                [<Erase>]
+                member val collate: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of copies of the web page to print.
+                /// </summary>
+                [<Erase>]
+                member val copies: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The page range to print.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: Renderer.WebviewTag.Print.Options.PageRanges[] =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.
+                /// </summary>
+                [<Erase>]
+                member val duplexMode: Renderer.Enums.WebviewTag.Print.Options.DuplexMode =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val dpi: Record<string, float> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page header.
+                /// </summary>
+                [<Erase>]
+                member val header: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page footer.
+                /// </summary>
+                [<Erase>]
+                member val footer: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the printed document. Can be <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c> or an Object containing <c>height</c>
+                /// in microns.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Renderer.Enums.WebviewTag.Print.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type PageRanges
+                    /// <param name="from">Index of the first page to print (0-based).</param>
+                    /// <param name="to">Index of the last page to print (inclusive) (0-based).</param>
+                    (from: float, ``to``: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Index of the first page to print (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val from: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Index of the last page to print (inclusive) (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val ``to``: float = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="marginType">Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>,
+                    /// <c>left</c>, and <c>right</c>.</param>
+                    /// <param name="top">The top margin of the printed web page, in pixels.</param>
+                    /// <param name="bottom">The bottom margin of the printed web page, in pixels.</param>
+                    /// <param name="left">The left margin of the printed web page, in pixels.</param>
+                    /// <param name="right">The right margin of the printed web page, in pixels.</param>
+                    (
+                        ?marginType: Renderer.Enums.WebviewTag.Print.Options.Margins.MarginType,
+                        ?top: float,
+                        ?bottom: float,
+                        ?left: float,
+                        ?right: float
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>, <c>left</c>,
+                    /// and <c>right</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val marginType: Renderer.Enums.WebviewTag.Print.Options.Margins.MarginType =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The top margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The bottom margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The left margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The right margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+        module FindInPage =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="forward">Whether to search forward or backward, defaults to <c>true</c>.</param>
+                /// <param name="findNext">Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c>
+                /// for follow-up requests. Defaults to <c>false</c>.</param>
+                /// <param name="matchCase">Whether search should be case-sensitive, defaults to <c>false</c>.</param>
+                (?forward: bool, ?findNext: bool, ?matchCase: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to search forward or backward, defaults to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val forward: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c> for
+                /// follow-up requests. Defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val findNext: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether search should be case-sensitive, defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val matchCase: bool = Unchecked.defaultof<_> with get, set
+
+        module AdjustSelection =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="start">Amount to shift the start index of the current selection.</param>
+                /// <param name="end">Amount to shift the end index of the current selection.</param>
+                (?start: float, ?``end``: float) =
+                class
+                end
+
+                /// <summary>
+                /// Amount to shift the start index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val start: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Amount to shift the end index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val ``end``: float = Unchecked.defaultof<_> with get, set
+
+        module DownloadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="headers">HTTP request headers.</param>
+                (?headers: Record<string, string>) =
+                class
+                end
+
+                /// <summary>
+                /// HTTP request headers.
+                /// </summary>
+                [<Erase>]
+                member val headers: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+        module LoadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="httpReferrer">An HTTP Referrer url.</param>
+                /// <param name="userAgent">A user agent originating the request.</param>
+                /// <param name="extraHeaders">Extra headers separated by "\n"</param>
+                /// <param name="postData"></param>
+                /// <param name="baseURLForDataURL">Base url (with trailing path separator) for files to be loaded by the data url. This is needed only
+                /// if the specified <c>url</c> is a data url and needs to load other files.</param>
+                (
+                    ?httpReferrer: U2<string, Referrer>,
+                    ?userAgent: string,
+                    ?extraHeaders: string,
+                    ?postData: U2<UploadRawData, UploadFile>[],
+                    ?baseURLForDataURL: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// An HTTP Referrer url.
+                /// </summary>
+                [<Erase>]
+                member val httpReferrer: U2<string, Referrer> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// A user agent originating the request.
+                /// </summary>
+                [<Erase>]
+                member val userAgent: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra headers separated by "\n"
+                /// </summary>
+                [<Erase>]
+                member val extraHeaders: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val postData: U2<UploadRawData, UploadFile>[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Base url (with trailing path separator) for files to be loaded by the data url. This is needed only if
+                /// the specified <c>url</c> is a data url and needs to load other files.
+                /// </summary>
+                [<Erase>]
+                member val baseURLForDataURL: string = Unchecked.defaultof<_> with get, set
+
+    module Shell =
+        module OpenExternal =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="activate">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> to bring the
+                /// opened application to the foreground. The default is <c>true</c>.</param>
+                /// <param name="workingDirectory">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The working directory.</param>
+                /// <param name="logUsage">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || Indicates a user initiated
+                /// launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ?activate: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?workingDirectory: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?logUsage: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// <c>true</c> to bring the opened application to the foreground. The default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val activate: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The working directory.
+                /// </summary>
+                [<Erase>]
+                member val workingDirectory: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// Indicates a user initiated launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val logUsage: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+    module Process =
+        [<JS.Pojo>]
+        type GetSystemMemoryInfo
+            /// <param name="total">The total amount of physical memory in Kilobytes available to the system.</param>
+            /// <param name="free">The total amount of memory not being used by applications or disk cache.</param>
+            /// <param name="fileBacked">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that currently has been paged out to storage. Includes memory for file caches, network buffers, and other system services.</param>
+            /// <param name="purgeable">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that is marked as "purgeable". The system can reclaim it if memory pressure increases.</param>
+            /// <param name="swapTotal">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The total amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            /// <param name="swapFree">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The free amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            (
+                total: int,
+                free: int
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                fileBacked: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                purgeable: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapTotal: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapFree: int
+                #endif
+
+            ) =
+            class
+            end
+
+            /// <summary>
+            /// The total amount of physical memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// The total amount of memory not being used by applications or disk cache.
+            /// </summary>
+            [<Erase>]
+            member val free: int = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that currently has been paged out to storage. Includes memory for file caches, network buffers, and
+            /// other system services.
+            /// </summary>
+            [<Erase>]
+            member val fileBacked: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that is marked as "purgeable". The system can reclaim it if memory pressure increases.
+            /// </summary>
+            [<Erase>]
+            member val purgeable: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The total amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapTotal: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The free amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapFree: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        [<JS.Pojo>]
+        type GetBlinkMemoryInfo
+            /// <param name="allocated">Size of all allocated objects in Kilobytes.</param>
+            /// <param name="total">Total allocated space in Kilobytes.</param>
+            (allocated: int, total: int) =
+            class
+            end
+
+            /// <summary>
+            /// Size of all allocated objects in Kilobytes.
+            /// </summary>
+            [<Erase>]
+            member val allocated: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Total allocated space in Kilobytes.
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type GetHeapStatistics
+            /// <param name="totalHeapSize"></param>
+            /// <param name="totalHeapSizeExecutable"></param>
+            /// <param name="totalPhysicalSize"></param>
+            /// <param name="totalAvailableSize"></param>
+            /// <param name="usedHeapSize"></param>
+            /// <param name="heapSizeLimit"></param>
+            /// <param name="mallocedMemory"></param>
+            /// <param name="peakMallocedMemory"></param>
+            /// <param name="doesZapGarbage"></param>
+            (
+                totalHeapSize: int,
+                totalHeapSizeExecutable: int,
+                totalPhysicalSize: int,
+                totalAvailableSize: int,
+                usedHeapSize: int,
+                heapSizeLimit: int,
+                mallocedMemory: int,
+                peakMallocedMemory: int,
+                doesZapGarbage: bool
+            ) =
+            class
+            end
+
+            [<Erase>]
+            member val totalHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalHeapSizeExecutable: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalPhysicalSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalAvailableSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val usedHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val heapSizeLimit: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val mallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val peakMallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val doesZapGarbage: bool = Unchecked.defaultof<_> with get, set
+
+    module NativeImage =
+        module AddRepresentation =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">The scale factor to add the image representation for.</param>
+                /// <param name="width">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="height">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="buffer">The buffer containing the raw image data.</param>
+                /// <param name="dataURL">The data URL containing either a base 64 encoded PNG or JPEG image.</param>
+                (?scaleFactor: float, ?width: int, ?height: int, ?buffer: Buffer, ?dataURL: string) =
+                class
+                end
+
+                /// <summary>
+                /// The scale factor to add the image representation for.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The buffer containing the raw image data.
+                /// </summary>
+                [<Erase>]
+                member val buffer: Buffer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The data URL containing either a base 64 encoded PNG or JPEG image.
+                /// </summary>
+                [<Erase>]
+                member val dataURL: string = Unchecked.defaultof<_> with get, set
+
+        module Resize =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Defaults to the image's width.</param>
+                /// <param name="height">Defaults to the image's height.</param>
+                /// <param name="quality">The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These
+                /// values express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU)
+                /// of the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a
+                /// given platform.</param>
+                (?width: int, ?height: int, ?quality: Renderer.Enums.NativeImage.Resize.Options.Quality) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to the image's width.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to the image's height.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These values
+                /// express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU) of
+                /// the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a given
+                /// platform.
+                /// </summary>
+                [<Erase>]
+                member val quality: Renderer.Enums.NativeImage.Resize.Options.Quality =
+                    Unchecked.defaultof<_> with get, set
+
+        module GetBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToDataURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToPNG =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBuffer =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Required for bitmap buffers.</param>
+                /// <param name="height">Required for bitmap buffers.</param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?width: int, ?height: int, ?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width"></param>
+                /// <param name="height"></param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (width: int, height: int, ?scaleFactor: float) =
+                class
+                end
+
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+    module CrashReporter =
+        module Start =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="submitURL">URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.</param>
+                /// <param name="productName">Defaults to <c>app.name</c>.</param>
+                /// <param name="companyName">Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.</param>
+                /// <param name="uploadToServer">Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in
+                /// the crashes directory, but not uploaded. Default is <c>true</c>.</param>
+                /// <param name="ignoreSystemCrashHandler">If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is
+                /// <c>false</c>.</param>
+                /// <param name="rateLimit">⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌ || If true, limit the
+                /// number of crashes uploaded to 1/hour. Default is <c>false</c>.</param>
+                /// <param name="compress">If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.</param>
+                /// <param name="extra">Extra string key/value annotations that will be sent along with crash reports that are generated in the main process.
+                /// Only string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters
+                /// to crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.</param>
+                /// <param name="globalExtra">Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations
+                /// cannot be changed once the crash reporter has been started. If a key is present in both the global extra
+                /// parameters and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version
+                /// are included, as well as the Electron version.</param>
+                (
+                    ?submitURL: string,
+                    ?productName: string,
+                    ?companyName: string,
+                    ?uploadToServer: bool,
+                    ?ignoreSystemCrashHandler: bool
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                    ,
+                    ?rateLimit: bool
+                    #endif
+                    ,
+                    ?compress: bool,
+                    ?extra: Record<string, string>,
+                    ?globalExtra: Record<string, string>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val submitURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to <c>app.name</c>.
+                /// </summary>
+                [<Erase>]
+                member val productName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.
+                /// </summary>
+                [<Erase; System.Obsolete>]
+                member val companyName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in the
+                /// crashes directory, but not uploaded. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val uploadToServer: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val ignoreSystemCrashHandler: bool = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// If true, limit the number of crashes uploaded to 1/hour. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val rateLimit: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                /// <summary>
+                /// If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val compress: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with crash reports that are generated in the main process. Only
+                /// string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters to
+                /// crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.
+                /// </summary>
+                [<Erase>]
+                member val extra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations cannot
+                /// be changed once the crash reporter has been started. If a key is present in both the global extra parameters
+                /// and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version are
+                /// included, as well as the Electron version.
+                /// </summary>
+                [<Erase>]
+                member val globalExtra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+    module ContextBridge =
+        module ExecuteInMainWorld =
+            [<JS.Pojo>]
+            type ExecutionScript
+                /// <param name="func">A JavaScript function to execute. This function will be serialized which means that any bound parameters and execution context
+                /// will be lost.</param>
+                /// <param name="args">An array of arguments to pass to the provided function. These arguments will be copied between worlds in accordance
+                /// with the table of supported types.</param>
+                (func: FSharpFunc<_,_>, ?args: obj[]) =
+                class
+                end
+
+                /// <summary>
+                /// A JavaScript function to execute. This function will be serialized which means that any bound parameters and execution context will
+                /// be lost.
+                /// </summary>
+                [<Erase>]
+                member val func: FSharpFunc<_,_> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// An array of arguments to pass to the provided function. These arguments will be copied between worlds in accordance with
+                /// the table of supported types.
+                /// </summary>
+                [<Erase>]
+                member val args: obj[] = Unchecked.defaultof<_> with get, set
+
+    module Clipboard =
+        module Write =
+            [<JS.Pojo>]
+            type Data
+                /// <param name="text"></param>
+                /// <param name="html"></param>
+                /// <param name="image"></param>
+                /// <param name="rtf"></param>
+                /// <param name="bookmark">The title of the URL at <c>text</c>.</param>
+                (?text: string, ?html: string, ?image: Renderer.NativeImage, ?rtf: string, ?bookmark: string) =
+                class
+                end
+
+                [<Erase>]
+                member val text: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val html: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val image: Renderer.NativeImage = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val rtf: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The title of the URL at <c>text</c>.
+                /// </summary>
+                [<Erase>]
+                member val bookmark: string = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type ReadBookmark
+            /// <param name="title"></param>
+            /// <param name="url"></param>
+            (title: string, url: string) =
+            class
+            end
+
+            [<Erase>]
+            member val title: string = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val url: string = Unchecked.defaultof<_> with get, set
+
+    module WebFrame =
+        [<JS.Pojo>]
+        type GetResourceUsage
+            /// <param name="images"></param>
+            /// <param name="scripts"></param>
+            /// <param name="cssStyleSheets"></param>
+            /// <param name="xslStyleSheets"></param>
+            /// <param name="fonts"></param>
+            /// <param name="other"></param>
+            (
+                images: MemoryUsageDetails,
+                scripts: MemoryUsageDetails,
+                cssStyleSheets: MemoryUsageDetails,
+                xslStyleSheets: MemoryUsageDetails,
+                fonts: MemoryUsageDetails,
+                other: MemoryUsageDetails
+            ) =
+            class
+            end
+
+            [<Erase>]
+            member val images: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val scripts: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val cssStyleSheets: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val xslStyleSheets: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val fonts: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val other: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+        module SetIsolatedWorldInfo =
+            [<JS.Pojo>]
+            type Info
+                /// <param name="securityOrigin">Security origin for the isolated world.</param>
+                /// <param name="csp">Content Security Policy for the isolated world.</param>
+                /// <param name="name">Name for isolated world. Useful in devtools.</param>
+                (?securityOrigin: string, ?csp: string, ?name: string) =
+                class
+                end
+
+                /// <summary>
+                /// Security origin for the isolated world.
+                /// </summary>
+                [<Erase>]
+                member val securityOrigin: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Content Security Policy for the isolated world.
+                /// </summary>
+                [<Erase>]
+                member val csp: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Name for isolated world. Useful in devtools.
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+
+        module InsertCSS =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="cssOrigin">Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.</param>
+                (?cssOrigin: Renderer.Enums.WebFrame.InsertCSS.Options.CssOrigin) =
+                class
+                end
+
+                /// <summary>
+                /// Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.
+                /// </summary>
+                [<Erase>]
+                member val cssOrigin: Renderer.Enums.WebFrame.InsertCSS.Options.CssOrigin =
+                    Unchecked.defaultof<_> with get, set
+
+        module ExecuteJavaScriptInIsolatedWorld =
+            /// <param name="result"></param>
+            /// <param name="error"></param>
+            type Callback = delegate of result: obj * error: Error -> unit
+
+        module ExecuteJavaScript =
+            /// <param name="result"></param>
+            /// <param name="error"></param>
+            type Callback = delegate of result: obj * error: Error -> unit
+
+        module SetSpellCheckProvider =
+            [<JS.Pojo>]
+            type Provider
+                /// <param name="spellCheck"></param>
+                (spellCheck: string[] * string[] -> unit -> unit) =
+                class
+                end
+
+                [<Erase>]
+                member val spellCheck: string[] * string[] -> unit -> unit = Unchecked.defaultof<_> with get, set
+
+            module Provider =
+                /// <param name="words"></param>
+                /// <param name="callback"></param>
+                type SpellCheck = delegate of words: string[] * callback: (string[] -> unit) -> unit
+
+    module IpcRenderer =
+        module RemoveListener =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module AddListener =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Once =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Off =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module On =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+    module Enums =
+        module WebviewTag =
+            module ContextMenu =
+                module Params =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MenuSourceType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("mouse")>] Mouse
+                        | [<CompiledName("keyboard")>] Keyboard
+                        | [<CompiledName("touch")>] Touch
+                        | [<CompiledName("touchMenu")>] TouchMenu
+                        | [<CompiledName("longPress")>] LongPress
+                        | [<CompiledName("longTap")>] LongTap
+                        | [<CompiledName("touchHandle")>] TouchHandle
+                        | [<CompiledName("stylus")>] Stylus
+                        | [<CompiledName("adjustSelection")>] AdjustSelection
+                        | [<CompiledName("adjustSelectionReset")>] AdjustSelectionReset
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type FormControlType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("button-button")>] ButtonButton
+                        | [<CompiledName("field-set")>] FieldSet
+                        | [<CompiledName("input-button")>] InputButton
+                        | [<CompiledName("input-checkbox")>] InputCheckbox
+                        | [<CompiledName("input-color")>] InputColor
+                        | [<CompiledName("input-date")>] InputDate
+                        | [<CompiledName("input-datetime-local")>] InputDatetimeLocal
+                        | [<CompiledName("input-email")>] InputEmail
+                        | [<CompiledName("input-file")>] InputFile
+                        | [<CompiledName("input-hidden")>] InputHidden
+                        | [<CompiledName("input-image")>] InputImage
+                        | [<CompiledName("input-month")>] InputMonth
+                        | [<CompiledName("input-number")>] InputNumber
+                        | [<CompiledName("input-password")>] InputPassword
+                        | [<CompiledName("input-radio")>] InputRadio
+                        | [<CompiledName("input-range")>] InputRange
+                        | [<CompiledName("input-reset")>] InputReset
+                        | [<CompiledName("input-search")>] InputSearch
+                        | [<CompiledName("input-submit")>] InputSubmit
+                        | [<CompiledName("input-telephone")>] InputTelephone
+                        | [<CompiledName("input-text")>] InputText
+                        | [<CompiledName("input-time")>] InputTime
+                        | [<CompiledName("input-url")>] InputUrl
+                        | [<CompiledName("input-week")>] InputWeek
+                        | [<CompiledName("output")>] Output
+                        | [<CompiledName("reset-button")>] ResetButton
+                        | [<CompiledName("select-list")>] SelectList
+                        | [<CompiledName("select-multiple")>] SelectMultiple
+                        | [<CompiledName("select-one")>] SelectOne
+                        | [<CompiledName("submit-button")>] SubmitButton
+                        | [<CompiledName("text-area")>] TextArea
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MediaType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("image")>] Image
+                        | [<CompiledName("audio")>] Audio
+                        | [<CompiledName("video")>] Video
+                        | [<CompiledName("canvas")>] Canvas
+                        | [<CompiledName("file")>] File
+                        | [<CompiledName("plugin")>] Plugin
+
+            module PrintToPDF =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A0")>] A0
+                        | [<CompiledName("A1")>] A1
+                        | [<CompiledName("A2")>] A2
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("A6")>] A6
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+                        | [<CompiledName("Ledger")>] Ledger
+
+            module Print =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type DuplexMode =
+                        | [<CompiledName("simplex")>] Simplex
+                        | [<CompiledName("shortEdge")>] ShortEdge
+                        | [<CompiledName("longEdge")>] LongEdge
+
+                    module Margins =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type MarginType =
+                            | [<CompiledName("default")>] Default
+                            | [<CompiledName("none")>] None
+                            | [<CompiledName("printableArea")>] PrintableArea
+                            | [<CompiledName("custom")>] Custom
+
+            module StopFindInPage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Action =
+                    /// <summary>
+                    /// Clear the selection.
+                    /// </summary>
+                    | [<CompiledName("clearSelection")>] ClearSelection
+                    /// <summary>
+                    /// Translate the selection into a normal selection.
+                    /// </summary>
+                    | [<CompiledName("keepSelection")>] KeepSelection
+                    /// <summary>
+                    /// Focus and click the selection node.
+                    /// </summary>
+                    | [<CompiledName("activateSelection")>] ActivateSelection
+
+        module WebFrame =
+            module InsertCSS =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CssOrigin =
+                        | [<CompiledName("user")>] User
+                        | [<CompiledName("author")>] Author
+
+        module UtilityProcess =
+            module Error =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type = | [<CompiledName("FatalError")>] FatalError
+
+        module Shell =
+            module WriteShortcutLink =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Operation =
+                    /// <summary>
+                    /// Creates a new shortcut, overwriting if necessary.
+                    /// </summary>
+                    | [<CompiledName("create")>] Create
+                    /// <summary>
+                    /// Updates specified properties only on an existing shortcut.
+                    /// </summary>
+                    | [<CompiledName("update")>] Update
+                    /// <summary>
+                    /// Overwrites an existing shortcut, fails if the shortcut doesn't exist.
+                    /// </summary>
+                    | [<CompiledName("replace")>] Replace
+
+        module Process =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// The main process
+                /// </summary>
+                | [<CompiledName("browser")>] Browser
+                /// <summary>
+                /// A renderer process
+                /// </summary>
+                | [<CompiledName("renderer")>] Renderer
+                /// <summary>
+                /// In a service worker
+                /// </summary>
+                | [<CompiledName("service-worker")>] ServiceWorker
+                /// <summary>
+                /// In a web worker
+                /// </summary>
+                | [<CompiledName("worker")>] Worker
+                /// <summary>
+                /// In a node process launched as a service
+                /// </summary>
+                | [<CompiledName("utility")>] Utility
+
+        module NativeImage =
+            module Resize =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Quality =
+                        | [<CompiledName("good")>] Good
+                        | [<CompiledName("better")>] Better
+                        | [<CompiledName("best")>] Best
+
+        module Clipboard =
+            module Write =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBuffer =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Has =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module AvailableFormats =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Clear =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBookmark =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
 
     /// <summary>
     /// <para>⚠ Process Availability: Main ❌ | Renderer ✔ | Utility ✔ | Exported ❌</para>
@@ -7585,7 +11077,7 @@ module Renderer =
         /// the error parameter is second.</param>
         [<Erase>]
         static member inline executeJavaScript
-            (code: string, ?userGesture: bool, ?callback: Renderer.WebFrame.ExecuteJavaScript.Callback)
+            (code: string, ?userGesture: bool, ?callback: obj * Error -> unit)
             : Promise<obj> =
             Unchecked.defaultof<_>
 
@@ -7604,12 +11096,8 @@ module Renderer =
         /// method, the error parameter is second.</param>
         [<Erase>]
         static member inline executeJavaScriptInIsolatedWorld
-            (
-                worldId: int,
-                scripts: WebSource[],
-                ?userGesture: bool,
-                ?callback: Renderer.WebFrame.ExecuteJavaScriptInIsolatedWorld.Callback
-            ) : Promise<obj> =
+            (worldId: int, scripts: WebSource[], ?userGesture: bool, ?callback: obj * Error -> unit)
+            : Promise<obj> =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8500,7 +11988,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline on(channel: string, listener: Renderer.IpcRenderer.On.Listener) : unit =
+        static member inline on(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8509,7 +11997,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline off(channel: string, listener: Renderer.IpcRenderer.Off.Listener) : unit =
+        static member inline off(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8519,7 +12007,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline once(channel: string, listener: Renderer.IpcRenderer.Once.Listener) : unit =
+        static member inline once(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8528,7 +12016,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline addListener(channel: string, listener: Renderer.IpcRenderer.AddListener.Listener) : unit =
+        static member inline addListener(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -8537,9 +12025,7 @@ module Renderer =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline removeListener
-            (channel: string, listener: Renderer.IpcRenderer.RemoveListener.Listener)
-            : unit =
+        static member inline removeListener(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -9018,6 +12504,89 @@ module Utility =
             [<Literal; Erase>]
             let Error = "error"
 
+    module ClientRequest =
+        /// <summary>
+        /// Emitted when the server returns a redirect response (e.g. 301 Moved Permanently). Calling <c>request.followRedirect</c> will continue with the redirection.
+        /// If this event is handled, <c>request.followRedirect</c> must be called **synchronously**, otherwise the request will be cancelled.
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnRedirect =
+            [<Emit("$0[0]")>]
+            abstract member statusCode: int with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member method: string with get, set
+
+            [<Emit("$0[2]")>]
+            abstract member redirectUrl: string with get, set
+
+            [<Emit("$0[3]")>]
+            abstract member responseHeaders: Record<string, string[]> with get, set
+
+        /// <summary>
+        /// Emitted when an authenticating proxy is asking for user credentials.<br/><br/>The <c>callback</c> function is expected to be called back with user
+        /// credentials:<br/><br/>* <c>username</c> string<br/>* <c>password</c> string<br/><br/>Providing empty credentials will cancel the request and report an authentication error on the response object:
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnLogin =
+            [<Emit("$0[0]")>]
+            abstract member authInfo: Utility.ClientRequest.Login.AuthInfo with get, set
+
+            [<Emit("$0[1]")>]
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
+
+    module SystemPreferences =
+        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+        /// <summary>
+        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+        /// </summary>
+        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnAccentColorChanged =
+            [<Emit("$0[0]")>]
+            abstract member event: Event with get, set
+
+            /// <summary>
+            /// The new RGBA color the user assigned to be their system accent color.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member newColor: string with get, set
+        #endif
+
+
+    module UtilityProcess =
+        /// <summary>
+        /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
+        /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
+        /// </summary>
+        [<Experimental("Indicated to be Experimental by Electron");
+          System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
+          AllowNullLiteral;
+          Interface>]
+        type IOnError =
+            /// <summary>
+            /// Type of error. One of the following values:
+            /// </summary>
+            [<Emit("$0[0]")>]
+            abstract member ``type``: Utility.Enums.UtilityProcess.Error.Type with get, set
+
+            /// <summary>
+            /// Source location from where the error originated.
+            /// </summary>
+            [<Emit("$0[1]")>]
+            abstract member location: string with get, set
+
+            /// <summary>
+            /// <c>Node.js diagnostic report</c>.
+            /// </summary>
+            [<Emit("$0[2]")>]
+            abstract member report: string with get, set
+
     module WebviewTag =
         /// <summary>
         /// Emitted when 'Search' is selected for text in its context menu.
@@ -9243,88 +12812,1884 @@ module Utility =
             [<Emit("$0[1]")>]
             abstract member isMainFrame: bool with get, set
 
-    module ClientRequest =
-        /// <summary>
-        /// Emitted when the server returns a redirect response (e.g. 301 Moved Permanently). Calling <c>request.followRedirect</c> will continue with the redirection.
-        /// If this event is handled, <c>request.followRedirect</c> must be called **synchronously**, otherwise the request will be cancelled.
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnRedirect =
-            [<Emit("$0[0]")>]
-            abstract member statusCode: int with get, set
+        module ContextMenu =
+            [<JS.Pojo>]
+            type Params
+                /// <param name="x">x coordinate.</param>
+                /// <param name="y">y coordinate.</param>
+                /// <param name="linkURL">URL of the link that encloses the node the context menu was invoked on.</param>
+                /// <param name="linkText">Text associated with the link. May be an empty string if the contents of the link are an image.</param>
+                /// <param name="pageURL">URL of the top level page that the context menu was invoked on.</param>
+                /// <param name="frameURL">URL of the subframe that the context menu was invoked on.</param>
+                /// <param name="srcURL">Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio
+                /// and video.</param>
+                /// <param name="mediaType">Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or
+                /// <c>plugin</c>.</param>
+                /// <param name="hasImageContents">Whether the context menu was invoked on an image which has non-empty contents.</param>
+                /// <param name="isEditable">Whether the context is editable.</param>
+                /// <param name="selectionText">Text of the selection that the context menu was invoked on.</param>
+                /// <param name="titleText">Title text of the selection that the context menu was invoked on.</param>
+                /// <param name="altText">Alt text of the selection that the context menu was invoked on.</param>
+                /// <param name="suggestedFilename">Suggested filename to be used when saving file through 'Save Link As' option of context menu.</param>
+                /// <param name="selectionRect">Rect representing the coordinates in the document space of the selection.</param>
+                /// <param name="selectionStartOffset">Start position of the selection text.</param>
+                /// <param name="referrerPolicy">The referrer policy of the frame on which the menu is invoked.</param>
+                /// <param name="misspelledWord">The misspelled word under the cursor, if any.</param>
+                /// <param name="dictionarySuggestions">An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is
+                /// a misspelled word and spellchecker is enabled.</param>
+                /// <param name="frameCharset">The character encoding of the frame on which the menu was invoked.</param>
+                /// <param name="formControlType">The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>,
+                /// <c>input-datetime-local</c>, <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>,
+                /// <c>select-list</c>, <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,</param>
+                /// <param name="spellcheckEnabled">If the context is editable, whether or not spellchecking is enabled.</param>
+                /// <param name="menuSourceType">Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>,
+                /// or <c>adjustSelectionReset</c>.</param>
+                /// <param name="mediaFlags">The flags for the media element the context menu was invoked on.</param>
+                /// <param name="editFlags">These flags indicate whether the renderer believes it is able to perform the corresponding action.</param>
+                (
+                    x: int,
+                    y: int,
+                    linkURL: string,
+                    linkText: string,
+                    pageURL: string,
+                    frameURL: string,
+                    srcURL: string,
+                    mediaType: Utility.Enums.WebviewTag.ContextMenu.Params.MediaType,
+                    hasImageContents: bool,
+                    isEditable: bool,
+                    selectionText: string,
+                    titleText: string,
+                    altText: string,
+                    suggestedFilename: string,
+                    selectionRect: Rectangle,
+                    selectionStartOffset: float,
+                    referrerPolicy: Referrer,
+                    misspelledWord: string,
+                    dictionarySuggestions: string[],
+                    frameCharset: string,
+                    formControlType: Utility.Enums.WebviewTag.ContextMenu.Params.FormControlType,
+                    spellcheckEnabled: bool,
+                    menuSourceType: Utility.Enums.WebviewTag.ContextMenu.Params.MenuSourceType,
+                    mediaFlags: Utility.WebviewTag.ContextMenu.Params.MediaFlags,
+                    editFlags: Utility.WebviewTag.ContextMenu.Params.EditFlags
+                ) =
+                class
+                end
 
-            [<Emit("$0[1]")>]
-            abstract member method: string with get, set
+                /// <summary>
+                /// x coordinate.
+                /// </summary>
+                [<Erase>]
+                member val x: int = Unchecked.defaultof<_> with get, set
 
-            [<Emit("$0[2]")>]
-            abstract member redirectUrl: string with get, set
+                /// <summary>
+                /// y coordinate.
+                /// </summary>
+                [<Erase>]
+                member val y: int = Unchecked.defaultof<_> with get, set
 
-            [<Emit("$0[3]")>]
-            abstract member responseHeaders: Record<string, string[]> with get, set
+                /// <summary>
+                /// URL of the link that encloses the node the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val linkURL: string = Unchecked.defaultof<_> with get, set
 
-        /// <summary>
-        /// Emitted when an authenticating proxy is asking for user credentials.<br/><br/>The <c>callback</c> function is expected to be called back with user
-        /// credentials:<br/><br/>* <c>username</c> string<br/>* <c>password</c> string<br/><br/>Providing empty credentials will cancel the request and report an authentication error on the response object:
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnLogin =
-            [<Emit("$0[0]")>]
-            abstract member authInfo: Utility.ClientRequest.Login.AuthInfo with get, set
+                /// <summary>
+                /// Text associated with the link. May be an empty string if the contents of the link are an image.
+                /// </summary>
+                [<Erase>]
+                member val linkText: string = Unchecked.defaultof<_> with get, set
 
-            [<Emit("$0[1]")>]
-            abstract member callback: Utility.ClientRequest.Login.Callback with get, set
+                /// <summary>
+                /// URL of the top level page that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val pageURL: string = Unchecked.defaultof<_> with get, set
 
-    module SystemPreferences =
-        #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
-        /// <summary>
-        /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
-        /// </summary>
-        [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnAccentColorChanged =
-            [<Emit("$0[0]")>]
-            abstract member event: Event with get, set
+                /// <summary>
+                /// URL of the subframe that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val frameURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Source URL for the element that the context menu was invoked on. Elements with source URLs are images, audio and
+                /// video.
+                /// </summary>
+                [<Erase>]
+                member val srcURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Type of the node the context menu was invoked on. Can be <c>none</c>, <c>image</c>, <c>audio</c>, <c>video</c>, <c>canvas</c>, <c>file</c> or <c>plugin</c>.
+                /// </summary>
+                [<Erase>]
+                member val mediaType: Utility.Enums.WebviewTag.ContextMenu.Params.MediaType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context menu was invoked on an image which has non-empty contents.
+                /// </summary>
+                [<Erase>]
+                member val hasImageContents: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the context is editable.
+                /// </summary>
+                [<Erase>]
+                member val isEditable: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val selectionText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Title text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val titleText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Alt text of the selection that the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val altText: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Suggested filename to be used when saving file through 'Save Link As' option of context menu.
+                /// </summary>
+                [<Erase>]
+                member val suggestedFilename: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Rect representing the coordinates in the document space of the selection.
+                /// </summary>
+                [<Erase>]
+                member val selectionRect: Rectangle = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Start position of the selection text.
+                /// </summary>
+                [<Erase>]
+                member val selectionStartOffset: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The referrer policy of the frame on which the menu is invoked.
+                /// </summary>
+                [<Erase>]
+                member val referrerPolicy: Referrer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The misspelled word under the cursor, if any.
+                /// </summary>
+                [<Erase>]
+                member val misspelledWord: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// An array of suggested words to show the user to replace the <c>misspelledWord</c>.  Only available if there is a
+                /// misspelled word and spellchecker is enabled.
+                /// </summary>
+                [<Erase>]
+                member val dictionarySuggestions: string[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The character encoding of the frame on which the menu was invoked.
+                /// </summary>
+                [<Erase>]
+                member val frameCharset: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The source that the context menu was invoked on. Possible values include <c>none</c>, <c>button-button</c>, <c>field-set</c>, <c>input-button</c>, <c>input-checkbox</c>, <c>input-color</c>, <c>input-date</c>, <c>input-datetime-local</c>,
+                /// <c>input-email</c>, <c>input-file</c>, <c>input-hidden</c>, <c>input-image</c>, <c>input-month</c>, <c>input-number</c>, <c>input-password</c>, <c>input-radio</c>, <c>input-range</c>, <c>input-reset</c>, <c>input-search</c>, <c>input-submit</c>, <c>input-telephone</c>, <c>input-text</c>, <c>input-time</c>, <c>input-url</c>, <c>input-week</c>, <c>output</c>, <c>reset-button</c>, <c>select-list</c>,
+                /// <c>select-list</c>, <c>select-multiple</c>, <c>select-one</c>, <c>submit-button</c>, and <c>text-area</c>,
+                /// </summary>
+                [<Erase>]
+                member val formControlType: Utility.Enums.WebviewTag.ContextMenu.Params.FormControlType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If the context is editable, whether or not spellchecking is enabled.
+                /// </summary>
+                [<Erase>]
+                member val spellcheckEnabled: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Input source that invoked the context menu. Can be <c>none</c>, <c>mouse</c>, <c>keyboard</c>, <c>touch</c>, <c>touchMenu</c>, <c>longPress</c>, <c>longTap</c>, <c>touchHandle</c>, <c>stylus</c>, <c>adjustSelection</c>, or
+                /// <c>adjustSelectionReset</c>.
+                /// </summary>
+                [<Erase>]
+                member val menuSourceType: Utility.Enums.WebviewTag.ContextMenu.Params.MenuSourceType =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The flags for the media element the context menu was invoked on.
+                /// </summary>
+                [<Erase>]
+                member val mediaFlags: Utility.WebviewTag.ContextMenu.Params.MediaFlags =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// These flags indicate whether the renderer believes it is able to perform the corresponding action.
+                /// </summary>
+                [<Erase>]
+                member val editFlags: Utility.WebviewTag.ContextMenu.Params.EditFlags =
+                    Unchecked.defaultof<_> with get, set
+
+            module Params =
+                [<JS.Pojo>]
+                type EditFlags
+                    /// <param name="canUndo">Whether the renderer believes it can undo.</param>
+                    /// <param name="canRedo">Whether the renderer believes it can redo.</param>
+                    /// <param name="canCut">Whether the renderer believes it can cut.</param>
+                    /// <param name="canCopy">Whether the renderer believes it can copy.</param>
+                    /// <param name="canPaste">Whether the renderer believes it can paste.</param>
+                    /// <param name="canDelete">Whether the renderer believes it can delete.</param>
+                    /// <param name="canSelectAll">Whether the renderer believes it can select all.</param>
+                    /// <param name="canEditRichly">Whether the renderer believes it can edit text richly.</param>
+                    (
+                        canUndo: bool,
+                        canRedo: bool,
+                        canCut: bool,
+                        canCopy: bool,
+                        canPaste: bool,
+                        canDelete: bool,
+                        canSelectAll: bool,
+                        canEditRichly: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the renderer believes it can undo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canUndo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can redo.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRedo: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can cut.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCut: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can copy.
+                    /// </summary>
+                    [<Erase>]
+                    member val canCopy: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can paste.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPaste: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can delete.
+                    /// </summary>
+                    [<Erase>]
+                    member val canDelete: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can select all.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSelectAll: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the renderer believes it can edit text richly.
+                    /// </summary>
+                    [<Erase>]
+                    member val canEditRichly: bool = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type MediaFlags
+                    /// <param name="inError">Whether the media element has crashed.</param>
+                    /// <param name="isPaused">Whether the media element is paused.</param>
+                    /// <param name="isMuted">Whether the media element is muted.</param>
+                    /// <param name="hasAudio">Whether the media element has audio.</param>
+                    /// <param name="isLooping">Whether the media element is looping.</param>
+                    /// <param name="isControlsVisible">Whether the media element's controls are visible.</param>
+                    /// <param name="canToggleControls">Whether the media element's controls are toggleable.</param>
+                    /// <param name="canPrint">Whether the media element can be printed.</param>
+                    /// <param name="canSave">Whether or not the media element can be downloaded.</param>
+                    /// <param name="canShowPictureInPicture">Whether the media element can show picture-in-picture.</param>
+                    /// <param name="isShowingPictureInPicture">Whether the media element is currently showing picture-in-picture.</param>
+                    /// <param name="canRotate">Whether the media element can be rotated.</param>
+                    /// <param name="canLoop">Whether the media element can be looped.</param>
+                    (
+                        inError: bool,
+                        isPaused: bool,
+                        isMuted: bool,
+                        hasAudio: bool,
+                        isLooping: bool,
+                        isControlsVisible: bool,
+                        canToggleControls: bool,
+                        canPrint: bool,
+                        canSave: bool,
+                        canShowPictureInPicture: bool,
+                        isShowingPictureInPicture: bool,
+                        canRotate: bool,
+                        canLoop: bool
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Whether the media element has crashed.
+                    /// </summary>
+                    [<Erase>]
+                    member val inError: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is paused.
+                    /// </summary>
+                    [<Erase>]
+                    member val isPaused: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is muted.
+                    /// </summary>
+                    [<Erase>]
+                    member val isMuted: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element has audio.
+                    /// </summary>
+                    [<Erase>]
+                    member val hasAudio: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is looping.
+                    /// </summary>
+                    [<Erase>]
+                    member val isLooping: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are visible.
+                    /// </summary>
+                    [<Erase>]
+                    member val isControlsVisible: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element's controls are toggleable.
+                    /// </summary>
+                    [<Erase>]
+                    member val canToggleControls: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be printed.
+                    /// </summary>
+                    [<Erase>]
+                    member val canPrint: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether or not the media element can be downloaded.
+                    /// </summary>
+                    [<Erase>]
+                    member val canSave: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can show picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val canShowPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element is currently showing picture-in-picture.
+                    /// </summary>
+                    [<Erase>]
+                    member val isShowingPictureInPicture: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be rotated.
+                    /// </summary>
+                    [<Erase>]
+                    member val canRotate: bool = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Whether the media element can be looped.
+                    /// </summary>
+                    [<Erase>]
+                    member val canLoop: bool = Unchecked.defaultof<_> with get, set
+
+        module FoundInPage =
+            [<JS.Pojo>]
+            type Result
+                /// <param name="requestId"></param>
+                /// <param name="activeMatchOrdinal">Position of the active match.</param>
+                /// <param name="matches">Number of Matches.</param>
+                /// <param name="selectionArea">Coordinates of first match region.</param>
+                /// <param name="finalUpdate"></param>
+                (requestId: int, activeMatchOrdinal: int, matches: int, selectionArea: Rectangle, finalUpdate: bool) =
+                class
+                end
+
+                [<Erase>]
+                member val requestId: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Position of the active match.
+                /// </summary>
+                [<Erase>]
+                member val activeMatchOrdinal: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Number of Matches.
+                /// </summary>
+                [<Erase>]
+                member val matches: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Coordinates of first match region.
+                /// </summary>
+                [<Erase>]
+                member val selectionArea: Rectangle = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val finalUpdate: bool = Unchecked.defaultof<_> with get, set
+
+        module PrintToPDF =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="landscape">Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.</param>
+                /// <param name="displayHeaderFooter">Whether to display header and footer. Defaults to false.</param>
+                /// <param name="printBackground">Whether to print background graphics. Defaults to false.</param>
+                /// <param name="scale">Scale of the webpage rendering. Defaults to 1.</param>
+                /// <param name="pageSize">Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>,
+                /// <c>Ledger</c>, or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="pageRanges">Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.</param>
+                /// <param name="headerTemplate">HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values
+                /// into them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages
+                /// in the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.</param>
+                /// <param name="footerTemplate">HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.</param>
+                /// <param name="preferCSSPageSize">Whether or not to prefer page size as defined by css. Defaults to false, in which case the content
+                /// will be scaled to fit the paper size.</param>
+                /// <param name="generateTaggedPDF">Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated
+                /// PDF may not adhere fully to PDF/UA and WCAG standards.</param>
+                /// <param name="generateDocumentOutline">Whether or not to generate a PDF document outline from content headers. Defaults to false.</param>
+                (
+                    ?landscape: bool,
+                    ?displayHeaderFooter: bool,
+                    ?printBackground: bool,
+                    ?scale: float,
+                    ?pageSize: U2<Utility.Enums.WebviewTag.PrintToPDF.Options.PageSize, Size>,
+                    ?margins: Utility.WebviewTag.PrintToPDF.Options.Margins,
+                    ?pageRanges: string,
+                    ?headerTemplate: string,
+                    ?footerTemplate: string,
+                    ?preferCSSPageSize: bool,
+                    ?generateTaggedPDF: bool,
+                    ?generateDocumentOutline: bool
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Paper orientation.<c>true</c> for landscape, <c>false</c> for portrait. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to display header and footer. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val displayHeaderFooter: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to print background graphics. Defaults to false.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Scale of the webpage rendering. Defaults to 1.
+                /// </summary>
+                [<Erase>]
+                member val scale: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the generated PDF. Can be <c>A0</c>, <c>A1</c>, <c>A2</c>, <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>A6</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c>, <c>Ledger</c>,
+                /// or an Object containing <c>height</c> and <c>width</c> in inches. Defaults to <c>Letter</c>.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Utility.Enums.WebviewTag.PrintToPDF.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Utility.WebviewTag.PrintToPDF.Options.Margins = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Page ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into
+                /// them: <c>date</c> (formatted print date), <c>title</c> (document title), <c>url</c> (document location), <c>pageNumber</c> (current page number) and <c>totalPages</c> (total pages in
+                /// the document). For example, <c>&lt;span class=title&gt;&lt;/span&gt;</c> would generate span containing the title.
+                /// </summary>
+                [<Erase>]
+                member val headerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// HTML template for the print footer. Should use the same format as the <c>headerTemplate</c>.
+                /// </summary>
+                [<Erase>]
+                member val footerTemplate: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to prefer page size as defined by css. Defaults to false, in which case the content will
+                /// be scaled to fit the paper size.
+                /// </summary>
+                [<Erase>]
+                member val preferCSSPageSize: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a tagged (accessible) PDF. Defaults to false. As this property is experimental, the generated PDF
+                /// may not adhere fully to PDF/UA and WCAG standards.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateTaggedPDF: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether or not to generate a PDF document outline from content headers. Defaults to false.
+                /// </summary>
+                [<Erase; Experimental("Experimental according to Electron")>]
+                member val generateDocumentOutline: bool = Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="top">Top margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="bottom">Bottom margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="left">Left margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    /// <param name="right">Right margin in inches. Defaults to 1cm (~0.4 inches).</param>
+                    (?top: float, ?bottom: float, ?left: float, ?right: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Top margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Bottom margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Left margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Right margin in inches. Defaults to 1cm (~0.4 inches).
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+        module Print =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="silent">Don't ask user for print settings. Default is <c>false</c>.</param>
+                /// <param name="printBackground">Prints the background color and image of the web page. Default is <c>false</c>.</param>
+                /// <param name="deviceName">Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB'
+                /// and not 'Brother QL-820NWB'.</param>
+                /// <param name="color">Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.</param>
+                /// <param name="margins"></param>
+                /// <param name="landscape">Whether the web page should be printed in landscape mode. Default is <c>false</c>.</param>
+                /// <param name="scaleFactor">The scale factor of the web page.</param>
+                /// <param name="pagesPerSheet">The number of pages to print per page sheet.</param>
+                /// <param name="collate">Whether the web page should be collated.</param>
+                /// <param name="copies">The number of copies of the web page to print.</param>
+                /// <param name="pageRanges">The page range to print.</param>
+                /// <param name="duplexMode">Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.</param>
+                /// <param name="dpi"></param>
+                /// <param name="header">string to be printed as page header.</param>
+                /// <param name="footer">string to be printed as page footer.</param>
+                /// <param name="pageSize">Specify page size of the printed document. Can be <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c> or an Object containing
+                /// <c>height</c> in microns.</param>
+                (
+                    ?silent: bool,
+                    ?printBackground: bool,
+                    ?deviceName: string,
+                    ?color: bool,
+                    ?margins: Utility.WebviewTag.Print.Options.Margins,
+                    ?landscape: bool,
+                    ?scaleFactor: float,
+                    ?pagesPerSheet: float,
+                    ?collate: bool,
+                    ?copies: float,
+                    ?pageRanges: Utility.WebviewTag.Print.Options.PageRanges[],
+                    ?duplexMode: Utility.Enums.WebviewTag.Print.Options.DuplexMode,
+                    ?dpi: Record<string, float>,
+                    ?header: string,
+                    ?footer: string,
+                    ?pageSize: U2<Utility.Enums.WebviewTag.Print.Options.PageSize, Size>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// Don't ask user for print settings. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val silent: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Prints the background color and image of the web page. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val printBackground: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the printer device name to use. Must be the system-defined name and not the 'friendly' name, e.g 'Brother_QL_820NWB' and
+                /// not 'Brother QL-820NWB'.
+                /// </summary>
+                [<Erase>]
+                member val deviceName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set whether the printed web page will be in color or grayscale. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val color: bool = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val margins: Utility.WebviewTag.Print.Options.Margins = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be printed in landscape mode. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val landscape: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The scale factor of the web page.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of pages to print per page sheet.
+                /// </summary>
+                [<Erase>]
+                member val pagesPerSheet: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether the web page should be collated.
+                /// </summary>
+                [<Erase>]
+                member val collate: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The number of copies of the web page to print.
+                /// </summary>
+                [<Erase>]
+                member val copies: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The page range to print.
+                /// </summary>
+                [<Erase>]
+                member val pageRanges: Utility.WebviewTag.Print.Options.PageRanges[] =
+                    Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Set the duplex mode of the printed web page. Can be <c>simplex</c>, <c>shortEdge</c>, or <c>longEdge</c>.
+                /// </summary>
+                [<Erase>]
+                member val duplexMode: Utility.Enums.WebviewTag.Print.Options.DuplexMode =
+                    Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val dpi: Record<string, float> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page header.
+                /// </summary>
+                [<Erase>]
+                member val header: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// string to be printed as page footer.
+                /// </summary>
+                [<Erase>]
+                member val footer: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Specify page size of the printed document. Can be <c>A3</c>, <c>A4</c>, <c>A5</c>, <c>Legal</c>, <c>Letter</c>, <c>Tabloid</c> or an Object containing <c>height</c>
+                /// in microns.
+                /// </summary>
+                [<Erase>]
+                member val pageSize: U2<Utility.Enums.WebviewTag.Print.Options.PageSize, Size> =
+                    Unchecked.defaultof<_> with get, set
+
+            module Options =
+                [<JS.Pojo>]
+                type PageRanges
+                    /// <param name="from">Index of the first page to print (0-based).</param>
+                    /// <param name="to">Index of the last page to print (inclusive) (0-based).</param>
+                    (from: float, ``to``: float) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Index of the first page to print (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val from: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// Index of the last page to print (inclusive) (0-based).
+                    /// </summary>
+                    [<Erase>]
+                    member val ``to``: float = Unchecked.defaultof<_> with get, set
+
+                [<JS.Pojo>]
+                type Margins
+                    /// <param name="marginType">Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>,
+                    /// <c>left</c>, and <c>right</c>.</param>
+                    /// <param name="top">The top margin of the printed web page, in pixels.</param>
+                    /// <param name="bottom">The bottom margin of the printed web page, in pixels.</param>
+                    /// <param name="left">The left margin of the printed web page, in pixels.</param>
+                    /// <param name="right">The right margin of the printed web page, in pixels.</param>
+                    (
+                        ?marginType: Utility.Enums.WebviewTag.Print.Options.Margins.MarginType,
+                        ?top: float,
+                        ?bottom: float,
+                        ?left: float,
+                        ?right: float
+                    ) =
+                    class
+                    end
+
+                    /// <summary>
+                    /// Can be <c>default</c>, <c>none</c>, <c>printableArea</c>, or <c>custom</c>. If <c>custom</c> is chosen, you will also need to specify <c>top</c>, <c>bottom</c>, <c>left</c>,
+                    /// and <c>right</c>.
+                    /// </summary>
+                    [<Erase>]
+                    member val marginType: Utility.Enums.WebviewTag.Print.Options.Margins.MarginType =
+                        Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The top margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val top: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The bottom margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val bottom: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The left margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val left: float = Unchecked.defaultof<_> with get, set
+
+                    /// <summary>
+                    /// The right margin of the printed web page, in pixels.
+                    /// </summary>
+                    [<Erase>]
+                    member val right: float = Unchecked.defaultof<_> with get, set
+
+        module FindInPage =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="forward">Whether to search forward or backward, defaults to <c>true</c>.</param>
+                /// <param name="findNext">Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c>
+                /// for follow-up requests. Defaults to <c>false</c>.</param>
+                /// <param name="matchCase">Whether search should be case-sensitive, defaults to <c>false</c>.</param>
+                (?forward: bool, ?findNext: bool, ?matchCase: bool) =
+                class
+                end
+
+                /// <summary>
+                /// Whether to search forward or backward, defaults to <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val forward: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether to begin a new text finding session with this request. Should be <c>true</c> for initial requests, and <c>false</c> for
+                /// follow-up requests. Defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val findNext: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether search should be case-sensitive, defaults to <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val matchCase: bool = Unchecked.defaultof<_> with get, set
+
+        module AdjustSelection =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="start">Amount to shift the start index of the current selection.</param>
+                /// <param name="end">Amount to shift the end index of the current selection.</param>
+                (?start: float, ?``end``: float) =
+                class
+                end
+
+                /// <summary>
+                /// Amount to shift the start index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val start: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Amount to shift the end index of the current selection.
+                /// </summary>
+                [<Erase>]
+                member val ``end``: float = Unchecked.defaultof<_> with get, set
+
+        module DownloadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="headers">HTTP request headers.</param>
+                (?headers: Record<string, string>) =
+                class
+                end
+
+                /// <summary>
+                /// HTTP request headers.
+                /// </summary>
+                [<Erase>]
+                member val headers: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+        module LoadURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="httpReferrer">An HTTP Referrer url.</param>
+                /// <param name="userAgent">A user agent originating the request.</param>
+                /// <param name="extraHeaders">Extra headers separated by "\n"</param>
+                /// <param name="postData"></param>
+                /// <param name="baseURLForDataURL">Base url (with trailing path separator) for files to be loaded by the data url. This is needed only
+                /// if the specified <c>url</c> is a data url and needs to load other files.</param>
+                (
+                    ?httpReferrer: U2<string, Referrer>,
+                    ?userAgent: string,
+                    ?extraHeaders: string,
+                    ?postData: U2<UploadRawData, UploadFile>[],
+                    ?baseURLForDataURL: string
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// An HTTP Referrer url.
+                /// </summary>
+                [<Erase>]
+                member val httpReferrer: U2<string, Referrer> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// A user agent originating the request.
+                /// </summary>
+                [<Erase>]
+                member val userAgent: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra headers separated by "\n"
+                /// </summary>
+                [<Erase>]
+                member val extraHeaders: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val postData: U2<UploadRawData, UploadFile>[] = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Base url (with trailing path separator) for files to be loaded by the data url. This is needed only if
+                /// the specified <c>url</c> is a data url and needs to load other files.
+                /// </summary>
+                [<Erase>]
+                member val baseURLForDataURL: string = Unchecked.defaultof<_> with get, set
+
+    module Shell =
+        module OpenExternal =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="activate">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || <c>true</c> to bring the
+                /// opened application to the foreground. The default is <c>true</c>.</param>
+                /// <param name="workingDirectory">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || The working directory.</param>
+                /// <param name="logUsage">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌ || Indicates a user initiated
+                /// launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.</param>
+                (
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                    ?activate: bool
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?workingDirectory: string
+                    #endif
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                    ,
+                    ?logUsage: bool
+                    #endif
+
+                ) =
+                class
+                end
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// <c>true</c> to bring the opened application to the foreground. The default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val activate: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// The working directory.
+                /// </summary>
+                [<Erase>]
+                member val workingDirectory: string = Unchecked.defaultof<_> with get, set
+                #endif
+
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ❌ | MAS ❌</para>
+                /// Indicates a user initiated launch that enables tracking of frequently used programs and other behaviors. The default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val logUsage: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+    module Process =
+        [<JS.Pojo>]
+        type GetSystemMemoryInfo
+            /// <param name="total">The total amount of physical memory in Kilobytes available to the system.</param>
+            /// <param name="free">The total amount of memory not being used by applications or disk cache.</param>
+            /// <param name="fileBacked">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that currently has been paged out to storage. Includes memory for file caches, network buffers, and other system services.</param>
+            /// <param name="purgeable">⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌ || The amount of memory
+            /// that is marked as "purgeable". The system can reclaim it if memory pressure increases.</param>
+            /// <param name="swapTotal">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The total amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            /// <param name="swapFree">⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌ || The free amount of
+            /// swap memory in Kilobytes available to the system.</param>
+            (
+                total: int,
+                free: int
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                fileBacked: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+                ,
+                purgeable: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapTotal: int
+                #endif
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+                ,
+                swapFree: int
+                #endif
+
+            ) =
+            class
+            end
 
             /// <summary>
-            /// The new RGBA color the user assigned to be their system accent color.
+            /// The total amount of physical memory in Kilobytes available to the system.
             /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member newColor: string with get, set
-        #endif
-
-
-    module UtilityProcess =
-        /// <summary>
-        /// Emitted when the child process needs to terminate due to non continuable error from V8.<br/><br/>No matter if you listen to
-        /// the <c>error</c> event, the <c>exit</c> event will be emitted after the child process terminates.
-        /// </summary>
-        [<Experimental("Indicated to be Experimental by Electron");
-          System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never);
-          AllowNullLiteral;
-          Interface>]
-        type IOnError =
-            /// <summary>
-            /// Type of error. One of the following values:
-            /// </summary>
-            [<Emit("$0[0]")>]
-            abstract member ``type``: Utility.Enums.UtilityProcess.Error.Type with get, set
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
 
             /// <summary>
-            /// Source location from where the error originated.
+            /// The total amount of memory not being used by applications or disk cache.
             /// </summary>
-            [<Emit("$0[1]")>]
-            abstract member location: string with get, set
+            [<Erase>]
+            member val free: int = Unchecked.defaultof<_> with get, set
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that currently has been paged out to storage. Includes memory for file caches, network buffers, and
+            /// other system services.
+            /// </summary>
+            [<Erase>]
+            member val fileBacked: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ❌ | MAC ✔ | LIN ❌ | MAS ❌</para>
+            /// The amount of memory that is marked as "purgeable". The system can reclaim it if memory pressure increases.
+            /// </summary>
+            [<Erase>]
+            member val purgeable: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The total amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapTotal: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+            #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_LIN || ELECTRON_OS_WIN
+            /// <summary>
+            /// <para>⚠ OS Compatibility: WIN ✔ | MAC ❌ | LIN ✔ | MAS ❌</para>
+            /// The free amount of swap memory in Kilobytes available to the system.
+            /// </summary>
+            [<Erase>]
+            member val swapFree: int = Unchecked.defaultof<_> with get, set
+            #endif
+
+
+        [<JS.Pojo>]
+        type GetBlinkMemoryInfo
+            /// <param name="allocated">Size of all allocated objects in Kilobytes.</param>
+            /// <param name="total">Total allocated space in Kilobytes.</param>
+            (allocated: int, total: int) =
+            class
+            end
 
             /// <summary>
-            /// <c>Node.js diagnostic report</c>.
+            /// Size of all allocated objects in Kilobytes.
             /// </summary>
-            [<Emit("$0[2]")>]
-            abstract member report: string with get, set
+            [<Erase>]
+            member val allocated: int = Unchecked.defaultof<_> with get, set
+
+            /// <summary>
+            /// Total allocated space in Kilobytes.
+            /// </summary>
+            [<Erase>]
+            member val total: int = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type GetHeapStatistics
+            /// <param name="totalHeapSize"></param>
+            /// <param name="totalHeapSizeExecutable"></param>
+            /// <param name="totalPhysicalSize"></param>
+            /// <param name="totalAvailableSize"></param>
+            /// <param name="usedHeapSize"></param>
+            /// <param name="heapSizeLimit"></param>
+            /// <param name="mallocedMemory"></param>
+            /// <param name="peakMallocedMemory"></param>
+            /// <param name="doesZapGarbage"></param>
+            (
+                totalHeapSize: int,
+                totalHeapSizeExecutable: int,
+                totalPhysicalSize: int,
+                totalAvailableSize: int,
+                usedHeapSize: int,
+                heapSizeLimit: int,
+                mallocedMemory: int,
+                peakMallocedMemory: int,
+                doesZapGarbage: bool
+            ) =
+            class
+            end
+
+            [<Erase>]
+            member val totalHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalHeapSizeExecutable: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalPhysicalSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val totalAvailableSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val usedHeapSize: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val heapSizeLimit: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val mallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val peakMallocedMemory: int = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val doesZapGarbage: bool = Unchecked.defaultof<_> with get, set
+
+    module NativeImage =
+        module AddRepresentation =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">The scale factor to add the image representation for.</param>
+                /// <param name="width">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="height">Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.</param>
+                /// <param name="buffer">The buffer containing the raw image data.</param>
+                /// <param name="dataURL">The data URL containing either a base 64 encoded PNG or JPEG image.</param>
+                (?scaleFactor: float, ?width: int, ?height: int, ?buffer: Buffer, ?dataURL: string) =
+                class
+                end
+
+                /// <summary>
+                /// The scale factor to add the image representation for.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 0. Required if a bitmap buffer is specified as <c>buffer</c>.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The buffer containing the raw image data.
+                /// </summary>
+                [<Erase>]
+                member val buffer: Buffer = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The data URL containing either a base 64 encoded PNG or JPEG image.
+                /// </summary>
+                [<Erase>]
+                member val dataURL: string = Unchecked.defaultof<_> with get, set
+
+        module Resize =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Defaults to the image's width.</param>
+                /// <param name="height">Defaults to the image's height.</param>
+                /// <param name="quality">The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These
+                /// values express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU)
+                /// of the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a
+                /// given platform.</param>
+                (?width: int, ?height: int, ?quality: Utility.Enums.NativeImage.Resize.Options.Quality) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to the image's width.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to the image's height.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The desired quality of the resize image. Possible values include <c>good</c>, <c>better</c>, or <c>best</c>. The default is <c>best</c>. These values
+                /// express a desired quality/speed tradeoff. They are translated into an algorithm-specific method that depends on the capabilities (CPU, GPU) of
+                /// the underlying platform. It is possible for all three methods to be mapped to the same algorithm on a given
+                /// platform.
+                /// </summary>
+                [<Erase>]
+                member val quality: Utility.Enums.NativeImage.Resize.Options.Quality =
+                    Unchecked.defaultof<_> with get, set
+
+        module GetBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToDataURL =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module ToPNG =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBuffer =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width">Required for bitmap buffers.</param>
+                /// <param name="height">Required for bitmap buffers.</param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (?width: int, ?height: int, ?scaleFactor: float) =
+                class
+                end
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Required for bitmap buffers.
+                /// </summary>
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+        module CreateFromBitmap =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="width"></param>
+                /// <param name="height"></param>
+                /// <param name="scaleFactor">Defaults to 1.0.</param>
+                (width: int, height: int, ?scaleFactor: float) =
+                class
+                end
+
+                [<Erase>]
+                member val width: int = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val height: int = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to 1.0.
+                /// </summary>
+                [<Erase>]
+                member val scaleFactor: float = Unchecked.defaultof<_> with get, set
+
+    module CrashReporter =
+        module Start =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="submitURL">URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.</param>
+                /// <param name="productName">Defaults to <c>app.name</c>.</param>
+                /// <param name="companyName">Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.</param>
+                /// <param name="uploadToServer">Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in
+                /// the crashes directory, but not uploaded. Default is <c>true</c>.</param>
+                /// <param name="ignoreSystemCrashHandler">If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is
+                /// <c>false</c>.</param>
+                /// <param name="rateLimit">⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌ || If true, limit the
+                /// number of crashes uploaded to 1/hour. Default is <c>false</c>.</param>
+                /// <param name="compress">If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.</param>
+                /// <param name="extra">Extra string key/value annotations that will be sent along with crash reports that are generated in the main process.
+                /// Only string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters
+                /// to crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.</param>
+                /// <param name="globalExtra">Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations
+                /// cannot be changed once the crash reporter has been started. If a key is present in both the global extra
+                /// parameters and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version
+                /// are included, as well as the Electron version.</param>
+                (
+                    ?submitURL: string,
+                    ?productName: string,
+                    ?companyName: string,
+                    ?uploadToServer: bool,
+                    ?ignoreSystemCrashHandler: bool
+                    #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                    ,
+                    ?rateLimit: bool
+                    #endif
+                    ,
+                    ?compress: bool,
+                    ?extra: Record<string, string>,
+                    ?globalExtra: Record<string, string>
+                ) =
+                class
+                end
+
+                /// <summary>
+                /// URL that crash reports will be sent to as POST. Required unless <c>uploadToServer</c> is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val submitURL: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Defaults to <c>app.name</c>.
+                /// </summary>
+                [<Erase>]
+                member val productName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Deprecated alias for <c>{ globalExtra: { _companyName: ... } }</c>.
+                /// </summary>
+                [<Erase; System.Obsolete>]
+                member val companyName: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Whether crash reports should be sent to the server. If false, crash reports will be collected and stored in the
+                /// crashes directory, but not uploaded. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val uploadToServer: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// If true, crashes generated in the main process will not be forwarded to the system crash handler. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val ignoreSystemCrashHandler: bool = Unchecked.defaultof<_> with get, set
+                #if !(ELECTRON_OS_LIN || ELECTRON_OS_WIN || ELECTRON_OS_MAC || ELECTRON_OS_MAS) || ELECTRON_OS_MAC || ELECTRON_OS_WIN
+                /// <summary>
+                /// <para>⚠ OS Compatibility: WIN ✔ | MAC ✔ | LIN ❌ | MAS ❌</para>
+                /// If true, limit the number of crashes uploaded to 1/hour. Default is <c>false</c>.
+                /// </summary>
+                [<Erase>]
+                member val rateLimit: bool = Unchecked.defaultof<_> with get, set
+                #endif
+
+
+                /// <summary>
+                /// If true, crash reports will be compressed and uploaded with <c>Content-Encoding: gzip</c>. Default is <c>true</c>.
+                /// </summary>
+                [<Erase>]
+                member val compress: bool = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with crash reports that are generated in the main process. Only
+                /// string values are supported. Crashes generated in child processes will not include these extra parameters. To add extra parameters to
+                /// crash reports generated from child processes, call <c>addExtraParameter</c> from the child process.
+                /// </summary>
+                [<Erase>]
+                member val extra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Extra string key/value annotations that will be sent along with any crash reports generated in any process. These annotations cannot
+                /// be changed once the crash reporter has been started. If a key is present in both the global extra parameters
+                /// and the process-specific extra parameters, then the global one will take precedence. By default, <c>productName</c> and the app version are
+                /// included, as well as the Electron version.
+                /// </summary>
+                [<Erase>]
+                member val globalExtra: Record<string, string> = Unchecked.defaultof<_> with get, set
+
+    module ContextBridge =
+        module ExecuteInMainWorld =
+            [<JS.Pojo>]
+            type ExecutionScript
+                /// <param name="func">A JavaScript function to execute. This function will be serialized which means that any bound parameters and execution context
+                /// will be lost.</param>
+                /// <param name="args">An array of arguments to pass to the provided function. These arguments will be copied between worlds in accordance
+                /// with the table of supported types.</param>
+                (func: FSharpFunc<_,_>, ?args: obj[]) =
+                class
+                end
+
+                /// <summary>
+                /// A JavaScript function to execute. This function will be serialized which means that any bound parameters and execution context will
+                /// be lost.
+                /// </summary>
+                [<Erase>]
+                member val func: FSharpFunc<_,_> = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// An array of arguments to pass to the provided function. These arguments will be copied between worlds in accordance with
+                /// the table of supported types.
+                /// </summary>
+                [<Erase>]
+                member val args: obj[] = Unchecked.defaultof<_> with get, set
+
+    module Clipboard =
+        module Write =
+            [<JS.Pojo>]
+            type Data
+                /// <param name="text"></param>
+                /// <param name="html"></param>
+                /// <param name="image"></param>
+                /// <param name="rtf"></param>
+                /// <param name="bookmark">The title of the URL at <c>text</c>.</param>
+                (?text: string, ?html: string, ?image: Renderer.NativeImage, ?rtf: string, ?bookmark: string) =
+                class
+                end
+
+                [<Erase>]
+                member val text: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val html: string = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val image: Renderer.NativeImage = Unchecked.defaultof<_> with get, set
+
+                [<Erase>]
+                member val rtf: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// The title of the URL at <c>text</c>.
+                /// </summary>
+                [<Erase>]
+                member val bookmark: string = Unchecked.defaultof<_> with get, set
+
+        [<JS.Pojo>]
+        type ReadBookmark
+            /// <param name="title"></param>
+            /// <param name="url"></param>
+            (title: string, url: string) =
+            class
+            end
+
+            [<Erase>]
+            member val title: string = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val url: string = Unchecked.defaultof<_> with get, set
+
+    module WebFrame =
+        [<JS.Pojo>]
+        type GetResourceUsage
+            /// <param name="images"></param>
+            /// <param name="scripts"></param>
+            /// <param name="cssStyleSheets"></param>
+            /// <param name="xslStyleSheets"></param>
+            /// <param name="fonts"></param>
+            /// <param name="other"></param>
+            (
+                images: MemoryUsageDetails,
+                scripts: MemoryUsageDetails,
+                cssStyleSheets: MemoryUsageDetails,
+                xslStyleSheets: MemoryUsageDetails,
+                fonts: MemoryUsageDetails,
+                other: MemoryUsageDetails
+            ) =
+            class
+            end
+
+            [<Erase>]
+            member val images: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val scripts: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val cssStyleSheets: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val xslStyleSheets: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val fonts: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+            [<Erase>]
+            member val other: MemoryUsageDetails = Unchecked.defaultof<_> with get, set
+
+        module SetIsolatedWorldInfo =
+            [<JS.Pojo>]
+            type Info
+                /// <param name="securityOrigin">Security origin for the isolated world.</param>
+                /// <param name="csp">Content Security Policy for the isolated world.</param>
+                /// <param name="name">Name for isolated world. Useful in devtools.</param>
+                (?securityOrigin: string, ?csp: string, ?name: string) =
+                class
+                end
+
+                /// <summary>
+                /// Security origin for the isolated world.
+                /// </summary>
+                [<Erase>]
+                member val securityOrigin: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Content Security Policy for the isolated world.
+                /// </summary>
+                [<Erase>]
+                member val csp: string = Unchecked.defaultof<_> with get, set
+
+                /// <summary>
+                /// Name for isolated world. Useful in devtools.
+                /// </summary>
+                [<Erase>]
+                member val name: string = Unchecked.defaultof<_> with get, set
+
+        module InsertCSS =
+            [<JS.Pojo>]
+            type Options
+                /// <param name="cssOrigin">Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.</param>
+                (?cssOrigin: Utility.Enums.WebFrame.InsertCSS.Options.CssOrigin) =
+                class
+                end
+
+                /// <summary>
+                /// Can be 'user' or 'author'. Sets the cascade origin of the inserted stylesheet. Default is 'author'.
+                /// </summary>
+                [<Erase>]
+                member val cssOrigin: Utility.Enums.WebFrame.InsertCSS.Options.CssOrigin =
+                    Unchecked.defaultof<_> with get, set
+
+        module ExecuteJavaScriptInIsolatedWorld =
+            /// <param name="result"></param>
+            /// <param name="error"></param>
+            type Callback = delegate of result: obj * error: Error -> unit
+
+        module ExecuteJavaScript =
+            /// <param name="result"></param>
+            /// <param name="error"></param>
+            type Callback = delegate of result: obj * error: Error -> unit
+
+        module SetSpellCheckProvider =
+            [<JS.Pojo>]
+            type Provider
+                /// <param name="spellCheck"></param>
+                (spellCheck: string[] * string[] -> unit -> unit) =
+                class
+                end
+
+                [<Erase>]
+                member val spellCheck: string[] * string[] -> unit -> unit = Unchecked.defaultof<_> with get, set
+
+            module Provider =
+                /// <param name="words"></param>
+                /// <param name="callback"></param>
+                type SpellCheck = delegate of words: string[] * callback: (string[] -> unit) -> unit
+
+    module IpcRenderer =
+        module RemoveListener =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module AddListener =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Once =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module Off =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+        module On =
+            /// <param name="event"></param>
+            /// <param name="...args"></param>
+            type Listener = delegate of event: IpcRendererEvent * [<System.ParamArray>] args: obj[] -> unit
+
+    module Enums =
+        module WebviewTag =
+            module ContextMenu =
+                module Params =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MenuSourceType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("mouse")>] Mouse
+                        | [<CompiledName("keyboard")>] Keyboard
+                        | [<CompiledName("touch")>] Touch
+                        | [<CompiledName("touchMenu")>] TouchMenu
+                        | [<CompiledName("longPress")>] LongPress
+                        | [<CompiledName("longTap")>] LongTap
+                        | [<CompiledName("touchHandle")>] TouchHandle
+                        | [<CompiledName("stylus")>] Stylus
+                        | [<CompiledName("adjustSelection")>] AdjustSelection
+                        | [<CompiledName("adjustSelectionReset")>] AdjustSelectionReset
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type FormControlType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("button-button")>] ButtonButton
+                        | [<CompiledName("field-set")>] FieldSet
+                        | [<CompiledName("input-button")>] InputButton
+                        | [<CompiledName("input-checkbox")>] InputCheckbox
+                        | [<CompiledName("input-color")>] InputColor
+                        | [<CompiledName("input-date")>] InputDate
+                        | [<CompiledName("input-datetime-local")>] InputDatetimeLocal
+                        | [<CompiledName("input-email")>] InputEmail
+                        | [<CompiledName("input-file")>] InputFile
+                        | [<CompiledName("input-hidden")>] InputHidden
+                        | [<CompiledName("input-image")>] InputImage
+                        | [<CompiledName("input-month")>] InputMonth
+                        | [<CompiledName("input-number")>] InputNumber
+                        | [<CompiledName("input-password")>] InputPassword
+                        | [<CompiledName("input-radio")>] InputRadio
+                        | [<CompiledName("input-range")>] InputRange
+                        | [<CompiledName("input-reset")>] InputReset
+                        | [<CompiledName("input-search")>] InputSearch
+                        | [<CompiledName("input-submit")>] InputSubmit
+                        | [<CompiledName("input-telephone")>] InputTelephone
+                        | [<CompiledName("input-text")>] InputText
+                        | [<CompiledName("input-time")>] InputTime
+                        | [<CompiledName("input-url")>] InputUrl
+                        | [<CompiledName("input-week")>] InputWeek
+                        | [<CompiledName("output")>] Output
+                        | [<CompiledName("reset-button")>] ResetButton
+                        | [<CompiledName("select-list")>] SelectList
+                        | [<CompiledName("select-multiple")>] SelectMultiple
+                        | [<CompiledName("select-one")>] SelectOne
+                        | [<CompiledName("submit-button")>] SubmitButton
+                        | [<CompiledName("text-area")>] TextArea
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type MediaType =
+                        | [<CompiledName("none")>] None
+                        | [<CompiledName("image")>] Image
+                        | [<CompiledName("audio")>] Audio
+                        | [<CompiledName("video")>] Video
+                        | [<CompiledName("canvas")>] Canvas
+                        | [<CompiledName("file")>] File
+                        | [<CompiledName("plugin")>] Plugin
+
+            module PrintToPDF =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A0")>] A0
+                        | [<CompiledName("A1")>] A1
+                        | [<CompiledName("A2")>] A2
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("A6")>] A6
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+                        | [<CompiledName("Ledger")>] Ledger
+
+            module Print =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type PageSize =
+                        | [<CompiledName("A3")>] A3
+                        | [<CompiledName("A4")>] A4
+                        | [<CompiledName("A5")>] A5
+                        | [<CompiledName("Legal")>] Legal
+                        | [<CompiledName("Letter")>] Letter
+                        | [<CompiledName("Tabloid")>] Tabloid
+
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type DuplexMode =
+                        | [<CompiledName("simplex")>] Simplex
+                        | [<CompiledName("shortEdge")>] ShortEdge
+                        | [<CompiledName("longEdge")>] LongEdge
+
+                    module Margins =
+                        [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                        type MarginType =
+                            | [<CompiledName("default")>] Default
+                            | [<CompiledName("none")>] None
+                            | [<CompiledName("printableArea")>] PrintableArea
+                            | [<CompiledName("custom")>] Custom
+
+            module StopFindInPage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Action =
+                    /// <summary>
+                    /// Clear the selection.
+                    /// </summary>
+                    | [<CompiledName("clearSelection")>] ClearSelection
+                    /// <summary>
+                    /// Translate the selection into a normal selection.
+                    /// </summary>
+                    | [<CompiledName("keepSelection")>] KeepSelection
+                    /// <summary>
+                    /// Focus and click the selection node.
+                    /// </summary>
+                    | [<CompiledName("activateSelection")>] ActivateSelection
+
+        module WebFrame =
+            module InsertCSS =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type CssOrigin =
+                        | [<CompiledName("user")>] User
+                        | [<CompiledName("author")>] Author
+
+        module UtilityProcess =
+            module Error =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type = | [<CompiledName("FatalError")>] FatalError
+
+        module Shell =
+            module WriteShortcutLink =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Operation =
+                    /// <summary>
+                    /// Creates a new shortcut, overwriting if necessary.
+                    /// </summary>
+                    | [<CompiledName("create")>] Create
+                    /// <summary>
+                    /// Updates specified properties only on an existing shortcut.
+                    /// </summary>
+                    | [<CompiledName("update")>] Update
+                    /// <summary>
+                    /// Overwrites an existing shortcut, fails if the shortcut doesn't exist.
+                    /// </summary>
+                    | [<CompiledName("replace")>] Replace
+
+        module Process =
+            [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+            type Type =
+                /// <summary>
+                /// The main process
+                /// </summary>
+                | [<CompiledName("browser")>] Browser
+                /// <summary>
+                /// A renderer process
+                /// </summary>
+                | [<CompiledName("renderer")>] Renderer
+                /// <summary>
+                /// In a service worker
+                /// </summary>
+                | [<CompiledName("service-worker")>] ServiceWorker
+                /// <summary>
+                /// In a web worker
+                /// </summary>
+                | [<CompiledName("worker")>] Worker
+                /// <summary>
+                /// In a node process launched as a service
+                /// </summary>
+                | [<CompiledName("utility")>] Utility
+
+        module NativeImage =
+            module Resize =
+                module Options =
+                    [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                    type Quality =
+                        | [<CompiledName("good")>] Good
+                        | [<CompiledName("better")>] Better
+                        | [<CompiledName("best")>] Best
+
+        module Clipboard =
+            module Write =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBuffer =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Has =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module AvailableFormats =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module Clear =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteBookmark =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadRTF =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadImage =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadHTML =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module WriteText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
+
+            module ReadText =
+                [<StringEnum(CaseRules.None); RequireQualifiedAccess>]
+                type Type =
+                    | [<CompiledName("selection")>] Selection
+                    | [<CompiledName("clipboard")>] Clipboard
 
     /// <summary>
     /// <para>⚠ Process Availability: Main ❌ | Renderer ✔ | Utility ✔ | Exported ❌</para>
@@ -11104,7 +16469,7 @@ module Utility =
         /// the error parameter is second.</param>
         [<Erase>]
         static member inline executeJavaScript
-            (code: string, ?userGesture: bool, ?callback: Utility.WebFrame.ExecuteJavaScript.Callback)
+            (code: string, ?userGesture: bool, ?callback: obj * Error -> unit)
             : Promise<obj> =
             Unchecked.defaultof<_>
 
@@ -11123,12 +16488,8 @@ module Utility =
         /// method, the error parameter is second.</param>
         [<Erase>]
         static member inline executeJavaScriptInIsolatedWorld
-            (
-                worldId: int,
-                scripts: WebSource[],
-                ?userGesture: bool,
-                ?callback: Utility.WebFrame.ExecuteJavaScriptInIsolatedWorld.Callback
-            ) : Promise<obj> =
+            (worldId: int, scripts: WebSource[], ?userGesture: bool, ?callback: obj * Error -> unit)
+            : Promise<obj> =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -12017,7 +17378,7 @@ module Utility =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline on(channel: string, listener: Utility.IpcRenderer.On.Listener) : unit =
+        static member inline on(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -12026,7 +17387,7 @@ module Utility =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline off(channel: string, listener: Utility.IpcRenderer.Off.Listener) : unit =
+        static member inline off(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -12036,7 +17397,7 @@ module Utility =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline once(channel: string, listener: Utility.IpcRenderer.Once.Listener) : unit =
+        static member inline once(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -12045,7 +17406,7 @@ module Utility =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline addListener(channel: string, listener: Utility.IpcRenderer.AddListener.Listener) : unit =
+        static member inline addListener(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -12054,9 +17415,7 @@ module Utility =
         /// <param name="channel"></param>
         /// <param name="listener"></param>
         [<Erase>]
-        static member inline removeListener
-            (channel: string, listener: Utility.IpcRenderer.RemoveListener.Listener)
-            : unit =
+        static member inline removeListener(channel: string, listener: IpcRendererEvent * obj[] -> unit) : unit =
             Unchecked.defaultof<_>
 
         /// <summary>
@@ -12616,7 +17975,7 @@ module Main =
             abstract member authInfo: Main.App.Login.AuthInfo with get, set
 
             [<Emit("$0[4]")>]
-            abstract member callback: Main.App.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
         /// <summary>
         /// Emitted when a client certificate is requested.<br/><br/>The <c>url</c> corresponds to the navigation entry requesting the client certificate and <c>callback</c> can
@@ -13294,7 +18653,7 @@ module Main =
             abstract member authInfo: Main.ClientRequest.Login.AuthInfo with get, set
 
             [<Emit("$0[1]")>]
-            abstract member callback: Main.ClientRequest.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
     module Cookies =
         /// <summary>
@@ -14556,7 +19915,7 @@ module Main =
             abstract member authInfo: Main.WebContents.Login.AuthInfo with get, set
 
             [<Emit("$0[3]")>]
-            abstract member callback: Main.WebContents.Login.Callback with get, set
+            abstract member callback: Option<string> * Option<string> -> unit with get, set
 
         /// <summary>
         /// Emitted when a client certificate is requested.<br/><br/>The usage is the same with the <c>select-client-certificate</c> event of <c>app</c>.

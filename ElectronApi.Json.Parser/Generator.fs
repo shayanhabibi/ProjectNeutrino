@@ -75,9 +75,8 @@ let rec private mapGroupForPath (func: GeneratorGrouper -> GeneratorGrouper) (pa
                         grouper.Children
                         |> List.map (function
                             | Nested ({ PathKey = ValueSome nestedPath } as group)
-                                when nestedPath.Name.ValueOrSource.Equals(name.ValueOrSource, StringComparison.OrdinalIgnoreCase) ->
-                                     // (nestedPath.Name.ValueOrSource |> toPascalCase)
-                                     // = (name.ValueOrSource |> toPascalCase) ->
+                                when (nestedPath.Name.ValueOrSource |> toPascalCase)
+                                     = (name.ValueOrSource |> toPascalCase) ->
                                 mapGroupForPath func path group
                                 |> Nested
                             | child -> child
@@ -247,12 +246,13 @@ module Transpiler =
             |> (GeneratorGrouper.makeNamespace false group)
             |> ignore
             group
-    let private getInlineObjects =
+    let private getInlineObjects values =
         List.append(
             Type.Cache.GetInlineObjects()
             |> List.map (fun structOrObject ->
                 structOrObject.PathKey, Type.Object structOrObject ))
-    let private getDelegates =
+            values
+    let private getDelegates values =
         List.append (
             // Generates delegates for functions
             Type.Cache.GetFuncOrMethods()
@@ -260,8 +260,8 @@ module Transpiler =
                 fun funcOrMethod ->
                 funcOrMethod.PathKey, Type.Function funcOrMethod
                 )
-            )
-    let private getStringEnums =
+            ) values
+    let private getStringEnums values =
         List.append(
             // Generates string enums
             Type.Cache.GetStringEnums(true)
@@ -269,8 +269,8 @@ module Transpiler =
                 fun stringEnum ->
                     stringEnum.PathKey, Type.StringEnum stringEnum
                 )
-            )
-    let private getEventInfo =
+            ) values
+    let private getEventInfo values =
         List.append(
             // Generates the types of Events that have additional properties available
             // in their handlers.
@@ -279,7 +279,7 @@ module Transpiler =
                 fun eventInfo ->
                     eventInfo.PathKey, Type.Event eventInfo
                 )
-            )
+            ) values
     let private processModifiedResultList resultList =
         resultList
         |> consolidateGeneratorContainers rootGeneratorGroup
@@ -375,6 +375,8 @@ module Transpiler =
     /// <param name="file"></param>
     /// <param name="destination"></param>
     let generateFromApiFile (file: string) (destination: string) =
+        Path.Cache.dumpCache()
+        Type.Cache.Clear()
         readFile file
         |> processModifiedResultList
         |> fun node -> Oak([], [ node ], Range.Zero)
@@ -388,6 +390,8 @@ module Transpiler =
         | Renderer
         | Utility
     let private generateFromApiFileForProcess processType (file: string) (destination: string) =
+        Path.Cache.dumpCache()
+        Type.Cache.Clear()
         let mappedReadFile func =
             File.ReadAllText >> Decode.fromString decode
             >> function
@@ -444,9 +448,21 @@ module Transpiler =
         |> Async.RunSynchronously
         |> fun txt ->
             File.WriteAllText(destination, txt)
+    /// <summary>
+    /// Does not work at the moment; too much interconnection between types to decouple by simple filtering on process at the beginning.
+    /// </summary>
+    /// <param name="apiFile"></param>
     let generateMainProcessOnlyFromApiFile apiFile =
         generateFromApiFileForProcess ProcessType.Main apiFile
+    /// <summary>
+    /// Does not work at the moment; too much interconnection between types to decouple by simple filtering on process at the beginning.
+    /// </summary>
+    /// <param name="apiFile"></param>
     let generateRendererProcessOnlyFromApiFile apiFile =
         generateFromApiFileForProcess ProcessType.Renderer apiFile
+    /// <summary>
+    /// Does not work at the moment; too much interconnection between types to decouple by simple filtering on process at the beginning.
+    /// </summary>
+    /// <param name="apiFile"></param>
     let generateUtilityProcessOnlyFromApiFile apiFile =
         generateFromApiFileForProcess ProcessType.Utility apiFile
